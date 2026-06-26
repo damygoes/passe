@@ -1,0 +1,17 @@
+{
+  "name": "@passe/types",
+  "version": "0.0.1",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./user": "./src/user.ts",
+    "./trip": "./src/trip.ts",
+    "./memory": "./src/memory.ts"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*"
+  },
+  "dependencies": {
+    "zod": "^3.23.0"
+  }
+}
