@@ -9,10 +9,15 @@ Components are built on **Base UI** primitives (`@base-ui/react`), styled with *
 
 | Component | Export path | File |
 |-----------|-------------|------|
-| `Button` | `@repo/ui/button` | `src/components/button/Button.tsx` |
-| `Icon` | (used internally) | `src/components/icon/Icon.tsx` |
-| `Input` | `@repo/ui/input` | `src/components/input/Input.tsx` |
-| `Textarea` | `@repo/ui/textarea` | `src/components/textarea/Textarea.tsx` |
+| `Avatar` | `@repo/ui/avatar` | `src/avatar/Avatar.tsx` |
+| `Badge` | `@repo/ui/badge` | `src/badge/Badge.tsx` |
+| `Button` | `@repo/ui/button` | `src/button/Button.tsx` |
+| `Icon` | `@repo/ui/icon` | `src/icon/Icon.tsx` |
+| `Input` | `@repo/ui/input` | `src/input/Input.tsx` |
+| `Separator` | `@repo/ui/separator` | `src/separator/Separator.tsx` |
+| `Textarea` | `@repo/ui/textarea` | `src/textarea/Textarea.tsx` |
+
+All components are also re-exported from the barrel — `import { Button } from '@repo/ui'` works too.
 
 Utilities:
 - `cn()` — from `@passe/utils` (clsx + tailwind-merge). No longer part of this package.
@@ -21,13 +26,13 @@ Utilities:
 
 ## Adding a New Component
 
-1. Create `src/components/<name>/<Name>.tsx`
-2. Add a named export at the bottom: `export { Name, nameVariants }`
-3. Register in `package.json` exports map:
+1. Create `src/<name>/<Name>.tsx`
+2. Add named exports at the bottom: `export { Name, nameVariants }`
+3. Add a re-export line to `src/index.ts`
+4. Register in `package.json` exports map:
    ```json
-   "./name": "./src/components/name/Name.tsx"
+   "./name": "./src/name/Name.tsx"
    ```
-4. No `index.ts` barrel files — one file per component, export from it directly
 
 Run `pnpm --filter @repo/ui generate:component` to scaffold the file structure automatically.
 
@@ -68,7 +73,7 @@ All components add `data-slot="component-name"` to their root element for target
 Icons are backed by `@hugeicons/core-free-icons`. All icon usage goes through `<Icon>` — never import HugeIcons directly in consumer code.
 
 **To add a new icon:**
-1. Import the icon from `@hugeicons/core-free-icons` in `src/components/icon/icon-map.ts`
+1. Import the icon from `@hugeicons/core-free-icons` in `src/icon/icon-map.ts`
 2. Add it to the `iconMap` object with a semantic key
 3. `IconName` type auto-updates (it's `keyof typeof iconMap`)
 

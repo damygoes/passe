@@ -3,10 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./*": "./src/*.tsx",
-    "./button": "./src/components/button/Button.tsx",
-    "./input": "./src/components/input/Input.tsx",
-    "./textarea": "./src/components/textarea/Textarea.tsx"
+    ".": "./src/index.ts",
+    "./button": "./src/button/Button.tsx",
+    "./input": "./src/input/Input.tsx",
+    "./textarea": "./src/textarea/Textarea.tsx",
+    "./avatar": "./src/avatar/Avatar.tsx",
+    "./badge": "./src/badge/Badge.tsx",
+    "./icon": "./src/icon/Icon.tsx",
+    "./separator": "./src/separator/Separator.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
