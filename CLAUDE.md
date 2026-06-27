@@ -13,7 +13,7 @@ apps/
   web/          Next.js 16 — main product (App Router, Clerk auth)
   docs/         Next.js 16 — documentation site
 packages/
-  ui/           @repo/ui       — shared React component library
+  ui/           @passe/ui      — shared React component library
   utils/        @passe/utils   — shared utilities (cn, and future helpers)
   theme/        @passe/theme   — design tokens (colors, spacing, typography)
   types/        @passe/types   — Zod schemas + inferred TypeScript types
@@ -38,13 +38,18 @@ pnpm clean        # remove build artifacts
 
 Run within a package:
 ```bash
-pnpm --filter @repo/ui lint
+pnpm --filter @passe/ui lint
 pnpm --filter web dev
 ```
 
 Generate a new UI component:
 ```bash
-pnpm --filter @repo/ui generate:component
+pnpm --filter @passe/ui generate:component
+```
+
+Browse the component library:
+```bash
+pnpm --filter @passe/ui storybook   # opens at localhost:6006
 ```
 
 ---
@@ -66,7 +71,7 @@ TypeScript: strict mode, `noEmit` for type-checks, `isolatedModules`.
 ## Architecture Rules
 
 - Shared packages are consumed via **workspace imports**, never relative cross-package paths:
-  - `import { Button } from '@repo/ui/button'`
+  - `import { Button } from '@passe/ui/button'`
   - `import { cn } from '@passe/utils'`
   - `import { UserSchema } from '@passe/types'`
   - `import '@passe/theme/styles'` in CSS
@@ -103,8 +108,8 @@ These map to CSS custom properties defined by `@passe/theme`.
 
 - Always use `cn()` from `@passe/utils` for conditional Tailwind classes — never string concatenation
 - Always use CVA (`class-variance-authority`) for component variants, not conditional className logic
-- Never import HugeIcons directly in `apps/*` — use `<Icon name="..." />` from `@repo/ui`
-- New icons require two steps: add to `iconMap` in `packages/ui/src/components/icon/icon-map.ts`, then `IconName` type updates automatically
+- Never import HugeIcons directly in `apps/*` — use `<Icon name="..." />` from `@passe/ui`
+- New icons require two steps: add to `iconMap` in `packages/ui/src/icon/icon-map.ts`, then `IconName` type updates automatically
 - Use `@passe/types` schemas for all data validation; infer TypeScript types with `z.infer<typeof Schema>`
 - Named exports only in `packages/ui` — no default exports (Next.js pages are the exception)
 - Do not add barrel `index.ts` re-exports per component folder — export directly from the component file

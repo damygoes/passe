@@ -21,6 +21,25 @@
   --color-muted-taupe-light: #a89888;
   --color-muted-taupe-dark: #6e5f51;
 
+  /* Semantic aliases — map generic utility names to brand tokens */
+  --color-background: var(--color-aged-cream);
+  --color-foreground: var(--color-dark-espresso);
+
+  --color-primary: var(--color-terracotta);
+  --color-primary-foreground: var(--color-aged-cream);
+
+  --color-secondary: var(--color-sandy-beige);
+  --color-secondary-foreground: var(--color-dark-espresso);
+
+  --color-muted: var(--color-sandy-beige-light);
+  --color-muted-foreground: var(--color-muted-taupe);
+
+  --color-border: var(--color-sandy-beige-dark);
+  --color-input: var(--color-sandy-beige);
+  --color-ring: var(--color-terracotta);
+
+  --color-destructive: #ef4444;
+
   /* Font families */
   --font-display: 'Playfair Display', Georgia, serif;
   --font-heading: 'Lora', Georgia, serif;

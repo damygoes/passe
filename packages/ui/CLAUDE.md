@@ -1,4 +1,4 @@
-# @repo/ui — Component Library Context
+# @passe/ui — Component Library Context
 
 Shared React component library consumed by `apps/web` and `apps/docs`.
 Components are built on **Base UI** primitives (`@base-ui/react`), styled with **Tailwind CSS 4** and **CVA**.
@@ -9,15 +9,15 @@ Components are built on **Base UI** primitives (`@base-ui/react`), styled with *
 
 | Component | Export path | File |
 |-----------|-------------|------|
-| `Avatar` | `@repo/ui/avatar` | `src/avatar/Avatar.tsx` |
-| `Badge` | `@repo/ui/badge` | `src/badge/Badge.tsx` |
-| `Button` | `@repo/ui/button` | `src/button/Button.tsx` |
-| `Icon` | `@repo/ui/icon` | `src/icon/Icon.tsx` |
-| `Input` | `@repo/ui/input` | `src/input/Input.tsx` |
-| `Separator` | `@repo/ui/separator` | `src/separator/Separator.tsx` |
-| `Textarea` | `@repo/ui/textarea` | `src/textarea/Textarea.tsx` |
+| `Avatar` | `@passe/ui/avatar` | `src/avatar/Avatar.tsx` |
+| `Badge` | `@passe/ui/badge` | `src/badge/Badge.tsx` |
+| `Button` | `@passe/ui/button` | `src/button/Button.tsx` |
+| `Icon` | `@passe/ui/icon` | `src/icon/Icon.tsx` |
+| `Input` | `@passe/ui/input` | `src/input/Input.tsx` |
+| `Separator` | `@passe/ui/separator` | `src/separator/Separator.tsx` |
+| `Textarea` | `@passe/ui/textarea` | `src/textarea/Textarea.tsx` |
 
-All components are also re-exported from the barrel — `import { Button } from '@repo/ui'` works too.
+All components are also re-exported from the barrel — `import { Button } from '@passe/ui'` works too.
 
 Utilities:
 - `cn()` — from `@passe/utils` (clsx + tailwind-merge). No longer part of this package.
@@ -33,8 +33,9 @@ Utilities:
    ```json
    "./name": "./src/name/Name.tsx"
    ```
+5. Add a colocated story file: `src/<name>/<Name>.stories.tsx`
 
-Run `pnpm --filter @repo/ui generate:component` to scaffold the file structure automatically.
+Run `pnpm --filter @passe/ui generate:component` to scaffold the file structure automatically.
 
 ---
 
@@ -81,12 +82,40 @@ Icon sizes: `xs` (12px) | `sm` (16px) | `md` (20px) | `lg` (24px) | `xl` (28px) 
 
 ---
 
+## Storybook
+
+Each component has a colocated story file at `src/<name>/<Name>.stories.tsx`.
+
+```bash
+pnpm --filter @passe/ui storybook       # dev server at localhost:6006
+pnpm --filter @passe/ui build-storybook # static build
+```
+
+Stories cover all CVA variants, sizes, and key interaction states (loading, disabled, etc.).
+
+---
+
+## Color System
+
+Components use two layers of color classes — both are available after `@passe/theme/styles` is imported:
+
+**Brand classes** (direct palette names):
+`terracotta`, `terracotta-dark`, `aged-cream`, `sandy-beige`, `sandy-beige-dark`, `dark-espresso`
+
+**Semantic aliases** (defined in `@passe/theme` and mapped to brand tokens):
+`primary` → terracotta | `primary-foreground` → aged-cream
+`secondary` → sandy-beige | `secondary-foreground` → dark-espresso
+`muted` → sandy-beige-light | `muted-foreground` → muted-taupe
+`border` → sandy-beige-dark | `input` → sandy-beige | `ring` → terracotta
+`background` → aged-cream | `foreground` → dark-espresso | `destructive` → red-500
+
+---
+
 ## Rules
 
 - Named exports only — no default exports
 - Use `cn()` for all conditional/merged class strings
 - Use Base UI primitives (`@base-ui/react/*`) for interactive elements that need accessibility primitives
 - Do not import from `apps/*` or `@passe/theme` directly — consume theme via Tailwind CSS custom properties
-- Brand colors available as Tailwind classes: `terracotta`, `aged-cream`, `sandy-beige`, `dark-espresso`
 - `cn()` is imported from `@passe/utils` (a workspace package), not a local file — `import { cn } from '@passe/utils'`
 - Other intra-package imports (components, icons) must use relative paths — the `@/` alias resolves to `apps/web/src/` at bundle time and will break the build
