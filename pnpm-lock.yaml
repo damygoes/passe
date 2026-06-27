@@ -20,7 +20,7 @@ importers:
 
   apps/docs:
     dependencies:
-      '@repo/ui':
+      '@passe/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       next:
@@ -33,10 +33,10 @@ importers:
         specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
     devDependencies:
-      '@repo/eslint-config':
+      '@passe/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@repo/typescript-config':
+      '@passe/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
       '@types/node':
@@ -63,7 +63,7 @@ importers:
       '@passe/types':
         specifier: workspace:*
         version: link:../../packages/types
-      '@repo/ui':
+      '@passe/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       '@tailwindcss/postcss':
@@ -85,10 +85,10 @@ importers:
         specifier: ^4.3.1
         version: 4.3.1
     devDependencies:
-      '@repo/eslint-config':
+      '@passe/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@repo/typescript-config':
+      '@passe/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
       '@types/node':
@@ -145,7 +145,7 @@ importers:
 
   packages/theme:
     devDependencies:
-      '@repo/typescript-config':
+      '@passe/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
 
@@ -155,7 +155,7 @@ importers:
         specifier: ^3.23.0
         version: 3.25.76
     devDependencies:
-      '@repo/typescript-config':
+      '@passe/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
 
@@ -185,10 +185,10 @@ importers:
         specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
     devDependencies:
-      '@repo/eslint-config':
+      '@passe/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@repo/typescript-config':
+      '@passe/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@types/node':
@@ -216,7 +216,7 @@ importers:
         specifier: ^3.6.0
         version: 3.6.0
     devDependencies:
-      '@repo/typescript-config':
+      '@passe/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
 

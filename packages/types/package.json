@@ -9,7 +9,7 @@
     "./memory": "./src/memory.ts"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*"
+    "@passe/typescript-config": "workspace:*"
   },
   "dependencies": {
     "zod": "^3.23.0"

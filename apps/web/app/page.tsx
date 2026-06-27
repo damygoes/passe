@@ -8,7 +8,7 @@ import {
   Button,
   Input,
   Textarea,
-} from '@repo/ui'
+} from '@passe/ui'
 
 export function AvatarDemo() {
   return (

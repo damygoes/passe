@@ -7,6 +7,6 @@
     "./styles": "./styles/tokens.css"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*"
+    "@passe/typescript-config": "workspace:*"
   }
 }
