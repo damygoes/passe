@@ -8,7 +8,7 @@ Users create **trips** (with dates, countries, cover images), attach geotagged *
 
 ## Monorepo Structure
 
-```
+```text
 apps/
   web/          Next.js 16 — main product (App Router, Clerk auth)
   docs/         Next.js 16 — documentation site
@@ -37,17 +37,20 @@ pnpm clean        # remove build artifacts
 ```
 
 Run within a package:
+
 ```bash
 pnpm --filter @passe/ui lint
 pnpm --filter web dev
 ```
 
 Generate a new UI component:
+
 ```bash
 pnpm --filter @passe/ui generate:component
 ```
 
 Browse the component library:
+
 ```bash
 pnpm --filter @passe/ui storybook   # opens at localhost:6006
 ```
@@ -57,6 +60,7 @@ pnpm --filter @passe/ui storybook   # opens at localhost:6006
 ## Code Conventions
 
 From `.prettierrc` — enforced across the whole repo:
+
 - No semicolons
 - Single quotes
 - Trailing commas (ES5)
@@ -83,7 +87,7 @@ TypeScript: strict mode, `noEmit` for type-checks, `isolatedModules`.
 
 ## Domain Model
 
-```
+```text
 User (Clerk auth)
   ├── plan: 'free' | 'explorer' | 'collector'
   └── trips[]

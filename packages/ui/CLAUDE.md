@@ -7,19 +7,20 @@ Components are built on **Base UI** primitives (`@base-ui/react`), styled with *
 
 ## Current Components
 
-| Component | Export path | File |
-|-----------|-------------|------|
-| `Avatar` | `@passe/ui/avatar` | `src/avatar/Avatar.tsx` |
-| `Badge` | `@passe/ui/badge` | `src/badge/Badge.tsx` |
-| `Button` | `@passe/ui/button` | `src/button/Button.tsx` |
-| `Icon` | `@passe/ui/icon` | `src/icon/Icon.tsx` |
-| `Input` | `@passe/ui/input` | `src/input/Input.tsx` |
+| Component   | Export path           | File                          |
+| ----------- | --------------------- | ----------------------------- |
+| `Avatar`    | `@passe/ui/avatar`    | `src/avatar/Avatar.tsx`       |
+| `Badge`     | `@passe/ui/badge`     | `src/badge/Badge.tsx`         |
+| `Button`    | `@passe/ui/button`    | `src/button/Button.tsx`       |
+| `Icon`      | `@passe/ui/icon`      | `src/icon/Icon.tsx`           |
+| `Input`     | `@passe/ui/input`     | `src/input/Input.tsx`         |
 | `Separator` | `@passe/ui/separator` | `src/separator/Separator.tsx` |
-| `Textarea` | `@passe/ui/textarea` | `src/textarea/Textarea.tsx` |
+| `Textarea`  | `@passe/ui/textarea`  | `src/textarea/Textarea.tsx`   |
 
 All components are also re-exported from the barrel — `import { Button } from '@passe/ui'` works too.
 
 Utilities:
+
 - `cn()` — from `@passe/utils` (clsx + tailwind-merge). No longer part of this package.
 
 ---
@@ -42,6 +43,7 @@ Run `pnpm --filter @passe/ui generate:component` to scaffold the file structure 
 ## Component Patterns
 
 ### CVA for variants
+
 ```tsx
 const componentVariants = cva('base-classes', {
   variants: { variant: { default: '...', outline: '...' } },
@@ -50,13 +52,13 @@ const componentVariants = cva('base-classes', {
 ```
 
 ### Props interface
+
 ```tsx
-export interface ComponentProps
-  extends PrimitiveProps,
-    VariantProps<typeof componentVariants> {}
+export interface ComponentProps extends PrimitiveProps, VariantProps<typeof componentVariants> {}
 ```
 
 ### forwardRef (when wrapping native elements)
+
 ```tsx
 export const Component = forwardRef<HTMLElement, ComponentProps>(
   function Component({ className, ...props }, ref) { ... }
@@ -65,6 +67,7 @@ Component.displayName = 'Component'
 ```
 
 ### data-slot attribute
+
 All components add `data-slot="component-name"` to their root element for targeted CSS selectors.
 
 ---
@@ -74,6 +77,7 @@ All components add `data-slot="component-name"` to their root element for target
 Icons are backed by `@hugeicons/core-free-icons`. All icon usage goes through `<Icon>` — never import HugeIcons directly in consumer code.
 
 **To add a new icon:**
+
 1. Import the icon from `@hugeicons/core-free-icons` in `src/icon/icon-map.ts`
 2. Add it to the `iconMap` object with a semantic key
 3. `IconName` type auto-updates (it's `keyof typeof iconMap`)
