@@ -2,7 +2,7 @@ import { Button as ButtonPrimitive } from '@base-ui/react/button'
 import { cva, type VariantProps } from 'class-variance-authority'
 import React from 'react'
 
-import { cn } from '../../utils/cn'
+import { cn } from '@passe/utils'
 import { Icon } from '../icon/Icon'
 import type { IconName, IconPosition, IconSize } from '../icon/types'
 

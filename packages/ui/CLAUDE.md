@@ -15,7 +15,7 @@ Components are built on **Base UI** primitives (`@base-ui/react`), styled with *
 | `Textarea` | `@repo/ui/textarea` | `src/components/textarea/Textarea.tsx` |
 
 Utilities:
-- `cn()` — `@repo/ui/utils` → `src/utils/cn.ts` (clsx + tailwind-merge)
+- `cn()` — from `@passe/utils` (clsx + tailwind-merge). No longer part of this package.
 
 ---
 
@@ -83,4 +83,5 @@ Icon sizes: `xs` (12px) | `sm` (16px) | `md` (20px) | `lg` (24px) | `xl` (28px) 
 - Use Base UI primitives (`@base-ui/react/*`) for interactive elements that need accessibility primitives
 - Do not import from `apps/*` or `@passe/theme` directly — consume theme via Tailwind CSS custom properties
 - Brand colors available as Tailwind classes: `terracotta`, `aged-cream`, `sandy-beige`, `dark-espresso`
-- **Intra-package imports must use relative paths** — `../../utils/cn`, not `@/utils/cn`. The `@/` alias resolves to `apps/web/src/` at bundle time and will break the build.
+- `cn()` is imported from `@passe/utils` (a workspace package), not a local file — `import { cn } from '@passe/utils'`
+- Other intra-package imports (components, icons) must use relative paths — the `@/` alias resolves to `apps/web/src/` at bundle time and will break the build

@@ -39,15 +39,18 @@ Every component root element must have `data-slot="component-name"`. This enable
 ## Loading State
 Use `icon="loading"` with `className="animate-spin"` wrapper — the `loading` icon (Orbit01Icon) is already in the iconMap.
 
-## Intra-package Imports
-Use **relative paths** for all imports within `packages/ui/src/` — do not use the `@/` alias
-for internal imports. The `@/` alias is resolved by Turbopack using `apps/web/tsconfig.json`
-and points to `apps/web/src/`, making it unusable inside packages.
-
+## Imports Within packages/ui
+`cn` comes from the shared `@passe/utils` workspace package — not a local file:
 ```tsx
-import { cn } from '../../utils/cn'      // ✅ relative
-import { Icon } from '../icon/Icon'       // ✅ relative
-import { cn } from '@/utils/cn'          // ❌ will break the build
+import { cn } from '@passe/utils'        // ✅ correct
+import { cn } from '../../utils/cn'      // ❌ that file no longer exists
+import { cn } from '@/utils/cn'          // ❌ @/ resolves to apps/web/src/, breaks build
+```
+
+For sibling components and icons, use relative paths:
+```tsx
+import { Icon } from '../icon/Icon'       // ✅ relative for intra-package component refs
+import { Icon } from '@/components/...'  // ❌ will break the build
 ```
 
 ## Tailwind Class Arrays

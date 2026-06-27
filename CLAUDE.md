@@ -14,6 +14,7 @@ apps/
   docs/         Next.js 16 — documentation site
 packages/
   ui/           @repo/ui       — shared React component library
+  utils/        @passe/utils   — shared utilities (cn, and future helpers)
   theme/        @passe/theme   — design tokens (colors, spacing, typography)
   types/        @passe/types   — Zod schemas + inferred TypeScript types
   eslint-config/ @repo/eslint-config  — shared ESLint flat config
@@ -66,6 +67,7 @@ TypeScript: strict mode, `noEmit` for type-checks, `isolatedModules`.
 
 - Shared packages are consumed via **workspace imports**, never relative cross-package paths:
   - `import { Button } from '@repo/ui/button'`
+  - `import { cn } from '@passe/utils'`
   - `import { UserSchema } from '@passe/types'`
   - `import '@passe/theme/styles'` in CSS
 - `packages/ui` components must **not** import from `apps/*`
@@ -99,7 +101,7 @@ These map to CSS custom properties defined by `@passe/theme`.
 
 ## Agent Rules
 
-- Always use `cn()` from `@repo/ui/utils` for conditional Tailwind classes — never string concatenation
+- Always use `cn()` from `@passe/utils` for conditional Tailwind classes — never string concatenation
 - Always use CVA (`class-variance-authority`) for component variants, not conditional className logic
 - Never import HugeIcons directly in `apps/*` — use `<Icon name="..." />` from `@repo/ui`
 - New icons require two steps: add to `iconMap` in `packages/ui/src/components/icon/icon-map.ts`, then `IconName` type updates automatically
