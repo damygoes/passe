@@ -12,7 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@passe/ui/button'
 import { Input } from '@passe/ui/input'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { PasswordMatchIndicator } from './PasswordMatchIndicator'
 import { PasswordStrengthMeter } from './PasswordStrengthMeter'
@@ -45,6 +45,14 @@ export function SignUpForm() {
   const otpForm = useForm<OTPFormValues>({
     resolver: zodResolver(OTPSchema),
   })
+
+  // Chrome autofills the OTP input with the email from the previous step.
+  // Clear the field once the verify step mounts so the user starts with a blank input.
+  useEffect(() => {
+    if (step === 'verify') {
+      otpForm.setValue('code', '')
+    }
+  }, [step])
 
   const onDetailsSubmit = async (data: SignUpFormValues) => {
     if (!isLoaded) return
@@ -99,7 +107,7 @@ export function SignUpForm() {
 
   if (step === 'verify') {
     return (
-      <form onSubmit={otpForm.handleSubmit(onOTPSubmit)} className="space-y-4" noValidate>
+      <form onSubmit={otpForm.handleSubmit(onOTPSubmit)} className="space-y-4" noValidate autoComplete="off">
         <div className="space-y-1 text-center">
           <p className="text-sm text-foreground font-medium">Check your email</p>
           <p className="text-xs text-muted-foreground">
@@ -256,6 +264,7 @@ export function SignUpForm() {
       >
         {isSubmitting ? 'Creating account…' : 'Create account'}
       </Button>
+      <div id="clerk-captcha" />
     </form>
   )
 }
