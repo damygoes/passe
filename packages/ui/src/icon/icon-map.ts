@@ -4,6 +4,9 @@ import {
   ArrowRight01Icon,
   ArrowRight02Icon,
   Cancel02Icon,
+  EyeIcon,
+  EyeOffIcon,
+  Mail01Icon,
   Orbit01Icon,
   Tick04Icon,
   UnfoldMoreIcon,
@@ -18,7 +21,10 @@ export const iconMap = {
   'chevron-right': ArrowRight01Icon,
   'chevron-up-down': UnfoldMoreIcon,
   close: Cancel02Icon,
+  eye: EyeIcon,
+  'eye-off': EyeOffIcon,
   loading: Orbit01Icon,
+  mail: Mail01Icon,
 } as const satisfies Record<string, IconSvgObject>
 
 // This gives a typed array of keys

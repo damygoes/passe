@@ -12,16 +12,20 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.0.0",
+    "@hookform/resolvers": "^5.4.0",
     "@passe/auth": "workspace:*",
+    "@passe/db": "workspace:*",
     "@passe/theme": "workspace:*",
     "@passe/types": "workspace:*",
     "@passe/ui": "workspace:*",
-    "@passe/db": "workspace:*",
+    "@passe/utils": "workspace:*",
     "@tailwindcss/postcss": "^4.3.1",
     "next": "16.2.0",
     "postcss": "^8.5.15",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-hook-form": "^7.80.0",
+    "zod": "^3.23.0",
     "tailwindcss": "^4.3.1"
   },
   "devDependencies": {

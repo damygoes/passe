@@ -3,8 +3,8 @@ import { PUBLIC_ROUTES } from '@passe/auth/constants'
 
 const isPublicRoute = createRouteMatcher([...PUBLIC_ROUTES])
 
-export default clerkMiddleware((auth, req) => {
-  if (!isPublicRoute(req)) auth.protect()
+export default clerkMiddleware(async (auth, req) => {
+  if (!isPublicRoute(req)) await auth.protect()
 })
 
 export const config = {

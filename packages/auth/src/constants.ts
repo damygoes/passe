@@ -10,5 +10,8 @@ export const PUBLIC_ROUTES = [
   '/',
   '/sign-in(.*)',
   '/sign-up(.*)',
+  '/forgot-password(.*)',
+  '/reset-password(.*)',
+  '/sso-callback(.*)',
   '/p/(.*)', // public portfolios
 ] as const

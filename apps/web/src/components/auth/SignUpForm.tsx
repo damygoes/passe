@@ -1,0 +1,261 @@
+'use client'
+
+import {
+  OTPSchema,
+  SignUpSchema,
+  type OTPFormValues,
+  type SignUpFormValues,
+} from '@/lib/schemas/auth'
+import { useSignUp } from '@clerk/nextjs'
+import { isClerkAPIResponseError } from '@clerk/nextjs/errors'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Button } from '@passe/ui/button'
+import { Input } from '@passe/ui/input'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { PasswordMatchIndicator } from './PasswordMatchIndicator'
+import { PasswordStrengthMeter } from './PasswordStrengthMeter'
+
+type Step = 'details' | 'verify'
+
+export function SignUpForm() {
+  const { signUp, setActive, isLoaded } = useSignUp()
+  const router = useRouter()
+  const [step, setStep] = useState<Step>('details')
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [globalError, setGlobalError] = useState<string | null>(null)
+
+  const detailsForm = useForm<SignUpFormValues>({
+    resolver: zodResolver(SignUpSchema),
+    mode: 'onChange',
+  })
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting, isSubmitted },
+  } = detailsForm
+
+  const password = watch('password', '')
+  const confirmPassword = watch('confirmPassword', '')
+
+  const otpForm = useForm<OTPFormValues>({
+    resolver: zodResolver(OTPSchema),
+  })
+
+  const onDetailsSubmit = async (data: SignUpFormValues) => {
+    if (!isLoaded) return
+    setGlobalError(null)
+
+    try {
+      await signUp.create({
+        emailAddress: data.email,
+        password: data.password,
+        firstName: data.displayName,
+      })
+      await signUp.prepareEmailAddressVerification({ strategy: 'email_code' })
+      setStep('verify')
+    } catch (err) {
+      if (isClerkAPIResponseError(err)) {
+        setGlobalError(err.errors[0]?.longMessage ?? err.errors[0]?.message ?? 'Sign up failed')
+      } else {
+        setGlobalError('Something went wrong. Please try again.')
+      }
+    }
+  }
+
+  const onOTPSubmit = async (data: OTPFormValues) => {
+    if (!isLoaded) return
+    setGlobalError(null)
+
+    try {
+      const result = await signUp.attemptEmailAddressVerification({ code: data.code })
+      if (result.status === 'complete') {
+        await setActive({ session: result.createdSessionId })
+        router.push('/dashboard')
+      }
+    } catch (err) {
+      if (isClerkAPIResponseError(err)) {
+        setGlobalError(
+          err.errors[0]?.longMessage ?? err.errors[0]?.message ?? 'Verification failed',
+        )
+      } else {
+        setGlobalError('Something went wrong. Please try again.')
+      }
+    }
+  }
+
+  const resendCode = async () => {
+    if (!isLoaded) return
+    try {
+      await signUp.prepareEmailAddressVerification({ strategy: 'email_code' })
+    } catch {
+      // silent — user can try again
+    }
+  }
+
+  if (step === 'verify') {
+    return (
+      <form onSubmit={otpForm.handleSubmit(onOTPSubmit)} className="space-y-4" noValidate>
+        <div className="space-y-1 text-center">
+          <p className="text-sm text-foreground font-medium">Check your email</p>
+          <p className="text-xs text-muted-foreground">
+            We sent a 6-digit code to{' '}
+            <span className="font-medium text-foreground">{detailsForm.getValues('email')}</span>
+          </p>
+        </div>
+
+        {globalError && (
+          <div
+            role="alert"
+            className="rounded-lg border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive"
+          >
+            {globalError}
+          </div>
+        )}
+
+        <div className="space-y-1.5">
+          <label htmlFor="otp-code" className="text-sm font-medium text-foreground">
+            Verification code
+          </label>
+          <Input
+            id="otp-code"
+            type="text"
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            maxLength={6}
+            placeholder="000000"
+            aria-invalid={!!otpForm.formState.errors.code}
+            className="text-center tracking-[0.5em] font-mono"
+            {...otpForm.register('code')}
+          />
+          {otpForm.formState.errors.code && (
+            <p className="text-xs text-destructive">{otpForm.formState.errors.code.message}</p>
+          )}
+        </div>
+
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={!isLoaded || otpForm.formState.isSubmitting}
+          isLoading={otpForm.formState.isSubmitting}
+        >
+          {otpForm.formState.isSubmitting ? 'Verifying…' : 'Verify email'}
+        </Button>
+
+        <p className="text-center text-xs text-muted-foreground">
+          Didn&apos;t receive it?{' '}
+          <button
+            type="button"
+            onClick={resendCode}
+            className="text-primary transition-opacity hover:opacity-70"
+          >
+            Resend code
+          </button>
+        </p>
+      </form>
+    )
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onDetailsSubmit)} className="space-y-4" noValidate>
+      {globalError && (
+        <div
+          role="alert"
+          className="rounded-lg border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive"
+        >
+          {globalError}
+        </div>
+      )}
+
+      <div className="space-y-1.5">
+        <label htmlFor="signup-name" className="text-sm font-medium text-foreground">
+          Display name
+        </label>
+        <Input
+          id="signup-name"
+          type="text"
+          autoComplete="name"
+          placeholder="Your name"
+          aria-invalid={!!errors.displayName}
+          {...register('displayName')}
+        />
+        {errors.displayName && (
+          <p className="text-xs text-destructive">{errors.displayName.message}</p>
+        )}
+      </div>
+
+      <div className="space-y-1.5">
+        <label htmlFor="signup-email" className="text-sm font-medium text-foreground">
+          Email
+        </label>
+        <Input
+          id="signup-email"
+          type="email"
+          autoComplete="email"
+          placeholder="you@example.com"
+          icon="mail"
+          iconPosition="start"
+          aria-invalid={!!errors.email}
+          {...register('email')}
+        />
+        {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
+      </div>
+
+      <div className="space-y-1.5">
+        <label htmlFor="signup-password" className="text-sm font-medium text-foreground">
+          Password
+        </label>
+        <Input
+          id="signup-password"
+          type={showPassword ? 'text' : 'password'}
+          autoComplete="new-password"
+          placeholder="••••••••"
+          icon={showPassword ? 'eye-off' : 'eye'}
+          iconPosition="end"
+          onIconClick={() => setShowPassword((v) => !v)}
+          aria-invalid={!!errors.password}
+          {...register('password')}
+        />
+        <PasswordStrengthMeter password={password} />
+        {isSubmitted && errors.password && (
+          <p className="text-xs text-destructive">{errors.password.message}</p>
+        )}
+      </div>
+
+      <div className="space-y-1.5">
+        <label htmlFor="signup-confirm-password" className="text-sm font-medium text-foreground">
+          Confirm password
+        </label>
+        <Input
+          id="signup-confirm-password"
+          type={showConfirmPassword ? 'text' : 'password'}
+          autoComplete="new-password"
+          placeholder="••••••••"
+          icon={showConfirmPassword ? 'eye-off' : 'eye'}
+          iconPosition="end"
+          onIconClick={() => setShowConfirmPassword((v) => !v)}
+          aria-invalid={!!errors.confirmPassword}
+          {...register('confirmPassword')}
+        />
+        <PasswordMatchIndicator password={password} confirmPassword={confirmPassword} />
+        {isSubmitted && errors.confirmPassword && (
+          <p className="text-xs text-destructive">{errors.confirmPassword.message}</p>
+        )}
+      </div>
+
+      <Button
+        type="submit"
+        className="w-full"
+        size="lg"
+        disabled={!isLoaded || isSubmitting}
+        isLoading={isSubmitting}
+      >
+        {isSubmitting ? 'Creating account…' : 'Create account'}
+      </Button>
+    </form>
+  )
+}

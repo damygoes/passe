@@ -58,6 +58,38 @@ Copy `.env.local.example` → `.env.local` and fill in:
 
 ---
 
+## Custom auth pages
+
+All auth pages use custom forms (not Clerk's hosted components). Forms live in
+`src/components/auth/` and use React Hook Form + Zod. Clerk hooks provide the auth logic.
+
+| Component | File | Purpose |
+|---|---|---|
+| `SignInForm` | `src/components/auth/SignInForm.tsx` | Email + password sign-in |
+| `SignUpForm` | `src/components/auth/SignUpForm.tsx` | Sign-up with display name + OTP verification step |
+| `ForgotPasswordForm` | `src/components/auth/ForgotPasswordForm.tsx` | Email entry → sends reset code |
+| `ResetPasswordForm` | `src/components/auth/ResetPasswordForm.tsx` | OTP code + new password |
+| `SocialAuthButtons` | `src/components/auth/SocialAuthButtons.tsx` | Google + Apple OAuth |
+
+Zod schemas for all forms: `src/lib/schemas/auth.ts`
+
+### Sign-up flow (two steps)
+1. User fills display name + email + password → `signUp.create()` + `prepareEmailAddressVerification()`
+2. OTP input shown → `signUp.attemptEmailAddressVerification()` → `setActive()` → redirect
+
+### Social auth
+Social OAuth (`oauth_google`, `oauth_apple`) uses `signIn.authenticateWithRedirect()` with
+`redirectUrl: '/sso-callback'`. The `/sso-callback` page runs `AuthenticateWithRedirectCallback`
+which completes the OAuth flow. Both `/sso-callback` and `/forgot-password`, `/reset-password`
+are in `PUBLIC_ROUTES` (see `packages/auth/src/constants.ts`).
+
+### Password reset flow
+1. `/forgot-password` → email form → `signIn.create({ strategy: 'reset_password_email_code' })`
+2. Email stored in `sessionStorage('reset-email')` → redirect to `/reset-password`
+3. `/reset-password` → OTP + new password → `signIn.attemptFirstFactor()` → `setActive()`
+
+---
+
 ## Key rules
 
 - `auth()` and `currentUser()` are async in Next.js 16 — always `await` them
