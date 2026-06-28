@@ -1,0 +1,92 @@
+{
+  "common": {
+    "app_name": "Passé.",
+    "app_tagline": "The past, beautifully kept."
+  },
+  "auth": {
+    "layout": {
+      "description": "Create trips, attach geotagged memories, and share your world — beautifully.",
+      "copyright": "© 2026 Passé"
+    },
+    "sign_in": {
+      "heading": "Welcome back",
+      "subheading": "Sign in to your Passé account",
+      "or_email": "or continue with email",
+      "no_account": "Don't have an account?",
+      "sign_up_link": "Sign up"
+    },
+    "sign_up": {
+      "heading": "Create an account",
+      "subheading": "Start preserving your memories with Passé",
+      "or_email": "or continue with email",
+      "have_account": "Already have an account?",
+      "sign_in_link": "Sign in"
+    },
+    "forgot_password": {
+      "heading": "Forgot your password?",
+      "subheading": "Enter your email and we'll send you a reset code.",
+      "remembered": "Remembered it?",
+      "back_to_sign_in": "Back to sign in"
+    },
+    "reset_password": {
+      "heading": "Set new password",
+      "subheading": "Enter the code from your email and choose a new password.",
+      "resend_link": "Resend reset code"
+    },
+    "social": {
+      "google": "Continue with Google",
+      "apple": "Continue with Apple"
+    },
+    "form": {
+      "email_label": "Email",
+      "email_placeholder": "you@example.com",
+      "email_address_label": "Email address",
+      "password_label": "Password",
+      "password_placeholder": "••••••••",
+      "confirm_password_label": "Confirm password",
+      "display_name_label": "Display name",
+      "display_name_placeholder": "Your name",
+      "forgot_password_link": "Forgot password?",
+      "sign_in": "Sign in",
+      "signing_in": "Signing in…",
+      "create_account": "Create account",
+      "creating_account": "Creating account…",
+      "send_reset_code": "Send reset code",
+      "sending": "Sending…",
+      "reset_password": "Reset password",
+      "resetting": "Resetting…",
+      "verify_email": "Verify email",
+      "verifying": "Verifying…",
+      "log_out": "Log out",
+      "reset_code_label": "Reset code",
+      "new_password_label": "New password",
+      "verification_code_label": "Verification code",
+      "verification_code_placeholder": "000000",
+      "check_email_heading": "Check your email",
+      "check_email_body": "We sent a 6-digit code to {email}",
+      "code_sent_to": "Code sent to {email}",
+      "didnt_receive": "Didn't receive it?",
+      "resend_code": "Resend code"
+    },
+    "errors": {
+      "sign_in_failed": "Sign in failed",
+      "sign_up_failed": "Sign up failed",
+      "verification_failed": "Verification failed",
+      "request_failed": "Request failed",
+      "reset_failed": "Reset failed",
+      "generic": "Something went wrong. Please try again."
+    },
+    "password_strength": {
+      "aria_label": "Password strength",
+      "weak": "Weak",
+      "fair": "Fair",
+      "good": "Good",
+      "strong": "Strong",
+      "very_strong": "Very strong"
+    },
+    "password_match": {
+      "match": "Passwords match",
+      "no_match": "Passwords don't match"
+    }
+  }
+}

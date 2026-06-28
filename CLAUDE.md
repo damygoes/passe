@@ -15,6 +15,7 @@ apps/
 packages/
   auth/         @passe/auth    — shared Clerk auth utilities (webhook handler, plan gates, constants)
   db/           @passe/db      — Drizzle ORM schema + Neon serverless client
+  i18n/         @passe/i18n    — shared translation JSON files + locale constants (no framework deps)
   ui/           @passe/ui      — shared React component library
   utils/        @passe/utils   — shared utilities (cn, and future helpers)
   theme/        @passe/theme   — design tokens (colors, spacing, typography)

@@ -6,14 +6,16 @@ import { isClerkAPIResponseError } from '@clerk/nextjs/errors'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@passe/ui/button'
 import { Input } from '@passe/ui/input'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
+import { Link, useRouter } from '@/i18n/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 export function SignInForm() {
   const { signIn, setActive, isLoaded } = useSignIn()
   const router = useRouter()
+  const t = useTranslations('auth.form')
+  const tErrors = useTranslations('auth.errors')
   const [showPassword, setShowPassword] = useState(false)
   const [globalError, setGlobalError] = useState<string | null>(null)
 
@@ -41,9 +43,9 @@ export function SignInForm() {
       }
     } catch (err) {
       if (isClerkAPIResponseError(err)) {
-        setGlobalError(err.errors[0]?.longMessage ?? err.errors[0]?.message ?? 'Sign in failed')
+        setGlobalError(err.errors[0]?.longMessage ?? err.errors[0]?.message ?? tErrors('sign_in_failed'))
       } else {
-        setGlobalError('Something went wrong. Please try again.')
+        setGlobalError(tErrors('generic'))
       }
     }
   }
@@ -61,13 +63,13 @@ export function SignInForm() {
 
       <div className="space-y-1.5">
         <label htmlFor="signin-email" className="text-sm font-medium text-foreground">
-          Email
+          {t('email_label')}
         </label>
         <Input
           id="signin-email"
           type="email"
           autoComplete="email"
-          placeholder="you@example.com"
+          placeholder={t('email_placeholder')}
           icon="mail"
           iconPosition="start"
           aria-invalid={!!errors.email}
@@ -79,20 +81,20 @@ export function SignInForm() {
       <div className="space-y-1.5">
         <div className="flex items-center justify-between">
           <label htmlFor="signin-password" className="text-sm font-medium text-foreground">
-            Password
+            {t('password_label')}
           </label>
           <Link
             href="/forgot-password"
             className="text-xs text-primary transition-opacity hover:opacity-70"
           >
-            Forgot password?
+            {t('forgot_password_link')}
           </Link>
         </div>
         <Input
           id="signin-password"
           type={showPassword ? 'text' : 'password'}
           autoComplete="current-password"
-          placeholder="••••••••"
+          placeholder={t('password_placeholder')}
           icon={showPassword ? 'eye-off' : 'eye'}
           iconPosition="end"
           onIconClick={() => setShowPassword((v) => !v)}
@@ -109,7 +111,7 @@ export function SignInForm() {
         disabled={!isLoaded || isSubmitting}
         isLoading={isSubmitting}
       >
-        {isSubmitting ? 'Signing in…' : 'Sign in'}
+        {isSubmitting ? t('signing_in') : t('sign_in')}
       </Button>
     </form>
   )

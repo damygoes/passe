@@ -7,7 +7,9 @@ import {
   EyeIcon,
   EyeOffIcon,
   Mail01Icon,
+  Moon02Icon,
   Orbit01Icon,
+  Sun02Icon,
   Tick04Icon,
   UnfoldMoreIcon,
 } from '@hugeicons/core-free-icons'
@@ -25,6 +27,8 @@ export const iconMap = {
   'eye-off': EyeOffIcon,
   loading: Orbit01Icon,
   mail: Mail01Icon,
+  moon: Moon02Icon,
+  sun: Sun02Icon,
 } as const satisfies Record<string, IconSvgObject>
 
 // This gives a typed array of keys

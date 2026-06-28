@@ -1,0 +1,7 @@
+{
+  "extends": "@passe/typescript-config/base.json",
+  "include": ["src"],
+  "compilerOptions": {
+    "resolveJsonModule": true
+  }
+}

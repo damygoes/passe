@@ -2,6 +2,7 @@
 
 import { useSignIn } from '@clerk/nextjs'
 import { isClerkAPIResponseError } from '@clerk/nextjs/errors'
+import { useLocale, useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { Button } from '@passe/ui/button'
 import { cn } from '@passe/utils'
@@ -44,6 +45,8 @@ function AppleIcon() {
 
 export function SocialAuthButtons({ mode, className }: SocialAuthButtonsProps) {
   const { signIn, isLoaded } = useSignIn()
+  const locale = useLocale()
+  const t = useTranslations('auth.social')
   const [loadingProvider, setLoadingProvider] = useState<'google' | 'apple' | null>(null)
 
   const handleOAuth = async (provider: 'oauth_google' | 'oauth_apple') => {
@@ -53,8 +56,8 @@ export function SocialAuthButtons({ mode, className }: SocialAuthButtonsProps) {
     try {
       await signIn.authenticateWithRedirect({
         strategy: provider,
-        redirectUrl: '/sso-callback',
-        redirectUrlComplete: '/dashboard',
+        redirectUrl: `/${locale}/sso-callback`,
+        redirectUrlComplete: `/${locale}/dashboard`,
       })
     } catch (err) {
       setLoadingProvider(null)
@@ -75,7 +78,7 @@ export function SocialAuthButtons({ mode, className }: SocialAuthButtonsProps) {
         isLoading={loadingProvider === 'google'}
       >
         {loadingProvider !== 'google' && <GoogleIcon />}
-        Continue with Google
+        {t('google')}
       </Button>
       <Button
         type="button"
@@ -86,7 +89,7 @@ export function SocialAuthButtons({ mode, className }: SocialAuthButtonsProps) {
         isLoading={loadingProvider === 'apple'}
       >
         {loadingProvider !== 'apple' && <AppleIcon />}
-        Continue with Apple
+        {t('apple')}
       </Button>
     </div>
   )

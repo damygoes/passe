@@ -11,7 +11,8 @@ import { isClerkAPIResponseError } from '@clerk/nextjs/errors'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@passe/ui/button'
 import { Input } from '@passe/ui/input'
-import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
+import { useRouter } from '@/i18n/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { PasswordMatchIndicator } from './PasswordMatchIndicator'
@@ -22,6 +23,8 @@ type Step = 'details' | 'verify'
 export function SignUpForm() {
   const { signUp, setActive, isLoaded } = useSignUp()
   const router = useRouter()
+  const t = useTranslations('auth.form')
+  const tErrors = useTranslations('auth.errors')
   const [step, setStep] = useState<Step>('details')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -68,9 +71,9 @@ export function SignUpForm() {
       setStep('verify')
     } catch (err) {
       if (isClerkAPIResponseError(err)) {
-        setGlobalError(err.errors[0]?.longMessage ?? err.errors[0]?.message ?? 'Sign up failed')
+        setGlobalError(err.errors[0]?.longMessage ?? err.errors[0]?.message ?? tErrors('sign_up_failed'))
       } else {
-        setGlobalError('Something went wrong. Please try again.')
+        setGlobalError(tErrors('generic'))
       }
     }
   }
@@ -88,10 +91,10 @@ export function SignUpForm() {
     } catch (err) {
       if (isClerkAPIResponseError(err)) {
         setGlobalError(
-          err.errors[0]?.longMessage ?? err.errors[0]?.message ?? 'Verification failed',
+          err.errors[0]?.longMessage ?? err.errors[0]?.message ?? tErrors('verification_failed'),
         )
       } else {
-        setGlobalError('Something went wrong. Please try again.')
+        setGlobalError(tErrors('generic'))
       }
     }
   }
@@ -109,10 +112,9 @@ export function SignUpForm() {
     return (
       <form onSubmit={otpForm.handleSubmit(onOTPSubmit)} className="space-y-4" noValidate autoComplete="off">
         <div className="space-y-1 text-center">
-          <p className="text-sm text-foreground font-medium">Check your email</p>
+          <p className="text-sm text-foreground font-medium">{t('check_email_heading')}</p>
           <p className="text-xs text-muted-foreground">
-            We sent a 6-digit code to{' '}
-            <span className="font-medium text-foreground">{detailsForm.getValues('email')}</span>
+            {t('check_email_body', { email: detailsForm.getValues('email') })}
           </p>
         </div>
 
@@ -127,7 +129,7 @@ export function SignUpForm() {
 
         <div className="space-y-1.5">
           <label htmlFor="otp-code" className="text-sm font-medium text-foreground">
-            Verification code
+            {t('verification_code_label')}
           </label>
           <Input
             id="otp-code"
@@ -135,7 +137,7 @@ export function SignUpForm() {
             inputMode="numeric"
             autoComplete="one-time-code"
             maxLength={6}
-            placeholder="000000"
+            placeholder={t('verification_code_placeholder')}
             aria-invalid={!!otpForm.formState.errors.code}
             className="text-center tracking-[0.5em] font-mono"
             {...otpForm.register('code')}
@@ -151,17 +153,17 @@ export function SignUpForm() {
           disabled={!isLoaded || otpForm.formState.isSubmitting}
           isLoading={otpForm.formState.isSubmitting}
         >
-          {otpForm.formState.isSubmitting ? 'Verifying…' : 'Verify email'}
+          {otpForm.formState.isSubmitting ? t('verifying') : t('verify_email')}
         </Button>
 
         <p className="text-center text-xs text-muted-foreground">
-          Didn&apos;t receive it?{' '}
+          {t('didnt_receive')}{' '}
           <button
             type="button"
             onClick={resendCode}
             className="text-primary transition-opacity hover:opacity-70"
           >
-            Resend code
+            {t('resend_code')}
           </button>
         </p>
       </form>
@@ -181,13 +183,13 @@ export function SignUpForm() {
 
       <div className="space-y-1.5">
         <label htmlFor="signup-name" className="text-sm font-medium text-foreground">
-          Display name
+          {t('display_name_label')}
         </label>
         <Input
           id="signup-name"
           type="text"
           autoComplete="name"
-          placeholder="Your name"
+          placeholder={t('display_name_placeholder')}
           aria-invalid={!!errors.displayName}
           {...register('displayName')}
         />
@@ -198,13 +200,13 @@ export function SignUpForm() {
 
       <div className="space-y-1.5">
         <label htmlFor="signup-email" className="text-sm font-medium text-foreground">
-          Email
+          {t('email_label')}
         </label>
         <Input
           id="signup-email"
           type="email"
           autoComplete="email"
-          placeholder="you@example.com"
+          placeholder={t('email_placeholder')}
           icon="mail"
           iconPosition="start"
           aria-invalid={!!errors.email}
@@ -215,13 +217,13 @@ export function SignUpForm() {
 
       <div className="space-y-1.5">
         <label htmlFor="signup-password" className="text-sm font-medium text-foreground">
-          Password
+          {t('password_label')}
         </label>
         <Input
           id="signup-password"
           type={showPassword ? 'text' : 'password'}
           autoComplete="new-password"
-          placeholder="••••••••"
+          placeholder={t('password_placeholder')}
           icon={showPassword ? 'eye-off' : 'eye'}
           iconPosition="end"
           onIconClick={() => setShowPassword((v) => !v)}
@@ -236,13 +238,13 @@ export function SignUpForm() {
 
       <div className="space-y-1.5">
         <label htmlFor="signup-confirm-password" className="text-sm font-medium text-foreground">
-          Confirm password
+          {t('confirm_password_label')}
         </label>
         <Input
           id="signup-confirm-password"
           type={showConfirmPassword ? 'text' : 'password'}
           autoComplete="new-password"
-          placeholder="••••••••"
+          placeholder={t('password_placeholder')}
           icon={showConfirmPassword ? 'eye-off' : 'eye'}
           iconPosition="end"
           onIconClick={() => setShowConfirmPassword((v) => !v)}
@@ -262,7 +264,7 @@ export function SignUpForm() {
         disabled={!isLoaded || isSubmitting}
         isLoading={isSubmitting}
       >
-        {isSubmitting ? 'Creating account…' : 'Create account'}
+        {isSubmitting ? t('creating_account') : t('create_account')}
       </Button>
       <div id="clerk-captcha" />
     </form>

@@ -1,0 +1,12 @@
+{
+  "name": "@passe/i18n",
+  "version": "0.0.1",
+  "exports": {
+    ".": "./src/index.ts",
+    "./locales/*": "./src/locales/*.json"
+  },
+  "devDependencies": {
+    "@passe/typescript-config": "workspace:*",
+    "typescript": "5.9.2"
+  }
+}

@@ -1,5 +1,8 @@
+'use client'
+
 import { Icon } from '@passe/ui/icon'
 import { cn } from '@passe/utils'
+import { useTranslations } from 'next-intl'
 
 interface PasswordMatchIndicatorProps {
   password: string
@@ -12,6 +15,8 @@ export function PasswordMatchIndicator({
   confirmPassword,
   className,
 }: PasswordMatchIndicatorProps) {
+  const t = useTranslations('auth.password_match')
+
   if (!password || !confirmPassword) return null
 
   const matches = password === confirmPassword
@@ -26,7 +31,7 @@ export function PasswordMatchIndicator({
       )}
     >
       <Icon name={matches ? 'check' : 'close'} size="xs" aria-hidden />
-      {matches ? 'Passwords match' : "Passwords don't match"}
+      {matches ? t('match') : t('no_match')}
     </div>
   )
 }

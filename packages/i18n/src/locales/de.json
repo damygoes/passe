@@ -1,0 +1,92 @@
+{
+  "common": {
+    "app_name": "Passé.",
+    "app_tagline": "Die Vergangenheit, wunderschön bewahrt."
+  },
+  "auth": {
+    "layout": {
+      "description": "Erstelle Reisen, füge geogetaggte Erinnerungen hinzu und teile deine Welt – wunderschön.",
+      "copyright": "© 2026 Passé"
+    },
+    "sign_in": {
+      "heading": "Willkommen zurück",
+      "subheading": "Melde dich bei deinem Passé-Konto an",
+      "or_email": "oder weiter mit E-Mail",
+      "no_account": "Kein Konto?",
+      "sign_up_link": "Registrieren"
+    },
+    "sign_up": {
+      "heading": "Konto erstellen",
+      "subheading": "Bewahre deine Erinnerungen mit Passé",
+      "or_email": "oder weiter mit E-Mail",
+      "have_account": "Bereits ein Konto?",
+      "sign_in_link": "Anmelden"
+    },
+    "forgot_password": {
+      "heading": "Passwort vergessen?",
+      "subheading": "Gib deine E-Mail ein und wir senden dir einen Reset-Code.",
+      "remembered": "Erinnerst du dich?",
+      "back_to_sign_in": "Zurück zur Anmeldung"
+    },
+    "reset_password": {
+      "heading": "Neues Passwort festlegen",
+      "subheading": "Gib den Code aus deiner E-Mail ein und wähle ein neues Passwort.",
+      "resend_link": "Reset-Code erneut senden"
+    },
+    "social": {
+      "google": "Mit Google fortfahren",
+      "apple": "Mit Apple fortfahren"
+    },
+    "form": {
+      "email_label": "E-Mail",
+      "email_placeholder": "du@beispiel.de",
+      "email_address_label": "E-Mail-Adresse",
+      "password_label": "Passwort",
+      "password_placeholder": "••••••••",
+      "confirm_password_label": "Passwort bestätigen",
+      "display_name_label": "Anzeigename",
+      "display_name_placeholder": "Dein Name",
+      "forgot_password_link": "Passwort vergessen?",
+      "sign_in": "Anmelden",
+      "signing_in": "Anmelden…",
+      "create_account": "Konto erstellen",
+      "creating_account": "Konto wird erstellt…",
+      "send_reset_code": "Reset-Code senden",
+      "sending": "Wird gesendet…",
+      "reset_password": "Passwort zurücksetzen",
+      "resetting": "Wird zurückgesetzt…",
+      "verify_email": "E-Mail bestätigen",
+      "verifying": "Wird bestätigt…",
+      "log_out": "Abmelden",
+      "reset_code_label": "Reset-Code",
+      "new_password_label": "Neues Passwort",
+      "verification_code_label": "Bestätigungscode",
+      "verification_code_placeholder": "000000",
+      "check_email_heading": "Prüfe deine E-Mail",
+      "check_email_body": "Wir haben einen 6-stelligen Code an {email} gesendet",
+      "code_sent_to": "Code gesendet an {email}",
+      "didnt_receive": "Nicht erhalten?",
+      "resend_code": "Code erneut senden"
+    },
+    "errors": {
+      "sign_in_failed": "Anmeldung fehlgeschlagen",
+      "sign_up_failed": "Registrierung fehlgeschlagen",
+      "verification_failed": "Bestätigung fehlgeschlagen",
+      "request_failed": "Anfrage fehlgeschlagen",
+      "reset_failed": "Zurücksetzen fehlgeschlagen",
+      "generic": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+    },
+    "password_strength": {
+      "aria_label": "Passwortstärke",
+      "weak": "Schwach",
+      "fair": "Mäßig",
+      "good": "Gut",
+      "strong": "Stark",
+      "very_strong": "Sehr stark"
+    },
+    "password_match": {
+      "match": "Passwörter stimmen überein",
+      "no_match": "Passwörter stimmen nicht überein"
+    }
+  }
+}

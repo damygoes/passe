@@ -3,7 +3,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSignIn } from '@clerk/nextjs'
 import { isClerkAPIResponseError } from '@clerk/nextjs/errors'
-import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
+import { useRouter } from '@/i18n/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button } from '@passe/ui/button'
@@ -13,6 +14,8 @@ import { ResetPasswordSchema, type ResetPasswordFormValues } from '@/lib/schemas
 export function ResetPasswordForm() {
   const { signIn, setActive, isLoaded } = useSignIn()
   const router = useRouter()
+  const t = useTranslations('auth.form')
+  const tErrors = useTranslations('auth.errors')
   const [resetEmail, setResetEmail] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState(false)
   const [globalError, setGlobalError] = useState<string | null>(null)
@@ -47,9 +50,9 @@ export function ResetPasswordForm() {
       }
     } catch (err) {
       if (isClerkAPIResponseError(err)) {
-        setGlobalError(err.errors[0]?.longMessage ?? err.errors[0]?.message ?? 'Reset failed')
+        setGlobalError(err.errors[0]?.longMessage ?? err.errors[0]?.message ?? tErrors('reset_failed'))
       } else {
-        setGlobalError('Something went wrong. Please try again.')
+        setGlobalError(tErrors('generic'))
       }
     }
   }
@@ -58,7 +61,7 @@ export function ResetPasswordForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
       {resetEmail && (
         <p className="text-center text-xs text-muted-foreground">
-          Code sent to <span className="font-medium text-foreground">{resetEmail}</span>
+          {t('code_sent_to', { email: resetEmail })}
         </p>
       )}
 
@@ -73,7 +76,7 @@ export function ResetPasswordForm() {
 
       <div className="space-y-1.5">
         <label htmlFor="reset-code" className="text-sm font-medium text-foreground">
-          Reset code
+          {t('reset_code_label')}
         </label>
         <Input
           id="reset-code"
@@ -81,7 +84,7 @@ export function ResetPasswordForm() {
           inputMode="numeric"
           autoComplete="one-time-code"
           maxLength={6}
-          placeholder="000000"
+          placeholder={t('verification_code_placeholder')}
           aria-invalid={!!errors.code}
           className="text-center tracking-[0.5em] font-mono"
           {...register('code')}
@@ -93,13 +96,13 @@ export function ResetPasswordForm() {
 
       <div className="space-y-1.5">
         <label htmlFor="reset-password" className="text-sm font-medium text-foreground">
-          New password
+          {t('new_password_label')}
         </label>
         <Input
           id="reset-password"
           type={showPassword ? 'text' : 'password'}
           autoComplete="new-password"
-          placeholder="••••••••"
+          placeholder={t('password_placeholder')}
           icon={showPassword ? 'eye-off' : 'eye'}
           iconPosition="end"
           onIconClick={() => setShowPassword((v) => !v)}
@@ -117,7 +120,7 @@ export function ResetPasswordForm() {
         disabled={!isLoaded || isSubmitting}
         isLoading={isSubmitting}
       >
-        {isSubmitting ? 'Resetting…' : 'Reset password'}
+        {isSubmitting ? t('resetting') : t('reset_password')}
       </Button>
     </form>
   )

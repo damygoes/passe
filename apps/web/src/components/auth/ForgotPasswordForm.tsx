@@ -3,7 +3,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSignIn } from '@clerk/nextjs'
 import { isClerkAPIResponseError } from '@clerk/nextjs/errors'
-import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
+import { useRouter } from '@/i18n/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button } from '@passe/ui/button'
@@ -13,6 +14,8 @@ import { ForgotPasswordSchema, type ForgotPasswordFormValues } from '@/lib/schem
 export function ForgotPasswordForm() {
   const { signIn, isLoaded } = useSignIn()
   const router = useRouter()
+  const t = useTranslations('auth.form')
+  const tErrors = useTranslations('auth.errors')
   const [globalError, setGlobalError] = useState<string | null>(null)
 
   const {
@@ -37,9 +40,9 @@ export function ForgotPasswordForm() {
       router.push('/reset-password')
     } catch (err) {
       if (isClerkAPIResponseError(err)) {
-        setGlobalError(err.errors[0]?.longMessage ?? err.errors[0]?.message ?? 'Request failed')
+        setGlobalError(err.errors[0]?.longMessage ?? err.errors[0]?.message ?? tErrors('request_failed'))
       } else {
-        setGlobalError('Something went wrong. Please try again.')
+        setGlobalError(tErrors('generic'))
       }
     }
   }
@@ -57,13 +60,13 @@ export function ForgotPasswordForm() {
 
       <div className="space-y-1.5">
         <label htmlFor="forgot-email" className="text-sm font-medium text-foreground">
-          Email address
+          {t('email_address_label')}
         </label>
         <Input
           id="forgot-email"
           type="email"
           autoComplete="email"
-          placeholder="you@example.com"
+          placeholder={t('email_placeholder')}
           icon="mail"
           iconPosition="start"
           aria-invalid={!!errors.email}
@@ -80,7 +83,7 @@ export function ForgotPasswordForm() {
         disabled={!isLoaded || isSubmitting}
         isLoading={isSubmitting}
       >
-        {isSubmitting ? 'Sending…' : 'Send reset code'}
+        {isSubmitting ? t('sending') : t('send_reset_code')}
       </Button>
     </form>
   )

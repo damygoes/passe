@@ -1,4 +1,4 @@
-// Web route constants — used in proxy.ts and ClerkProvider props
+// Web route constants — next-intl navigation helpers add the locale prefix automatically
 // Do NOT use these for mobile navigation (deep links differ from web routes)
 export const SIGN_IN_URL = '/sign-in'
 export const SIGN_UP_URL = '/sign-up'
@@ -6,13 +6,15 @@ export const AFTER_SIGN_IN_URL = '/dashboard'
 export const AFTER_SIGN_UP_URL = '/dashboard'
 
 // Public routes passed to createRouteMatcher in proxy.ts
+// Uses path-to-regexp syntax — :locale matches one path segment (en, fr, etc.)
 export const PUBLIC_ROUTES = [
   '/',
-  '/sign-in(.*)',
-  '/sign-up(.*)',
-  '/forgot-password(.*)',
-  '/reset-password(.*)',
-  '/sso-callback(.*)',
+  '/:locale', // locale root — page.tsx handles its own auth check and redirect
+  '/:locale/sign-in(.*)',
+  '/:locale/sign-up(.*)',
+  '/:locale/forgot-password(.*)',
+  '/:locale/reset-password(.*)',
+  '/:locale/sso-callback(.*)',
   '/p/(.*)', // public portfolios
   '/api/webhooks/(.*)', // webhook endpoints are secured by signature verification, not Clerk auth
 ] as const

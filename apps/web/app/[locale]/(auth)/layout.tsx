@@ -1,6 +1,10 @@
+import { getTranslations } from 'next-intl/server'
 import type { ReactNode } from 'react'
 
-export default function AuthLayout({ children }: { children: ReactNode }) {
+export default async function AuthLayout({ children }: { children: ReactNode }) {
+  const tCommon = await getTranslations('common')
+  const tLayout = await getTranslations('auth.layout')
+
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
       {/* Brand panel — hidden on mobile */}
@@ -10,22 +14,20 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
 
         <div className="relative">
           <span className="font-display text-2xl font-bold tracking-tight text-aged-cream">
-            Passé.
+            {tCommon('app_name')}
           </span>
         </div>
 
         <div className="relative space-y-5">
           <blockquote className="font-heading text-3xl leading-snug text-sandy-beige">
-            &ldquo;The past,
-            <br />
-            beautifully kept.&rdquo;
+            &ldquo;{tCommon('app_tagline')}&rdquo;
           </blockquote>
           <p className="text-sm leading-relaxed text-muted-taupe max-w-xs">
-            Create trips, attach geotagged memories, and share your world — beautifully.
+            {tLayout('description')}
           </p>
         </div>
 
-        <p className="relative text-xs text-muted-taupe-dark">© 2026 Passé</p>
+        <p className="relative text-xs text-muted-taupe-dark">{tLayout('copyright')}</p>
       </div>
 
       {/* Form panel */}
@@ -33,7 +35,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
         {/* Mobile logo */}
         <div className="mb-10 lg:hidden">
           <span className="font-display text-2xl font-bold tracking-tight text-foreground">
-            Passé.
+            {tCommon('app_name')}
           </span>
         </div>
 

@@ -1,6 +1,9 @@
+'use client'
+
 import { PASSWORD_RULES } from '@/lib/schemas/auth'
 import { Icon } from '@passe/ui/icon'
 import { cn } from '@passe/utils'
+import { useTranslations } from 'next-intl'
 
 interface PasswordStrengthMeterProps {
   password: string
@@ -8,14 +11,16 @@ interface PasswordStrengthMeterProps {
 }
 
 const STRENGTH_LEVELS = [
-  { label: 'Weak', barColor: 'bg-destructive', textColor: 'text-destructive', bars: 1 },
-  { label: 'Fair', barColor: 'bg-terracotta', textColor: 'text-terracotta', bars: 2 },
-  { label: 'Good', barColor: 'bg-terracotta-light', textColor: 'text-terracotta', bars: 3 },
-  { label: 'Strong', barColor: 'bg-deep-olive-light', textColor: 'text-deep-olive', bars: 4 },
-  { label: 'Very strong', barColor: 'bg-deep-olive', textColor: 'text-deep-olive-dark', bars: 4 },
+  { key: 'weak', barColor: 'bg-destructive', textColor: 'text-destructive', bars: 1 },
+  { key: 'fair', barColor: 'bg-terracotta', textColor: 'text-terracotta', bars: 2 },
+  { key: 'good', barColor: 'bg-terracotta-light', textColor: 'text-terracotta', bars: 3 },
+  { key: 'strong', barColor: 'bg-deep-olive-light', textColor: 'text-deep-olive', bars: 4 },
+  { key: 'very_strong', barColor: 'bg-deep-olive', textColor: 'text-deep-olive-dark', bars: 4 },
 ] as const
 
 export function PasswordStrengthMeter({ password, className }: PasswordStrengthMeterProps) {
+  const t = useTranslations('auth.password_strength')
+
   if (!password) return null
 
   const results = PASSWORD_RULES.map((rule) => rule.test(password))
@@ -26,7 +31,7 @@ export function PasswordStrengthMeter({ password, className }: PasswordStrengthM
   const level = STRENGTH_LEVELS[score - 1]!
 
   return (
-    <div role="status" aria-label="Password strength" className={cn('space-y-2', className)}>
+    <div role="status" aria-label={t('aria_label')} className={cn('space-y-2', className)}>
       <div className="flex items-center gap-3">
         <div className="flex flex-1 gap-1">
           {Array.from({ length: 4 }, (_, i) => (
@@ -40,7 +45,7 @@ export function PasswordStrengthMeter({ password, className }: PasswordStrengthM
           ))}
         </div>
         <span className={cn('w-24 text-right text-xs font-medium', level.textColor)}>
-          {level.label}
+          {t(level.key)}
         </span>
       </div>
 
