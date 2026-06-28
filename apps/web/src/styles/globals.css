@@ -1,3 +1,5 @@
 @import 'tailwindcss';
 @import '@passe/theme/styles';
 @source '../../node_modules/@passe/ui/src';
+@source '../../app';
+@source '../../src';
