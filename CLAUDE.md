@@ -13,6 +13,7 @@ apps/
   web/          Next.js 16 — main product (App Router, Clerk auth)
   docs/         Next.js 16 — documentation site
 packages/
+  auth/         @passe/auth    — shared Clerk auth utilities (webhook handler, plan gates, constants)
   db/           @passe/db      — Drizzle ORM schema + Neon serverless client
   ui/           @passe/ui      — shared React component library
   utils/        @passe/utils   — shared utilities (cn, and future helpers)
@@ -95,6 +96,9 @@ TypeScript: strict mode, `noEmit` for type-checks, `isolatedModules`.
 - Database access goes through `@passe/db/client` — never connect to Neon directly from `apps/*`
 - Import schema types (`DbUser`, `DbTrip`, `DbMemory`) from `@passe/db/schema` to avoid initializing the DB client in files that only need types
 - `@passe/db` requires `DATABASE_URL` at runtime; set it in `apps/web/.env.local` using the Neon pooled connection string
+- Clerk auth helpers (`auth()`, `currentUser()`, `clerkMiddleware`) are Next.js-specific — never import them from outside `apps/web`
+- Shared auth logic (webhook sync, plan gates, route constants) lives in `@passe/auth` — import from there, not from `@clerk/*` directly in shared packages
+- `@passe/auth/webhook` imports `@passe/db/client` and must only be used in server-side code (API routes, server actions) — never in client components or mobile UI
 
 ---
 

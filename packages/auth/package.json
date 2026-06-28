@@ -1,0 +1,23 @@
+{
+  "name": "@passe/auth",
+  "version": "0.0.1",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./types": "./src/types.ts",
+    "./constants": "./src/constants.ts",
+    "./webhook": "./src/webhook-handler.ts",
+    "./plan-gates": "./src/plan-gates.ts"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@passe/db": "workspace:*",
+    "drizzle-orm": "^0.44.0"
+  },
+  "devDependencies": {
+    "@passe/typescript-config": "workspace:*",
+    "typescript": "5.9.2"
+  }
+}
