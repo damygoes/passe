@@ -34,6 +34,12 @@
   --color-muted: var(--color-sandy-beige-light);
   --color-muted-foreground: var(--color-muted-taupe);
 
+  --color-accent: var(--color-sandy-beige);
+  --color-accent-foreground: var(--color-dark-espresso);
+
+  --color-popover: var(--color-warm-white);
+  --color-popover-foreground: var(--color-dark-espresso);
+
   --color-border: var(--color-sandy-beige-dark);
   --color-input: var(--color-sandy-beige);
   --color-ring: var(--color-terracotta);
@@ -51,4 +57,28 @@
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
+}
+
+.dark {
+  --color-background: #1a0f08;
+  --color-foreground: var(--color-aged-cream);
+
+  --color-primary: var(--color-terracotta);
+  --color-primary-foreground: var(--color-aged-cream);
+
+  --color-secondary: #3a2518;
+  --color-secondary-foreground: var(--color-sandy-beige);
+
+  --color-muted: #2a180e;
+  --color-muted-foreground: var(--color-muted-taupe-light);
+
+  --color-accent: #3a2518;
+  --color-accent-foreground: var(--color-sandy-beige);
+
+  --color-popover: #2c1a0e;
+  --color-popover-foreground: var(--color-aged-cream);
+
+  --color-border: #4a3020;
+  --color-input: #3a2518;
+  --color-ring: var(--color-terracotta);
 }
