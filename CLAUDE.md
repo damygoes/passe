@@ -13,6 +13,7 @@ apps/
   web/          Next.js 16 — main product (App Router, Clerk auth)
   docs/         Next.js 16 — documentation site
 packages/
+  db/           @passe/db      — Drizzle ORM schema + Neon serverless client
   ui/           @passe/ui      — shared React component library
   utils/        @passe/utils   — shared utilities (cn, and future helpers)
   theme/        @passe/theme   — design tokens (colors, spacing, typography)
@@ -55,6 +56,15 @@ Browse the component library:
 pnpm --filter @passe/ui storybook   # opens at localhost:6006
 ```
 
+Database (`@passe/db`):
+
+```bash
+pnpm --filter @passe/db db:generate   # generate SQL migrations from schema changes
+pnpm --filter @passe/db db:migrate    # apply pending migrations to the database
+pnpm --filter @passe/db db:push       # push schema directly (dev only, no migrations)
+pnpm --filter @passe/db db:studio     # open Drizzle Studio at localhost:4983
+```
+
 ---
 
 ## Code Conventions
@@ -82,6 +92,9 @@ TypeScript: strict mode, `noEmit` for type-checks, `isolatedModules`.
 - `packages/ui` components must **not** import from `apps/*`
 - `packages/types` must **not** import UI or theme packages
 - CSS custom properties for brand colors come from `@passe/theme` — never hardcode hex values
+- Database access goes through `@passe/db/client` — never connect to Neon directly from `apps/*`
+- Import schema types (`DbUser`, `DbTrip`, `DbMemory`) from `@passe/db/schema` to avoid initializing the DB client in files that only need types
+- `@passe/db` requires `DATABASE_URL` at runtime; set it in `apps/web/.env.local` using the Neon pooled connection string
 
 ---
 

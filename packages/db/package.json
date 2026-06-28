@@ -1,0 +1,27 @@
+{
+  "name": "@passe/db",
+  "version": "0.0.1",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema/index.ts",
+    "./client": "./src/client.ts"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.4",
+    "drizzle-orm": "^0.44.0"
+  },
+  "devDependencies": {
+    "@passe/typescript-config": "workspace:*",
+    "@types/node": "^22.15.3",
+    "drizzle-kit": "^0.31.0",
+    "typescript": "5.9.2"
+  }
+}
