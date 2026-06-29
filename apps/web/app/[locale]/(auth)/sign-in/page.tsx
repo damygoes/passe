@@ -1,8 +1,8 @@
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import { Separator } from '@passe/ui/separator'
-import { SignInForm } from '@/components/auth/SignInForm'
-import { SocialAuthButtons } from '@/components/auth/SocialAuthButtons'
+import { SignInForm } from '@/features/auth/components/SignInForm'
+import { SocialAuthButtons } from '@/features/auth/components/SocialAuthButtons'
 
 export default async function SignInPage() {
   const t = await getTranslations('auth.sign_in')

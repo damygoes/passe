@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
-import { ResetPasswordForm } from '@/components/auth/ResetPasswordForm'
+import { ResetPasswordForm } from '@/features/auth/components/ResetPasswordForm'
 
 export default async function ResetPasswordPage() {
   const t = await getTranslations('auth.reset_password')

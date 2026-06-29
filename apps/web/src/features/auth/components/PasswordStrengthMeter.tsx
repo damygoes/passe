@@ -1,6 +1,6 @@
 'use client'
 
-import { PASSWORD_RULES } from '@/lib/schemas/auth'
+import { PASSWORD_RULES } from '@/features/auth/schemas/auth'
 import { Icon } from '@passe/ui/icon'
 import { cn } from '@passe/utils'
 import { useTranslations } from 'next-intl'

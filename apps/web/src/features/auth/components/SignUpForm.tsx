@@ -1,65 +1,77 @@
 'use client'
 
-import { SignInSchema, OTPSchema, type SignInFormValues, type OTPFormValues } from '@/lib/schemas/auth'
-import { useSignIn } from '@clerk/nextjs'
+import {
+  OTPSchema,
+  SignUpSchema,
+  type OTPFormValues,
+  type SignUpFormValues,
+} from '@/features/auth/schemas/auth'
+import { useSignUp } from '@clerk/nextjs'
 import { isClerkAPIResponseError } from '@clerk/nextjs/errors'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@passe/ui/button'
 import { Input } from '@passe/ui/input'
 import { useTranslations } from 'next-intl'
-import { Link, useRouter } from '@/i18n/navigation'
-import { useState } from 'react'
+import { useRouter } from '@/i18n/navigation'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { PasswordMatchIndicator } from './PasswordMatchIndicator'
+import { PasswordStrengthMeter } from './PasswordStrengthMeter'
 
-type Step = 'credentials' | 'verify'
+type Step = 'details' | 'verify'
 
-export function SignInForm() {
-  const { signIn, setActive, isLoaded } = useSignIn()
+export function SignUpForm() {
+  const { signUp, setActive, isLoaded } = useSignUp()
   const router = useRouter()
   const t = useTranslations('auth.form')
   const tErrors = useTranslations('auth.errors')
-  const [step, setStep] = useState<Step>('credentials')
-  const [email, setEmail] = useState('')
+  const [step, setStep] = useState<Step>('details')
   const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [globalError, setGlobalError] = useState<string | null>(null)
+
+  const detailsForm = useForm<SignUpFormValues>({
+    resolver: zodResolver(SignUpSchema),
+    mode: 'onChange',
+  })
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<SignInFormValues>({
-    resolver: zodResolver(SignInSchema),
-  })
+    watch,
+    formState: { errors, isSubmitting, isSubmitted },
+  } = detailsForm
+
+  const password = watch('password', '')
+  const confirmPassword = watch('confirmPassword', '')
 
   const otpForm = useForm<OTPFormValues>({
     resolver: zodResolver(OTPSchema),
   })
 
-  const onSubmit = async (data: SignInFormValues) => {
+  // Chrome autofills the OTP input with the email from the previous step.
+  // Clear the field once the verify step mounts so the user starts with a blank input.
+  useEffect(() => {
+    if (step === 'verify') {
+      otpForm.setValue('code', '')
+    }
+  }, [step])
+
+  const onDetailsSubmit = async (data: SignUpFormValues) => {
     if (!isLoaded) return
     setGlobalError(null)
 
     try {
-      const result = await signIn.create({
-        identifier: data.email,
+      await signUp.create({
+        emailAddress: data.email,
         password: data.password,
+        firstName: data.displayName,
       })
-
-      if (result.status === 'complete') {
-        await setActive({ session: result.createdSessionId })
-        router.push('/dashboard')
-      } else if (
-        // needs_client_trust = Clerk's device trust flow (new device verification)
-        (result.status as string) === 'needs_client_trust' ||
-        result.status === 'needs_second_factor'
-      ) {
-        await signIn.prepareSecondFactor({ strategy: 'email_code' })
-        setEmail(data.email)
-        setStep('verify')
-      }
+      await signUp.prepareEmailAddressVerification({ strategy: 'email_code' })
+      setStep('verify')
     } catch (err) {
       if (isClerkAPIResponseError(err)) {
-        setGlobalError(err.errors[0]?.longMessage ?? err.errors[0]?.message ?? tErrors('sign_in_failed'))
+        setGlobalError(err.errors[0]?.longMessage ?? err.errors[0]?.message ?? tErrors('sign_up_failed'))
       } else {
         setGlobalError(tErrors('generic'))
       }
@@ -71,7 +83,7 @@ export function SignInForm() {
     setGlobalError(null)
 
     try {
-      const result = await signIn.attemptSecondFactor({ strategy: 'email_code', code: data.code })
+      const result = await signUp.attemptEmailAddressVerification({ code: data.code })
       if (result.status === 'complete') {
         await setActive({ session: result.createdSessionId })
         router.push('/dashboard')
@@ -90,7 +102,7 @@ export function SignInForm() {
   const resendCode = async () => {
     if (!isLoaded) return
     try {
-      await signIn.prepareSecondFactor({ strategy: 'email_code' })
+      await signUp.prepareEmailAddressVerification({ strategy: 'email_code' })
     } catch {
       // silent — user can try again
     }
@@ -98,15 +110,12 @@ export function SignInForm() {
 
   if (step === 'verify') {
     return (
-      <form
-        onSubmit={otpForm.handleSubmit(onOTPSubmit)}
-        className="space-y-4"
-        noValidate
-        autoComplete="off"
-      >
+      <form onSubmit={otpForm.handleSubmit(onOTPSubmit)} className="space-y-4" noValidate autoComplete="off">
         <div className="space-y-1 text-center">
           <p className="text-sm text-foreground font-medium">{t('check_email_heading')}</p>
-          <p className="text-xs text-muted-foreground">{t('check_email_body', { email })}</p>
+          <p className="text-xs text-muted-foreground">
+            {t('check_email_body', { email: detailsForm.getValues('email') })}
+          </p>
         </div>
 
         {globalError && (
@@ -119,11 +128,11 @@ export function SignInForm() {
         )}
 
         <div className="space-y-1.5">
-          <label htmlFor="signin-otp-code" className="text-sm font-medium text-foreground">
+          <label htmlFor="otp-code" className="text-sm font-medium text-foreground">
             {t('verification_code_label')}
           </label>
           <Input
-            id="signin-otp-code"
+            id="otp-code"
             type="text"
             inputMode="numeric"
             autoComplete="one-time-code"
@@ -162,7 +171,7 @@ export function SignInForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
+    <form onSubmit={handleSubmit(onDetailsSubmit)} className="space-y-4" noValidate>
       {globalError && (
         <div
           role="alert"
@@ -173,11 +182,28 @@ export function SignInForm() {
       )}
 
       <div className="space-y-1.5">
-        <label htmlFor="signin-email" className="text-sm font-medium text-foreground">
+        <label htmlFor="signup-name" className="text-sm font-medium text-foreground">
+          {t('display_name_label')}
+        </label>
+        <Input
+          id="signup-name"
+          type="text"
+          autoComplete="name"
+          placeholder={t('display_name_placeholder')}
+          aria-invalid={!!errors.displayName}
+          {...register('displayName')}
+        />
+        {errors.displayName && (
+          <p className="text-xs text-destructive">{errors.displayName.message}</p>
+        )}
+      </div>
+
+      <div className="space-y-1.5">
+        <label htmlFor="signup-email" className="text-sm font-medium text-foreground">
           {t('email_label')}
         </label>
         <Input
-          id="signin-email"
+          id="signup-email"
           type="email"
           autoComplete="email"
           placeholder={t('email_placeholder')}
@@ -190,21 +216,13 @@ export function SignInForm() {
       </div>
 
       <div className="space-y-1.5">
-        <div className="flex items-center justify-between">
-          <label htmlFor="signin-password" className="text-sm font-medium text-foreground">
-            {t('password_label')}
-          </label>
-          <Link
-            href="/forgot-password"
-            className="text-xs text-primary transition-opacity hover:opacity-70"
-          >
-            {t('forgot_password_link')}
-          </Link>
-        </div>
+        <label htmlFor="signup-password" className="text-sm font-medium text-foreground">
+          {t('password_label')}
+        </label>
         <Input
-          id="signin-password"
+          id="signup-password"
           type={showPassword ? 'text' : 'password'}
-          autoComplete="current-password"
+          autoComplete="new-password"
           placeholder={t('password_placeholder')}
           icon={showPassword ? 'eye-off' : 'eye'}
           iconPosition="end"
@@ -212,7 +230,31 @@ export function SignInForm() {
           aria-invalid={!!errors.password}
           {...register('password')}
         />
-        {errors.password && <p className="text-xs text-destructive">{errors.password.message}</p>}
+        <PasswordStrengthMeter password={password} />
+        {isSubmitted && errors.password && (
+          <p className="text-xs text-destructive">{errors.password.message}</p>
+        )}
+      </div>
+
+      <div className="space-y-1.5">
+        <label htmlFor="signup-confirm-password" className="text-sm font-medium text-foreground">
+          {t('confirm_password_label')}
+        </label>
+        <Input
+          id="signup-confirm-password"
+          type={showConfirmPassword ? 'text' : 'password'}
+          autoComplete="new-password"
+          placeholder={t('password_placeholder')}
+          icon={showConfirmPassword ? 'eye-off' : 'eye'}
+          iconPosition="end"
+          onIconClick={() => setShowConfirmPassword((v) => !v)}
+          aria-invalid={!!errors.confirmPassword}
+          {...register('confirmPassword')}
+        />
+        <PasswordMatchIndicator password={password} confirmPassword={confirmPassword} />
+        {isSubmitted && errors.confirmPassword && (
+          <p className="text-xs text-destructive">{errors.confirmPassword.message}</p>
+        )}
       </div>
 
       <Button
@@ -222,8 +264,9 @@ export function SignInForm() {
         disabled={!isLoaded || isSubmitting}
         isLoading={isSubmitting}
       >
-        {isSubmitting ? t('signing_in') : t('sign_in')}
+        {isSubmitting ? t('creating_account') : t('create_account')}
       </Button>
+      <div id="clerk-captcha" />
     </form>
   )
 }

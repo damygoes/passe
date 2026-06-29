@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button } from '@passe/ui/button'
 import { Input } from '@passe/ui/input'
-import { ResetPasswordSchema, type ResetPasswordFormValues } from '@/lib/schemas/auth'
+import { ResetPasswordSchema, type ResetPasswordFormValues } from '@/features/auth/schemas/auth'
 
 export function ResetPasswordForm() {
   const { signIn, setActive, isLoaded } = useSignIn()

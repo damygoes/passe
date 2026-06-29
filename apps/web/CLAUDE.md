@@ -52,8 +52,6 @@ Copy `.env.local.example` → `.env.local` and fill in:
 | `CLERK_WEBHOOK_SECRET` | Clerk Dashboard → Webhooks → Signing secret |
 | `NEXT_PUBLIC_CLERK_SIGN_IN_URL` | `/sign-in` |
 | `NEXT_PUBLIC_CLERK_SIGN_UP_URL` | `/sign-up` |
-| `NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL` | `/dashboard` |
-| `NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL` | `/dashboard` |
 | `DATABASE_URL` | Neon Dashboard → Pooled connection string |
 
 ---
@@ -61,17 +59,22 @@ Copy `.env.local.example` → `.env.local` and fill in:
 ## Custom auth pages
 
 All auth pages use custom forms (not Clerk's hosted components). Forms live in
-`src/components/auth/` and use React Hook Form + Zod. Clerk hooks provide the auth logic.
+`src/features/auth/components/` and use React Hook Form + Zod. Clerk hooks provide the auth logic.
 
 | Component | File | Purpose |
 |---|---|---|
-| `SignInForm` | `src/components/auth/SignInForm.tsx` | Email + password sign-in |
-| `SignUpForm` | `src/components/auth/SignUpForm.tsx` | Sign-up with display name + OTP verification step |
-| `ForgotPasswordForm` | `src/components/auth/ForgotPasswordForm.tsx` | Email entry → sends reset code |
-| `ResetPasswordForm` | `src/components/auth/ResetPasswordForm.tsx` | OTP code + new password |
-| `SocialAuthButtons` | `src/components/auth/SocialAuthButtons.tsx` | Google + Apple OAuth |
+| `SignInForm` | `src/features/auth/components/SignInForm.tsx` | Email + password sign-in |
+| `SignUpForm` | `src/features/auth/components/SignUpForm.tsx` | Sign-up with display name + OTP verification step |
+| `ForgotPasswordForm` | `src/features/auth/components/ForgotPasswordForm.tsx` | Email entry → sends reset code |
+| `ResetPasswordForm` | `src/features/auth/components/ResetPasswordForm.tsx` | OTP code + new password |
+| `SocialAuthButtons` | `src/features/auth/components/SocialAuthButtons.tsx` | Google + Apple OAuth |
 
-Zod schemas for all forms: `src/lib/schemas/auth.ts`
+Zod schemas for all forms: `src/features/auth/schemas/auth.ts`
+
+### Sign-in flow
+1. Email + password → `signIn.create()`
+2. If `status === 'complete'` → `setActive()` → redirect to dashboard
+3. If `status === 'needs_client_trust'` or `'needs_second_factor'` → `prepareSecondFactor({ strategy: 'email_code' })` → OTP step → `attemptSecondFactor()` → `setActive()` → redirect
 
 ### Sign-up flow (two steps)
 1. User fills display name + email + password → `signUp.create()` + `prepareEmailAddressVerification()`

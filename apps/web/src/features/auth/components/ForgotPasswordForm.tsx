@@ -9,7 +9,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button } from '@passe/ui/button'
 import { Input } from '@passe/ui/input'
-import { ForgotPasswordSchema, type ForgotPasswordFormValues } from '@/lib/schemas/auth'
+import { ForgotPasswordSchema, type ForgotPasswordFormValues } from '@/features/auth/schemas/auth'
 
 export function ForgotPasswordForm() {
   const { signIn, isLoaded } = useSignIn()
