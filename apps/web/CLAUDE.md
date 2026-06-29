@@ -241,6 +241,55 @@ Import from `@passe/hooks` (barrel) or granular paths: `@passe/hooks/trips`, `@p
 
 ---
 
+## Storybook
+
+Stories are **colocated with the component they document** — same folder, `ComponentName.stories.tsx`.
+This follows the `packages/ui` convention and keeps the story adjacent to the implementation.
+
+```bash
+pnpm --filter passe-web storybook    # dev server at localhost:6006
+pnpm --filter passe-web build-storybook
+```
+
+### Config
+
+`.storybook/preview.tsx` provides two global decorators applied to every story:
+- `NextIntlClientProvider` with `locale="en"` and the real `en.json` messages (imported from `packages/i18n`)
+- `ThemeProvider` from next-themes (required for `useTheme()` in shared components)
+- Also imports `src/styles/globals.css` so Tailwind v4 + brand theme CSS variables are available
+
+`.storybook/main.ts` adds Vite aliases so Clerk and locale navigation don't crash in the browser:
+
+| Module | Alias target |
+|---|---|
+| `@clerk/nextjs` | `.storybook/__mocks__/clerk.ts` |
+| `@clerk/nextjs/errors` | `.storybook/__mocks__/clerk-errors.ts` |
+| `@/i18n/navigation` | `.storybook/__mocks__/i18n-navigation.tsx` |
+
+### Story conventions
+
+- **Title**: `'Auth/<Name>'` for auth feature components, `'Shared/<Name>'` for shared components
+- **tags**: always include `['autodocs']` to auto-generate the docs page
+- **Decorators**: add a width-constraining wrapper (`w-80 mx-auto`) for form components to match their real layout context
+- **Do not** write stories for pure provider/wrapper components (`ApiProvider`, `ThemeProvider`)
+
+### Available stories
+
+| Story | File |
+|---|---|
+| Auth/PasswordStrengthMeter | `src/features/auth/components/PasswordStrengthMeter.stories.tsx` |
+| Auth/PasswordMatchIndicator | `src/features/auth/components/PasswordMatchIndicator.stories.tsx` |
+| Auth/SocialAuthButtons | `src/features/auth/components/SocialAuthButtons.stories.tsx` |
+| Auth/SignInForm | `src/features/auth/components/SignInForm.stories.tsx` |
+| Auth/SignUpForm | `src/features/auth/components/SignUpForm.stories.tsx` |
+| Auth/ForgotPasswordForm | `src/features/auth/components/ForgotPasswordForm.stories.tsx` |
+| Auth/ResetPasswordForm | `src/features/auth/components/ResetPasswordForm.stories.tsx` |
+| Auth/LogoutButton | `src/features/auth/components/LogoutButton.stories.tsx` |
+| Shared/LocaleDropdownMenu | `src/components/shared/LocaleDropdownMenu.stories.tsx` |
+| Shared/ThemeDropdownMenu | `src/components/shared/ThemeDropdownMenu.stories.tsx` |
+
+---
+
 ## External documentation
 
 - [Clerk Next.js quickstart](https://clerk.com/docs/quickstarts/nextjs)

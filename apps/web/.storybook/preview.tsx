@@ -1,4 +1,8 @@
 import type { Preview } from '@storybook/nextjs-vite'
+import { NextIntlClientProvider } from 'next-intl'
+import { ThemeProvider } from 'next-themes'
+import messages from '../../../packages/i18n/src/locales/en.json'
+import '../src/styles/globals.css'
 
 const preview: Preview = {
   parameters: {
@@ -8,14 +12,21 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
-
     a11y: {
-      // 'todo' - show a11y violations in the test UI only
-      // 'error' - fail CI on a11y violations
-      // 'off' - skip a11y checks entirely
       test: 'todo',
     },
   },
+  decorators: [
+    (Story) => (
+      <NextIntlClientProvider locale="en" messages={messages}>
+        <ThemeProvider attribute="class" defaultTheme="light">
+          <div className="bg-background text-foreground">
+            <Story />
+          </div>
+        </ThemeProvider>
+      </NextIntlClientProvider>
+    ),
+  ],
 }
 
 export default preview
