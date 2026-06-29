@@ -8,6 +8,9 @@
     "./trip": "./src/trip.ts",
     "./memory": "./src/memory.ts"
   },
+  "scripts": {
+    "test": "vitest run"
+  },
   "devDependencies": {
     "@passe/typescript-config": "workspace:*"
   },

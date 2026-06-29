@@ -5,6 +5,9 @@
   "exports": {
     ".": "./src/index.ts"
   },
+  "scripts": {
+    "test": "vitest run"
+  },
   "devDependencies": {
     "@passe/typescript-config": "workspace:*"
   },

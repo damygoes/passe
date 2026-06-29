@@ -10,7 +10,8 @@
     "./plan-gates": "./src/plan-gates.ts"
   },
   "scripts": {
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
     "@passe/db": "workspace:*",
