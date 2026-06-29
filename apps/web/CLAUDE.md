@@ -102,6 +102,145 @@ are in `PUBLIC_ROUTES` (see `packages/auth/src/constants.ts`).
 
 ---
 
+## API layer
+
+### Route structure
+
+```
+app/api/
+  user/route.ts                          — GET /api/user, PATCH /api/user
+  trips/route.ts                         — GET /api/trips, POST /api/trips
+  trips/[id]/route.ts                    — GET, PATCH, DELETE /api/trips/[id]
+  trips/[id]/memories/route.ts           — GET, POST /api/trips/[id]/memories
+  trips/[id]/memories/[memoryId]/route.ts — PATCH, DELETE /api/trips/[id]/memories/[memoryId]
+  webhooks/clerk/route.ts                — POST /api/webhooks/clerk
+```
+
+### Shared helpers — `src/lib/api.ts`
+
+| Helper | Purpose |
+|---|---|
+| `apiError(message, status)` | Returns `{ error: message }` JSON with the given status |
+| `apiSuccess(data, status?)` | Returns `{ data }` JSON, default status 200 |
+| `requireAuth()` | Calls `auth()`, returns `{ userId, error: null }` or `{ userId: null, error: Response }` |
+
+Call `requireAuth()` at the top of every protected handler:
+
+```typescript
+const { userId, error } = await requireAuth()
+if (error) return error
+```
+
+### Validation pattern
+
+Every route validates **twice** with Zod:
+1. **Request body** — `Schema.safeParse(body)` → return 400 on failure (client error, not logged)
+2. **DB output** — `Schema.safeParse(dbRow)` → return 500 on failure (data integrity alert, always logged)
+
+```typescript
+// Validate DB output — log before returning 500
+const parsed = TripSchema.safeParse(trip)
+if (!parsed.success) {
+  log.error('DB output failed schema validation', { issues: parsed.error.issues })
+  return apiError('Invalid trip data', 500)
+}
+```
+
+### DB error handling
+
+Mutating operations (INSERT, UPDATE, DELETE) are wrapped in try/catch:
+
+```typescript
+try {
+  ;[updated] = await db.update(trips).set({ ... }).returning()
+} catch (err) {
+  log.error('DB write failed', { error: err instanceof Error ? err.message : String(err) })
+  return apiError('Internal server error', 500)
+}
+```
+
+SELECT queries (`findFirst`, `findMany`) are not wrapped — they return `null`/`[]` gracefully
+and unexpected throws are caught by Next.js.
+
+---
+
+## Logging
+
+All API routes use `@passe/logger` with a file-scoped logger:
+
+```typescript
+import { createLogger } from '@passe/logger'
+const log = createLogger({ context: { module: 'api/trips' } })
+```
+
+**Log these:**
+- DB output schema validation failures (data integrity — should never happen)
+- DB write exceptions (INSERT/UPDATE/DELETE throws)
+
+**Do not log:**
+- 401s from `requireAuth()` — expected, high-volume
+- 400 request validation failures — client errors, not server errors
+- 404s — expected business logic
+
+In client components, use the default singleton: `import { logger } from '@passe/logger'`
+
+Module naming convention: `api/<resource>` (e.g. `api/trips`, `api/trips/id`, `api/user`)
+
+---
+
+## Hooks (`@passe/hooks`)
+
+Shared API hooks for client components. Backed by TanStack Query v5.
+
+### Provider setup
+
+`ApiProvider` is mounted in `app/[locale]/layout.tsx` inside `ClerkProvider` (required — it calls
+`useAuth()` to get the Clerk token):
+
+```tsx
+// src/components/providers/ApiProvider.tsx ('use client')
+import { PasseApiProvider } from '@passe/hooks/context'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useAuth } from '@clerk/nextjs'
+```
+
+### Using hooks in client components
+
+```tsx
+'use client'
+import { useTrips, useCreateTrip } from '@passe/hooks'
+
+export function TripList() {
+  const { data: trips, isLoading, error } = useTrips()
+  const createTrip = useCreateTrip()
+  // ...
+}
+```
+
+### Available hooks
+
+| Hook | Wraps |
+|---|---|
+| `useUser()` | GET /api/user |
+| `useUpdateUser()` | PATCH /api/user |
+| `useTrips()` | GET /api/trips |
+| `useTrip(id)` | GET /api/trips/[id] |
+| `useCreateTrip()` | POST /api/trips |
+| `useUpdateTrip()` | PATCH /api/trips/[id] |
+| `useDeleteTrip()` | DELETE /api/trips/[id] |
+| `useMemories(tripId)` | GET /api/trips/[id]/memories |
+| `useCreateMemory()` | POST /api/trips/[id]/memories |
+| `useUpdateMemory()` | PATCH /api/trips/[id]/memories/[id] |
+| `useDeleteMemory()` | DELETE /api/trips/[id]/memories/[id] |
+
+Mutation hooks auto-invalidate related query keys on success (e.g. `useDeleteTrip` invalidates
+both `trips` list and the individual `trip` cache entry).
+
+Import from `@passe/hooks` (barrel) or granular paths: `@passe/hooks/trips`, `@passe/hooks/user`,
+`@passe/hooks/memories`.
+
+---
+
 ## External documentation
 
 - [Clerk Next.js quickstart](https://clerk.com/docs/quickstarts/nextjs)

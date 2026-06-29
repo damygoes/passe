@@ -1,4 +1,5 @@
 import { ClerkProvider } from '@clerk/nextjs'
+import { ApiProvider } from '@/components/providers/ApiProvider'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { notFound } from 'next/navigation'
@@ -21,7 +22,9 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <ClerkProvider>
-      <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+      <NextIntlClientProvider messages={messages}>
+        <ApiProvider>{children}</ApiProvider>
+      </NextIntlClientProvider>
     </ClerkProvider>
   )
 }

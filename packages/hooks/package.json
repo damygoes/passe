@@ -1,0 +1,28 @@
+{
+  "name": "@passe/hooks",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./context": "./src/context.tsx",
+    "./user": "./src/hooks/use-user.ts",
+    "./trips": "./src/hooks/use-trips.ts",
+    "./memories": "./src/hooks/use-memories.ts"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@passe/types": "workspace:*"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "^5.0.0",
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@passe/typescript-config": "workspace:*",
+    "@tanstack/react-query": "^5.0.0",
+    "@types/react": "19.2.2",
+    "typescript": "5.9.2"
+  }
+}
