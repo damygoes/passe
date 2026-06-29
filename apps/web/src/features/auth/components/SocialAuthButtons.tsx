@@ -2,6 +2,7 @@
 
 import { useSignIn } from '@clerk/nextjs'
 import { isClerkAPIResponseError } from '@clerk/nextjs/errors'
+import { logger } from '@passe/logger'
 import { useLocale, useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { Button } from '@passe/ui/button'
@@ -62,7 +63,7 @@ export function SocialAuthButtons({ mode, className }: SocialAuthButtonsProps) {
     } catch (err) {
       setLoadingProvider(null)
       if (isClerkAPIResponseError(err)) {
-        console.error(err.errors[0]?.message)
+        logger.warn('OAuth error', { error: err.errors[0]?.message })
       }
     }
   }

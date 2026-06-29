@@ -72,6 +72,9 @@ importers:
       '@passe/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
+      '@passe/logger':
+        specifier: workspace:*
+        version: link:../../packages/logger
       '@passe/theme':
         specifier: workspace:*
         version: link:../../packages/theme
@@ -216,6 +219,18 @@ importers:
       '@passe/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+
+  packages/logger:
+    devDependencies:
+      '@passe/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: ^22.15.3
+        version: 22.15.3
       typescript:
         specifier: 5.9.2
         version: 5.9.2
