@@ -15,7 +15,7 @@ export default clerkMiddleware(async (auth, req) => {
     const locale = (LOCALES as readonly string[]).includes(potentialLocale)
       ? potentialLocale
       : DEFAULT_LOCALE
-    await auth.protect({ unauthenticatedUrl: `/${locale}/sign-in` })
+    await auth.protect({ unauthenticatedUrl: new URL(`/${locale}/sign-in`, req.nextUrl.origin).toString() })
   }
   return handleI18nRouting(req)
 })
