@@ -4,7 +4,16 @@ import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { useClerk } from '@clerk/nextjs'
-import { Avatar, AvatarFallback, AvatarImage, Button } from '@passe/ui'
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@passe/ui'
 import { buttonVariants } from '@passe/ui/button'
 import { Separator } from '@passe/ui/separator'
 import { cn } from '@passe/utils'
@@ -20,30 +29,6 @@ interface MobileMenuProps {
   displayName: string
   email: string
   avatarUrl: string | null
-}
-
-type MobileMenuUserInfo = Pick<MobileMenuProps, 'avatarUrl' | 'displayName' | 'email'>
-
-function UserInfo({ avatarUrl, displayName, email }: MobileMenuUserInfo) {
-  const initials = displayName
-    .split(' ')
-    .map((part) => part[0] ?? '')
-    .slice(0, 2)
-    .join('')
-    .toUpperCase()
-
-  return (
-    <div className="flex items-center gap-2.5 rounded-lg px-2 py-2">
-      <Avatar size="sm">
-        {avatarUrl && <AvatarImage src={avatarUrl} alt={displayName} />}
-        <AvatarFallback>{initials}</AvatarFallback>
-      </Avatar>
-      <span className="grid min-w-0 flex-1 leading-tight">
-        <span className="truncate text-sm font-medium">{displayName}</span>
-        <span className="truncate text-xs text-muted-foreground">{email}</span>
-      </span>
-    </div>
-  )
 }
 
 export function MobileMenu({ locale, username, displayName, email, avatarUrl }: MobileMenuProps) {
@@ -100,13 +85,13 @@ export function MobileMenu({ locale, username, displayName, email, avatarUrl }: 
             </div>
 
             {/* Scrollable content */}
-            <div className="flex flex-1 flex-col gap-1 overflow-y-auto px-4 py-4">
+            <div className="flex flex-1 flex-col gap-4 justify-start items-center overflow-y-auto p-24">
               <Link
                 href={`/${locale}/dashboard`}
                 onClick={close}
                 className={cn(
                   buttonVariants({ variant: 'ghost', size: 'sm' }),
-                  'w-full justify-start',
+                  'w-full justify-center uppercase text-xl',
                 )}
               >
                 Dashboard
@@ -124,24 +109,23 @@ export function MobileMenu({ locale, username, displayName, email, avatarUrl }: 
                 </a>
               )}
 
-              <Separator className="my-2" />
+              <Separator />
 
-              <div className="flex flex-col items-center gap-2 px-1">
-                <div className="flex flex-col w-full">
-                  <span className="text-xs text-muted-foreground">Locale</span>
-                  <LocaleDropdownMenu />
+              <div className="flex flex-col items-center gap-2 w-full my-2">
+                <div className="flex items-center justify-center w-full  flex-col gap-2">
+                  <span className="text-base text-muted-foreground">Locale</span>
+                  <LocaleDropdownMenu className="w-full" />
                 </div>
-                <div className="flex flex-col w-full">
-                  <span className="ml-auto text-xs text-muted-foreground">Theme</span>
-                  <ThemeDropdownMenu />
+
+                <div className="flex items-center justify-center w-full  flex-col gap-2">
+                  <span className="text-base text-muted-foreground">Theme</span>
+                  <ThemeDropdownMenu className="w-full" />
                 </div>
               </div>
 
-              <Separator className="my-2" />
+              <Separator />
 
-              <UserInfo displayName={displayName} email={email} avatarUrl={avatarUrl} />
-
-              <LogoutButton />
+              <LogoutButton className="w-full" />
             </div>
           </div>,
           document.body,

@@ -17,7 +17,7 @@ const LOCALE_CONFIG: Record<Locale, { name: string; flag: string }> = {
   de: { name: 'Deutsch', flag: '🇩🇪' },
 }
 
-export function LocaleDropdownMenu() {
+export function LocaleDropdownMenu({ className }: { className?: string }) {
   const locale = useLocale() as Locale
   const router = useRouter()
   const pathname = usePathname()
@@ -28,7 +28,7 @@ export function LocaleDropdownMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button variant="outline" aria-label="Change language">
+          <Button variant="outline" aria-label="Change language" className={className}>
             <span aria-hidden>{flag}</span>
             {locale.toUpperCase()}
           </Button>

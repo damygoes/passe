@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@passe/ui'
 
-export function ThemeDropdownMenu() {
+export function ThemeDropdownMenu({ className }: { className?: string }) {
   const { resolvedTheme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
@@ -27,6 +27,7 @@ export function ThemeDropdownMenu() {
             size="icon"
             icon={mounted && resolvedTheme === 'dark' ? 'moon' : 'sun'}
             aria-label="Toggle theme"
+            className={className}
           />
         }
       />

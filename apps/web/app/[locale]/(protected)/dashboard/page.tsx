@@ -5,7 +5,14 @@ import { db } from '@passe/db/client'
 import { memories, trips } from '@passe/db/schema'
 import { Badge } from '@passe/ui/badge'
 import { buttonVariants } from '@passe/ui/button'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@passe/ui/card'
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@passe/ui/card'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@passe/ui/empty'
 import {
   PageHeader,
@@ -53,10 +60,7 @@ export default async function Dashboard({ params }: Props) {
           </PageHeaderDescription>
         )}
         <PageHeaderAction>
-          <Link
-            href={`/${locale}/trips/new`}
-            className={buttonVariants({ size: 'sm' })}
-          >
+          <Link href={`/${locale}/trips/new`} className={buttonVariants({ size: 'sm' })}>
             New trip
           </Link>
         </PageHeaderAction>
@@ -88,7 +92,7 @@ export default async function Dashboard({ params }: Props) {
 
       {/* Trip grid */}
       {userTrips.length === 0 ? (
-        <Empty className="mt-16 border">
+        <Empty className="mt-16 border w-fit mx-auto">
           <EmptyHeader>
             <EmptyTitle>No trips yet</EmptyTitle>
             <EmptyDescription>
@@ -110,9 +114,7 @@ export default async function Dashboard({ params }: Props) {
               )}
               <CardHeader>
                 <CardTitle>{trip.title}</CardTitle>
-                <CardDescription>
-                  {formatDateRange(trip.startDate, trip.endDate)}
-                </CardDescription>
+                <CardDescription>{formatDateRange(trip.startDate, trip.endDate)}</CardDescription>
               </CardHeader>
               {trip.countries.length > 0 && (
                 <CardContent>
