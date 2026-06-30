@@ -2,14 +2,10 @@
 
 import { tripRoute } from '@/lib/routes'
 import { useTrips } from '@passe/hooks'
-import { Skeleton } from '@passe/ui'
 import { useTranslations } from 'next-intl'
 import { NoTripsEmpty } from './NoTripsEmpty'
 import { TripCard } from './TripCard'
-
-function TripsListSkeleton() {
-  return <Skeleton className="h-96 w-full" />
-}
+import { TripsListSkeleton } from './TripsListSkeleton'
 
 export function TripsList() {
   const { data: trips = [], isLoading, isError } = useTrips()
