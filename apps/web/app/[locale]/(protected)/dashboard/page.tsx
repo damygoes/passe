@@ -1,4 +1,4 @@
-import { DashboardView } from '@/features/trips/components/dashboard/DashboardView'
+import { DashboardView } from '@/features/trips/views/DashboardView'
 
 export default function Dashboard() {
   return <DashboardView />

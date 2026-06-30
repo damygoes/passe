@@ -13,7 +13,6 @@ import {
 } from '@passe/ui/page-header'
 import { formatTripDateFull } from '@passe/utils'
 import { useTranslations } from 'next-intl'
-import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { TripDetailHeaderSkeleton } from './TripDetailHeaderSkeleton'
 
@@ -29,7 +28,7 @@ export function TripDetailHeader({ id }: Props) {
 
   if (isError) return <p className="text-sm text-destructive">{t('trip_error')}</p>
 
-  if (!trip) notFound()
+  if (!trip) return <p className="text-sm text-destructive">{t('trip_error')}</p>
 
   return (
     <>

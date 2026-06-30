@@ -5,7 +5,7 @@ type UniqueStatsFromTrips = {
   uniqueYears: Set<number>
 }
 
-export function getUniqueStatsFromTrip({ trips }: { trips: Trip[] }): UniqueStatsFromTrips {
+export function getUniqueStatsFromTrips({ trips }: { trips: Trip[] }): UniqueStatsFromTrips {
   const uniqueCountries = new Set(trips.flatMap((trip) => trip.countries))
   const uniqueYears = new Set(trips.map((trip) => new Date(trip.startDate).getFullYear()))
 

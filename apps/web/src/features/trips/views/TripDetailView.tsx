@@ -1,7 +1,7 @@
 'use client'
 
-import { MemoriesList } from '../memories/MemoriesList'
-import { TripDetailHeader } from './TripDetailHeader'
+import { MemoriesList } from '../components/memories/MemoriesList'
+import { TripDetailHeader } from '../components/trip/TripDetailHeader'
 
 interface Props {
   id: string

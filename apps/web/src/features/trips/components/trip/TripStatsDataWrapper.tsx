@@ -3,7 +3,7 @@
 import { useAllMemories, useTrips } from '@passe/hooks'
 import { Skeleton } from '@passe/ui'
 import { getUniqueCities } from '../../utils/getUniqueCities'
-import { getUniqueStatsFromTrip } from '../../utils/getUniqueStatsFromTrips'
+import { getUniqueStatsFromTrips } from '../../utils/getUniqueStatsFromTrips'
 import { TripStats } from './TripStats'
 
 export function TripStatsDataWrapper() {
@@ -13,7 +13,7 @@ export function TripStatsDataWrapper() {
     isLoading: memoriesLoading,
     isError: memoriesError,
   } = useAllMemories()
-  const { uniqueCountries, uniqueYears } = getUniqueStatsFromTrip({ trips })
+  const { uniqueCountries, uniqueYears } = getUniqueStatsFromTrips({ trips })
   const { uniqueCities } = getUniqueCities({ allMemories })
 
   if (tripsLoading || memoriesLoading) {

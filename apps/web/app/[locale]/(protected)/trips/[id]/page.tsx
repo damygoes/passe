@@ -1,4 +1,4 @@
-import { TripDetailView } from '@/features/trips/components/trip/TripDetailView'
+import { TripDetailView } from '@/features/trips/views/TripDetailView'
 
 interface Props {
   params: Promise<{ id: string }>
