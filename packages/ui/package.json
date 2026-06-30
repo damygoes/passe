@@ -4,13 +4,16 @@
   "private": true,
   "exports": {
     ".": "./src/index.ts",
-    "./button": "./src/button/Button.tsx",
-    "./input": "./src/input/Input.tsx",
-    "./textarea": "./src/textarea/Textarea.tsx",
     "./avatar": "./src/avatar/Avatar.tsx",
     "./badge": "./src/badge/Badge.tsx",
+    "./button": "./src/button/Button.tsx",
+    "./card": "./src/card/Card.tsx",
+    "./empty": "./src/empty/Empty.tsx",
     "./icon": "./src/icon/Icon.tsx",
-    "./separator": "./src/separator/Separator.tsx"
+    "./input": "./src/input/Input.tsx",
+    "./separator": "./src/separator/Separator.tsx",
+    "./skeleton": "./src/skeleton/Skeleton.tsx",
+    "./textarea": "./src/textarea/Textarea.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
