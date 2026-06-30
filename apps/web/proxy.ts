@@ -3,11 +3,15 @@ import createIntlMiddleware from 'next-intl/middleware'
 import { routing } from '@/i18n/routing'
 import { PUBLIC_ROUTES } from '@passe/auth/constants'
 import { LOCALES, DEFAULT_LOCALE } from '@passe/i18n'
+import { routes } from '@/lib/routes'
 
 const handleI18nRouting = createIntlMiddleware(routing)
 const isPublicRoute = createRouteMatcher([...PUBLIC_ROUTES])
 
 export default clerkMiddleware(async (auth, req) => {
+  // API routes handle their own auth via requireAuth() — skip i18n routing entirely.
+  if (req.nextUrl.pathname.startsWith('/api/')) return
+
   if (!isPublicRoute(req)) {
     // Extract locale from the URL path so the sign-in redirect preserves it.
     // e.g. /en/dashboard → locale "en" → redirect to /en/sign-in
@@ -15,7 +19,7 @@ export default clerkMiddleware(async (auth, req) => {
     const locale = (LOCALES as readonly string[]).includes(potentialLocale)
       ? potentialLocale
       : DEFAULT_LOCALE
-    await auth.protect({ unauthenticatedUrl: new URL(`/${locale}/sign-in`, req.nextUrl.origin).toString() })
+    await auth.protect({ unauthenticatedUrl: new URL(`/${locale}${routes.signIn}`, req.nextUrl.origin).toString() })
   }
   return handleI18nRouting(req)
 })

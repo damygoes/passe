@@ -93,7 +93,8 @@
     "dashboard": {
       "title": "Meine Reisen",
       "description": "{tripsCount, plural, one {# Reise} other {# Reisen}} in {countriesCount, plural, one {# Land} other {# Ländern}}",
-      "new_trip": "Neue Reise"
+      "new_trip": "Neue Reise",
+      "trips_error": "Deine Reisen konnten nicht geladen werden. Versuche, die Seite neu zu laden."
     },
     "detail": {
       "back": "← Zurück",

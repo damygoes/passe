@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { useTranslations } from 'next-intl'
 import { Badge } from '@passe/ui/badge'
 import { buttonVariants } from '@passe/ui/button'

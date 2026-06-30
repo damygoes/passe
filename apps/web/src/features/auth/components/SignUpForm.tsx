@@ -13,6 +13,7 @@ import { Button } from '@passe/ui/button'
 import { Input } from '@passe/ui/input'
 import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/navigation'
+import { routes } from '@/lib/routes'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { PasswordMatchIndicator } from './PasswordMatchIndicator'
@@ -86,7 +87,7 @@ export function SignUpForm() {
       const result = await signUp.attemptEmailAddressVerification({ code: data.code })
       if (result.status === 'complete') {
         await setActive({ session: result.createdSessionId })
-        router.push('/dashboard')
+        router.push(routes.dashboard)
       }
     } catch (err) {
       if (isClerkAPIResponseError(err)) {

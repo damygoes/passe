@@ -1,9 +1,10 @@
-import { and, desc, eq } from 'drizzle-orm'
-import { notFound } from 'next/navigation'
+import { TripCard } from '@/features/trips/components/trip/TripCard'
+import { routes } from '@/lib/routes'
 import { db } from '@passe/db/client'
 import { trips, users } from '@passe/db/schema'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@passe/ui/empty'
-import { TripCard } from '@/features/trips/components/TripCard'
+import { and, desc, eq } from 'drizzle-orm'
+import { notFound } from 'next/navigation'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -58,7 +59,7 @@ export default async function PortfolioPage({ params }: Props) {
 
       <footer className="border-t px-6 py-6 text-center text-xs text-muted-foreground">
         Powered by{' '}
-        <a href="/" className="underline underline-offset-4 hover:text-foreground">
+        <a href={routes.home} className="underline underline-offset-4 hover:text-foreground">
           Passé.
         </a>
       </footer>

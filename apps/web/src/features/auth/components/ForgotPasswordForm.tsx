@@ -5,6 +5,7 @@ import { useSignIn } from '@clerk/nextjs'
 import { isClerkAPIResponseError } from '@clerk/nextjs/errors'
 import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/navigation'
+import { routes } from '@/lib/routes'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button } from '@passe/ui/button'
@@ -37,7 +38,7 @@ export function ForgotPasswordForm() {
       })
       // Carry the email to the reset page so we can show it there
       sessionStorage.setItem('reset-email', data.email)
-      router.push('/reset-password')
+      router.push(routes.resetPassword)
     } catch (err) {
       if (isClerkAPIResponseError(err)) {
         setGlobalError(err.errors[0]?.longMessage ?? err.errors[0]?.message ?? tErrors('request_failed'))

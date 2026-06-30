@@ -267,6 +267,9 @@ importers:
 
   packages/hooks:
     dependencies:
+      '@passe/logger':
+        specifier: workspace:*
+        version: link:../logger
       '@passe/types':
         specifier: workspace:*
         version: link:../types

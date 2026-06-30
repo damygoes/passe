@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import Link from 'next/link'
 import { useClerk } from '@clerk/nextjs'
 import {
   Avatar,
@@ -17,21 +16,20 @@ import {
 import { buttonVariants } from '@passe/ui/button'
 import { Separator } from '@passe/ui/separator'
 import { cn } from '@passe/utils'
-import { SIGN_IN_URL } from '@passe/auth/constants'
-import { useRouter } from '@/i18n/navigation'
+import { Link, useRouter } from '@/i18n/navigation'
+import { routes, publicPortfolioRoute } from '@/lib/routes'
 import { LocaleDropdownMenu } from '@/components/shared/LocaleDropdownMenu'
 import { ThemeDropdownMenu } from '@/components/shared/ThemeDropdownMenu'
 import { LogoutButton } from '@/features/auth/components/LogoutButton'
 
 interface MobileMenuProps {
-  locale: string
   username: string | null
   displayName: string
   email: string
   avatarUrl: string | null
 }
 
-export function MobileMenu({ locale, username, displayName, email, avatarUrl }: MobileMenuProps) {
+export function MobileMenu({ username, displayName, email, avatarUrl }: MobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const { signOut } = useClerk()
@@ -45,7 +43,7 @@ export function MobileMenu({ locale, username, displayName, email, avatarUrl }: 
 
   const handleSignOut = () => {
     close()
-    signOut(() => router.push(SIGN_IN_URL))
+    signOut(() => router.push(routes.signIn))
   }
 
   return (
@@ -87,7 +85,7 @@ export function MobileMenu({ locale, username, displayName, email, avatarUrl }: 
             {/* Scrollable content */}
             <div className="flex flex-1 flex-col gap-4 justify-start items-center overflow-y-auto p-24">
               <Link
-                href={`/${locale}/dashboard`}
+                href={routes.dashboard}
                 onClick={close}
                 className={cn(
                   buttonVariants({ variant: 'ghost', size: 'sm' }),
@@ -98,7 +96,7 @@ export function MobileMenu({ locale, username, displayName, email, avatarUrl }: 
               </Link>
               {username && (
                 <a
-                  href={`/public/${username}`}
+                  href={publicPortfolioRoute(username)}
                   onClick={close}
                   className={cn(
                     buttonVariants({ variant: 'ghost', size: 'sm' }),

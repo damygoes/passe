@@ -4,7 +4,7 @@ import { useClerk } from '@clerk/nextjs'
 import { Button } from '@passe/ui/button'
 import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/navigation'
-import { SIGN_IN_URL } from '@passe/auth/constants'
+import { routes } from '@/lib/routes'
 
 interface LogoutButtonProps {
   className?: string
@@ -16,7 +16,7 @@ export function LogoutButton({ className }: LogoutButtonProps) {
   const t = useTranslations('auth.form')
 
   const handleSignOut = () => {
-    signOut(() => router.push(SIGN_IN_URL))
+    signOut(() => router.push(routes.signIn))
   }
 
   return (

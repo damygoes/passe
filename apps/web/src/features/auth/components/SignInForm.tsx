@@ -8,6 +8,7 @@ import { Button } from '@passe/ui/button'
 import { Input } from '@passe/ui/input'
 import { useTranslations } from 'next-intl'
 import { Link, useRouter } from '@/i18n/navigation'
+import { routes } from '@/lib/routes'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -47,7 +48,7 @@ export function SignInForm() {
 
       if (result.status === 'complete') {
         await setActive({ session: result.createdSessionId })
-        router.push('/dashboard')
+        router.push(routes.dashboard)
       } else if (
         // needs_client_trust = Clerk's device trust flow (new device verification)
         (result.status as string) === 'needs_client_trust' ||
@@ -74,7 +75,7 @@ export function SignInForm() {
       const result = await signIn.attemptSecondFactor({ strategy: 'email_code', code: data.code })
       if (result.status === 'complete') {
         await setActive({ session: result.createdSessionId })
-        router.push('/dashboard')
+        router.push(routes.dashboard)
       }
     } catch (err) {
       if (isClerkAPIResponseError(err)) {
@@ -195,7 +196,7 @@ export function SignInForm() {
             {t('password_label')}
           </label>
           <Link
-            href="/forgot-password"
+            href={routes.forgotPassword}
             className="text-xs text-primary transition-opacity hover:opacity-70"
           >
             {t('forgot_password_link')}

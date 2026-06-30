@@ -1,8 +1,8 @@
 'use client'
 
-import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { Link } from '@/i18n/navigation'
+import { routes } from '@/lib/routes'
+import { useMemories, useTrip } from '@passe/hooks'
 import { Badge } from '@passe/ui/badge'
 import { buttonVariants } from '@passe/ui/button'
 import {
@@ -12,16 +12,16 @@ import {
   PageHeaderTitle,
 } from '@passe/ui/page-header'
 import { formatTripDateFull } from '@passe/utils'
-import { useMemories, useTrip } from '@passe/hooks'
-import { MemoryCard } from './MemoryCard'
-import { NoMemoriesEmpty } from './NoMemoriesEmpty'
+import { useTranslations } from 'next-intl'
+import { notFound } from 'next/navigation'
+import { MemoryCard } from '../memories/MemoryCard'
+import { NoMemoriesEmpty } from '../memories/NoMemoriesEmpty'
 
 interface Props {
   id: string
-  locale: string
 }
 
-export function TripDetailView({ id, locale }: Props) {
+export function TripDetailView({ id }: Props) {
   const t = useTranslations('trips.detail')
   const { data: trip, isLoading: tripLoading } = useTrip(id)
   const { data: memories = [], isLoading: memoriesLoading } = useMemories(id)
@@ -39,7 +39,7 @@ export function TripDetailView({ id, locale }: Props) {
         </PageHeaderDescription>
         <PageHeaderAction>
           <Link
-            href={`/${locale}/dashboard`}
+            href={routes.dashboard}
             className={buttonVariants({ variant: 'ghost', size: 'sm' })}
           >
             {t('back')}

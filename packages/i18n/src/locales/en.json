@@ -93,7 +93,8 @@
     "dashboard": {
       "title": "My Trips",
       "description": "{tripsCount, plural, one {# trip} other {# trips}} across {countriesCount, plural, one {# country} other {# countries}}",
-      "new_trip": "New trip"
+      "new_trip": "New trip",
+      "trips_error": "Could not load your trips. Try refreshing the page."
     },
     "detail": {
       "back": "← Back",

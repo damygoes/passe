@@ -5,6 +5,7 @@ import { useSignIn } from '@clerk/nextjs'
 import { isClerkAPIResponseError } from '@clerk/nextjs/errors'
 import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/navigation'
+import { routes } from '@/lib/routes'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button } from '@passe/ui/button'
@@ -46,7 +47,7 @@ export function ResetPasswordForm() {
       if (result.status === 'complete') {
         sessionStorage.removeItem('reset-email')
         await setActive({ session: result.createdSessionId })
-        router.push('/dashboard')
+        router.push(routes.dashboard)
       }
     } catch (err) {
       if (isClerkAPIResponseError(err)) {

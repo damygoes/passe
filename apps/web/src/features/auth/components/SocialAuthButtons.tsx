@@ -1,6 +1,7 @@
 'use client'
 
 import { useSignIn } from '@clerk/nextjs'
+import { routes } from '@/lib/routes'
 import { isClerkAPIResponseError } from '@clerk/nextjs/errors'
 import { logger } from '@passe/logger'
 import { useLocale, useTranslations } from 'next-intl'
@@ -57,8 +58,8 @@ export function SocialAuthButtons({ mode, className }: SocialAuthButtonsProps) {
     try {
       await signIn.authenticateWithRedirect({
         strategy: provider,
-        redirectUrl: `/${locale}/sso-callback`,
-        redirectUrlComplete: `/${locale}/dashboard`,
+        redirectUrl: `/${locale}${routes.ssoCallback}`,
+        redirectUrlComplete: `/${locale}${routes.dashboard}`,
       })
     } catch (err) {
       setLoadingProvider(null)

@@ -4,8 +4,7 @@ export const PlanSchema = z.enum(['free', 'explorer', 'collector'])
 export type Plan = z.infer<typeof PlanSchema>
 
 export const UserSchema = z.object({
-  id: z.string().uuid(),
-  clerkId: z.string(),
+  id: z.string(),
   email: z.string().email(),
   username: z.string().min(3).max(30),
   displayName: z.string().min(1).max(50),

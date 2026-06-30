@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
+import { routes } from '@/lib/routes'
 import { ForgotPasswordForm } from '@/features/auth/components/ForgotPasswordForm'
 
 export default async function ForgotPasswordPage() {
@@ -16,7 +17,7 @@ export default async function ForgotPasswordPage() {
 
       <p className="text-center text-sm text-muted-foreground">
         {t('remembered')}{' '}
-        <Link href="/sign-in" className="font-medium text-primary transition-opacity hover:opacity-70">
+        <Link href={routes.signIn} className="font-medium text-primary transition-opacity hover:opacity-70">
           {t('back_to_sign_in')}
         </Link>
       </p>

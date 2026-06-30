@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
+import { routes } from '@/lib/routes'
 import { Separator } from '@passe/ui/separator'
 import { SignInForm } from '@/features/auth/components/SignInForm'
 import { SocialAuthButtons } from '@/features/auth/components/SocialAuthButtons'
@@ -26,7 +27,7 @@ export default async function SignInPage() {
 
       <p className="text-center text-sm text-muted-foreground">
         {t('no_account')}{' '}
-        <Link href="/sign-up" className="font-medium text-primary transition-opacity hover:opacity-70">
+        <Link href={routes.signUp} className="font-medium text-primary transition-opacity hover:opacity-70">
           {t('sign_up_link')}
         </Link>
       </p>

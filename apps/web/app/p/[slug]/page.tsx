@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { publicPortfolioRoute } from '@/lib/routes'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -6,5 +7,5 @@ interface Props {
 
 export default async function LegacyPortfolioRedirect({ params }: Props) {
   const { slug } = await params
-  redirect(`/public/${slug}`)
+  redirect(publicPortfolioRoute(slug))
 }

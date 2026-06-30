@@ -1,10 +1,5 @@
-import { DashboardView } from '@/features/trips/components/DashboardView'
+import { DashboardView } from '@/features/trips/components/dashboard/DashboardView'
 
-interface Props {
-  params: Promise<{ locale: string }>
-}
-
-export default async function Dashboard({ params }: Props) {
-  const { locale } = await params
-  return <DashboardView locale={locale} />
+export default function Dashboard() {
+  return <DashboardView />
 }

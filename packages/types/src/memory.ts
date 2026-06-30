@@ -10,7 +10,7 @@ export type Coordinates = z.infer<typeof CoordinatesSchema>
 export const MemorySchema = z.object({
   id: z.string().uuid(),
   tripId: z.string().uuid(),
-  userId: z.string().uuid(),
+  userId: z.string(),
   note: z.string().max(1000).optional(),
   photoUrl: z.string().url().optional(),
   location: CoordinatesSchema.optional(),

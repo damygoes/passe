@@ -2,8 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { UserSchema, PublicUserSchema, UpdateUserSchema } from '../user'
 
 const validUser = {
-  id: '00000000-0000-0000-0000-000000000001',
-  clerkId: 'user_clerk_123',
+  id: 'user_2abc123xyz',
   email: 'test@example.com',
   username: 'testuser',
   displayName: 'Test User',

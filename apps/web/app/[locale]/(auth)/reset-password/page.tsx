@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
+import { routes } from '@/lib/routes'
 import { ResetPasswordForm } from '@/features/auth/components/ResetPasswordForm'
 
 export default async function ResetPasswordPage() {
@@ -16,7 +17,7 @@ export default async function ResetPasswordPage() {
 
       <p className="text-center text-sm text-muted-foreground">
         <Link
-          href="/forgot-password"
+          href={routes.forgotPassword}
           className="font-medium text-primary transition-opacity hover:opacity-70"
         >
           {t('resend_link')}

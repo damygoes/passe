@@ -1,25 +1,25 @@
-import Link from 'next/link'
 import { buttonVariants } from '@passe/ui/button'
 import { Navbar, NavbarBrand, NavbarLinks, NavbarUser } from '@passe/ui/navbar'
+import { Link } from '@/i18n/navigation'
+import { routes, publicPortfolioRoute } from '@/lib/routes'
 import { LocaleDropdownMenu } from '@/components/shared/LocaleDropdownMenu'
 import { ThemeDropdownMenu } from '@/components/shared/ThemeDropdownMenu'
 import { MobileMenu } from './MobileMenu'
 import { NavbarUserMenu } from './NavbarUserMenu'
 
 interface AppNavbarProps {
-  locale: string
   displayName: string
   email: string
   avatarUrl: string | null
   username: string | null
 }
 
-export function AppNavbar({ locale, displayName, email, avatarUrl, username }: AppNavbarProps) {
+export function AppNavbar({ displayName, email, avatarUrl, username }: AppNavbarProps) {
   return (
     <Navbar>
       <NavbarBrand>
         <Link
-          href={`/${locale}/dashboard`}
+          href={routes.dashboard}
           className="font-display text-3xl font-bold tracking-tight text-foreground hover:opacity-80 transition-opacity"
         >
           Passé.
@@ -29,14 +29,14 @@ export function AppNavbar({ locale, displayName, email, avatarUrl, username }: A
       {/* Desktop nav links */}
       <NavbarLinks className="hidden md:flex">
         <Link
-          href={`/${locale}/dashboard`}
+          href={routes.dashboard}
           className={buttonVariants({ variant: 'ghost', size: 'sm' })}
         >
           Dashboard
         </Link>
         {username && (
           <a
-            href={`/public/${username}`}
+            href={publicPortfolioRoute(username)}
             className={buttonVariants({ variant: 'ghost', size: 'sm' })}
           >
             My Portfolio
@@ -55,7 +55,6 @@ export function AppNavbar({ locale, displayName, email, avatarUrl, username }: A
 
       {/* Mobile menu — manages its own hamburger button + dropdown panel */}
       <MobileMenu
-        locale={locale}
         username={username}
         displayName={displayName}
         email={email}

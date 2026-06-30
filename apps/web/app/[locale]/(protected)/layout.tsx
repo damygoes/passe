@@ -4,11 +4,9 @@ import type { ReactNode } from 'react'
 
 interface Props {
   children: ReactNode
-  params: Promise<{ locale: string }>
 }
 
-export default async function ProtectedLayout({ children, params }: Props) {
-  const { locale } = await params
+export default async function ProtectedLayout({ children }: Props) {
   const user = await currentUser()
 
   const email =
@@ -17,7 +15,6 @@ export default async function ProtectedLayout({ children, params }: Props) {
   return (
     <div className="min-h-screen flex flex-col">
       <AppNavbar
-        locale={locale}
         displayName={user?.fullName ?? user?.username ?? 'User'}
         email={email}
         avatarUrl={user?.hasImage ? (user.imageUrl ?? null) : null}

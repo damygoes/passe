@@ -10,12 +10,21 @@ Auth is handled by `@clerk/nextjs` (installed) + `@passe/auth` (shared utilities
 
 ### proxy.ts (middleware)
 
-Next.js 16 uses `proxy.ts` instead of `middleware.ts`. It wraps `clerkMiddleware` and protects
-all routes except those in `PUBLIC_ROUTES` (defined in `@passe/auth/constants`):
+**Next.js 16 renamed `middleware.ts` to `proxy.ts`.** Do NOT create a `middleware.ts` file —
+Next.js 16 will ignore it. The file that acts as middleware is:
 
 ```
 apps/web/proxy.ts
 ```
+
+It wraps `clerkMiddleware` and:
+1. **Returns early for `/api/` routes** — skipping i18n routing (which would mangle `/api/trips`
+   into `/en/api/trips` and cause 404s). API routes authenticate themselves via `requireAuth()`.
+2. **Protects all non-public page routes** — redirecting unauthenticated users to the locale-aware
+   sign-in URL (e.g. `/en/sign-in`).
+3. **Applies next-intl locale routing** — via `createIntlMiddleware(routing)`.
+
+Public routes that bypass the auth check are listed in `@passe/auth/constants` → `PUBLIC_ROUTES`.
 
 ### Clerk webhook
 
@@ -122,6 +131,44 @@ Rules:
 - **Translations**: All user-visible strings must use `useTranslations` from `next-intl`. Add keys to the relevant namespace in `packages/i18n/src/locales/en.json` and `de.json`. Never hardcode English strings in component files.
 - **Empty states**: Empty states must be standalone components in `src/features/<feature>/components/` — never inline JSX inside a view component.
 
+### Data fetching pattern
+
+The app uses a **static shell + isolated loading states** pattern. Never block static content behind a data fetch.
+
+**Structure:**
+- The top-level view component (e.g. `DashboardView`) has **no data dependencies** — it renders the page frame, heading, and action buttons immediately.
+- Data-dependent UI is extracted into dedicated sub-components. Each sub-component owns its own hook call and manages its own loading, error, and empty states independently.
+
+```
+DashboardView ('use client') — no hooks, renders immediately
+  ├── PageHeader — static shell, never blocked
+  ├── DashboardViewDescription — useTrips() → skeleton | null on error
+  ├── TripStatsDataWrapper — useTrips() + useAllMemories() → skeleton | null on error/empty
+  └── TripsList — useTrips() → skeleton | error message | <NoTripsEmpty />
+```
+
+**Each data-dependent component must handle all three states:**
+
+```tsx
+'use client'
+
+export function ExampleDataComponent() {
+  const { data = [], isLoading, isError } = useSomeHook()
+
+  if (isLoading) return <Skeleton className="h-24 w-full" />
+  if (isError) return <p className="text-sm text-destructive">{t('load_error')}</p>
+  if (data.length === 0) return <EmptyState />
+
+  return <ActualContent data={data} />
+}
+```
+
+**Rules:**
+- Always destructure `isLoading`, `isError`, and `data` from every hook call
+- Always provide a default value for `data` (e.g. `data: trips = []`) so derived computations are safe to run before the guard clauses
+- Error states on stats/secondary UI can return `null` (hide silently) — error states on primary content (lists) must show a visible message
+- Empty checks use `.length === 0`, never `!data` (an empty array is truthy)
+
 ---
 
 ## Key rules
@@ -199,25 +246,36 @@ and unexpected throws are caught by Next.js.
 
 ## Logging
 
-All API routes use `@passe/logger` with a file-scoped logger:
+`@passe/logger` is used in both server (API routes) and client (hooks) code.
+
+**Server-side — API routes**
+
+File-scoped logger instance per route module:
 
 ```typescript
 import { createLogger } from '@passe/logger'
 const log = createLogger({ context: { module: 'api/trips' } })
 ```
 
-**Log these:**
-- DB output schema validation failures (data integrity — should never happen)
-- DB write exceptions (INSERT/UPDATE/DELETE throws)
+Module naming convention: `api/<resource>` (e.g. `api/trips`, `api/trips/id`, `api/user`)
 
-**Do not log:**
+Log these:
+- `error` — DB output schema validation failures (data integrity — should never happen)
+- `error` — DB write exceptions (INSERT/UPDATE/DELETE throws)
+- `debug` — request lifecycle milestones (fetching, DB row count, returning)
+
+Do not log:
 - 401s from `requireAuth()` — expected, high-volume
 - 400 request validation failures — client errors, not server errors
 - 404s — expected business logic
 
-In client components, use the default singleton: `import { logger } from '@passe/logger'`
+**Client-side — hooks / fetchApi**
 
-Module naming convention: `api/<resource>` (e.g. `api/trips`, `api/trips/id`, `api/user`)
+`@passe/hooks` uses `@passe/logger` in `fetchApi`. Every outgoing request is logged at `debug`
+and every failed response (non-2xx) is logged at `error` with `{ status, message }`. These appear
+in the browser console in development.
+
+In other client components, use the singleton: `import { logger } from '@passe/logger'`
 
 ---
 
@@ -236,6 +294,18 @@ import { PasseApiProvider } from '@passe/hooks/context'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useAuth } from '@clerk/nextjs'
 ```
+
+**QueryClient config** — `staleTime` is set to 1 minute globally so navigating back to a page
+doesn't trigger an immediate background refetch on every visit. Queries that need real-time data
+can override this with a local `staleTime: 0`.
+
+```ts
+new QueryClient({ defaultOptions: { queries: { staleTime: 1000 * 60 } } })
+```
+
+**`fetchApi` logging** — the underlying fetch helper in `@passe/hooks` uses `@passe/logger` to
+log every request at `debug` level and every failed response at `error` level (with status + message).
+These appear in the browser console in development.
 
 ### Using hooks in client components
 

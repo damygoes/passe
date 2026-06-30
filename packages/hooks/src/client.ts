@@ -1,3 +1,7 @@
+import { createLogger } from '@passe/logger'
+
+const log = createLogger({ context: { module: 'hooks/fetchApi' } })
+
 type ApiResponse<T> = { data: T }
 
 interface FetchOptions {
@@ -14,6 +18,8 @@ export async function fetchApi<T>(
 ): Promise<T> {
   const token = await getToken()
 
+  log.debug(`${options.method ?? 'GET'} ${path}`)
+
   const res = await fetch(`${baseUrl}${path}`, {
     method: options.method ?? 'GET',
     headers: {
@@ -26,7 +32,12 @@ export async function fetchApi<T>(
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({ error: res.statusText }))
-    throw new Error((err as { error?: string }).error ?? `HTTP ${res.status}`)
+    const message = (err as { error?: string }).error ?? `HTTP ${res.status}`
+    log.error(`${options.method ?? 'GET'} ${path} failed`, {
+      status: res.status,
+      message,
+    })
+    throw new Error(message)
   }
 
   const json: ApiResponse<T> = await res.json()

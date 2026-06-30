@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const TripSchema = z.object({
   id: z.string().uuid(),
-  userId: z.string().uuid(),
+  userId: z.string(),
   title: z.string().min(1).max(100),
   description: z.string().max(500).optional(),
   coverImageUrl: z.string().url().optional(),

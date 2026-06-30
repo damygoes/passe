@@ -1,10 +1,10 @@
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
-import Link from 'next/link'
-import { AFTER_SIGN_IN_URL } from '@passe/auth/constants'
 import { buttonVariants } from '@passe/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@passe/ui/card'
+import { Link } from '@/i18n/navigation'
+import { routes } from '@/lib/routes'
 
 interface Props {
   params: Promise<{ locale: string }>
@@ -15,7 +15,7 @@ export default async function LocalePage({ params }: Props) {
   const { userId } = await auth()
 
   if (userId) {
-    redirect(`/${locale}${AFTER_SIGN_IN_URL}`)
+    redirect(`/${locale}${routes.dashboard}`)
   }
 
   const t = await getTranslations('common')
@@ -27,12 +27,12 @@ export default async function LocalePage({ params }: Props) {
         <span className="font-display text-lg font-bold tracking-tight">{t('app_name')}</span>
         <div className="flex items-center gap-2">
           <Link
-            href={`/${locale}/sign-in`}
+            href={routes.signIn}
             className={buttonVariants({ variant: 'ghost', size: 'sm' })}
           >
             Sign in
           </Link>
-          <Link href={`/${locale}/sign-up`} className={buttonVariants({ size: 'sm' })}>
+          <Link href={routes.signUp} className={buttonVariants({ size: 'sm' })}>
             Get started
           </Link>
         </div>
@@ -50,11 +50,11 @@ export default async function LocalePage({ params }: Props) {
           Create trips, attach geotagged memories, and share your world — beautifully.
         </p>
         <div className="mt-10 flex items-center gap-3">
-          <Link href={`/${locale}/sign-up`} className={buttonVariants({ size: 'lg' })}>
+          <Link href={routes.signUp} className={buttonVariants({ size: 'lg' })}>
             Start for free
           </Link>
           <Link
-            href={`/${locale}/sign-in`}
+            href={routes.signIn}
             className={buttonVariants({ variant: 'outline', size: 'lg' })}
           >
             Sign in

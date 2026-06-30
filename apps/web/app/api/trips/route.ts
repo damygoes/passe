@@ -11,14 +11,18 @@ export async function GET() {
   const { userId, error } = await requireAuth()
   if (error) return error
 
+  log.debug('Fetching trips', { userId })
+
   const userTrips = await db.query.trips.findMany({
     where: eq(trips.userId, userId),
     orderBy: desc(trips.startDate),
   })
 
+  log.debug('DB returned trips', { userId, count: userTrips.length })
+
   const parsed = TripSchema.array().safeParse(userTrips)
   if (!parsed.success) {
-    log.error('DB output failed schema validation', { issues: parsed.error.issues })
+    log.error('DB output failed schema validation', { userId, issues: parsed.error.issues })
     return apiError('Invalid trip data', 500)
   }
 
@@ -44,15 +48,16 @@ export async function POST(req: Request) {
       .values({ ...parsed.data, userId })
       .returning()
   } catch (err) {
-    log.error('DB write failed', { error: err instanceof Error ? err.message : String(err) })
+    log.error('DB write failed', { userId, error: err instanceof Error ? err.message : String(err) })
     return apiError('Internal server error', 500)
   }
 
   const validatedResponse = TripSchema.safeParse(trip)
   if (!validatedResponse.success) {
-    log.error('DB output failed schema validation', { issues: validatedResponse.error.issues })
+    log.error('DB output failed schema validation', { userId, issues: validatedResponse.error.issues })
     return apiError('Invalid response data', 500)
   }
 
+  log.debug('Trip created', { userId, tripId: validatedResponse.data.id })
   return apiSuccess(validatedResponse.data, 201)
 }

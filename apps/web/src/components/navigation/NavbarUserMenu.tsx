@@ -12,8 +12,8 @@ import {
   DropdownMenuTrigger,
 } from '@passe/ui/dropdown-menu'
 import { Icon } from '@passe/ui/icon'
-import { SIGN_IN_URL } from '@passe/auth/constants'
 import { useRouter } from '@/i18n/navigation'
+import { routes } from '@/lib/routes'
 
 interface NavbarUserMenuProps {
   displayName: string
@@ -77,7 +77,7 @@ export function NavbarUserMenu({ displayName, email, avatarUrl }: NavbarUserMenu
 
         <DropdownMenuItem
           variant="destructive"
-          onClick={() => signOut(() => router.push(SIGN_IN_URL))}
+          onClick={() => signOut(() => router.push(routes.signIn))}
         >
           <Icon name="logout" size="sm" />
           Sign out
