@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { buttonVariants } from '@passe/ui/button'
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@passe/ui/empty'
 import {
   PageHeader,
   PageHeaderAction,
@@ -10,6 +10,7 @@ import {
   PageHeaderTitle,
 } from '@passe/ui/page-header'
 import { useAllMemories, useTrips } from '@passe/hooks'
+import { NoTripsEmpty } from './NoTripsEmpty'
 import { TripCard } from './TripCard'
 import { TripStats } from './TripStats'
 
@@ -18,28 +19,28 @@ interface Props {
 }
 
 export function DashboardView({ locale }: Props) {
+  const t = useTranslations('trips.dashboard')
   const { data: trips = [], isLoading: tripsLoading } = useTrips()
   const { data: allMemories = [], isLoading: memoriesLoading } = useAllMemories()
 
   if (tripsLoading || memoriesLoading) return null
 
-  const uniqueCountries = new Set(trips.flatMap((t) => t.countries))
-  const uniqueYears = new Set(trips.map((t) => new Date(t.startDate).getFullYear()))
-  const uniqueCities = new Set(allMemories.flatMap((m) => (m.city ? [m.city] : [])))
+  const uniqueCountries = new Set(trips.flatMap((trip) => trip.countries))
+  const uniqueYears = new Set(trips.map((trip) => new Date(trip.startDate).getFullYear()))
+  const uniqueCities = new Set(allMemories.flatMap((memory) => (memory.city ? [memory.city] : [])))
 
   return (
     <div className="container mx-auto px-4 py-8">
       <PageHeader>
-        <PageHeaderTitle>My Trips</PageHeaderTitle>
+        <PageHeaderTitle>{t('title')}</PageHeaderTitle>
         {trips.length > 0 && (
           <PageHeaderDescription>
-            {trips.length} {trips.length === 1 ? 'trip' : 'trips'} across {uniqueCountries.size}{' '}
-            {uniqueCountries.size === 1 ? 'country' : 'countries'}
+            {t('description', { tripsCount: trips.length, countriesCount: uniqueCountries.size })}
           </PageHeaderDescription>
         )}
         <PageHeaderAction>
           <Link href={`/${locale}/trips/new`} className={buttonVariants({ size: 'sm' })}>
-            New trip
+            {t('new_trip')}
           </Link>
         </PageHeaderAction>
       </PageHeader>
@@ -53,19 +54,7 @@ export function DashboardView({ locale }: Props) {
       )}
 
       {trips.length === 0 ? (
-        <Empty className="mt-16 w-fit mx-auto border">
-          <EmptyHeader>
-            <EmptyTitle>No trips yet</EmptyTitle>
-            <EmptyDescription>
-              Start by creating your first trip — add photos, notes, and memories along the way.
-            </EmptyDescription>
-          </EmptyHeader>
-          <EmptyContent>
-            <Link href={`/${locale}/trips/new`} className={buttonVariants({ size: 'sm' })}>
-              Create your first trip
-            </Link>
-          </EmptyContent>
-        </Empty>
+        <NoTripsEmpty locale={locale} />
       ) : (
         <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {trips.map((trip) => (

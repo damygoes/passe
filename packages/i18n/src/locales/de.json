@@ -88,5 +88,36 @@
       "match": "Passwörter stimmen überein",
       "no_match": "Passwörter stimmen nicht überein"
     }
+  },
+  "trips": {
+    "dashboard": {
+      "title": "Meine Reisen",
+      "description": "{tripsCount, plural, one {# Reise} other {# Reisen}} in {countriesCount, plural, one {# Land} other {# Ländern}}",
+      "new_trip": "Neue Reise"
+    },
+    "detail": {
+      "back": "← Zurück",
+      "memories_heading": "Erinnerungen"
+    },
+    "stats": {
+      "countries": "{count, plural, one {Land} other {Länder}}",
+      "cities": "{count, plural, one {Stadt} other {Städte}}",
+      "years": "{count, plural, one {Jahr} other {Jahre}}"
+    },
+    "card": {
+      "view": "Reise ansehen",
+      "cover_alt": "Titelbild für {title}"
+    },
+    "memory_card": {
+      "photo_alt": "Erinnerungsfoto"
+    },
+    "empty": {
+      "no_trips_title": "Noch keine Reisen",
+      "no_trips_description": "Erstelle deine erste Reise — füge Fotos, Notizen und Erinnerungen hinzu.",
+      "create_first_trip": "Erste Reise erstellen",
+      "no_memories_title": "Noch keine Erinnerungen",
+      "no_memories_description": "Füge Fotos, Notizen und GPS-getaggte Momente aus dieser Reise hinzu.",
+      "add_first_memory": "Erste Erinnerung hinzufügen"
+    }
   }
 }

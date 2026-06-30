@@ -1,4 +1,7 @@
+'use client'
+
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { Badge } from '@passe/ui/badge'
 import { buttonVariants } from '@passe/ui/button'
 import {
@@ -26,10 +29,12 @@ interface Props {
 }
 
 export function TripCard({ trip, href }: Props) {
+  const t = useTranslations('trips.card')
+
   return (
     <Card>
       {trip.coverImageUrl && (
-        <img src={trip.coverImageUrl} alt={`Cover photo for ${trip.title}`} />
+        <img src={trip.coverImageUrl} alt={t('cover_alt', { title: trip.title })} />
       )}
       <CardHeader>
         <CardTitle>{trip.title}</CardTitle>
@@ -49,7 +54,7 @@ export function TripCard({ trip, href }: Props) {
       {href && (
         <CardFooter>
           <Link href={href} className={buttonVariants({ variant: 'ghost', size: 'sm' })}>
-            View trip
+            {t('view')}
           </Link>
         </CardFooter>
       )}

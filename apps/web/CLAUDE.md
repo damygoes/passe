@@ -107,7 +107,8 @@ src/features/
                     SocialAuthButtons, LogoutButton, PasswordStrengthMeter, PasswordMatchIndicator
     schemas/      — auth.ts (Zod form schemas)
   trips/
-    components/   — DashboardView, TripDetailView, TripCard, TripStats, MemoryCard
+    components/   — DashboardView, TripDetailView, TripCard, TripStats, MemoryCard,
+                    NoTripsEmpty, NoMemoriesEmpty
 ```
 
 Rules:
@@ -117,6 +118,9 @@ Rules:
 - Date/time formatting and other utilities go in `packages/utils`, imported via `@passe/utils`
 - Reusable API hooks go in `packages/hooks`, imported via `@passe/hooks`
 - Import feature components using the `@/` alias: `import { DashboardView } from '@/features/trips/components/DashboardView'`
+- **Callback parameter names**: Never use single-letter or ambiguous names in array method callbacks (`.map(t => ...)`, `.flatMap(m => ...)`). Always use the full domain name (`.map(trip => ...)`, `.flatMap(memory => ...)`). `t` is reserved as the conventional name for the `useTranslations` return value.
+- **Translations**: All user-visible strings must use `useTranslations` from `next-intl`. Add keys to the relevant namespace in `packages/i18n/src/locales/en.json` and `de.json`. Never hardcode English strings in component files.
+- **Empty states**: Empty states must be standalone components in `src/features/<feature>/components/` — never inline JSX inside a view component.
 
 ---
 

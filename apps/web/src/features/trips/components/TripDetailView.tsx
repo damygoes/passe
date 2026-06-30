@@ -2,9 +2,9 @@
 
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Badge } from '@passe/ui/badge'
 import { buttonVariants } from '@passe/ui/button'
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@passe/ui/empty'
 import {
   PageHeader,
   PageHeaderAction,
@@ -14,6 +14,7 @@ import {
 import { formatTripDateFull } from '@passe/utils'
 import { useMemories, useTrip } from '@passe/hooks'
 import { MemoryCard } from './MemoryCard'
+import { NoMemoriesEmpty } from './NoMemoriesEmpty'
 
 interface Props {
   id: string
@@ -21,6 +22,7 @@ interface Props {
 }
 
 export function TripDetailView({ id, locale }: Props) {
+  const t = useTranslations('trips.detail')
   const { data: trip, isLoading: tripLoading } = useTrip(id)
   const { data: memories = [], isLoading: memoriesLoading } = useMemories(id)
 
@@ -40,7 +42,7 @@ export function TripDetailView({ id, locale }: Props) {
             href={`/${locale}/dashboard`}
             className={buttonVariants({ variant: 'ghost', size: 'sm' })}
           >
-            ← Back
+            {t('back')}
           </Link>
         </PageHeaderAction>
       </PageHeader>
@@ -69,7 +71,7 @@ export function TripDetailView({ id, locale }: Props) {
 
       <div className="mt-8">
         <h2 className="font-heading mb-4 text-lg font-semibold">
-          Memories
+          {t('memories_heading')}
           {memories.length > 0 && (
             <span className="ml-2 text-sm font-normal text-muted-foreground">
               {memories.length}
@@ -78,17 +80,7 @@ export function TripDetailView({ id, locale }: Props) {
         </h2>
 
         {memories.length === 0 ? (
-          <Empty className="border">
-            <EmptyHeader>
-              <EmptyTitle>No memories yet</EmptyTitle>
-              <EmptyDescription>
-                Add photos, notes, and GPS-tagged moments from this trip.
-              </EmptyDescription>
-            </EmptyHeader>
-            <EmptyContent>
-              <button className={buttonVariants({ size: 'sm' })}>Add first memory</button>
-            </EmptyContent>
-          </Empty>
+          <NoMemoriesEmpty />
         ) : (
           <div className="flex flex-col gap-4">
             {memories.map((memory) => (

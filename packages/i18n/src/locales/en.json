@@ -88,5 +88,36 @@
       "match": "Passwords match",
       "no_match": "Passwords don't match"
     }
+  },
+  "trips": {
+    "dashboard": {
+      "title": "My Trips",
+      "description": "{tripsCount, plural, one {# trip} other {# trips}} across {countriesCount, plural, one {# country} other {# countries}}",
+      "new_trip": "New trip"
+    },
+    "detail": {
+      "back": "← Back",
+      "memories_heading": "Memories"
+    },
+    "stats": {
+      "countries": "{count, plural, one {Country} other {Countries}}",
+      "cities": "{count, plural, one {City} other {Cities}}",
+      "years": "{count, plural, one {Year} other {Years}}"
+    },
+    "card": {
+      "view": "View trip",
+      "cover_alt": "Cover photo for {title}"
+    },
+    "memory_card": {
+      "photo_alt": "Memory photo"
+    },
+    "empty": {
+      "no_trips_title": "No trips yet",
+      "no_trips_description": "Start by creating your first trip — add photos, notes, and memories along the way.",
+      "create_first_trip": "Create your first trip",
+      "no_memories_title": "No memories yet",
+      "no_memories_description": "Add photos, notes, and GPS-tagged moments from this trip.",
+      "add_first_memory": "Add first memory"
+    }
   }
 }
