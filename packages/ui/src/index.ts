@@ -43,6 +43,13 @@ export {
   EmptyTitle,
 } from './empty/Empty'
 export { Icon } from './icon/Icon'
+export { Navbar, NavbarBrand, NavbarLinks, NavbarUser } from './navbar/Navbar'
+export {
+  PageHeader,
+  PageHeaderAction,
+  PageHeaderDescription,
+  PageHeaderTitle,
+} from './page-header/PageHeader'
 export { Input } from './input/Input'
 export { Separator } from './separator/Separator'
 export { Skeleton } from './skeleton/Skeleton'

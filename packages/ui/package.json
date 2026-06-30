@@ -8,9 +8,12 @@
     "./badge": "./src/badge/Badge.tsx",
     "./button": "./src/button/Button.tsx",
     "./card": "./src/card/Card.tsx",
+    "./dropdown-menu": "./src/dropdown-menu/DropdownMenu.tsx",
     "./empty": "./src/empty/Empty.tsx",
     "./icon": "./src/icon/Icon.tsx",
     "./input": "./src/input/Input.tsx",
+    "./navbar": "./src/navbar/Navbar.tsx",
+    "./page-header": "./src/page-header/PageHeader.tsx",
     "./separator": "./src/separator/Separator.tsx",
     "./skeleton": "./src/skeleton/Skeleton.tsx",
     "./textarea": "./src/textarea/Textarea.tsx"

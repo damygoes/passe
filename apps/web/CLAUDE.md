@@ -99,6 +99,7 @@ are in `PUBLIC_ROUTES` (see `packages/auth/src/constants.ts`).
 - Never import `@clerk/nextjs/server` in client components (`'use client'`)
 - `@passe/auth/webhook` is server-only (it initializes `@passe/db/client`) — only import in API routes or server actions
 - Route protection is all-or-nothing via `proxy.ts` — individual pages do not need to call `auth.protect()` unless they need the redirect behavior
+- Full-screen overlays (`fixed inset-0`) rendered inside `<Navbar>` must use `ReactDOM.createPortal(..., document.body)` — the navbar's `backdrop-blur-sm` establishes a CSS containing block that traps `position: fixed` descendants to the navbar's height instead of the viewport
 
 ---
 

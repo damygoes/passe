@@ -4,14 +4,18 @@ import {
   ArrowRight01Icon,
   ArrowRight02Icon,
   Cancel02Icon,
+  CreditCardIcon,
   EyeIcon,
   EyeOffIcon,
+  Logout01Icon,
   Mail01Icon,
+  Menu01Icon,
   Moon02Icon,
   Orbit01Icon,
   Sun02Icon,
   Tick04Icon,
   UnfoldMoreIcon,
+  User02Icon,
 } from '@hugeicons/core-free-icons'
 import type { IconName, IconSvgObject } from './types'
 
@@ -23,12 +27,16 @@ export const iconMap = {
   'chevron-right': ArrowRight01Icon,
   'chevron-up-down': UnfoldMoreIcon,
   close: Cancel02Icon,
+  'credit-card': CreditCardIcon,
   eye: EyeIcon,
   'eye-off': EyeOffIcon,
   loading: Orbit01Icon,
+  logout: Logout01Icon,
   mail: Mail01Icon,
+  menu: Menu01Icon,
   moon: Moon02Icon,
   sun: Sun02Icon,
+  user: User02Icon,
 } as const satisfies Record<string, IconSvgObject>
 
 // This gives a typed array of keys
