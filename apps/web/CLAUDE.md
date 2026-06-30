@@ -18,6 +18,7 @@ apps/web/proxy.ts
 ```
 
 It wraps `clerkMiddleware` and:
+
 1. **Returns early for `/api/` routes** — skipping i18n routing (which would mangle `/api/trips`
    into `/en/api/trips` and cause 404s). API routes authenticate themselves via `requireAuth()`.
 2. **Protects all non-public page routes** — redirecting unauthenticated users to the locale-aware
@@ -54,14 +55,14 @@ const user = await currentUser()
 
 Copy `.env.local.example` → `.env.local` and fill in:
 
-| Variable | Source |
-|---|---|
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk Dashboard → API Keys |
-| `CLERK_SECRET_KEY` | Clerk Dashboard → API Keys |
-| `CLERK_WEBHOOK_SECRET` | Clerk Dashboard → Webhooks → Signing secret |
-| `NEXT_PUBLIC_CLERK_SIGN_IN_URL` | `/sign-in` |
-| `NEXT_PUBLIC_CLERK_SIGN_UP_URL` | `/sign-up` |
-| `DATABASE_URL` | Neon Dashboard → Pooled connection string |
+| Variable                            | Source                                      |
+| ----------------------------------- | ------------------------------------------- |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk Dashboard → API Keys                  |
+| `CLERK_SECRET_KEY`                  | Clerk Dashboard → API Keys                  |
+| `CLERK_WEBHOOK_SECRET`              | Clerk Dashboard → Webhooks → Signing secret |
+| `NEXT_PUBLIC_CLERK_SIGN_IN_URL`     | `/sign-in`                                  |
+| `NEXT_PUBLIC_CLERK_SIGN_UP_URL`     | `/sign-up`                                  |
+| `DATABASE_URL`                      | Neon Dashboard → Pooled connection string   |
 
 ---
 
@@ -70,32 +71,36 @@ Copy `.env.local.example` → `.env.local` and fill in:
 All auth pages use custom forms (not Clerk's hosted components). Forms live in
 `src/features/auth/components/` and use React Hook Form + Zod. Clerk hooks provide the auth logic.
 
-| Component | File | Purpose |
-|---|---|---|
-| `SignInForm` | `src/features/auth/components/SignInForm.tsx` | Email + password sign-in |
-| `SignUpForm` | `src/features/auth/components/SignUpForm.tsx` | Sign-up with display name + OTP verification step |
-| `ForgotPasswordForm` | `src/features/auth/components/ForgotPasswordForm.tsx` | Email entry → sends reset code |
-| `ResetPasswordForm` | `src/features/auth/components/ResetPasswordForm.tsx` | OTP code + new password |
-| `SocialAuthButtons` | `src/features/auth/components/SocialAuthButtons.tsx` | Google + Apple OAuth |
+| Component            | File                                                  | Purpose                                           |
+| -------------------- | ----------------------------------------------------- | ------------------------------------------------- |
+| `SignInForm`         | `src/features/auth/components/SignInForm.tsx`         | Email + password sign-in                          |
+| `SignUpForm`         | `src/features/auth/components/SignUpForm.tsx`         | Sign-up with display name + OTP verification step |
+| `ForgotPasswordForm` | `src/features/auth/components/ForgotPasswordForm.tsx` | Email entry → sends reset code                    |
+| `ResetPasswordForm`  | `src/features/auth/components/ResetPasswordForm.tsx`  | OTP code + new password                           |
+| `SocialAuthButtons`  | `src/features/auth/components/SocialAuthButtons.tsx`  | Google + Apple OAuth                              |
 
 Zod schemas for all forms: `src/features/auth/schemas/auth.ts`
 
 ### Sign-in flow
+
 1. Email + password → `signIn.create()`
 2. If `status === 'complete'` → `setActive()` → redirect to dashboard
 3. If `status === 'needs_client_trust'` or `'needs_second_factor'` → `prepareSecondFactor({ strategy: 'email_code' })` → OTP step → `attemptSecondFactor()` → `setActive()` → redirect
 
 ### Sign-up flow (two steps)
+
 1. User fills display name + email + password → `signUp.create()` + `prepareEmailAddressVerification()`
 2. OTP input shown → `signUp.attemptEmailAddressVerification()` → `setActive()` → redirect
 
 ### Social auth
+
 Social OAuth (`oauth_google`, `oauth_apple`) uses `signIn.authenticateWithRedirect()` with
 `redirectUrl: '/sso-callback'`. The `/sso-callback` page runs `AuthenticateWithRedirectCallback`
 which completes the OAuth flow. Both `/sso-callback` and `/forgot-password`, `/reset-password`
 are in `PUBLIC_ROUTES` (see `packages/auth/src/constants.ts`).
 
 ### Password reset flow
+
 1. `/forgot-password` → email form → `signIn.create({ strategy: 'reset_password_email_code' })`
 2. Email stored in `sessionStorage('reset-email')` → redirect to `/reset-password`
 3. `/reset-password` → OTP + new password → `signIn.attemptFirstFactor()` → `setActive()`
@@ -121,6 +126,7 @@ src/features/
 ```
 
 Rules:
+
 - Component files go in `src/features/<feature>/components/<ComponentName>.tsx`
 - Route files (`app/`) only extract params and render one feature view component — no queries, no auth calls, no JSX logic
 - View components (e.g. `DashboardView`, `TripDetailView`) are `'use client'` and own all data fetching via `@passe/hooks`
@@ -136,6 +142,7 @@ Rules:
 The app uses a **static shell + isolated loading states** pattern. Never block static content behind a data fetch.
 
 **Structure:**
+
 - The top-level view component (e.g. `DashboardView`) has **no data dependencies** — it renders the page frame, heading, and action buttons immediately.
 - Data-dependent UI is extracted into dedicated sub-components. Each sub-component owns its own hook call and manages its own loading, error, and empty states independently.
 
@@ -164,6 +171,7 @@ export function ExampleDataComponent() {
 ```
 
 **Rules:**
+
 - Always destructure `isLoading`, `isError`, and `data` from every hook call
 - Always provide a default value for `data` (e.g. `data: trips = []`) so derived computations are safe to run before the guard clauses
 - Error states on stats/secondary UI can return `null` (hide silently) — error states on primary content (lists) must show a visible message
@@ -182,7 +190,7 @@ For images with unknown intrinsic dimensions (remote URLs), use the `fill` prop 
 ```tsx
 import Image from 'next/image'
 
-<div className="relative aspect-video overflow-hidden rounded-xl">
+;<div className="relative aspect-video overflow-hidden rounded-xl">
   <Image
     src={url}
     alt="..."
@@ -194,6 +202,7 @@ import Image from 'next/image'
 ```
 
 Rules:
+
 - Parent must have `position: relative` (Tailwind: `relative`)
 - Always provide `sizes` when using `fill` — omitting it makes Next.js assume `100vw` and download oversized images
 - Use `className="object-cover"` to crop-fill; use `object-contain` to letterbox
@@ -227,11 +236,11 @@ app/api/
 
 ### Shared helpers — `src/lib/api.ts`
 
-| Helper | Purpose |
-|---|---|
-| `apiError(message, status)` | Returns `{ error: message }` JSON with the given status |
-| `apiSuccess(data, status?)` | Returns `{ data }` JSON, default status 200 |
-| `requireAuth()` | Calls `auth()`, returns `{ userId, error: null }` or `{ userId: null, error: Response }` |
+| Helper                      | Purpose                                                                                  |
+| --------------------------- | ---------------------------------------------------------------------------------------- |
+| `apiError(message, status)` | Returns `{ error: message }` JSON with the given status                                  |
+| `apiSuccess(data, status?)` | Returns `{ data }` JSON, default status 200                                              |
+| `requireAuth()`             | Calls `auth()`, returns `{ userId, error: null }` or `{ userId: null, error: Response }` |
 
 Call `requireAuth()` at the top of every protected handler:
 
@@ -243,6 +252,7 @@ if (error) return error
 ### Validation pattern
 
 Every route validates **twice** with Zod:
+
 1. **Request body** — `Schema.safeParse(body)` → return 400 on failure (client error, not logged)
 2. **DB output** — `Schema.safeParse(dbRow)` → return 500 on failure (data integrity alert, always logged)
 
@@ -289,11 +299,13 @@ const log = createLogger({ context: { module: 'api/trips' } })
 Module naming convention: `api/<resource>` (e.g. `api/trips`, `api/trips/id`, `api/user`)
 
 Log these:
+
 - `error` — DB output schema validation failures (data integrity — should never happen)
 - `error` — DB write exceptions (INSERT/UPDATE/DELETE throws)
 - `debug` — request lifecycle milestones (fetching, DB row count, returning)
 
 Do not log:
+
 - 401s from `requireAuth()` — expected, high-volume
 - 400 request validation failures — client errors, not server errors
 - 404s — expected business logic
@@ -351,20 +363,20 @@ export function TripList() {
 
 ### Available hooks
 
-| Hook | Wraps |
-|---|---|
-| `useUser()` | GET /api/user |
-| `useUpdateUser()` | PATCH /api/user |
-| `useTrips()` | GET /api/trips |
-| `useTrip(id)` | GET /api/trips/[id] |
-| `useCreateTrip()` | POST /api/trips |
-| `useUpdateTrip()` | PATCH /api/trips/[id] |
-| `useDeleteTrip()` | DELETE /api/trips/[id] |
-| `useMemories(tripId)` | GET /api/trips/[id]/memories |
-| `useAllMemories()` | GET /api/memories (all user memories) |
-| `useCreateMemory()` | POST /api/trips/[id]/memories |
-| `useUpdateMemory()` | PATCH /api/trips/[id]/memories/[id] |
-| `useDeleteMemory()` | DELETE /api/trips/[id]/memories/[id] |
+| Hook                  | Wraps                                 |
+| --------------------- | ------------------------------------- |
+| `useUser()`           | GET /api/user                         |
+| `useUpdateUser()`     | PATCH /api/user                       |
+| `useTrips()`          | GET /api/trips                        |
+| `useTrip(id)`         | GET /api/trips/[id]                   |
+| `useCreateTrip()`     | POST /api/trips                       |
+| `useUpdateTrip()`     | PATCH /api/trips/[id]                 |
+| `useDeleteTrip()`     | DELETE /api/trips/[id]                |
+| `useMemories(tripId)` | GET /api/trips/[id]/memories          |
+| `useAllMemories()`    | GET /api/memories (all user memories) |
+| `useCreateMemory()`   | POST /api/trips/[id]/memories         |
+| `useUpdateMemory()`   | PATCH /api/trips/[id]/memories/[id]   |
+| `useDeleteMemory()`   | DELETE /api/trips/[id]/memories/[id]  |
 
 Mutation hooks auto-invalidate related query keys on success (e.g. `useDeleteTrip` invalidates
 both `trips` list and the individual `trip` cache entry).
@@ -387,17 +399,18 @@ pnpm --filter passe-web build-storybook
 ### Config
 
 `.storybook/preview.tsx` provides two global decorators applied to every story:
+
 - `NextIntlClientProvider` with `locale="en"` and the real `en.json` messages (imported from `packages/i18n`)
 - `ThemeProvider` from next-themes (required for `useTheme()` in shared components)
 - Also imports `src/styles/globals.css` so Tailwind v4 + brand theme CSS variables are available
 
 `.storybook/main.ts` adds Vite aliases so Clerk and locale navigation don't crash in the browser:
 
-| Module | Alias target |
-|---|---|
-| `@clerk/nextjs` | `.storybook/__mocks__/clerk.ts` |
-| `@clerk/nextjs/errors` | `.storybook/__mocks__/clerk-errors.ts` |
-| `@/i18n/navigation` | `.storybook/__mocks__/i18n-navigation.tsx` |
+| Module                 | Alias target                               |
+| ---------------------- | ------------------------------------------ |
+| `@clerk/nextjs`        | `.storybook/__mocks__/clerk.ts`            |
+| `@clerk/nextjs/errors` | `.storybook/__mocks__/clerk-errors.ts`     |
+| `@/i18n/navigation`    | `.storybook/__mocks__/i18n-navigation.tsx` |
 
 ### Story conventions
 
@@ -408,18 +421,18 @@ pnpm --filter passe-web build-storybook
 
 ### Available stories
 
-| Story | File |
-|---|---|
-| Auth/PasswordStrengthMeter | `src/features/auth/components/PasswordStrengthMeter.stories.tsx` |
+| Story                       | File                                                              |
+| --------------------------- | ----------------------------------------------------------------- |
+| Auth/PasswordStrengthMeter  | `src/features/auth/components/PasswordStrengthMeter.stories.tsx`  |
 | Auth/PasswordMatchIndicator | `src/features/auth/components/PasswordMatchIndicator.stories.tsx` |
-| Auth/SocialAuthButtons | `src/features/auth/components/SocialAuthButtons.stories.tsx` |
-| Auth/SignInForm | `src/features/auth/components/SignInForm.stories.tsx` |
-| Auth/SignUpForm | `src/features/auth/components/SignUpForm.stories.tsx` |
-| Auth/ForgotPasswordForm | `src/features/auth/components/ForgotPasswordForm.stories.tsx` |
-| Auth/ResetPasswordForm | `src/features/auth/components/ResetPasswordForm.stories.tsx` |
-| Auth/LogoutButton | `src/features/auth/components/LogoutButton.stories.tsx` |
-| Shared/LocaleDropdownMenu | `src/components/shared/LocaleDropdownMenu.stories.tsx` |
-| Shared/ThemeDropdownMenu | `src/components/shared/ThemeDropdownMenu.stories.tsx` |
+| Auth/SocialAuthButtons      | `src/features/auth/components/SocialAuthButtons.stories.tsx`      |
+| Auth/SignInForm             | `src/features/auth/components/SignInForm.stories.tsx`             |
+| Auth/SignUpForm             | `src/features/auth/components/SignUpForm.stories.tsx`             |
+| Auth/ForgotPasswordForm     | `src/features/auth/components/ForgotPasswordForm.stories.tsx`     |
+| Auth/ResetPasswordForm      | `src/features/auth/components/ResetPasswordForm.stories.tsx`      |
+| Auth/LogoutButton           | `src/features/auth/components/LogoutButton.stories.tsx`           |
+| Shared/LocaleDropdownMenu   | `src/components/shared/LocaleDropdownMenu.stories.tsx`            |
+| Shared/ThemeDropdownMenu    | `src/components/shared/ThemeDropdownMenu.stories.tsx`             |
 
 ---
 
