@@ -2,7 +2,8 @@
   "extends": "@passe/typescript-config/react-library.json",
   "compilerOptions": {
     "rootDir": "./src",
-    "outDir": "dist"
+    "outDir": "dist",
+    "types": ["node"]
   },
   "include": ["src"]
 }

@@ -1,7 +1,7 @@
 import type { Memory } from '@passe/types/memory'
 
 type UniqueCities = {
-  uniqueCities: Set<any>
+  uniqueCities: Set<string>
 }
 
 export function getUniqueCities({ allMemories }: { allMemories: Memory[] }): UniqueCities {

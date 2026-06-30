@@ -10,6 +10,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "src/utils", "../utils/src/cn.ts"],
+  "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }

@@ -98,7 +98,9 @@
     },
     "detail": {
       "back": "← Back",
-      "memories_heading": "Memories"
+      "memories_heading": "Memories",
+      "trip_error": "Could not load trip. Try refreshing the page.",
+      "memories_error": "Could not load memories. Try refreshing the page."
     },
     "stats": {
       "countries": "{count, plural, one {Country} other {Countries}}",

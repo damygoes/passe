@@ -1,0 +1,76 @@
+'use client'
+
+import { Link } from '@/i18n/navigation'
+import { routes } from '@/lib/routes'
+import { useTrip } from '@passe/hooks'
+import { Badge } from '@passe/ui/badge'
+import { buttonVariants } from '@passe/ui/button'
+import {
+  PageHeader,
+  PageHeaderAction,
+  PageHeaderDescription,
+  PageHeaderTitle,
+} from '@passe/ui/page-header'
+import { formatTripDateFull } from '@passe/utils'
+import { useTranslations } from 'next-intl'
+import { notFound } from 'next/navigation'
+import Image from 'next/image'
+import { TripDetailHeaderSkeleton } from './TripDetailHeaderSkeleton'
+
+interface Props {
+  id: string
+}
+
+export function TripDetailHeader({ id }: Props) {
+  const t = useTranslations('trips.detail')
+  const { data: trip, isLoading, isError } = useTrip(id)
+
+  if (isLoading) return <TripDetailHeaderSkeleton />
+
+  if (isError) return <p className="text-sm text-destructive">{t('trip_error')}</p>
+
+  if (!trip) notFound()
+
+  return (
+    <>
+      <PageHeader>
+        <PageHeaderTitle>{trip.title}</PageHeaderTitle>
+        <PageHeaderDescription>
+          {formatTripDateFull(trip.startDate)} – {formatTripDateFull(trip.endDate)}
+        </PageHeaderDescription>
+        <PageHeaderAction>
+          <Link
+            href={routes.dashboard}
+            className={buttonVariants({ variant: 'ghost', size: 'sm' })}
+          >
+            {t('back')}
+          </Link>
+        </PageHeaderAction>
+      </PageHeader>
+
+      {trip.countries.length > 0 && (
+        <div className="mt-4 flex flex-wrap gap-1">
+          {trip.countries.map((country) => (
+            <Badge key={country} variant="outline">
+              {country}
+            </Badge>
+          ))}
+        </div>
+      )}
+
+      {trip.coverImageUrl && (
+        <div className="relative mt-6 aspect-video overflow-hidden rounded-xl">
+          <Image
+            src={trip.coverImageUrl}
+            alt={`Cover photo for ${trip.title}`}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+          />
+        </div>
+      )}
+
+      {trip.description && <p className="mt-4 text-muted-foreground">{trip.description}</p>}
+    </>
+  )
+}

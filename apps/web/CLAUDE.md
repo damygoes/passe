@@ -171,6 +171,35 @@ export function ExampleDataComponent() {
 
 ---
 
+## Images
+
+Always use `<Image>` from `next/image` — never raw `<img>` tags.
+
+External images (e.g. user-uploaded photos, trip cover images) require `remotePatterns` in `next.config.js`. The current config allows all HTTPS hosts (`hostname: '**'`). Tighten to the specific storage domain once the provider is fixed.
+
+For images with unknown intrinsic dimensions (remote URLs), use the `fill` prop with a positioned parent:
+
+```tsx
+import Image from 'next/image'
+
+<div className="relative aspect-video overflow-hidden rounded-xl">
+  <Image
+    src={url}
+    alt="..."
+    fill
+    className="object-cover"
+    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+  />
+</div>
+```
+
+Rules:
+- Parent must have `position: relative` (Tailwind: `relative`)
+- Always provide `sizes` when using `fill` — omitting it makes Next.js assume `100vw` and download oversized images
+- Use `className="object-cover"` to crop-fill; use `object-contain` to letterbox
+
+---
+
 ## Key rules
 
 - `auth()` and `currentUser()` are async in Next.js 16 — always `await` them

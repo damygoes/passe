@@ -138,3 +138,4 @@ These map to CSS custom properties defined by `@passe/theme`.
 - Do not add barrel `index.ts` re-exports per component folder — export directly from the component file
 - Date/time formatting belongs in `@passe/utils` (e.g. `formatTripDate`, `formatTripDateFull`, `formatDateRange`) — never define inline in route files
 - `apps/web/app/` is for routing only (pages, layouts, loading, error, not-found) — never define components or utility functions inside route files; those belong in `src/features/<feature>/components/` and `packages/utils`
+- Use `<Image>` from `next/image` for all images in `apps/web` — never raw `<img>` tags. External image URLs require `remotePatterns` in `next.config.js`. For remote images with unknown dimensions, use `fill` with a `relative`-positioned parent and always include a `sizes` prop.

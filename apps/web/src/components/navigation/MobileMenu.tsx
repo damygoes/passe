@@ -2,21 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { useClerk } from '@clerk/nextjs'
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@passe/ui'
-import { buttonVariants } from '@passe/ui/button'
+import { Button, buttonVariants } from '@passe/ui/button'
 import { Separator } from '@passe/ui/separator'
 import { cn } from '@passe/utils'
-import { Link, useRouter } from '@/i18n/navigation'
+import { Link } from '@/i18n/navigation'
 import { routes, publicPortfolioRoute } from '@/lib/routes'
 import { LocaleDropdownMenu } from '@/components/shared/LocaleDropdownMenu'
 import { ThemeDropdownMenu } from '@/components/shared/ThemeDropdownMenu'
@@ -24,27 +13,16 @@ import { LogoutButton } from '@/features/auth/components/LogoutButton'
 
 interface MobileMenuProps {
   username: string | null
-  displayName: string
-  email: string
-  avatarUrl: string | null
 }
 
-export function MobileMenu({ username, displayName, email, avatarUrl }: MobileMenuProps) {
+export function MobileMenu({ username }: MobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
-  const { signOut } = useClerk()
-  const router = useRouter()
-
   useEffect(() => {
     setMounted(true)
   }, [])
 
   const close = () => setIsOpen(false)
-
-  const handleSignOut = () => {
-    close()
-    signOut(() => router.push(routes.signIn))
-  }
 
   return (
     <>

@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from '@passe/ui/card'
 import { formatDateRange } from '@passe/utils'
+import Image from 'next/image'
 
 interface TripCardData {
   id: string
@@ -34,7 +35,15 @@ export function TripCard({ trip, href }: Props) {
   return (
     <Card>
       {trip.coverImageUrl && (
-        <img src={trip.coverImageUrl} alt={t('cover_alt', { title: trip.title })} />
+        <div className="relative aspect-video w-full overflow-hidden">
+          <Image
+            src={trip.coverImageUrl}
+            alt={t('cover_alt', { title: trip.title })}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        </div>
       )}
       <CardHeader>
         <CardTitle>{trip.title}</CardTitle>

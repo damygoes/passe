@@ -1,5 +1,5 @@
 import { buttonVariants } from '@passe/ui/button'
-import { Navbar, NavbarBrand, NavbarLinks, NavbarUser } from '@passe/ui/navbar'
+import { Navbar, NavbarBrand, NavbarLinks } from '@passe/ui/navbar'
 import { Link } from '@/i18n/navigation'
 import { routes, publicPortfolioRoute } from '@/lib/routes'
 import { LocaleDropdownMenu } from '@/components/shared/LocaleDropdownMenu'
@@ -54,12 +54,7 @@ export function AppNavbar({ displayName, email, avatarUrl, username }: AppNavbar
       </div>
 
       {/* Mobile menu — manages its own hamburger button + dropdown panel */}
-      <MobileMenu
-        username={username}
-        displayName={displayName}
-        email={email}
-        avatarUrl={avatarUrl}
-      />
+      <MobileMenu username={username} />
     </Navbar>
   )
 }

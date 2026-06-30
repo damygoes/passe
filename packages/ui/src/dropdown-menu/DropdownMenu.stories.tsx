@@ -37,9 +37,7 @@ type Story = StoryObj
 export const Default: Story = {
   render: () => (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">Open menu</Button>
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger render={<Button variant="outline">Open menu</Button>} />
       <DropdownMenuContent>
         <DropdownMenuItem>Profile</DropdownMenuItem>
         <DropdownMenuItem>Settings</DropdownMenuItem>
@@ -53,11 +51,13 @@ export const Default: Story = {
 export const WithIcons: Story = {
   render: () => (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">
-          Account <Icon name="chevron-up-down" size="sm" aria-hidden />
-        </Button>
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger
+        render={
+          <Button variant="outline">
+            Account <Icon name="chevron-up-down" size="sm" aria-hidden />
+          </Button>
+        }
+      />
       <DropdownMenuContent>
         <DropdownMenuItem>
           <Icon name="mail" aria-hidden />
@@ -80,9 +80,7 @@ export const WithIcons: Story = {
 export const WithShortcuts: Story = {
   render: () => (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">Edit</Button>
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger render={<Button variant="outline">Edit</Button>} />
       <DropdownMenuContent>
         <DropdownMenuItem>
           New trip <DropdownMenuShortcut>⌘N</DropdownMenuShortcut>
@@ -106,9 +104,7 @@ export const WithShortcuts: Story = {
 export const WithGroups: Story = {
   render: () => (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">Options</Button>
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger render={<Button variant="outline">Options</Button>} />
       <DropdownMenuContent>
         <DropdownMenuGroup>
           <DropdownMenuLabel>My account</DropdownMenuLabel>
@@ -132,9 +128,7 @@ export const WithGroups: Story = {
 export const DestructiveItem: Story = {
   render: () => (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">Trip options</Button>
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger render={<Button variant="outline">Trip options</Button>} />
       <DropdownMenuContent>
         <DropdownMenuItem>Edit trip</DropdownMenuItem>
         <DropdownMenuItem>Duplicate</DropdownMenuItem>
@@ -149,67 +143,65 @@ export const DestructiveItem: Story = {
   ),
 }
 
-export const WithCheckboxItems: Story = {
-  render: () => {
-    const [showDates, setShowDates] = useState(true)
-    const [showMap, setShowMap] = useState(false)
-    const [showPhotos, setShowPhotos] = useState(true)
+function WithCheckboxItemsStory() {
+  const [showDates, setShowDates] = useState(true)
+  const [showMap, setShowMap] = useState(false)
+  const [showPhotos, setShowPhotos] = useState(true)
 
-    return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline">View</Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuGroup>
-            <DropdownMenuLabel>Show</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuCheckboxItem checked={showDates} onCheckedChange={setShowDates}>
-              Dates
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem checked={showMap} onCheckedChange={setShowMap}>
-              Map preview
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem checked={showPhotos} onCheckedChange={setShowPhotos}>
-              Photos
-            </DropdownMenuCheckboxItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    )
-  },
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger render={<Button variant="outline">View</Button>} />
+      <DropdownMenuContent>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>Show</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuCheckboxItem checked={showDates} onCheckedChange={setShowDates}>
+            Dates
+          </DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem checked={showMap} onCheckedChange={setShowMap}>
+            Map preview
+          </DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem checked={showPhotos} onCheckedChange={setShowPhotos}>
+            Photos
+          </DropdownMenuCheckboxItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+export const WithCheckboxItems: Story = {
+  render: () => <WithCheckboxItemsStory />,
+}
+
+function WithRadioGroupStory() {
+  const [sortBy, setSortBy] = useState('newest')
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger render={<Button variant="outline">Sort by</Button>} />
+      <DropdownMenuContent>
+        <DropdownMenuRadioGroup value={sortBy} onValueChange={setSortBy}>
+          <DropdownMenuLabel>Sort trips by</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuRadioItem value="newest">Newest first</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="oldest">Oldest first</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="name">Name (A–Z)</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="memories">Most memories</DropdownMenuRadioItem>
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
 }
 
 export const WithRadioGroup: Story = {
-  render: () => {
-    const [sortBy, setSortBy] = useState('newest')
-
-    return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline">Sort by</Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuRadioGroup value={sortBy} onValueChange={setSortBy}>
-            <DropdownMenuLabel>Sort trips by</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuRadioItem value="newest">Newest first</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="oldest">Oldest first</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="name">Name (A–Z)</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="memories">Most memories</DropdownMenuRadioItem>
-          </DropdownMenuRadioGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    )
-  },
+  render: () => <WithRadioGroupStory />,
 }
 
 export const WithSubmenu: Story = {
   render: () => (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">Share</Button>
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger render={<Button variant="outline">Share</Button>} />
       <DropdownMenuContent>
         <DropdownMenuItem>Copy link</DropdownMenuItem>
         <DropdownMenuSub>
@@ -230,9 +222,7 @@ export const WithSubmenu: Story = {
 export const WithInsetItems: Story = {
   render: () => (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">Actions</Button>
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger render={<Button variant="outline">Actions</Button>} />
       <DropdownMenuContent>
         <DropdownMenuItem>
           <Icon name="eye" aria-hidden />
@@ -252,9 +242,7 @@ export const WithInsetItems: Story = {
 export const DisabledItems: Story = {
   render: () => (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">Actions</Button>
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger render={<Button variant="outline">Actions</Button>} />
       <DropdownMenuContent>
         <DropdownMenuItem>Edit trip</DropdownMenuItem>
         <DropdownMenuItem disabled>
@@ -269,60 +257,64 @@ export const DisabledItems: Story = {
   ),
 }
 
-export const Comprehensive: Story = {
-  render: () => {
-    const [showDates, setShowDates] = useState(true)
-    const [sortBy, setSortBy] = useState('newest')
+function ComprehensiveStory() {
+  const [showDates, setShowDates] = useState(true)
+  const [sortBy, setSortBy] = useState('newest')
 
-    return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        render={
           <Button variant="outline">
             Trip options <Icon name="chevron-up-down" size="sm" aria-hidden />
           </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuGroup>
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>
-              <Icon name="eye" aria-hidden />
-              View <DropdownMenuShortcut>⌘V</DropdownMenuShortcut>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Icon name="arrow-right" aria-hidden />
-              Edit <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
-            </DropdownMenuItem>
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger>
-                <Icon name="mail" aria-hidden />
-                Share
-              </DropdownMenuSubTrigger>
-              <DropdownMenuSubContent>
-                <DropdownMenuItem>Copy link</DropdownMenuItem>
-                <DropdownMenuItem>Export as PDF</DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuSub>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuLabel>View options</DropdownMenuLabel>
-            <DropdownMenuCheckboxItem checked={showDates} onCheckedChange={setShowDates}>
-              Show dates
-            </DropdownMenuCheckboxItem>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuRadioGroup value={sortBy} onValueChange={setSortBy}>
-            <DropdownMenuLabel>Sort by</DropdownMenuLabel>
-            <DropdownMenuRadioItem value="newest">Newest first</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="oldest">Oldest first</DropdownMenuRadioItem>
-          </DropdownMenuRadioGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">
-            <Icon name="close" aria-hidden />
-            Delete trip <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+        }
+      />
+      <DropdownMenuContent>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuItem>
+            <Icon name="eye" aria-hidden />
+            View <DropdownMenuShortcut>⌘V</DropdownMenuShortcut>
           </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    )
-  },
+          <DropdownMenuItem>
+            <Icon name="arrow-right" aria-hidden />
+            Edit <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+              <Icon name="mail" aria-hidden />
+              Share
+            </DropdownMenuSubTrigger>
+            <DropdownMenuSubContent>
+              <DropdownMenuItem>Copy link</DropdownMenuItem>
+              <DropdownMenuItem>Export as PDF</DropdownMenuItem>
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>View options</DropdownMenuLabel>
+          <DropdownMenuCheckboxItem checked={showDates} onCheckedChange={setShowDates}>
+            Show dates
+          </DropdownMenuCheckboxItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuRadioGroup value={sortBy} onValueChange={setSortBy}>
+          <DropdownMenuLabel>Sort by</DropdownMenuLabel>
+          <DropdownMenuRadioItem value="newest">Newest first</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="oldest">Oldest first</DropdownMenuRadioItem>
+        </DropdownMenuRadioGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem variant="destructive">
+          <Icon name="close" aria-hidden />
+          Delete trip <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+export const Comprehensive: Story = {
+  render: () => <ComprehensiveStory />,
 }

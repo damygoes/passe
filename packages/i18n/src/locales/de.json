@@ -98,7 +98,9 @@
     },
     "detail": {
       "back": "← Zurück",
-      "memories_heading": "Erinnerungen"
+      "memories_heading": "Erinnerungen",
+      "trip_error": "Reise konnte nicht geladen werden. Versuche, die Seite neu zu laden.",
+      "memories_error": "Erinnerungen konnten nicht geladen werden. Versuche, die Seite neu zu laden."
     },
     "stats": {
       "countries": "{count, plural, one {Land} other {Länder}}",

@@ -2,7 +2,7 @@ import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import { buttonVariants } from '@passe/ui/button'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@passe/ui/card'
+import { Card, CardHeader, CardTitle, CardDescription } from '@passe/ui/card'
 import { Link } from '@/i18n/navigation'
 import { routes } from '@/lib/routes'
 

@@ -45,7 +45,7 @@ function AppleIcon() {
   )
 }
 
-export function SocialAuthButtons({ mode, className }: SocialAuthButtonsProps) {
+export function SocialAuthButtons({ className }: SocialAuthButtonsProps) {
   const { signIn, isLoaded } = useSignIn()
   const locale = useLocale()
   const t = useTranslations('auth.social')

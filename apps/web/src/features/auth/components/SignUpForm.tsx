@@ -56,7 +56,7 @@ export function SignUpForm() {
     if (step === 'verify') {
       otpForm.setValue('code', '')
     }
-  }, [step])
+  }, [step, otpForm])
 
   const onDetailsSubmit = async (data: SignUpFormValues) => {
     if (!isLoaded) return
