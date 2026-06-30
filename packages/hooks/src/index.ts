@@ -5,6 +5,7 @@ export { useUser, useUpdateUser } from './hooks/use-user'
 export { useTrips, useTrip, useCreateTrip, useUpdateTrip, useDeleteTrip } from './hooks/use-trips'
 export {
   useMemories,
+  useAllMemories,
   useCreateMemory,
   useUpdateMemory,
   useDeleteMemory,

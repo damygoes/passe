@@ -17,11 +17,11 @@ packages/
   db/           @passe/db      — Drizzle ORM schema + Neon serverless client
   i18n/         @passe/i18n    — shared translation JSON files + locale constants (no framework deps)
   ui/           @passe/ui      — shared React component library
-  utils/        @passe/utils   — shared utilities (cn, and future helpers)
+  utils/        @passe/utils   — shared utilities (cn, date formatters)
   theme/        @passe/theme   — design tokens (colors, spacing, typography)
   types/        @passe/types   — Zod schemas + inferred TypeScript types
-  eslint-config/ @repo/eslint-config  — shared ESLint flat config
-  typescript-config/ @repo/typescript-config — shared tsconfig bases
+  eslint-config/ @passe/eslint-config  — shared ESLint flat config
+  typescript-config/ @passe/typescript-config — shared tsconfig bases
 ```
 
 Package manager: **pnpm 9** | Build: **Turborepo 2** | Node: **≥20.9**
@@ -135,3 +135,5 @@ These map to CSS custom properties defined by `@passe/theme`.
 - Use `@passe/types` schemas for all data validation; infer TypeScript types with `z.infer<typeof Schema>`
 - Named exports only in `packages/ui` — no default exports (Next.js pages are the exception)
 - Do not add barrel `index.ts` re-exports per component folder — export directly from the component file
+- Date/time formatting belongs in `@passe/utils` (e.g. `formatTripDate`, `formatTripDateFull`, `formatDateRange`) — never define inline in route files
+- `apps/web/app/` is for routing only (pages, layouts, loading, error, not-found) — never define components or utility functions inside route files; those belong in `src/features/<feature>/components/` and `packages/utils`

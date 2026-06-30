@@ -93,6 +93,33 @@ are in `PUBLIC_ROUTES` (see `packages/auth/src/constants.ts`).
 
 ---
 
+## Feature Architecture
+
+`app/` is for **routing only** — pages, layouts, loading.tsx, error.tsx, not-found.tsx. Never
+define components or utility functions inside route files.
+
+All feature logic lives under `src/features/<feature>/`:
+
+```
+src/features/
+  auth/
+    components/   — SignInForm, SignUpForm, ForgotPasswordForm, ResetPasswordForm,
+                    SocialAuthButtons, LogoutButton, PasswordStrengthMeter, PasswordMatchIndicator
+    schemas/      — auth.ts (Zod form schemas)
+  trips/
+    components/   — DashboardView, TripDetailView, TripCard, TripStats, MemoryCard
+```
+
+Rules:
+- Component files go in `src/features/<feature>/components/<ComponentName>.tsx`
+- Route files (`app/`) only extract params and render one feature view component — no queries, no auth calls, no JSX logic
+- View components (e.g. `DashboardView`, `TripDetailView`) are `'use client'` and own all data fetching via `@passe/hooks`
+- Date/time formatting and other utilities go in `packages/utils`, imported via `@passe/utils`
+- Reusable API hooks go in `packages/hooks`, imported via `@passe/hooks`
+- Import feature components using the `@/` alias: `import { DashboardView } from '@/features/trips/components/DashboardView'`
+
+---
+
 ## Key rules
 
 - `auth()` and `currentUser()` are async in Next.js 16 — always `await` them
@@ -114,6 +141,7 @@ app/api/
   trips/[id]/route.ts                    — GET, PATCH, DELETE /api/trips/[id]
   trips/[id]/memories/route.ts           — GET, POST /api/trips/[id]/memories
   trips/[id]/memories/[memoryId]/route.ts — PATCH, DELETE /api/trips/[id]/memories/[memoryId]
+  memories/route.ts                      — GET /api/memories (all user memories)
   webhooks/clerk/route.ts                — POST /api/webhooks/clerk
 ```
 
@@ -230,6 +258,7 @@ export function TripList() {
 | `useUpdateTrip()` | PATCH /api/trips/[id] |
 | `useDeleteTrip()` | DELETE /api/trips/[id] |
 | `useMemories(tripId)` | GET /api/trips/[id]/memories |
+| `useAllMemories()` | GET /api/memories (all user memories) |
 | `useCreateMemory()` | POST /api/trips/[id]/memories |
 | `useUpdateMemory()` | PATCH /api/trips/[id]/memories/[id] |
 | `useDeleteMemory()` | DELETE /api/trips/[id]/memories/[id] |

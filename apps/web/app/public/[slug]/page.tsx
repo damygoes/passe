@@ -2,16 +2,11 @@ import { and, desc, eq } from 'drizzle-orm'
 import { notFound } from 'next/navigation'
 import { db } from '@passe/db/client'
 import { trips, users } from '@passe/db/schema'
-import { Badge } from '@passe/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@passe/ui/card'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@passe/ui/empty'
+import { TripCard } from '@/features/trips/components/TripCard'
 
 interface Props {
   params: Promise<{ slug: string }>
-}
-
-function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' }).format(date)
 }
 
 export default async function PortfolioPage({ params }: Props) {
@@ -31,7 +26,6 @@ export default async function PortfolioPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Portfolio header */}
       <header className="border-b px-6 py-10">
         <div className="mx-auto max-w-4xl">
           <p className="mb-1 text-xs uppercase tracking-widest text-muted-foreground">Portfolio</p>
@@ -43,7 +37,6 @@ export default async function PortfolioPage({ params }: Props) {
         </div>
       </header>
 
-      {/* Trips */}
       <main className="mx-auto max-w-4xl px-6 py-10">
         {publicTrips.length === 0 ? (
           <Empty className="border">
@@ -57,34 +50,12 @@ export default async function PortfolioPage({ params }: Props) {
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {publicTrips.map((trip) => (
-              <Card key={trip.id}>
-                {trip.coverImageUrl && (
-                  <img src={trip.coverImageUrl} alt={`Cover photo for ${trip.title}`} />
-                )}
-                <CardHeader>
-                  <CardTitle>{trip.title}</CardTitle>
-                  <CardDescription>
-                    {formatDate(trip.startDate)} – {formatDate(trip.endDate)}
-                  </CardDescription>
-                </CardHeader>
-                {trip.countries.length > 0 && (
-                  <CardContent>
-                    <div className="flex flex-wrap gap-1">
-                      {trip.countries.map((country) => (
-                        <Badge key={country} variant="outline">
-                          {country}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                )}
-              </Card>
+              <TripCard key={trip.id} trip={trip} />
             ))}
           </div>
         )}
       </main>
 
-      {/* Footer */}
       <footer className="border-t px-6 py-6 text-center text-xs text-muted-foreground">
         Powered by{' '}
         <a href="/" className="underline underline-offset-4 hover:text-foreground">

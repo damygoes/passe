@@ -12,6 +12,14 @@ export function useMemories(tripId: string) {
   })
 }
 
+export function useAllMemories() {
+  const { fetchApi } = usePasseApi()
+  return useQuery({
+    queryKey: queryKeys.allMemories(),
+    queryFn: () => fetchApi<Memory[]>('/api/memories'),
+  })
+}
+
 export function useCreateMemory() {
   const { fetchApi } = usePasseApi()
   const queryClient = useQueryClient()
