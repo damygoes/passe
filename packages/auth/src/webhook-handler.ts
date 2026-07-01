@@ -28,6 +28,7 @@ export async function syncClerkUser(event: ClerkWebhookEvent): Promise<void> {
       target: users.id,
       set: {
         email,
+        username: u.username ?? u.id,
         displayName,
         avatarUrl: u.image_url || null,
       },

@@ -1,3 +1,4 @@
+import { clerkClient } from '@clerk/nextjs/server'
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
 import { db, users } from '@passe/db'
 import { createLogger } from '@passe/logger'
@@ -48,6 +49,21 @@ export async function PATCH(req: Request) {
     }
   }
 
+  // Sync displayName and username to Clerk (source of truth for auth)
+  try {
+    const client = await clerkClient()
+    await client.users.updateUser(userId, {
+      ...(parsed.data.displayName ? { firstName: parsed.data.displayName, lastName: '' } : {}),
+      ...(parsed.data.username ? { username: parsed.data.username } : {}),
+    })
+  } catch (err) {
+    log.error('Clerk sync failed', {
+      userId,
+      error: err instanceof Error ? err.message : String(err),
+    })
+    return apiError('Failed to sync profile', 500)
+  }
+
   let updated
   try {
     ;[updated] = await db
@@ -73,4 +89,22 @@ export async function PATCH(req: Request) {
   }
 
   return apiSuccess(validatedResponse.data)
+}
+
+// DELETE /api/user — permanently delete the current user's account
+export async function DELETE() {
+  const { userId, error } = await requireAuth()
+  if (error) return error
+
+  try {
+    const client = await clerkClient()
+    await client.users.deleteUser(userId)
+    return apiSuccess({ deleted: true })
+  } catch (err) {
+    log.error('Account deletion failed', {
+      userId,
+      error: err instanceof Error ? err.message : String(err),
+    })
+    return apiError('Failed to delete account', 500)
+  }
 }

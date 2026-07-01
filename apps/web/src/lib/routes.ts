@@ -7,6 +7,8 @@ export const routes = {
   resetPassword: '/reset-password',
   ssoCallback: '/sso-callback',
   tripsNew: '/trips/new',
+  account: '/account',
+  billing: '/billing',
 } as const
 
 export const tripRoute = (id: string) => `/trips/${id}` as const

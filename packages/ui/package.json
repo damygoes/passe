@@ -4,6 +4,7 @@
   "private": true,
   "exports": {
     ".": "./src/index.ts",
+    "./alert-dialog": "./src/alert-dialog/AlertDialog.tsx",
     "./avatar": "./src/avatar/Avatar.tsx",
     "./badge": "./src/badge/Badge.tsx",
     "./button": "./src/button/Button.tsx",

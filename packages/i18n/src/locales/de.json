@@ -126,5 +126,57 @@
       "no_memories_description": "Füge Fotos, Notizen und GPS-getaggte Momente aus dieser Reise hinzu.",
       "add_first_memory": "Erste Erinnerung hinzufügen"
     }
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "portfolio": "Mein Portfolio",
+    "account": "Konto",
+    "billing": "Abrechnung",
+    "sign_out": "Abmelden"
+  },
+  "account": {
+    "title": "Kontoeinstellungen",
+    "tabs": {
+      "profile": "Profil",
+      "security": "Sicherheit",
+      "danger": "Gefahrenbereich"
+    },
+    "profile": {
+      "title": "Profil",
+      "description": "Aktualisiere deinen Anzeigenamen, Benutzernamen und deine Bio",
+      "display_name_label": "Anzeigename",
+      "username_label": "Benutzername",
+      "bio_label": "Bio",
+      "bio_placeholder": "Erzähl der Welt von dir…",
+      "save": "Änderungen speichern",
+      "saving": "Wird gespeichert…",
+      "success": "Profil aktualisiert"
+    },
+    "security": {
+      "title": "Sicherheit",
+      "description": "Ändere dein Kontopasswort",
+      "current_password_label": "Aktuelles Passwort",
+      "new_password_label": "Neues Passwort",
+      "confirm_password_label": "Neues Passwort bestätigen",
+      "update": "Passwort aktualisieren",
+      "updating": "Wird aktualisiert…",
+      "success": "Passwort aktualisiert"
+    },
+    "danger": {
+      "title": "Gefahrenbereich",
+      "description": "Unwiderrufliche und zerstörerische Aktionen",
+      "delete_title": "Konto löschen",
+      "delete_description": "Lösche dauerhaft dein Konto, alle Reisen und Erinnerungen. Dies kann nicht rückgängig gemacht werden.",
+      "confirm_label": "Tippe \"delete my account\" zur Bestätigung",
+      "confirm_placeholder": "delete my account",
+      "delete": "Mein Konto löschen",
+      "deleting": "Wird gelöscht…",
+      "warning": "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden."
+    },
+    "errors": {
+      "update_failed": "Profil konnte nicht aktualisiert werden. Bitte versuche es erneut.",
+      "password_failed": "Passwort konnte nicht aktualisiert werden. Bitte überprüfe dein aktuelles Passwort.",
+      "delete_failed": "Konto konnte nicht gelöscht werden. Bitte versuche es erneut."
+    }
   }
 }

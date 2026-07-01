@@ -12,6 +12,8 @@ import {
   DropdownMenuTrigger,
 } from '@passe/ui/dropdown-menu'
 import { Icon } from '@passe/ui/icon'
+import type { IconName } from '@passe/ui/icon'
+import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/navigation'
 import { routes } from '@/lib/routes'
 
@@ -21,9 +23,21 @@ interface NavbarUserMenuProps {
   avatarUrl: string | null
 }
 
+interface NavMenuItem {
+  key: 'account' | 'billing'
+  icon: IconName
+  href: string
+}
+
+const NAV_MENU_ITEMS: NavMenuItem[] = [
+  { key: 'account', icon: 'user', href: routes.account },
+  { key: 'billing', icon: 'credit-card', href: routes.billing },
+]
+
 export function NavbarUserMenu({ displayName, email, avatarUrl }: NavbarUserMenuProps) {
   const { signOut } = useClerk()
   const router = useRouter()
+  const t = useTranslations('nav')
 
   const initials = displayName
     .split(' ')
@@ -63,14 +77,12 @@ export function NavbarUserMenu({ displayName, email, avatarUrl }: NavbarUserMenu
         <DropdownMenuSeparator />
 
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Icon name="user" size="sm" />
-            Account
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Icon name="credit-card" size="sm" />
-            Billing
-          </DropdownMenuItem>
+          {NAV_MENU_ITEMS.map((item) => (
+            <DropdownMenuItem key={item.key} onClick={() => router.push(item.href)}>
+              <Icon name={item.icon} size="sm" />
+              {t(item.key)}
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
@@ -80,7 +92,7 @@ export function NavbarUserMenu({ displayName, email, avatarUrl }: NavbarUserMenu
           onClick={() => signOut(() => router.push(routes.signIn))}
         >
           <Icon name="logout" size="sm" />
-          Sign out
+          {t('sign_out')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

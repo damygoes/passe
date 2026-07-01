@@ -1,5 +1,6 @@
 import { buttonVariants } from '@passe/ui/button'
 import { Navbar, NavbarBrand, NavbarLinks } from '@passe/ui/navbar'
+import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import { routes, publicPortfolioRoute } from '@/lib/routes'
 import { LocaleDropdownMenu } from '@/components/shared/LocaleDropdownMenu'
@@ -14,7 +15,9 @@ interface AppNavbarProps {
   username: string | null
 }
 
-export function AppNavbar({ displayName, email, avatarUrl, username }: AppNavbarProps) {
+export async function AppNavbar({ displayName, email, avatarUrl, username }: AppNavbarProps) {
+  const t = await getTranslations('nav')
+
   return (
     <Navbar>
       <NavbarBrand>
@@ -32,14 +35,14 @@ export function AppNavbar({ displayName, email, avatarUrl, username }: AppNavbar
           href={routes.dashboard}
           className={buttonVariants({ variant: 'ghost', size: 'sm' })}
         >
-          Dashboard
+          {t('dashboard')}
         </Link>
         {username && (
           <a
             href={publicPortfolioRoute(username)}
             className={buttonVariants({ variant: 'ghost', size: 'sm' })}
           >
-            My Portfolio
+            {t('portfolio')}
           </a>
         )}
       </NavbarLinks>

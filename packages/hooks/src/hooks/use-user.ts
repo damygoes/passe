@@ -22,3 +22,14 @@ export function useUpdateUser() {
     },
   })
 }
+
+export function useDeleteAccount() {
+  const { fetchApi } = usePasseApi()
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: () => fetchApi<{ deleted: boolean }>('/api/user', { method: 'DELETE' }),
+    onSuccess: () => {
+      queryClient.clear()
+    },
+  })
+}

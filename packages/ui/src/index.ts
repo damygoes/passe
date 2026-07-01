@@ -1,4 +1,18 @@
 export {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogOverlay,
+  AlertDialogPortal,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from './alert-dialog/AlertDialog'
+export {
   Avatar,
   AvatarBadge,
   AvatarFallback,
@@ -43,6 +57,7 @@ export {
   EmptyTitle,
 } from './empty/Empty'
 export { Icon } from './icon/Icon'
+export { Input } from './input/Input'
 export { Navbar, NavbarBrand, NavbarLinks, NavbarUser } from './navbar/Navbar'
 export {
   PageHeader,
@@ -50,7 +65,6 @@ export {
   PageHeaderDescription,
   PageHeaderTitle,
 } from './page-header/PageHeader'
-export { Input } from './input/Input'
 export { Separator } from './separator/Separator'
 export { Skeleton } from './skeleton/Skeleton'
 export { Textarea } from './textarea/Textarea'

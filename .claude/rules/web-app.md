@@ -56,9 +56,15 @@ import { UserSchema, type User } from '@passe/types'
 
 ## Data Fetching
 
-- Prefer `async/await` in Server Components over `useEffect` + fetch
-- Use `fetch` with appropriate `cache` options for static/dynamic data
-- Keep data fetching in page/layout files or dedicated server action files
+**Protected views** (under `app/[locale]/(protected)/`) must fetch all data via `@passe/hooks`:
+- Route pages are pure shells: `export default function Page() { return <SomeView /> }`
+- Views are `'use client'` components that call hooks from `@passe/hooks`
+- Hooks call API routes under `app/api/` which contain all Drizzle + Clerk SDK logic
+- Never call `currentUser()`, `auth()`, or `db.*` inside a route page or view component
+
+**Public views** (portfolio pages under `app/u/`) are the only exception — they are `async` server
+components that query the DB directly via `@passe/db/client` because `@passe/hooks` is not
+available outside the `ApiProvider` context.
 
 ## Feature Architecture
 

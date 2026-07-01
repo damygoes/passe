@@ -126,5 +126,57 @@
       "no_memories_description": "Add photos, notes, and GPS-tagged moments from this trip.",
       "add_first_memory": "Add first memory"
     }
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "portfolio": "My Portfolio",
+    "account": "Account",
+    "billing": "Billing",
+    "sign_out": "Sign out"
+  },
+  "account": {
+    "title": "Account Settings",
+    "tabs": {
+      "profile": "Profile",
+      "security": "Security",
+      "danger": "Danger Zone"
+    },
+    "profile": {
+      "title": "Profile",
+      "description": "Update your display name, username, and bio",
+      "display_name_label": "Display name",
+      "username_label": "Username",
+      "bio_label": "Bio",
+      "bio_placeholder": "Tell the world about yourself…",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "success": "Profile updated"
+    },
+    "security": {
+      "title": "Security",
+      "description": "Change your account password",
+      "current_password_label": "Current password",
+      "new_password_label": "New password",
+      "confirm_password_label": "Confirm new password",
+      "update": "Update password",
+      "updating": "Updating…",
+      "success": "Password updated"
+    },
+    "danger": {
+      "title": "Danger Zone",
+      "description": "Irreversible and destructive actions",
+      "delete_title": "Delete account",
+      "delete_description": "Permanently delete your account, all trips, and memories. This cannot be undone.",
+      "confirm_label": "Type \"delete my account\" to confirm",
+      "confirm_placeholder": "delete my account",
+      "delete": "Delete my account",
+      "deleting": "Deleting…",
+      "warning": "This action is permanent and cannot be reversed."
+    },
+    "errors": {
+      "update_failed": "Failed to update profile. Please try again.",
+      "password_failed": "Failed to update password. Please check your current password.",
+      "delete_failed": "Failed to delete account. Please try again."
+    }
   }
 }

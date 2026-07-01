@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom'
 import { Button, buttonVariants } from '@passe/ui/button'
 import { Separator } from '@passe/ui/separator'
 import { cn } from '@passe/utils'
+import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { routes, publicPortfolioRoute } from '@/lib/routes'
 import { LocaleDropdownMenu } from '@/components/shared/LocaleDropdownMenu'
@@ -18,6 +19,8 @@ interface MobileMenuProps {
 export function MobileMenu({ username }: MobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const t = useTranslations('nav')
+
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -70,7 +73,7 @@ export function MobileMenu({ username }: MobileMenuProps) {
                   'w-full justify-center uppercase text-xl',
                 )}
               >
-                Dashboard
+                {t('dashboard')}
               </Link>
               {username && (
                 <a
@@ -78,12 +81,32 @@ export function MobileMenu({ username }: MobileMenuProps) {
                   onClick={close}
                   className={cn(
                     buttonVariants({ variant: 'ghost', size: 'sm' }),
-                    'w-full justify-start',
+                    'w-full justify-center uppercase text-xl',
                   )}
                 >
-                  My Portfolio
+                  {t('portfolio')}
                 </a>
               )}
+              <Link
+                href={routes.account}
+                onClick={close}
+                className={cn(
+                  buttonVariants({ variant: 'ghost', size: 'sm' }),
+                  'w-full justify-center uppercase text-xl',
+                )}
+              >
+                {t('account')}
+              </Link>
+              <Link
+                href={routes.billing}
+                onClick={close}
+                className={cn(
+                  buttonVariants({ variant: 'ghost', size: 'sm' }),
+                  'w-full justify-center uppercase text-xl',
+                )}
+              >
+                {t('billing')}
+              </Link>
 
               <Separator />
 

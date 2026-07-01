@@ -1,7 +1,9 @@
 import { HugeiconsIcon } from '@hugeicons/react'
 import { forwardRef } from 'react'
 import { iconMap } from './icon-map'
-import type { IconName, IconSize } from './types'
+import type { IconName, IconPosition, IconSize } from './types'
+
+export type { IconName, IconPosition, IconSize }
 
 const sizeMap: Record<IconSize, number> = {
   xs: 12,

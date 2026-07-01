@@ -2,18 +2,21 @@
 description: Scaffold a new protected page under app/(protected)/ with the established layout pattern
 ---
 
-Create a new protected route at `apps/web/app/(protected)/$ARGUMENTS/page.tsx`.
+Create a new protected route at `apps/web/app/[locale]/(protected)/$ARGUMENTS/page.tsx`.
 
 Follow these rules exactly:
-1. The file goes in `app/(protected)/<route-name>/page.tsx`
-2. Export a default Server Component (no `'use client'` unless the page genuinely needs client state)
-3. If the page needs the current user, use `auth()` from `@clerk/nextjs/server`:
+1. The route page is a **pure shell** — zero data fetching, zero logic, zero component definitions
+2. The page file contains one delegation: `return <SomeView />`
+3. The actual view lives in `apps/web/src/features/<feature>/views/<Name>View.tsx` — create it too
+4. The view is a `'use client'` component that calls hooks from `@passe/hooks` for data
+5. For dynamic params (e.g. `/trips/[id]`), the page can be `async` only to unwrap `params`:
    ```tsx
-   import { auth } from '@clerk/nextjs/server'
-   const { userId } = await auth()
+   export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+     const { id } = await params
+     return <SomeView id={id} />
+   }
    ```
-4. For DB queries, import from `@passe/db/client` (server-only) or `@passe/db/schema` (types only)
-5. Use Tailwind classes that reference the design system tokens (bg-background, text-foreground, text-primary, etc.) — never hardcode hex colors
-6. The page is automatically protected by `proxy.ts` — no need to call `auth.protect()` in the page itself
+6. **Never** put `auth()`, `currentUser()`, or any `@passe/db` imports in a protected page file
+7. The page is automatically protected by `proxy.ts` — no need for auth checks in the page
 
-Scaffold the file with a minimal working structure, then list what the developer still needs to fill in.
+Scaffold both the page file and the view stub, then list what the developer still needs to fill in.
