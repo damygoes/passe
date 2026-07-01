@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { LOCALES } from '@passe/i18n'
+import { routes } from '@/lib/routes'
 import type { ReactNode } from 'react'
 
 interface Props {
@@ -21,7 +22,10 @@ export default async function LocaleLayout({ children, params }: Props) {
   const messages = await getMessages()
 
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      signInFallbackRedirectUrl={`/${locale}${routes.dashboard}`}
+      signUpFallbackRedirectUrl={`/${locale}${routes.dashboard}`}
+    >
       <NextIntlClientProvider messages={messages}>
         <ApiProvider>{children}</ApiProvider>
       </NextIntlClientProvider>

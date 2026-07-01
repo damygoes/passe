@@ -160,7 +160,9 @@
       "confirm_password_label": "Confirm new password",
       "update": "Update password",
       "updating": "Updating…",
-      "success": "Password updated"
+      "success": "Password updated",
+      "verify_title": "Verify your identity",
+      "verify_description": "Enter the verification code we sent to {email}"
     },
     "danger": {
       "title": "Danger Zone",
@@ -176,7 +178,8 @@
     "errors": {
       "update_failed": "Failed to update profile. Please try again.",
       "password_failed": "Failed to update password. Please check your current password.",
-      "delete_failed": "Failed to delete account. Please try again."
+      "delete_failed": "Failed to delete account. Please try again.",
+      "reverification_failed": "Verification failed. Please try again."
     }
   }
 }

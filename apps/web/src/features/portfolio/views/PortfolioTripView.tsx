@@ -1,10 +1,10 @@
-import { routes, publicPortfolioRoute } from '@/lib/routes'
 import { db } from '@passe/db/client'
 import { memories, trips, users } from '@passe/db/schema'
 import { and, eq } from 'drizzle-orm'
 import { notFound } from 'next/navigation'
-import { NoPublicMemoriesEmpty } from '../components/NoPublicMemoriesEmpty'
-import { PublicMemoryCard } from '../components/PublicMemoryCard'
+import { PortfolioFooter } from '../components/PortfolioFooter'
+import { PortfolioMemoryGrid } from '../components/PortfolioMemoryGrid'
+import { PortfolioTripHeader } from '../components/PortfolioTripHeader'
 
 interface Props {
   slug: string
@@ -29,40 +29,11 @@ export async function PortfolioTripView({ slug, tripId }: Props) {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b px-6 py-10">
-        <div className="mx-auto max-w-4xl">
-          <a
-            href={publicPortfolioRoute(slug)}
-            className="mb-6 inline-block text-xs text-muted-foreground underline-offset-4 hover:underline"
-          >
-            ← {user.displayName}&apos;s portfolio
-          </a>
-          <h1 className="font-heading text-3xl font-semibold">{trip.title}</h1>
-          {trip.description && <p className="mt-2 text-muted-foreground">{trip.description}</p>}
-          {trip.countries.length > 0 && (
-            <p className="mt-3 text-sm text-muted-foreground">{trip.countries.join(' · ')}</p>
-          )}
-        </div>
-      </header>
-
+      <PortfolioTripHeader slug={slug} user={user} trip={trip} />
       <main className="mx-auto max-w-4xl px-6 py-10">
-        {publicMemories.length === 0 ? (
-          <NoPublicMemoriesEmpty />
-        ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {publicMemories.map((memory) => (
-              <PublicMemoryCard key={memory.id} memory={memory} />
-            ))}
-          </div>
-        )}
+        <PortfolioMemoryGrid memories={publicMemories} />
       </main>
-
-      <footer className="border-t px-6 py-6 text-center text-xs text-muted-foreground">
-        Powered by{' '}
-        <a href={routes.home} className="underline underline-offset-4 hover:text-foreground">
-          Passé.
-        </a>
-      </footer>
+      <PortfolioFooter />
     </div>
   )
 }

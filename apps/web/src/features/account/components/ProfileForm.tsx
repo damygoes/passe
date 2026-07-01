@@ -8,6 +8,7 @@ import { Icon } from '@passe/ui/icon'
 import { Input } from '@passe/ui/input'
 import { Textarea } from '@passe/ui/textarea'
 import { useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { UpdateUserSchema, type ProfileFormValues } from '../schemas/account'
@@ -22,6 +23,7 @@ interface ProfileFormProps {
 export function ProfileForm({ displayName, username, bio, email }: ProfileFormProps) {
   const t = useTranslations('account.profile')
   const tErrors = useTranslations('account.errors')
+  const router = useRouter()
   const { mutateAsync, isPending } = useUpdateUser()
   const [globalError, setGlobalError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
@@ -48,6 +50,7 @@ export function ProfileForm({ displayName, username, bio, email }: ProfileFormPr
     try {
       await mutateAsync(data)
       setSuccess(true)
+      router.refresh()
     } catch (err) {
       if (isClerkAPIResponseError(err)) {
         setGlobalError(err.errors[0]?.longMessage ?? err.errors[0]?.message ?? tErrors('update_failed'))

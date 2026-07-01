@@ -160,7 +160,9 @@
       "confirm_password_label": "Neues Passwort bestätigen",
       "update": "Passwort aktualisieren",
       "updating": "Wird aktualisiert…",
-      "success": "Passwort aktualisiert"
+      "success": "Passwort aktualisiert",
+      "verify_title": "Identität bestätigen",
+      "verify_description": "Gib den Bestätigungscode ein, den wir an {email} gesendet haben"
     },
     "danger": {
       "title": "Gefahrenbereich",
@@ -176,7 +178,8 @@
     "errors": {
       "update_failed": "Profil konnte nicht aktualisiert werden. Bitte versuche es erneut.",
       "password_failed": "Passwort konnte nicht aktualisiert werden. Bitte überprüfe dein aktuelles Passwort.",
-      "delete_failed": "Konto konnte nicht gelöscht werden. Bitte versuche es erneut."
+      "delete_failed": "Konto konnte nicht gelöscht werden. Bitte versuche es erneut.",
+      "reverification_failed": "Überprüfung fehlgeschlagen. Bitte versuche es erneut."
     }
   }
 }
