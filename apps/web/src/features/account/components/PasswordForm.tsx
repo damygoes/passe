@@ -1,8 +1,10 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
+import { PasswordMatchIndicator } from '@/features/auth/components/PasswordMatchIndicator'
+import { PasswordStrengthMeter } from '@/features/auth/components/PasswordStrengthMeter'
 import { useUser } from '@clerk/nextjs'
 import { isClerkAPIResponseError } from '@clerk/nextjs/errors'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@passe/ui/button'
 import { Icon } from '@passe/ui/icon'
 import { Input } from '@passe/ui/input'
@@ -18,14 +20,22 @@ export function PasswordForm() {
   const [globalError, setGlobalError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false)
+  const [showNewPassword, setShowNewPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<PasswordFormValues>({
     resolver: zodResolver(PasswordSchema),
   })
+
+  const newPassword = watch('newPassword', '')
+  const confirmPassword = watch('confirmPassword', '')
 
   useEffect(() => {
     if (!success) return
@@ -48,7 +58,9 @@ export function PasswordForm() {
       reset()
     } catch (err) {
       if (isClerkAPIResponseError(err)) {
-        setGlobalError(err.errors[0]?.longMessage ?? err.errors[0]?.message ?? tErrors('password_failed'))
+        setGlobalError(
+          err.errors[0]?.longMessage ?? err.errors[0]?.message ?? tErrors('password_failed'),
+        )
       } else {
         setGlobalError(tErrors('password_failed'))
       }
@@ -78,10 +90,11 @@ export function PasswordForm() {
           </label>
           <Input
             id="currentPassword"
-            type="password"
+            type={showCurrentPassword ? 'text' : 'password'}
             autoComplete="current-password"
-            icon="lock"
-            iconPosition="start"
+            icon={showCurrentPassword ? 'eye-off' : 'eye'}
+            iconPosition="end"
+            onIconClick={() => setShowCurrentPassword((v) => !v)}
             aria-invalid={!!errors.currentPassword}
             {...register('currentPassword')}
           />
@@ -96,13 +109,15 @@ export function PasswordForm() {
           </label>
           <Input
             id="newPassword"
-            type="password"
+            type={showNewPassword ? 'text' : 'password'}
             autoComplete="new-password"
-            icon="lock"
-            iconPosition="start"
+            icon={showNewPassword ? 'eye-off' : 'eye'}
+            iconPosition="end"
+            onIconClick={() => setShowNewPassword((v) => !v)}
             aria-invalid={!!errors.newPassword}
             {...register('newPassword')}
           />
+          <PasswordStrengthMeter password={newPassword} />
           {errors.newPassword && (
             <p className="text-xs text-destructive">{errors.newPassword.message}</p>
           )}
@@ -114,13 +129,15 @@ export function PasswordForm() {
           </label>
           <Input
             id="confirmPassword"
-            type="password"
+            type={showConfirmPassword ? 'text' : 'password'}
             autoComplete="new-password"
-            icon="lock"
-            iconPosition="start"
+            icon={showConfirmPassword ? 'eye-off' : 'eye'}
+            iconPosition="end"
+            onIconClick={() => setShowConfirmPassword((v) => !v)}
             aria-invalid={!!errors.confirmPassword}
             {...register('confirmPassword')}
           />
+          <PasswordMatchIndicator password={newPassword} confirmPassword={confirmPassword} />
           {errors.confirmPassword && (
             <p className="text-xs text-destructive">{errors.confirmPassword.message}</p>
           )}
