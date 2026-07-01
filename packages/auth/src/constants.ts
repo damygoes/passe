@@ -15,7 +15,6 @@ export const PUBLIC_ROUTES = [
   '/:locale/forgot-password(.*)',
   '/:locale/reset-password(.*)',
   '/:locale/sso-callback(.*)',
-  '/public/(.*)', // public portfolios
-  '/p/(.*)', // legacy portfolio URLs — redirect to /public/
+  '/u/(.*)', // public portfolios
   '/api/webhooks/(.*)', // webhook endpoints are secured by signature verification, not Clerk auth
 ] as const

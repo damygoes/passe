@@ -1,23 +1,19 @@
-import { TripCard } from '@/features/trips/components/trip/TripCard'
 import { routes } from '@/lib/routes'
 import { db } from '@passe/db/client'
 import { trips, users } from '@passe/db/schema'
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@passe/ui/empty'
 import { and, desc, eq } from 'drizzle-orm'
 import { notFound } from 'next/navigation'
+import { NoPublicTripsEmpty } from '../components/NoPublicTripsEmpty'
+import { PortfolioTripCard } from '../components/PortfolioTripCard'
 
 interface Props {
-  params: Promise<{ slug: string }>
+  slug: string
 }
 
-export default async function PortfolioPage({ params }: Props) {
-  const { slug } = await params
-
+export async function PortfolioView({ slug }: Props) {
   const [user] = await db.select().from(users).where(eq(users.username, slug)).limit(1)
 
-  if (!user) {
-    notFound()
-  }
+  if (!user) notFound()
 
   const publicTrips = await db
     .select()
@@ -40,18 +36,11 @@ export default async function PortfolioPage({ params }: Props) {
 
       <main className="mx-auto max-w-4xl px-6 py-10">
         {publicTrips.length === 0 ? (
-          <Empty className="border">
-            <EmptyHeader>
-              <EmptyTitle>Nothing to see here yet</EmptyTitle>
-              <EmptyDescription>
-                {user.displayName} hasn&apos;t shared any public trips yet.
-              </EmptyDescription>
-            </EmptyHeader>
-          </Empty>
+          <NoPublicTripsEmpty displayName={user.displayName} />
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {publicTrips.map((trip) => (
-              <TripCard key={trip.id} trip={trip} />
+              <PortfolioTripCard key={trip.id} trip={trip} />
             ))}
           </div>
         )}

@@ -11,5 +11,4 @@ export const routes = {
 
 export const tripRoute = (id: string) => `/trips/${id}` as const
 
-export const publicPortfolioRoute = (username: string) => `/public/${username}` as const
-export const legacyPortfolioRoute = (slug: string) => `/p/${slug}` as const
+export const publicPortfolioRoute = (username: string) => `/u/${username}` as const

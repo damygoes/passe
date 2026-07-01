@@ -121,15 +121,20 @@ src/features/
                     SocialAuthButtons, LogoutButton, PasswordStrengthMeter, PasswordMatchIndicator
     schemas/      — auth.ts (Zod form schemas)
   trips/
-    components/   — DashboardView, TripDetailView, TripCard, TripStats, MemoryCard,
-                    NoTripsEmpty, NoMemoriesEmpty
+    components/   — TripCard, TripStats, MemoryCard, NoTripsEmpty, NoMemoriesEmpty
+    views/        — DashboardView, TripDetailView
+    utils/        — getUniqueCities, getUniqueStatsFromTrips
+  portfolio/
+    components/   — PortfolioTripCard, NoPublicTripsEmpty
+    views/        — PortfolioView
 ```
 
 Rules:
 
 - Component files go in `src/features/<feature>/components/<ComponentName>.tsx`
 - Route files (`app/`) only extract params and render one feature view component — no queries, no auth calls, no JSX logic
-- View components (e.g. `DashboardView`, `TripDetailView`) are `'use client'` and own all data fetching via `@passe/hooks`
+- **Protected views** (under `app/[locale]/(protected)/`) are `'use client'` and own all data fetching via `@passe/hooks`
+- **Public views** (under `app/` outside `[locale]/`, e.g. `app/u/[slug]/`) are `async` server components that fetch directly from the DB via `@passe/db/client`. They do NOT have access to `ClerkProvider`, `NextIntlClientProvider`, or `ApiProvider` — do not use `useTranslations`, Clerk hooks, or `@passe/hooks` in these views or their child components
 - Date/time formatting and other utilities go in `packages/utils`, imported via `@passe/utils`
 - Reusable API hooks go in `packages/hooks`, imported via `@passe/hooks`
 - Import feature components using the `@/` alias: `import { DashboardView } from '@/features/trips/components/DashboardView'`

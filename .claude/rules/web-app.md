@@ -77,9 +77,18 @@ src/features/
                     SocialAuthButtons, LogoutButton, PasswordStrengthMeter, PasswordMatchIndicator
     schemas/      — auth.ts (Zod form schemas)
   trips/
-    components/   — DashboardView, TripDetailView, TripCard, TripStats, MemoryCard,
-                    NoTripsEmpty, NoMemoriesEmpty
+    components/   — TripCard, TripStats, MemoryCard, NoTripsEmpty, NoMemoriesEmpty
+    views/        — DashboardView, TripDetailView
+    utils/        — getUniqueCities, getUniqueStatsFromTrips
+  portfolio/
+    components/   — PortfolioTripCard, NoPublicTripsEmpty
+    views/        — PortfolioView
 ```
+
+### Protected vs public views
+
+- **Protected views** live under `app/[locale]/(protected)/` and are wrapped by `ClerkProvider`, `NextIntlClientProvider`, and `ApiProvider`. Their views are `'use client'` components using `@passe/hooks` for data fetching.
+- **Public views** live directly under `app/` (e.g. `app/u/[slug]/`) and are NOT wrapped by those providers. Their views are `async` server components that query the DB directly via `@passe/db/client`. Do not use `useTranslations`, Clerk hooks, or `@passe/hooks` in public views or their child components.
 
 ### Code conventions
 
