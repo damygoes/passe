@@ -1,4 +1,5 @@
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
+import { fromDbMemory, toDbMemoryValues } from '@/lib/memory'
 import { db, memories, users } from '@passe/db'
 import { canMakeMemoryPublic } from '@passe/auth/plan-gates'
 import { createLogger } from '@passe/logger'
@@ -42,7 +43,7 @@ export async function PATCH(
   try {
     ;[updated] = await db
       .update(memories)
-      .set({ ...parsed.data, updatedAt: new Date() })
+      .set({ ...toDbMemoryValues(parsed.data), updatedAt: new Date() })
       .where(and(eq(memories.id, memoryId), eq(memories.tripId, tripId), eq(memories.userId, userId)))
       .returning()
   } catch (err) {
@@ -55,7 +56,7 @@ export async function PATCH(
 
   if (!updated) return apiError('Memory not found', 404)
 
-  const validatedResponse = MemorySchema.safeParse(updated)
+  const validatedResponse = MemorySchema.safeParse(fromDbMemory(updated))
   if (!validatedResponse.success) {
     log.error('DB output failed schema validation', {
       memoryId,

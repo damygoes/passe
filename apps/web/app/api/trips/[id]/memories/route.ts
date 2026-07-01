@@ -1,8 +1,10 @@
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
-import { db, memories, trips } from '@passe/db'
+import { fromDbMemory, toDbMemoryValues } from '@/lib/memory'
+import { db, memories, trips, users } from '@passe/db'
+import { canAddMemory } from '@passe/auth/plan-gates'
 import { createLogger } from '@passe/logger'
 import { CreateMemorySchema, MemorySchema } from '@passe/types/memory'
-import { and, desc, eq } from 'drizzle-orm'
+import { and, count, desc, eq } from 'drizzle-orm'
 
 const log = createLogger({ context: { module: 'api/trips/id/memories' } })
 
@@ -25,7 +27,7 @@ export async function GET(_req: Request, ctx: RouteContext<'/api/trips/[id]/memo
     orderBy: desc(memories.capturedAt),
   })
 
-  const parsed = MemorySchema.array().safeParse(tripMemories)
+  const parsed = MemorySchema.array().safeParse(tripMemories.map(fromDbMemory))
   if (!parsed.success) {
     log.error('DB output failed schema validation', { tripId, issues: parsed.error.issues })
     return apiError('Invalid memory data', 500)
@@ -48,6 +50,19 @@ export async function POST(req: Request, ctx: RouteContext<'/api/trips/[id]/memo
 
   if (!trip) return apiError('Trip not found', 404)
 
+  const [user] = await db.select({ plan: users.plan }).from(users).where(eq(users.id, userId)).limit(1)
+  if (!user) return apiError('User not found', 404)
+
+  const countResult = await db
+    .select({ memoryCount: count() })
+    .from(memories)
+    .where(eq(memories.tripId, tripId))
+  const currentCount = countResult[0]?.memoryCount ?? 0
+
+  if (!canAddMemory(user.plan, currentCount)) {
+    return apiError('Memory limit reached for your plan', 403)
+  }
+
   const body = await req.json()
   const parsed = CreateMemorySchema.safeParse({ ...body, tripId })
 
@@ -59,7 +74,7 @@ export async function POST(req: Request, ctx: RouteContext<'/api/trips/[id]/memo
   try {
     ;[memory] = await db
       .insert(memories)
-      .values({ ...parsed.data, userId })
+      .values({ ...toDbMemoryValues(parsed.data), userId })
       .returning()
   } catch (err) {
     log.error('DB write failed', {
@@ -69,7 +84,9 @@ export async function POST(req: Request, ctx: RouteContext<'/api/trips/[id]/memo
     return apiError('Internal server error', 500)
   }
 
-  const validatedResponse = MemorySchema.safeParse(memory)
+  if (!memory) return apiError('Failed to create memory', 500)
+
+  const validatedResponse = MemorySchema.safeParse(fromDbMemory(memory))
   if (!validatedResponse.success) {
     log.error('DB output failed schema validation', {
       tripId,
