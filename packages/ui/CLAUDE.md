@@ -7,17 +7,28 @@ Components are built on **Base UI** primitives (`@base-ui/react`), styled with *
 
 ## Current Components
 
-| Component   | Export path           | File                          |
-| ----------- | --------------------- | ----------------------------- |
-| `Avatar`    | `@passe/ui/avatar`    | `src/avatar/Avatar.tsx`       |
-| `Badge`     | `@passe/ui/badge`     | `src/badge/Badge.tsx`         |
-| `Button`    | `@passe/ui/button`    | `src/button/Button.tsx`       |
-| `Icon`      | `@passe/ui/icon`      | `src/icon/Icon.tsx`           |
-| `Input`     | `@passe/ui/input`     | `src/input/Input.tsx`         |
-| `Separator` | `@passe/ui/separator` | `src/separator/Separator.tsx` |
-| `Textarea`  | `@passe/ui/textarea`  | `src/textarea/Textarea.tsx`   |
+| Component      | Export path                | File                                    |
+| -------------- | -------------------------- | --------------------------------------- |
+| `AlertDialog`  | `@passe/ui/alert-dialog`   | `src/alert-dialog/AlertDialog.tsx`      |
+| `Avatar`       | `@passe/ui/avatar`         | `src/avatar/Avatar.tsx`                 |
+| `Badge`        | `@passe/ui/badge`          | `src/badge/Badge.tsx`                   |
+| `Button`       | `@passe/ui/button`         | `src/button/Button.tsx`                 |
+| `Card`         | `@passe/ui/card`           | `src/card/Card.tsx`                     |
+| `DropdownMenu` | `@passe/ui/dropdown-menu`  | `src/dropdown-menu/DropdownMenu.tsx`    |
+| `Empty`        | `@passe/ui/empty`          | `src/empty/Empty.tsx`                   |
+| `Icon`         | `@passe/ui/icon`           | `src/icon/Icon.tsx`                     |
+| `Input`        | `@passe/ui/input`          | `src/input/Input.tsx`                   |
+| `Navbar`       | `@passe/ui/navbar`         | `src/navbar/Navbar.tsx`                 |
+| `PageHeader`   | `@passe/ui/page-header`    | `src/page-header/PageHeader.tsx`        |
+| `Separator`    | `@passe/ui/separator`      | `src/separator/Separator.tsx`           |
+| `Skeleton`     | `@passe/ui/skeleton`       | `src/skeleton/Skeleton.tsx`             |
+| `Textarea`     | `@passe/ui/textarea`       | `src/textarea/Textarea.tsx`             |
 
 All components are also re-exported from the barrel — `import { Button } from '@passe/ui'` works too.
+
+**Before writing raw HTML in any feature component, check this table.** If a component exists here,
+use it — never recreate it with raw elements. For loading states use `<Skeleton>` from
+`@passe/ui/skeleton`, not raw `<div className="animate-pulse bg-muted">` divs.
 
 Utilities:
 
