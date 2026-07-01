@@ -175,6 +175,9 @@ export function ExampleDataComponent() {
 }
 ```
 
+Components whose sole job is data fetching + loading/error gate follow the `*DataWrapper` naming
+convention (e.g. `TripStatsDataWrapper`, `AccountTabViewDataWrapper`).
+
 **Rules:**
 
 - Always destructure `isLoading`, `isError`, and `data` from every hook call

@@ -96,6 +96,29 @@ src/features/
 - **Protected views** live under `app/[locale]/(protected)/` and are wrapped by `ClerkProvider`, `NextIntlClientProvider`, and `ApiProvider`. Their views are `'use client'` components using `@passe/hooks` for data fetching.
 - **Public views** live directly under `app/` (e.g. `app/u/[slug]/`) and are NOT wrapped by those providers. Their views are `async` server components that query the DB directly via `@passe/db/client`. Do not use `useTranslations`, Clerk hooks, or `@passe/hooks` in public views or their child components.
 
+### Component Decomposition
+
+Views decompose into layers — outer view → state-owning sub-view → `*DataWrapper` → forms/presentational:
+
+```
+FeatureView.tsx              — static chrome only (heading, separator); renders sub-view
+  └── FeatureTabView.tsx     — owns UI state (activeTab, etc.); renders layout + DataWrapper
+        └── FeatureDataWrapper.tsx  — calls hooks, handles loading/error, passes clean props down
+              ├── SomeForm.tsx      — pure presentational + mutation hook; no data fetching
+              └── OtherComponent
+```
+
+Rules:
+- `*DataWrapper` components own all data fetching and loading/error guards — nothing else. Examples:
+  `TripStatsDataWrapper`, `AccountTabViewDataWrapper`
+- Static presentational components (skeletons, error states, empty states) must **NOT** have
+  `'use client'` — they use no hooks, no browser APIs, no event handlers
+- Never use raw `<button>` in feature components — always `<Button variant="ghost">` or
+  `<Button variant="secondary">` from `@passe/ui/button`
+- Before building any component, search `src/features/auth/components/` and other existing features
+  for reusable components. Cross-feature imports (`@/features/auth/components/PasswordStrengthMeter`)
+  are expected and preferred over recreating
+
 ### Code conventions
 
 - **Callback parameter names**: Never use single-letter or ambiguous names in array method callbacks (`.map(t => ...)`, `.flatMap(m => ...)`). Always use the full domain name (`.map(trip => ...)`, `.flatMap(memory => ...)`). `t` is reserved as the conventional name for the `useTranslations` return value.
