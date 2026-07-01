@@ -17,6 +17,7 @@ export const MemorySchema = z.object({
   city: z.string().max(100).optional(),
   country: z.string().max(100).optional(),
   capturedAt: z.coerce.date(),
+  isPublic: z.boolean().default(false),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
 })

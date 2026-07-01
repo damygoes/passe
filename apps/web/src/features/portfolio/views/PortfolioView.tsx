@@ -1,4 +1,4 @@
-import { routes } from '@/lib/routes'
+import { publicTripRoute, routes } from '@/lib/routes'
 import { db } from '@passe/db/client'
 import { trips, users } from '@passe/db/schema'
 import { and, desc, eq } from 'drizzle-orm'
@@ -40,7 +40,11 @@ export async function PortfolioView({ slug }: Props) {
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {publicTrips.map((trip) => (
-              <PortfolioTripCard key={trip.id} trip={trip} />
+              <PortfolioTripCard
+                key={trip.id}
+                trip={trip}
+                href={publicTripRoute(slug, trip.id)}
+              />
             ))}
           </div>
         )}

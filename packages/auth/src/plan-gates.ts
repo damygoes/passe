@@ -1,12 +1,12 @@
 import type { PlanType } from './types'
 
 export const PLAN_LIMITS = {
-  free: { maxTrips: 3, maxMemoriesPerTrip: 10, publicPortfolio: false },
-  explorer: { maxTrips: 20, maxMemoriesPerTrip: 50, publicPortfolio: true },
-  collector: { maxTrips: Infinity, maxMemoriesPerTrip: Infinity, publicPortfolio: true },
+  free:      { maxTrips: 3,        maxMemoriesPerTrip: 10,       publicPortfolio: false, maxPublicMemoriesPerTrip: 3        },
+  explorer:  { maxTrips: 20,       maxMemoriesPerTrip: 50,       publicPortfolio: true,  maxPublicMemoriesPerTrip: Infinity },
+  collector: { maxTrips: Infinity, maxMemoriesPerTrip: Infinity, publicPortfolio: true,  maxPublicMemoriesPerTrip: Infinity },
 } as const satisfies Record<
   PlanType,
-  { maxTrips: number; maxMemoriesPerTrip: number; publicPortfolio: boolean }
+  { maxTrips: number; maxMemoriesPerTrip: number; publicPortfolio: boolean; maxPublicMemoriesPerTrip: number }
 >
 
 export function canCreateTrip(plan: PlanType, currentTripCount: number): boolean {
@@ -19,4 +19,8 @@ export function canAddMemory(plan: PlanType, currentMemoryCount: number): boolea
 
 export function canMakePortfolioPublic(plan: PlanType): boolean {
   return PLAN_LIMITS[plan].publicPortfolio
+}
+
+export function canMakeMemoryPublic(plan: PlanType, currentPublicMemoryCount: number): boolean {
+  return currentPublicMemoryCount < PLAN_LIMITS[plan].maxPublicMemoriesPerTrip
 }

@@ -2,7 +2,12 @@
 
 > "The past, beautifully kept." — A travel memory sharing platform.
 
-Users create **trips** (with dates, countries, cover images), attach geotagged **memories** (photos + notes) to them, and share **public portfolios**. Subscription plans (free / explorer / collector) gate features.
+Users create **trips** (with dates, countries, cover images), attach geotagged **memories** (photos + notes) to them, and optionally share **public portfolios** and **individual trip pages**. Subscription plans (free / explorer / collector) gate features.
+
+**Full product identity:** See [`PRODUCT.md`](./PRODUCT.md) at the repo root.
+
+### Core product principle — Privacy-first
+Everything (trips, memories) is **private by default**. Users explicitly make things public. Free users cannot share publicly. Explorer and Collector unlock public portfolios and trip pages.
 
 ---
 

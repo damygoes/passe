@@ -20,7 +20,7 @@ export const trips = pgTable(
       .default(sql`'{}'::text[]`),
     startDate: timestamp('start_date').notNull(),
     endDate: timestamp('end_date').notNull(),
-    isPublic: boolean('is_public').notNull().default(true),
+    isPublic: boolean('is_public').notNull().default(false),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow().$onUpdate(() => new Date()),
   },

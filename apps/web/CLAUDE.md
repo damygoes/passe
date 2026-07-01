@@ -125,8 +125,8 @@ src/features/
     views/        — DashboardView, TripDetailView
     utils/        — getUniqueCities, getUniqueStatsFromTrips
   portfolio/
-    components/   — PortfolioTripCard, NoPublicTripsEmpty
-    views/        — PortfolioView
+    components/   — PortfolioTripCard, NoPublicTripsEmpty, PublicMemoryCard, NoPublicMemoriesEmpty
+    views/        — PortfolioView, PortfolioTripView
 ```
 
 Rules:
@@ -134,7 +134,7 @@ Rules:
 - Component files go in `src/features/<feature>/components/<ComponentName>.tsx`
 - Route files (`app/`) only extract params and render one feature view component — no queries, no auth calls, no JSX logic
 - **Protected views** (under `app/[locale]/(protected)/`) are `'use client'` and own all data fetching via `@passe/hooks`
-- **Public views** (under `app/` outside `[locale]/`, e.g. `app/u/[slug]/`) are `async` server components that fetch directly from the DB via `@passe/db/client`. They do NOT have access to `ClerkProvider`, `NextIntlClientProvider`, or `ApiProvider` — do not use `useTranslations`, Clerk hooks, or `@passe/hooks` in these views or their child components
+- **Public views** (under `app/` outside `[locale]/`, e.g. `app/u/[slug]/` and `app/u/[slug]/trips/[tripId]/`) are `async` server components that fetch directly from the DB via `@passe/db/client`. They do NOT have access to `ClerkProvider`, `NextIntlClientProvider`, or `ApiProvider` — do not use `useTranslations`, Clerk hooks, or `@passe/hooks` in these views or their child components
 - Date/time formatting and other utilities go in `packages/utils`, imported via `@passe/utils`
 - Reusable API hooks go in `packages/hooks`, imported via `@passe/hooks`
 - Import feature components using the `@/` alias: `import { DashboardView } from '@/features/trips/components/DashboardView'`
@@ -225,6 +225,18 @@ Rules:
 ---
 
 ## API layer
+
+### Privacy-first model
+
+Trips and memories default to `isPublic: false`. The public portfolio (`/u/[slug]`) and public trip pages (`/u/[slug]/trips/[tripId]`) only render rows where `isPublic = true`. Explorer and Collector plans can publish; Free users cannot activate their portfolio (see `canMakePortfolioPublic` in `@passe/auth/plan-gates`). Free users can pre-mark up to 3 memories as public per trip (`maxPublicMemoriesPerTrip: 3`) but these won't be visible until they upgrade.
+
+### Route helper reference
+
+| Helper | Returns |
+|---|---|
+| `publicPortfolioRoute(username)` | `/u/${username}` |
+| `publicTripRoute(username, tripId)` | `/u/${username}/trips/${tripId}` |
+| `tripRoute(id)` | `/trips/${id}` |
 
 ### Route structure
 

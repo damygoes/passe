@@ -112,7 +112,11 @@
       "cover_alt": "Cover photo for {title}"
     },
     "memory_card": {
-      "photo_alt": "Memory photo"
+      "photo_alt": "Memory photo",
+      "make_public": "Make public",
+      "make_private": "Make private",
+      "public_label": "Public",
+      "private_label": "Private"
     },
     "empty": {
       "no_trips_title": "No trips yet",

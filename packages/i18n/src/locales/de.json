@@ -112,7 +112,11 @@
       "cover_alt": "Titelbild für {title}"
     },
     "memory_card": {
-      "photo_alt": "Erinnerungsfoto"
+      "photo_alt": "Erinnerungsfoto",
+      "make_public": "Öffentlich machen",
+      "make_private": "Privat machen",
+      "public_label": "Öffentlich",
+      "private_label": "Privat"
     },
     "empty": {
       "no_trips_title": "Noch keine Reisen",

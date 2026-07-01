@@ -14,11 +14,12 @@ interface TripData {
 
 interface Props {
   trip: TripData
+  href?: string
 }
 
-export function PortfolioTripCard({ trip }: Props) {
-  return (
-    <Card>
+export function PortfolioTripCard({ trip, href }: Props) {
+  const card = (
+    <Card className={href ? 'transition-opacity hover:opacity-90' : undefined}>
       {trip.coverImageUrl && (
         <div className="relative aspect-video w-full overflow-hidden">
           <Image
@@ -47,4 +48,14 @@ export function PortfolioTripCard({ trip }: Props) {
       )}
     </Card>
   )
+
+  if (href) {
+    return (
+      <a href={href} className="block">
+        {card}
+      </a>
+    )
+  }
+
+  return card
 }

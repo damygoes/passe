@@ -81,8 +81,8 @@ src/features/
     views/        — DashboardView, TripDetailView
     utils/        — getUniqueCities, getUniqueStatsFromTrips
   portfolio/
-    components/   — PortfolioTripCard, NoPublicTripsEmpty
-    views/        — PortfolioView
+    components/   — PortfolioTripCard, NoPublicTripsEmpty, PublicMemoryCard, NoPublicMemoriesEmpty
+    views/        — PortfolioView, PortfolioTripView
 ```
 
 ### Protected vs public views

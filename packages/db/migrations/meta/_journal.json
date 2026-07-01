@@ -8,6 +8,13 @@
       "when": 1782634770592,
       "tag": "0000_mature_mariko_yashida",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1782883862233,
+      "tag": "0001_numerous_radioactive_man",
+      "breakpoints": true
     }
   ]
 }

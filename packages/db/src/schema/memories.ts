@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm'
-import { index, pgTable, real, text, timestamp, uuid } from 'drizzle-orm/pg-core'
+import { boolean, index, pgTable, real, text, timestamp, uuid } from 'drizzle-orm/pg-core'
 import { trips } from './trips'
 import { users } from './users'
 
@@ -22,6 +22,7 @@ export const memories = pgTable(
     city: text('city'),
     country: text('country'),
     capturedAt: timestamp('captured_at').notNull(),
+    isPublic: boolean('is_public').notNull().default(false),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow().$onUpdate(() => new Date()),
   },
