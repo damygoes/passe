@@ -1,6 +1,6 @@
 'use client'
 
-import { Icon } from '@passe/ui/icon'
+import { Button } from '@passe/ui'
 import type { IconName } from '@passe/ui/icon'
 import { cn } from '@passe/utils'
 import { useTranslations } from 'next-intl'
@@ -34,31 +34,23 @@ export function AccountSidebar({ activeTab, onTabChange }: AccountSidebarProps) 
       {SIDEBAR_ITEMS.map((item) => {
         const isActive = activeTab === item.key
         return (
-          <button
+          <Button
             key={item.key}
-            type="button"
+            variant={isActive ? 'secondary' : 'ghost'}
             onClick={() => onTabChange(item.key)}
             className={cn(
-              'flex shrink-0 items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors duration-200 text-left whitespace-nowrap',
-              'hover:bg-muted hover:text-foreground',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
-              isActive
-                ? 'bg-muted text-foreground'
-                : 'text-muted-foreground',
+              'gap-2.5 transition-colors duration-200 text-muted-foreground',
               item.key === 'danger' && isActive && 'text-destructive',
               item.key === 'danger' && !isActive && 'hover:text-destructive',
             )}
             aria-current={isActive ? 'page' : undefined}
+            icon={item.icon}
+            iconProps={{
+              color: item.key === 'danger' ? '#ef4444' : undefined,
+            }}
           >
-            <Icon
-              name={item.icon}
-              size="sm"
-              className={cn(
-                item.key === 'danger' ? 'text-destructive' : undefined,
-              )}
-            />
             {t(item.key)}
-          </button>
+          </Button>
         )
       })}
     </nav>
