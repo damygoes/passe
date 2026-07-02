@@ -14,6 +14,7 @@ export function Input({
   isLoading = false,
   onIconPress,
   style,
+  inputStyle,
   editable = true,
   onFocus,
   onBlur,
@@ -50,7 +51,7 @@ export function Input({
         <View style={recipe.iconWrapper.start}>{iconNode}</View>
       )}
       <TextInput
-        style={[recipe.base.input, isDisabled && recipe.states.disabled.input]}
+        style={[recipe.base.input, isDisabled && recipe.states.disabled.input, inputStyle]}
         editable={editable}
         placeholderTextColor={theme.colors.mutedForeground}
         onFocus={(e) => {
