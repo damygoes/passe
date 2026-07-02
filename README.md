@@ -146,6 +146,40 @@ pnpm exec turbo link
 pnpm exec turbo link
 ```
 
+## CI/CD
+
+### Pipelines
+
+| Workflow                             | Trigger                                        | What it does                                                                    |
+| ------------------------------------ | ---------------------------------------------- | ------------------------------------------------------------------------------- |
+| `.github/workflows/ci.yml`           | PRs + push to `main`                           | `turbo run lint check-types test build` across the monorepo                     |
+| Vercel (Git integration)             | PRs (preview) + push to `main` (production)    | Builds and deploys `apps/web`; `npx turbo-ignore` skips unaffected pushes       |
+| `.github/workflows/eas-update.yml`   | Push to `main` touching mobile-relevant paths  | Publishes an OTA JS update to the EAS `production` channel                      |
+| `.github/workflows/eas-build.yml`    | `mobile-v*` tags or manual dispatch            | Queues EAS native builds and auto-submits (iOS → TestFlight, Android → Play)    |
+
+The EAS workflows are gated on the `EAS_READY` repository variable — they show as *skipped* until it is set to `true` (after `eas init` and credentials are configured).
+
+### Required GitHub secrets & variables
+
+- Secret `TURBO_TOKEN` + variable `TURBO_TEAM` — Turborepo remote cache (Vercel token + team slug)
+- Secret `EXPO_TOKEN` — Expo access token for EAS workflows
+- Variable `EAS_READY=true` — activates the EAS workflows
+
+### Mobile releases
+
+```sh
+git tag mobile-v1.0.0 && git push origin mobile-v1.0.0   # native build + store submit
+```
+
+JS-only changes reach installed apps automatically via EAS Update when merged to `main`.
+
+### Local remote-cache setup (one-time)
+
+```sh
+npx turbo login
+npx turbo link
+```
+
 ## Useful Links
 
 Learn more about the power of Turborepo:
