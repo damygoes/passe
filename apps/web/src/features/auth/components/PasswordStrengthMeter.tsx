@@ -20,6 +20,7 @@ const STRENGTH_LEVELS = [
 
 export function PasswordStrengthMeter({ password, className }: PasswordStrengthMeterProps) {
   const t = useTranslations('auth.password_strength')
+  const tRules = useTranslations('auth.password_rules')
 
   if (!password) return null
 
@@ -61,7 +62,7 @@ export function PasswordStrengthMeter({ password, className }: PasswordStrengthM
               )}
             >
               <Icon name={passed ? 'check' : 'close'} size="xs" aria-hidden />
-              {rule.label}
+              {tRules(rule.id)}
             </li>
           )
         })}

@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Stack } from 'expo-router'
 import * as WebBrowser from 'expo-web-browser'
 
+import { I18nProvider } from '@/i18n/I18nProvider'
+
 WebBrowser.maybeCompleteAuthSession()
 
 const queryClient = new QueryClient()
@@ -34,10 +36,12 @@ function ApiConnectedApp() {
 
 export default function RootLayout() {
   return (
-    <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-      <QueryClientProvider client={queryClient}>
-        <ApiConnectedApp />
-      </QueryClientProvider>
-    </ClerkProvider>
+    <I18nProvider>
+      <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+        <QueryClientProvider client={queryClient}>
+          <ApiConnectedApp />
+        </QueryClientProvider>
+      </ClerkProvider>
+    </I18nProvider>
   )
 }

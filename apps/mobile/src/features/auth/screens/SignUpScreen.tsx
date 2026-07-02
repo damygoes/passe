@@ -9,13 +9,14 @@ import { StyleSheet, Text, View } from 'react-native'
 import { Button } from '@/components/ui/button'
 import { FormField } from '@/components/ui/form-field'
 import { useTheme } from '@/hooks/useTheme'
+import { useTranslations } from '@/i18n/useTranslations'
 import { AuthScreenLayout, OrDivider } from '@/features/auth/components/AuthScreenLayout'
 import { PasswordMatchIndicator } from '@/features/auth/components/PasswordMatchIndicator'
 import { PasswordStrengthMeter } from '@/features/auth/components/PasswordStrengthMeter'
 import { SocialAuthButtons } from '@/features/auth/components/SocialAuthButtons'
 import {
-  OTPSchema,
-  SignUpSchema,
+  createOTPSchema,
+  createSignUpSchema,
   type OTPFormValues,
   type SignUpFormValues,
 } from '@/features/auth/schemas/auth'
@@ -26,6 +27,10 @@ export function SignUpScreen() {
   const { signUp, setActive, isLoaded } = useSignUp()
   const router = useRouter()
   const { colors, spacing, fontSizes, fonts } = useTheme()
+  const t = useTranslations('auth.form')
+  const tSignUp = useTranslations('auth.sign_up')
+  const tErrors = useTranslations('auth.errors')
+  const tValidation = useTranslations('auth.validation')
   const [step, setStep] = useState<Step>('details')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -52,6 +57,9 @@ export function SignUpScreen() {
       }),
     [colors, spacing, fontSizes, fonts],
   )
+
+  const SignUpSchema = useMemo(() => createSignUpSchema(tValidation), [tValidation])
+  const OTPSchema = useMemo(() => createOTPSchema(tValidation), [tValidation])
 
   const detailsForm = useForm<SignUpFormValues>({
     resolver: zodResolver(SignUpSchema),
@@ -91,9 +99,11 @@ export function SignUpScreen() {
       setStep('verify')
     } catch (err) {
       if (isClerkAPIResponseError(err)) {
-        setGlobalError(err.errors[0]?.longMessage ?? err.errors[0]?.message ?? 'Sign up failed')
+        setGlobalError(
+          err.errors[0]?.longMessage ?? err.errors[0]?.message ?? tErrors('sign_up_failed'),
+        )
       } else {
-        setGlobalError('Something went wrong. Please try again.')
+        setGlobalError(tErrors('generic'))
       }
     }
   }
@@ -111,10 +121,10 @@ export function SignUpScreen() {
     } catch (err) {
       if (isClerkAPIResponseError(err)) {
         setGlobalError(
-          err.errors[0]?.longMessage ?? err.errors[0]?.message ?? 'Verification failed',
+          err.errors[0]?.longMessage ?? err.errors[0]?.message ?? tErrors('verification_failed'),
         )
       } else {
-        setGlobalError('Something went wrong. Please try again.')
+        setGlobalError(tErrors('generic'))
       }
     }
   }
@@ -131,8 +141,8 @@ export function SignUpScreen() {
   if (step === 'verify') {
     return (
       <AuthScreenLayout
-        heading="Check your email"
-        subheading={`We sent a code to ${detailsForm.getValues('email')}`}
+        heading={t('check_email_heading')}
+        subheading={t('code_sent_to', { email: detailsForm.getValues('email') })}
       >
         {globalError && (
           <View style={styles.errorBanner}>
@@ -145,8 +155,8 @@ export function SignUpScreen() {
           name="code"
           render={({ field: { onChange, onBlur, value } }) => (
             <FormField
-              label="Verification code"
-              placeholder="000000"
+              label={t('verification_code_label')}
+              placeholder={t('verification_code_placeholder')}
               inputMode="numeric"
               autoComplete="one-time-code"
               maxLength={6}
@@ -166,13 +176,13 @@ export function SignUpScreen() {
           loading={otpForm.formState.isSubmitting}
           onPress={otpForm.handleSubmit(onOTPSubmit)}
         >
-          {otpForm.formState.isSubmitting ? 'Verifying…' : 'Verify email'}
+          {otpForm.formState.isSubmitting ? t('verifying') : t('verify_email')}
         </Button>
 
         <View style={styles.resendRow}>
-          <Text style={styles.footerText}>Didn&apos;t receive it?</Text>
+          <Text style={styles.footerText}>{t('didnt_receive')}</Text>
           <Text style={styles.smallLink} onPress={resendCode}>
-            Resend code
+            {t('resend_code')}
           </Text>
         </View>
       </AuthScreenLayout>
@@ -181,13 +191,13 @@ export function SignUpScreen() {
 
   return (
     <AuthScreenLayout
-      heading="Create your account"
-      subheading="Start keeping your travel memories"
+      heading={tSignUp('heading')}
+      subheading={tSignUp('subheading')}
       footer={
         <View style={styles.footerRow}>
-          <Text style={styles.footerText}>Already have an account?</Text>
+          <Text style={styles.footerText}>{tSignUp('have_account')}</Text>
           <Link href="/(auth)/sign-in" style={styles.link}>
-            Sign in
+            {tSignUp('sign_in_link')}
           </Link>
         </View>
       }
@@ -199,15 +209,15 @@ export function SignUpScreen() {
       )}
 
       <SocialAuthButtons />
-      <OrDivider label="or continue with email" />
+      <OrDivider label={tSignUp('or_email')} />
 
       <Controller
         control={control}
         name="displayName"
         render={({ field: { onChange, onBlur, value } }) => (
           <FormField
-            label="Display name"
-            placeholder="Your name"
+            label={t('display_name_label')}
+            placeholder={t('display_name_placeholder')}
             autoComplete="name"
             onChangeText={onChange}
             onBlur={onBlur}
@@ -222,8 +232,8 @@ export function SignUpScreen() {
         name="email"
         render={({ field: { onChange, onBlur, value } }) => (
           <FormField
-            label="Email"
-            placeholder="you@example.com"
+            label={t('email_label')}
+            placeholder={t('email_placeholder')}
             autoComplete="email"
             keyboardType="email-address"
             autoCapitalize="none"
@@ -243,8 +253,8 @@ export function SignUpScreen() {
           name="password"
           render={({ field: { onChange, onBlur, value } }) => (
             <FormField
-              label="Password"
-              placeholder="••••••••"
+              label={t('password_label')}
+              placeholder={t('password_placeholder')}
               autoComplete="new-password"
               secureTextEntry={!showPassword}
               icon={showPassword ? 'eye-off' : 'eye'}
@@ -266,8 +276,8 @@ export function SignUpScreen() {
           name="confirmPassword"
           render={({ field: { onChange, onBlur, value } }) => (
             <FormField
-              label="Confirm password"
-              placeholder="••••••••"
+              label={t('confirm_password_label')}
+              placeholder={t('password_placeholder')}
               autoComplete="new-password"
               secureTextEntry={!showConfirmPassword}
               icon={showConfirmPassword ? 'eye-off' : 'eye'}
@@ -290,7 +300,7 @@ export function SignUpScreen() {
         loading={isSubmitting}
         onPress={handleSubmit(onDetailsSubmit)}
       >
-        {isSubmitting ? 'Creating account…' : 'Create account'}
+        {isSubmitting ? t('creating_account') : t('create_account')}
       </Button>
     </AuthScreenLayout>
   )

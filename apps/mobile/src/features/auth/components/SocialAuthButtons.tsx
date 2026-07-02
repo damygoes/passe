@@ -8,6 +8,7 @@ import { Platform, StyleSheet, Text, View } from 'react-native'
 
 import { Button } from '@/components/ui/button'
 import { useTheme } from '@/hooks/useTheme'
+import { useTranslations } from '@/i18n/useTranslations'
 import { createButtonRecipe } from '@/recipes/button'
 import { AppleIcon, GoogleIcon } from './SocialIcons'
 
@@ -29,6 +30,7 @@ export function SocialAuthButtons() {
   const buttonRecipe = createButtonRecipe(theme)
   const { startSSOFlow } = useSSO()
   const router = useRouter()
+  const t = useTranslations('auth.social')
   const [loadingProvider, setLoadingProvider] = useState<Provider | null>(null)
 
   const styles = useMemo(
@@ -77,7 +79,7 @@ export function SocialAuthButtons() {
       >
         <View style={styles.content}>
           {loadingProvider !== 'google' && <GoogleIcon />}
-          <Text style={labelStyle}>Continue with Google</Text>
+          <Text style={labelStyle}>{t('google')}</Text>
         </View>
       </Button>
       <Button
@@ -89,7 +91,7 @@ export function SocialAuthButtons() {
       >
         <View style={styles.content}>
           {loadingProvider !== 'apple' && <AppleIcon color={colors.foreground} />}
-          <Text style={labelStyle}>Continue with Apple</Text>
+          <Text style={labelStyle}>{t('apple')}</Text>
         </View>
       </Button>
     </View>

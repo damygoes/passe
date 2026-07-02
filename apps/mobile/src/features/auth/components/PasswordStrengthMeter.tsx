@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native'
 
 import { Icon } from '@/components/ui/icon'
 import { useTheme } from '@/hooks/useTheme'
+import { useTranslations } from '@/i18n/useTranslations'
 import { PASSWORD_RULES } from '@/features/auth/schemas/auth'
 
 interface PasswordStrengthMeterProps {
@@ -10,15 +11,17 @@ interface PasswordStrengthMeterProps {
 }
 
 const STRENGTH_LEVELS = [
-  { key: 'weak', label: 'Weak', bars: 1 },
-  { key: 'fair', label: 'Fair', bars: 2 },
-  { key: 'good', label: 'Good', bars: 3 },
-  { key: 'strong', label: 'Strong', bars: 4 },
-  { key: 'very_strong', label: 'Very strong', bars: 4 },
+  { key: 'weak', bars: 1 },
+  { key: 'fair', bars: 2 },
+  { key: 'good', bars: 3 },
+  { key: 'strong', bars: 4 },
+  { key: 'very_strong', bars: 4 },
 ] as const
 
 export function PasswordStrengthMeter({ password }: PasswordStrengthMeterProps) {
   const { colors, palette, spacing, fontSizes, fontWeights } = useTheme()
+  const t = useTranslations('auth.password_strength')
+  const tRules = useTranslations('auth.password_rules')
 
   const styles = useMemo(
     () =>
@@ -71,7 +74,7 @@ export function PasswordStrengthMeter({ password }: PasswordStrengthMeterProps) 
             />
           ))}
         </View>
-        <Text style={[styles.label, { color: activeTextColor }]}>{level.label}</Text>
+        <Text style={[styles.label, { color: activeTextColor }]}>{t(level.key)}</Text>
       </View>
 
       <View style={styles.rulesList}>
@@ -81,7 +84,7 @@ export function PasswordStrengthMeter({ password }: PasswordStrengthMeterProps) 
           return (
             <View key={rule.id} style={styles.ruleRow}>
               <Icon name={passed ? 'check' : 'close'} size="xs" color={ruleColor} />
-              <Text style={[styles.ruleText, { color: ruleColor }]}>{rule.label}</Text>
+              <Text style={[styles.ruleText, { color: ruleColor }]}>{tRules(rule.id)}</Text>
             </View>
           )
         })}

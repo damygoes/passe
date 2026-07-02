@@ -87,6 +87,26 @@
     "password_match": {
       "match": "Passwörter stimmen überein",
       "no_match": "Passwörter stimmen nicht überein"
+    },
+    "password_rules": {
+      "length": "Mindestens 8 Zeichen",
+      "uppercase": "Ein Großbuchstabe (A–Z)",
+      "lowercase": "Ein Kleinbuchstabe (a–z)",
+      "number": "Eine Zahl (0–9)",
+      "special": "Ein Sonderzeichen (!@#$…)"
+    },
+    "validation": {
+      "invalid_email": "Gib eine gültige E-Mail-Adresse ein",
+      "password_required": "Passwort ist erforderlich",
+      "display_name_required": "Anzeigename ist erforderlich",
+      "display_name_max": "Maximal 50 Zeichen",
+      "password_min_length": "Mindestens 8 Zeichen",
+      "password_uppercase": "Muss einen Großbuchstaben enthalten",
+      "password_lowercase": "Muss einen Kleinbuchstaben enthalten",
+      "password_number": "Muss eine Zahl enthalten",
+      "password_special": "Muss ein Sonderzeichen enthalten",
+      "passwords_no_match": "Passwörter stimmen nicht überein",
+      "otp_length": "Gib den 6-stelligen Code ein"
     }
   },
   "trips": {

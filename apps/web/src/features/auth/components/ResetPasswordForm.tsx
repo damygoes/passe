@@ -6,17 +6,21 @@ import { isClerkAPIResponseError } from '@clerk/nextjs/errors'
 import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/navigation'
 import { routes } from '@/lib/routes'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button } from '@passe/ui/button'
 import { Input } from '@passe/ui/input'
-import { ResetPasswordSchema, type ResetPasswordFormValues } from '@/features/auth/schemas/auth'
+import {
+  createResetPasswordSchema,
+  type ResetPasswordFormValues,
+} from '@/features/auth/schemas/auth'
 
 export function ResetPasswordForm() {
   const { signIn, setActive, isLoaded } = useSignIn()
   const router = useRouter()
   const t = useTranslations('auth.form')
   const tErrors = useTranslations('auth.errors')
+  const tValidation = useTranslations('auth.validation')
   const [resetEmail, setResetEmail] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState(false)
   const [globalError, setGlobalError] = useState<string | null>(null)
@@ -24,6 +28,8 @@ export function ResetPasswordForm() {
   useEffect(() => {
     setResetEmail(sessionStorage.getItem('reset-email'))
   }, [])
+
+  const ResetPasswordSchema = useMemo(() => createResetPasswordSchema(tValidation), [tValidation])
 
   const {
     register,

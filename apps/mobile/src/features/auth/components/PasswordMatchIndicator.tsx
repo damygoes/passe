@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native'
 
 import { Icon } from '@/components/ui/icon'
 import { useTheme } from '@/hooks/useTheme'
+import { useTranslations } from '@/i18n/useTranslations'
 
 interface PasswordMatchIndicatorProps {
   password: string
@@ -11,6 +12,7 @@ interface PasswordMatchIndicatorProps {
 
 export function PasswordMatchIndicator({ password, confirmPassword }: PasswordMatchIndicatorProps) {
   const { colors, palette, spacing, fontSizes } = useTheme()
+  const t = useTranslations('auth.password_match')
 
   const styles = useMemo(
     () =>
@@ -29,7 +31,7 @@ export function PasswordMatchIndicator({ password, confirmPassword }: PasswordMa
   return (
     <View style={styles.row}>
       <Icon name={matches ? 'check' : 'close'} size="xs" color={color} />
-      <Text style={[styles.text, { color }]}>{matches ? 'Passwords match' : "Passwords don't match"}</Text>
+      <Text style={[styles.text, { color }]}>{matches ? t('match') : t('no_match')}</Text>
     </View>
   )
 }

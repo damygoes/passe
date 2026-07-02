@@ -9,10 +9,11 @@ import { StyleSheet, Text, View } from 'react-native'
 import { Button } from '@/components/ui/button'
 import { FormField } from '@/components/ui/form-field'
 import { useTheme } from '@/hooks/useTheme'
+import { useTranslations } from '@/i18n/useTranslations'
 import { AuthScreenLayout } from '@/features/auth/components/AuthScreenLayout'
 import {
-  ForgotPasswordSchema,
-  ResetPasswordSchema,
+  createForgotPasswordSchema,
+  createResetPasswordSchema,
   type ForgotPasswordFormValues,
   type ResetPasswordFormValues,
 } from '@/features/auth/schemas/auth'
@@ -23,6 +24,11 @@ export function ForgotPasswordScreen() {
   const { signIn, setActive, isLoaded } = useSignIn()
   const router = useRouter()
   const { colors, spacing, fontSizes, fonts } = useTheme()
+  const t = useTranslations('auth.form')
+  const tForgotPassword = useTranslations('auth.forgot_password')
+  const tResetPassword = useTranslations('auth.reset_password')
+  const tErrors = useTranslations('auth.errors')
+  const tValidation = useTranslations('auth.validation')
   const [step, setStep] = useState<Step>('request')
   const [email, setEmail] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -53,6 +59,9 @@ export function ForgotPasswordScreen() {
     [colors, spacing, fontSizes, fonts],
   )
 
+  const ForgotPasswordSchema = useMemo(() => createForgotPasswordSchema(tValidation), [tValidation])
+  const ResetPasswordSchema = useMemo(() => createResetPasswordSchema(tValidation), [tValidation])
+
   const requestForm = useForm<ForgotPasswordFormValues>({
     resolver: zodResolver(ForgotPasswordSchema),
   })
@@ -71,9 +80,11 @@ export function ForgotPasswordScreen() {
       setStep('reset')
     } catch (err) {
       if (isClerkAPIResponseError(err)) {
-        setGlobalError(err.errors[0]?.longMessage ?? err.errors[0]?.message ?? 'Request failed')
+        setGlobalError(
+          err.errors[0]?.longMessage ?? err.errors[0]?.message ?? tErrors('request_failed'),
+        )
       } else {
-        setGlobalError('Something went wrong. Please try again.')
+        setGlobalError(tErrors('generic'))
       }
     }
   }
@@ -95,17 +106,19 @@ export function ForgotPasswordScreen() {
       }
     } catch (err) {
       if (isClerkAPIResponseError(err)) {
-        setGlobalError(err.errors[0]?.longMessage ?? err.errors[0]?.message ?? 'Reset failed')
+        setGlobalError(
+          err.errors[0]?.longMessage ?? err.errors[0]?.message ?? tErrors('reset_failed'),
+        )
       } else {
-        setGlobalError('Something went wrong. Please try again.')
+        setGlobalError(tErrors('generic'))
       }
     }
   }
 
   if (step === 'reset') {
     return (
-      <AuthScreenLayout heading="Reset your password" subheading="Enter the code and a new password">
-        <Text style={styles.codeSentText}>We sent a code to {email}</Text>
+      <AuthScreenLayout heading={tResetPassword('heading')} subheading={tResetPassword('subheading')}>
+        <Text style={styles.codeSentText}>{t('code_sent_to', { email })}</Text>
 
         {globalError && (
           <View style={styles.errorBanner}>
@@ -118,8 +131,8 @@ export function ForgotPasswordScreen() {
           name="code"
           render={({ field: { onChange, onBlur, value } }) => (
             <FormField
-              label="Reset code"
-              placeholder="000000"
+              label={t('reset_code_label')}
+              placeholder={t('verification_code_placeholder')}
               inputMode="numeric"
               autoComplete="one-time-code"
               maxLength={6}
@@ -137,8 +150,8 @@ export function ForgotPasswordScreen() {
           name="password"
           render={({ field: { onChange, onBlur, value } }) => (
             <FormField
-              label="New password"
-              placeholder="••••••••"
+              label={t('new_password_label')}
+              placeholder={t('password_placeholder')}
               autoComplete="new-password"
               secureTextEntry={!showPassword}
               icon={showPassword ? 'eye-off' : 'eye'}
@@ -159,7 +172,7 @@ export function ForgotPasswordScreen() {
           loading={resetForm.formState.isSubmitting}
           onPress={resetForm.handleSubmit(onResetSubmit)}
         >
-          {resetForm.formState.isSubmitting ? 'Resetting…' : 'Reset password'}
+          {resetForm.formState.isSubmitting ? t('resetting') : t('reset_password')}
         </Button>
       </AuthScreenLayout>
     )
@@ -167,13 +180,13 @@ export function ForgotPasswordScreen() {
 
   return (
     <AuthScreenLayout
-      heading="Forgot password?"
-      subheading="We'll email you a code to reset it"
+      heading={tForgotPassword('heading')}
+      subheading={tForgotPassword('subheading')}
       footer={
         <View style={styles.footerRow}>
-          <Text style={styles.footerText}>Remembered it?</Text>
+          <Text style={styles.footerText}>{tForgotPassword('remembered')}</Text>
           <Link href="/(auth)/sign-in" style={styles.link}>
-            Back to sign in
+            {tForgotPassword('back_to_sign_in')}
           </Link>
         </View>
       }
@@ -189,8 +202,8 @@ export function ForgotPasswordScreen() {
         name="email"
         render={({ field: { onChange, onBlur, value } }) => (
           <FormField
-            label="Email"
-            placeholder="you@example.com"
+            label={t('email_label')}
+            placeholder={t('email_placeholder')}
             autoComplete="email"
             keyboardType="email-address"
             autoCapitalize="none"
@@ -211,7 +224,7 @@ export function ForgotPasswordScreen() {
         loading={requestForm.formState.isSubmitting}
         onPress={requestForm.handleSubmit(onRequestSubmit)}
       >
-        {requestForm.formState.isSubmitting ? 'Sending…' : 'Send reset code'}
+        {requestForm.formState.isSubmitting ? t('sending') : t('send_reset_code')}
       </Button>
     </AuthScreenLayout>
   )

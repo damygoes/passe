@@ -2,7 +2,7 @@
 
 import { PasswordMatchIndicator } from '@/features/auth/components/PasswordMatchIndicator'
 import { PasswordStrengthMeter } from '@/features/auth/components/PasswordStrengthMeter'
-import { OTPSchema, type OTPFormValues } from '@/features/auth/schemas/auth'
+import { createOTPSchema, type OTPFormValues } from '@/features/auth/schemas/auth'
 import { useSession, useUser } from '@clerk/nextjs'
 import { isClerkAPIResponseError } from '@clerk/nextjs/errors'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -10,7 +10,7 @@ import { Button } from '@passe/ui/button'
 import { Icon } from '@passe/ui/icon'
 import { Input } from '@passe/ui/input'
 import { useTranslations } from 'next-intl'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { PasswordSchema, type PasswordFormValues } from '../schemas/account'
 
@@ -22,6 +22,9 @@ export function PasswordForm() {
   const t = useTranslations('account.security')
   const tAuth = useTranslations('auth.form')
   const tErrors = useTranslations('account.errors')
+  const tValidation = useTranslations('auth.validation')
+
+  const OTPSchema = useMemo(() => createOTPSchema(tValidation), [tValidation])
 
   const [step, setStep] = useState<Step>('form')
   const [globalError, setGlobalError] = useState<string | null>(null)

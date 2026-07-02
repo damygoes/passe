@@ -6,18 +6,27 @@ import { isClerkAPIResponseError } from '@clerk/nextjs/errors'
 import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/navigation'
 import { routes } from '@/lib/routes'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button } from '@passe/ui/button'
 import { Input } from '@passe/ui/input'
-import { ForgotPasswordSchema, type ForgotPasswordFormValues } from '@/features/auth/schemas/auth'
+import {
+  createForgotPasswordSchema,
+  type ForgotPasswordFormValues,
+} from '@/features/auth/schemas/auth'
 
 export function ForgotPasswordForm() {
   const { signIn, isLoaded } = useSignIn()
   const router = useRouter()
   const t = useTranslations('auth.form')
   const tErrors = useTranslations('auth.errors')
+  const tValidation = useTranslations('auth.validation')
   const [globalError, setGlobalError] = useState<string | null>(null)
+
+  const ForgotPasswordSchema = useMemo(
+    () => createForgotPasswordSchema(tValidation),
+    [tValidation],
+  )
 
   const {
     register,

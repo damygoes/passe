@@ -87,6 +87,26 @@
     "password_match": {
       "match": "Passwords match",
       "no_match": "Passwords don't match"
+    },
+    "password_rules": {
+      "length": "At least 8 characters",
+      "uppercase": "One uppercase letter (A–Z)",
+      "lowercase": "One lowercase letter (a–z)",
+      "number": "One number (0–9)",
+      "special": "One special character (!@#$…)"
+    },
+    "validation": {
+      "invalid_email": "Enter a valid email address",
+      "password_required": "Password is required",
+      "display_name_required": "Display name is required",
+      "display_name_max": "Max 50 characters",
+      "password_min_length": "At least 8 characters",
+      "password_uppercase": "Must include an uppercase letter",
+      "password_lowercase": "Must include a lowercase letter",
+      "password_number": "Must include a number",
+      "password_special": "Must include a special character",
+      "passwords_no_match": "Passwords don't match",
+      "otp_length": "Enter the 6-digit code"
     }
   },
   "trips": {

@@ -171,6 +171,35 @@ export default function AppLayout() {
 
 ---
 
+## Internationalization (`@passe/i18n`)
+
+Mobile has no translation library of its own — `packages/i18n`'s locale JSON
+(`en.json`/`de.json`) is the single source of truth shared with `apps/web`. `apps/mobile/src/i18n/`
+wraps it in a small RN-native consumption layer modeled on `next-intl`'s API so the same mental
+model carries across both apps:
+
+- `src/i18n/locale.ts` — `detectDeviceLocale()` reads the device locale via `expo-localization`,
+  falling back to `DEFAULT_LOCALE` if unsupported. No manual switcher UI yet.
+- `src/i18n/I18nProvider.tsx` — wraps the root layout (outermost provider in `_layout.tsx`),
+  provides the detected `locale` + that locale's `messages` via context.
+- `src/i18n/useTranslations.ts` — `useTranslations(namespace)` returns a `t(key, values?)`
+  function, resolving `${namespace}.${key}` against the JSON and formatting ICU syntax (e.g.
+  `{email}` interpolation, `{count, plural, ...}`) via `intl-messageformat` — the same ICU engine
+  `next-intl` uses on web, so shared strings render identically on both platforms.
+
+```tsx
+import { useTranslations } from '@/i18n/useTranslations'
+
+const t = useTranslations('auth.form')
+t('email_label')                 // "Email"
+t('check_email_body', { email }) // "We sent a 6-digit code to {email}" → interpolated
+```
+
+Never hardcode user-facing copy — check `packages/i18n/src/locales/en.json` for an existing key
+under `auth.*`/`trips.*`/etc. before adding a new one, and add the same key to `de.json` too.
+
+---
+
 ## API / Data Fetching
 
 All data fetching goes through `@passe/hooks` (TanStack Query v5) which calls the web app's API routes.

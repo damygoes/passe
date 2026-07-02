@@ -9,11 +9,12 @@ import { StyleSheet, Text, View } from 'react-native'
 import { Button } from '@/components/ui/button'
 import { FormField } from '@/components/ui/form-field'
 import { useTheme } from '@/hooks/useTheme'
+import { useTranslations } from '@/i18n/useTranslations'
 import { AuthScreenLayout, OrDivider } from '@/features/auth/components/AuthScreenLayout'
 import { SocialAuthButtons } from '@/features/auth/components/SocialAuthButtons'
 import {
-  OTPSchema,
-  SignInSchema,
+  createOTPSchema,
+  createSignInSchema,
   type OTPFormValues,
   type SignInFormValues,
 } from '@/features/auth/schemas/auth'
@@ -24,6 +25,10 @@ export function SignInScreen() {
   const { signIn, setActive, isLoaded } = useSignIn()
   const router = useRouter()
   const { colors, spacing, fontSizes, fonts } = useTheme()
+  const t = useTranslations('auth.form')
+  const tSignIn = useTranslations('auth.sign_in')
+  const tErrors = useTranslations('auth.errors')
+  const tValidation = useTranslations('auth.validation')
   const [step, setStep] = useState<Step>('credentials')
   const [email, setEmail] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -55,6 +60,9 @@ export function SignInScreen() {
     [colors, spacing, fontSizes, fonts],
   )
 
+  const SignInSchema = useMemo(() => createSignInSchema(tValidation), [tValidation])
+  const OTPSchema = useMemo(() => createOTPSchema(tValidation), [tValidation])
+
   const {
     control,
     handleSubmit,
@@ -83,9 +91,11 @@ export function SignInScreen() {
       }
     } catch (err) {
       if (isClerkAPIResponseError(err)) {
-        setGlobalError(err.errors[0]?.longMessage ?? err.errors[0]?.message ?? 'Sign in failed')
+        setGlobalError(
+          err.errors[0]?.longMessage ?? err.errors[0]?.message ?? tErrors('sign_in_failed'),
+        )
       } else {
-        setGlobalError('Something went wrong. Please try again.')
+        setGlobalError(tErrors('generic'))
       }
     }
   }
@@ -103,10 +113,10 @@ export function SignInScreen() {
     } catch (err) {
       if (isClerkAPIResponseError(err)) {
         setGlobalError(
-          err.errors[0]?.longMessage ?? err.errors[0]?.message ?? 'Verification failed',
+          err.errors[0]?.longMessage ?? err.errors[0]?.message ?? tErrors('verification_failed'),
         )
       } else {
-        setGlobalError('Something went wrong. Please try again.')
+        setGlobalError(tErrors('generic'))
       }
     }
   }
@@ -122,7 +132,10 @@ export function SignInScreen() {
 
   if (step === 'verify') {
     return (
-      <AuthScreenLayout heading="Check your email" subheading={`We sent a code to ${email}`}>
+      <AuthScreenLayout
+        heading={t('check_email_heading')}
+        subheading={t('code_sent_to', { email })}
+      >
         {globalError && (
           <View style={styles.errorBanner}>
             <Text style={styles.errorText}>{globalError}</Text>
@@ -134,8 +147,8 @@ export function SignInScreen() {
           name="code"
           render={({ field: { onChange, onBlur, value } }) => (
             <FormField
-              label="Verification code"
-              placeholder="000000"
+              label={t('verification_code_label')}
+              placeholder={t('verification_code_placeholder')}
               inputMode="numeric"
               autoComplete="one-time-code"
               maxLength={6}
@@ -155,13 +168,13 @@ export function SignInScreen() {
           loading={otpForm.formState.isSubmitting}
           onPress={otpForm.handleSubmit(onOTPSubmit)}
         >
-          {otpForm.formState.isSubmitting ? 'Verifying…' : 'Verify email'}
+          {otpForm.formState.isSubmitting ? t('verifying') : t('verify_email')}
         </Button>
 
         <View style={styles.resendRow}>
-          <Text style={styles.footerText}>Didn&apos;t receive it?</Text>
+          <Text style={styles.footerText}>{t('didnt_receive')}</Text>
           <Text style={styles.smallLink} onPress={resendCode}>
-            Resend code
+            {t('resend_code')}
           </Text>
         </View>
       </AuthScreenLayout>
@@ -170,13 +183,13 @@ export function SignInScreen() {
 
   return (
     <AuthScreenLayout
-      heading="Welcome back"
-      subheading="Sign in to keep your travel memories"
+      heading={tSignIn('heading')}
+      subheading={tSignIn('subheading')}
       footer={
         <View style={styles.footerRow}>
-          <Text style={styles.footerText}>Don&apos;t have an account?</Text>
+          <Text style={styles.footerText}>{tSignIn('no_account')}</Text>
           <Link href="/(auth)/sign-up" style={styles.link}>
-            Sign up
+            {tSignIn('sign_up_link')}
           </Link>
         </View>
       }
@@ -188,15 +201,15 @@ export function SignInScreen() {
       )}
 
       <SocialAuthButtons />
-      <OrDivider label="or continue with email" />
+      <OrDivider label={tSignIn('or_email')} />
 
       <Controller
         control={control}
         name="email"
         render={({ field: { onChange, onBlur, value } }) => (
           <FormField
-            label="Email"
-            placeholder="you@example.com"
+            label={t('email_label')}
+            placeholder={t('email_placeholder')}
             autoComplete="email"
             keyboardType="email-address"
             autoCapitalize="none"
@@ -215,13 +228,13 @@ export function SignInScreen() {
         name="password"
         render={({ field: { onChange, onBlur, value } }) => (
           <FormField
-            label="Password"
+            label={t('password_label')}
             labelRight={
               <Link href="/(auth)/forgot-password" style={styles.smallLink}>
-                Forgot password?
+                {t('forgot_password_link')}
               </Link>
             }
-            placeholder="••••••••"
+            placeholder={t('password_placeholder')}
             autoComplete="current-password"
             secureTextEntry={!showPassword}
             icon={showPassword ? 'eye-off' : 'eye'}
@@ -242,7 +255,7 @@ export function SignInScreen() {
         loading={isSubmitting}
         onPress={handleSubmit(onSubmit)}
       >
-        {isSubmitting ? 'Signing in…' : 'Sign in'}
+        {isSubmitting ? t('signing_in') : t('sign_in')}
       </Button>
     </AuthScreenLayout>
   )

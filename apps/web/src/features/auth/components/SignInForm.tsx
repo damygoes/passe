@@ -1,6 +1,11 @@
 'use client'
 
-import { SignInSchema, OTPSchema, type SignInFormValues, type OTPFormValues } from '@/features/auth/schemas/auth'
+import {
+  createSignInSchema,
+  createOTPSchema,
+  type SignInFormValues,
+  type OTPFormValues,
+} from '@/features/auth/schemas/auth'
 import { useSignIn } from '@clerk/nextjs'
 import { isClerkAPIResponseError } from '@clerk/nextjs/errors'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -9,7 +14,7 @@ import { Input } from '@passe/ui/input'
 import { useTranslations } from 'next-intl'
 import { Link, useRouter } from '@/i18n/navigation'
 import { routes } from '@/lib/routes'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 type Step = 'credentials' | 'verify'
@@ -19,10 +24,14 @@ export function SignInForm() {
   const router = useRouter()
   const t = useTranslations('auth.form')
   const tErrors = useTranslations('auth.errors')
+  const tValidation = useTranslations('auth.validation')
   const [step, setStep] = useState<Step>('credentials')
   const [email, setEmail] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [globalError, setGlobalError] = useState<string | null>(null)
+
+  const SignInSchema = useMemo(() => createSignInSchema(tValidation), [tValidation])
+  const OTPSchema = useMemo(() => createOTPSchema(tValidation), [tValidation])
 
   const {
     register,

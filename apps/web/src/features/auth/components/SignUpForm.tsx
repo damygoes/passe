@@ -1,8 +1,8 @@
 'use client'
 
 import {
-  OTPSchema,
-  SignUpSchema,
+  createOTPSchema,
+  createSignUpSchema,
   type OTPFormValues,
   type SignUpFormValues,
 } from '@/features/auth/schemas/auth'
@@ -14,7 +14,7 @@ import { Input } from '@passe/ui/input'
 import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/navigation'
 import { routes } from '@/lib/routes'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { PasswordMatchIndicator } from './PasswordMatchIndicator'
 import { PasswordStrengthMeter } from './PasswordStrengthMeter'
@@ -26,10 +26,14 @@ export function SignUpForm() {
   const router = useRouter()
   const t = useTranslations('auth.form')
   const tErrors = useTranslations('auth.errors')
+  const tValidation = useTranslations('auth.validation')
   const [step, setStep] = useState<Step>('details')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [globalError, setGlobalError] = useState<string | null>(null)
+
+  const SignUpSchema = useMemo(() => createSignUpSchema(tValidation), [tValidation])
+  const OTPSchema = useMemo(() => createOTPSchema(tValidation), [tValidation])
 
   const detailsForm = useForm<SignUpFormValues>({
     resolver: zodResolver(SignUpSchema),
