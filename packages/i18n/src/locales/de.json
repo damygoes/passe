@@ -181,5 +181,108 @@
       "delete_failed": "Konto konnte nicht gelöscht werden. Bitte versuche es erneut.",
       "reverification_failed": "Überprüfung fehlgeschlagen. Bitte versuche es erneut."
     }
+  },
+  "landing": {
+    "meta": {
+      "title": "Passé. — Die Vergangenheit, wunderschön bewahrt.",
+      "description": "Erstelle Reisen, füge geogetaggte Erinnerungen hinzu und teile ein wunderschönes Reise-Portfolio. Standardmäßig privat."
+    },
+    "nav": {
+      "sign_in": "Anmelden",
+      "get_started": "Loslegen"
+    },
+    "hero": {
+      "eyebrow": "Reiseerinnerungen bewahren",
+      "title_leading": "Die Vergangenheit,",
+      "title_accent": "wunderschön bewahrt.",
+      "subtitle": "Passé verwandelt deine Reisen in ein lebendiges Archiv — geogetaggte Fotos, Notizen und Momente, arrangiert zu einem Portfolio, das es wert ist, geteilt zu werden.",
+      "cta_primary": "Kostenlos starten",
+      "cta_secondary": "Anmelden",
+      "note": "Kostenloser Plan inklusive. Keine Kreditkarte erforderlich."
+    },
+    "features": {
+      "heading": "Alles, was du brauchst, um deine Reisen zu bewahren",
+      "subheading": "Gemacht für die Art, wie du dich wirklich an Reisen erinnerst.",
+      "trips": {
+        "title": "Reisen als Kapitel",
+        "description": "Organisiere deine Reisen — Daten, Länder und ein Cover, das die Szene setzt."
+      },
+      "memories": {
+        "title": "Geogetaggte Erinnerungen",
+        "description": "Hefte Fotos und Notizen genau an die Orte, an denen sie entstanden sind. Deine Geschichte, der Reihe nach."
+      },
+      "portfolio": {
+        "title": "Ein Portfolio, kein Feed",
+        "description": "Kuratiere eine wunderschöne öffentliche Seite deiner Reisen und teile sie mit einem einzigen Link."
+      }
+    },
+    "how": {
+      "heading": "So funktioniert's",
+      "subheading": "Drei Schritte von der Reise zum Andenken.",
+      "step1": {
+        "title": "Reise erstellen",
+        "description": "Gib ihr einen Namen, wähle Daten und Länder und ein Cover."
+      },
+      "step2": {
+        "title": "Geogetaggte Erinnerungen hinzufügen",
+        "description": "Füge Fotos und Notizen hinzu — jede genau dort verankert, wo sie passiert ist."
+      },
+      "step3": {
+        "title": "Portfolio teilen",
+        "description": "Veröffentliche ausgewählte Reisen auf deiner persönlichen Seite unter deinem eigenen Link."
+      }
+    },
+    "privacy": {
+      "eyebrow": "Standardmäßig privat",
+      "heading": "Deine Erinnerungen gehören zuerst dir",
+      "description": "Alles, was du zu Passé hinzufügst, ist zunächst privat. Nichts wird öffentlich, bis du es bewusst entscheidest — Reise für Reise, Erinnerung für Erinnerung.",
+      "point1": "Jede Reise und Erinnerung startet privat",
+      "point2": "Du entscheidest genau, was öffentlich wird",
+      "point3": "Mach alles jederzeit wieder privat"
+    },
+    "pricing": {
+      "heading": "Einfache Pläne für alle Reisenden",
+      "subheading": "Starte kostenlos. Upgrade, wenn dein Archiv wächst.",
+      "most_popular": "Am beliebtesten",
+      "per_month": "/ Monat",
+      "bullets": {
+        "trips": "{count, plural, one {# Reise} other {# Reisen}}",
+        "trips_unlimited": "Unbegrenzte Reisen",
+        "memories": "{count, plural, one {# Erinnerung} other {# Erinnerungen}} pro Reise",
+        "memories_unlimited": "Unbegrenzte Erinnerungen pro Reise",
+        "portfolio_yes": "Öffentliches Portfolio",
+        "portfolio_no": "Nur privates Festhalten"
+      },
+      "plans": {
+        "free": {
+          "name": "Free",
+          "tagline": "Für deine ersten Reisen",
+          "price": "0 €",
+          "cta": "Kostenlos starten"
+        },
+        "explorer": {
+          "name": "Explorer",
+          "tagline": "Für Vielreisende",
+          "price": "4 €",
+          "cta": "Loslegen"
+        },
+        "collector": {
+          "name": "Collector",
+          "tagline": "Für ein Leben voller Reisen",
+          "price": "9 €",
+          "cta": "Loslegen"
+        }
+      }
+    },
+    "cta": {
+      "heading": "Beginne heute dein Archiv",
+      "subtitle": "Deine nächste Reise verdient mehr als eine Fotogalerie.",
+      "button": "Kostenlos starten"
+    },
+    "footer": {
+      "copyright": "© {year} Passé",
+      "sign_in": "Anmelden",
+      "sign_up": "Registrieren"
+    }
   }
 }

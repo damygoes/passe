@@ -181,5 +181,108 @@
       "delete_failed": "Failed to delete account. Please try again.",
       "reverification_failed": "Verification failed. Please try again."
     }
+  },
+  "landing": {
+    "meta": {
+      "title": "Passé. — The past, beautifully kept.",
+      "description": "Create trips, attach geotagged memories, and share a beautiful travel portfolio. Private by default."
+    },
+    "nav": {
+      "sign_in": "Sign in",
+      "get_started": "Get started"
+    },
+    "hero": {
+      "eyebrow": "Travel memory keeping",
+      "title_leading": "The past,",
+      "title_accent": "beautifully kept.",
+      "subtitle": "Passé turns your trips into a living archive — geotagged photos, notes, and moments, arranged into a portfolio worth sharing.",
+      "cta_primary": "Start for free",
+      "cta_secondary": "Sign in",
+      "note": "Free plan included. No credit card required."
+    },
+    "features": {
+      "heading": "Everything you need to preserve your travels",
+      "subheading": "Purpose-built for the way you actually remember trips.",
+      "trips": {
+        "title": "Trips as chapters",
+        "description": "Organise your travels by trip — dates, countries, and a cover that sets the scene."
+      },
+      "memories": {
+        "title": "Geotagged memories",
+        "description": "Pin photos and notes to the exact places they happened. Your story, in order."
+      },
+      "portfolio": {
+        "title": "A portfolio, not a feed",
+        "description": "Curate a beautiful public page of your travels and share it with a single link."
+      }
+    },
+    "how": {
+      "heading": "How it works",
+      "subheading": "Three steps from a trip to a keepsake.",
+      "step1": {
+        "title": "Create a trip",
+        "description": "Name it, set the dates and countries, and give it a cover."
+      },
+      "step2": {
+        "title": "Add geotagged memories",
+        "description": "Drop in photos and notes — each pinned to where it happened."
+      },
+      "step3": {
+        "title": "Share your portfolio",
+        "description": "Publish the trips you choose to a personal page at your own link."
+      }
+    },
+    "privacy": {
+      "eyebrow": "Private by default",
+      "heading": "Your memories are yours first",
+      "description": "Everything you add to Passé starts private. Nothing goes public until you deliberately make it so — trip by trip, memory by memory.",
+      "point1": "Every trip and memory starts private",
+      "point2": "You choose exactly what goes public",
+      "point3": "Make anything private again, any time"
+    },
+    "pricing": {
+      "heading": "Simple plans for every traveller",
+      "subheading": "Start free. Upgrade when your archive outgrows it.",
+      "most_popular": "Most popular",
+      "per_month": "/ month",
+      "bullets": {
+        "trips": "{count, plural, one {# trip} other {# trips}}",
+        "trips_unlimited": "Unlimited trips",
+        "memories": "{count, plural, one {# memory} other {# memories}} per trip",
+        "memories_unlimited": "Unlimited memories per trip",
+        "portfolio_yes": "Public portfolio",
+        "portfolio_no": "Private journaling only"
+      },
+      "plans": {
+        "free": {
+          "name": "Free",
+          "tagline": "For your first journeys",
+          "price": "€0",
+          "cta": "Start for free"
+        },
+        "explorer": {
+          "name": "Explorer",
+          "tagline": "For frequent travellers",
+          "price": "€4",
+          "cta": "Get started"
+        },
+        "collector": {
+          "name": "Collector",
+          "tagline": "For a lifetime of travel",
+          "price": "€9",
+          "cta": "Get started"
+        }
+      }
+    },
+    "cta": {
+      "heading": "Begin your archive today",
+      "subtitle": "Your next trip deserves more than a camera roll.",
+      "button": "Start for free"
+    },
+    "footer": {
+      "copyright": "© {year} Passé",
+      "sign_in": "Sign in",
+      "sign_up": "Sign up"
+    }
   }
 }
