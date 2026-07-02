@@ -16,6 +16,7 @@ Everything (trips, memories) is **private by default**. Users explicitly make th
 ```text
 apps/
   web/          Next.js 16 — main product (App Router, Clerk auth)
+  mobile/       Expo 57 + Expo Router — iOS & Android app (Clerk auth, React Native)
   docs/         Next.js 16 — documentation site
 packages/
   auth/         @passe/auth    — shared Clerk auth utilities (webhook handler, plan gates, constants)
@@ -49,6 +50,14 @@ Run within a package:
 ```bash
 pnpm --filter @passe/ui lint
 pnpm --filter web dev
+```
+
+Mobile (`apps/mobile`):
+
+```bash
+pnpm --filter passe-mobile start     # start Expo dev server
+pnpm --filter passe-mobile ios       # run on iOS simulator
+pnpm --filter passe-mobile android   # run on Android emulator
 ```
 
 Generate a new UI component:
@@ -106,6 +115,9 @@ TypeScript: strict mode, `noEmit` for type-checks, `isolatedModules`.
 - **Next.js 16 uses `proxy.ts` as the middleware file, not `middleware.ts`** — `middleware.ts` is deprecated and ignored. Never create `middleware.ts` in `apps/web`; the entry point is `apps/web/proxy.ts`
 - Shared auth logic (webhook sync, plan gates, route constants) lives in `@passe/auth` — import from there, not from `@clerk/*` directly in shared packages
 - `@passe/auth/webhook` imports `@passe/db/client` and must only be used in server-side code (API routes, server actions) — never in client components or mobile UI
+- `apps/mobile` must never import from `@passe/ui` (DOM-based, React Native incompatible) or `@passe/db` (Node.js / server-only)
+- From `@passe/auth` in mobile, import only subpaths: `@passe/auth/plan-gates`, `@passe/auth/types`, `@passe/auth/constants` — never the barrel export (it pulls in `@passe/auth/webhook` which imports `@passe/db`)
+- From `@passe/theme` in mobile, import only JS token exports — never `@passe/theme/styles` (CSS file, web-only)
 
 ---
 
@@ -144,3 +156,5 @@ These map to CSS custom properties defined by `@passe/theme`.
 - Date/time formatting belongs in `@passe/utils` (e.g. `formatTripDate`, `formatTripDateFull`, `formatDateRange`) — never define inline in route files
 - `apps/web/app/` is for routing only (pages, layouts, loading, error, not-found) — **never define components, utility functions, or perform data fetching inside route files**. Protected route pages must be pure one-line shells that delegate to a view in `src/features/`. Data fetching in protected views always goes through `@passe/hooks` → `app/api/` routes. The only exception is public views (e.g. `app/u/`) which are `async` server components that query the DB directly because `@passe/hooks` requires `ApiProvider`.
 - Use `<Image>` from `next/image` for all images in `apps/web` — never raw `<img>` tags. External image URLs require `remotePatterns` in `next.config.js`. For remote images with unknown dimensions, use `fill` with a `relative`-positioned parent and always include a `sizes` prop.
+- In `apps/mobile`, use `expo-image` for images, `StyleSheet.create()` for styles, and `useTheme()` from `@/hooks/useTheme` for design tokens — never use `cn()` or Tailwind class strings
+- `apps/mobile/src/app/` is routing only (same rule as `apps/web/app/`) — all screen logic lives in `src/features/<feature>/screens/<Name>Screen.tsx`
