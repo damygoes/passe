@@ -78,9 +78,23 @@ src/
 
 This is the mobile equivalent of `@passe/ui` (which cannot run in React Native). Before writing raw `TouchableOpacity` / `Text` wrappers inside a feature, check here first.
 
-| Component | Import path            | Variants                            | Sizes       |
-|-----------|------------------------|-------------------------------------|-------------|
-| `Button`  | `@/components/ui/button` | `primary`, `secondary`, `ghost`, `danger` | `sm`, `md`, `lg` |
+| Component | Import path | Variants / Sizes | Notes |
+|-----------|-------------|-----------------|-------|
+| `Button` | `@/components/ui/button` | variants: `primary`, `secondary`, `ghost`, `danger` · sizes: `sm`, `md`, `lg` | |
+| `Icon` | `@/components/ui/icon` | sizes: `xs`, `sm`, `md`, `lg`, `xl`, `2xl`–`5xl` | Same icon names as `@passe/ui`; icon data from `@passe/ui/icon-map` |
+| `Separator` | `@/components/ui/separator` | orientations: `horizontal`, `vertical` | |
+| `Badge` | `@/components/ui/badge` | variants: `default`, `secondary`, `destructive`, `outline`, `ghost` | |
+| `Skeleton` | `@/components/ui/skeleton` | — | Reanimated pulse; size via `style` prop |
+| `Input` | `@/components/ui/input` | — | Supports `icon`, `iconPosition`, `isLoading`, `onIconPress` |
+| `Textarea` | `@/components/ui/textarea` | — | Multiline `TextInput`, auto-grows |
+| `Avatar` | `@/components/ui/avatar` | sizes: `sm`, `default`, `lg` | Sub-components: `Avatar`, `AvatarImage`, `AvatarFallback` |
+| `Card` | `@/components/ui/card` | sizes: `default`, `sm` | Sub-components: `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter` |
+| `Empty` | `@/components/ui/empty` | — | Sub-components: `Empty`, `EmptyHeader`, `EmptyMedia`, `EmptyTitle`, `EmptyDescription`, `EmptyContent` |
+| `PageHeader` | `@/components/ui/page-header` | — | Sub-components: `PageHeader`, `PageHeaderTitle`, `PageHeaderDescription`, `PageHeaderAction` |
+| `AlertDialog` | `@/components/ui/alert-dialog` | — | Controlled via `open`/`onOpenChange`; sub-components: `AlertDialog`, `AlertDialogTrigger`, `AlertDialogContent`, `AlertDialogHeader`, `AlertDialogTitle`, `AlertDialogDescription`, `AlertDialogFooter`, `AlertDialogAction`, `AlertDialogCancel` |
+| `DropdownMenu` | `@/components/ui/dropdown-menu` | item variants: `default`, `destructive` | Sub-components: `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuGroup`, `DropdownMenuLabel`, `DropdownMenuItem`, `DropdownMenuSeparator` |
+
+> **Icon data sharing:** `@passe/ui` is a dependency of `apps/mobile` solely to import `@passe/ui/icon-map`. No other `@passe/ui` subpath may be used in mobile — all other exports are DOM-based and incompatible with React Native.
 
 **Adding a new component:**
 

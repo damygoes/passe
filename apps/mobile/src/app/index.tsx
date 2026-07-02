@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button/Button'
+import { Input } from '@/components/ui/input'
 import { useTheme } from '@/hooks/useTheme'
 import { resolveLineHeight } from '@/theme'
 import { useMemo } from 'react'
@@ -56,6 +57,7 @@ export default function Index() {
         <Button fullWidth>Continue</Button>
 
         <Button loading>Saving...</Button>
+        <Input icon="camera" iconPosition="end" placeholder="Enter your camera deviceId" />
       </View>
     </View>
   )

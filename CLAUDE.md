@@ -114,7 +114,7 @@ TypeScript: strict mode, `noEmit` for type-checks, `isolatedModules`.
 - **Next.js 16 uses `proxy.ts` as the middleware file, not `middleware.ts`** — `middleware.ts` is deprecated and ignored. Never create `middleware.ts` in `apps/web`; the entry point is `apps/web/proxy.ts`
 - Shared auth logic (webhook sync, plan gates, route constants) lives in `@passe/auth` — import from there, not from `@clerk/*` directly in shared packages
 - `@passe/auth/webhook` imports `@passe/db/client` and must only be used in server-side code (API routes, server actions) — never in client components or mobile UI
-- `apps/mobile` must never import from `@passe/ui` (DOM-based, React Native incompatible) or `@passe/db` (Node.js / server-only)
+- `apps/mobile` must never import from `@passe/ui` component paths (DOM-based, React Native incompatible) or `@passe/db` (Node.js / server-only). The only permitted `@passe/ui` import in mobile is `@passe/ui/icon-map` (plain JS icon data, no DOM dependencies)
 - From `@passe/auth` in mobile, import only subpaths: `@passe/auth/plan-gates`, `@passe/auth/types`, `@passe/auth/constants` — never the barrel export (it pulls in `@passe/auth/webhook` which imports `@passe/db`)
 - From `@passe/theme` in mobile, import only JS token exports — never `@passe/theme/styles` (CSS file, web-only)
 

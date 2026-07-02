@@ -12,6 +12,7 @@
     "./dropdown-menu": "./src/dropdown-menu/DropdownMenu.tsx",
     "./empty": "./src/empty/Empty.tsx",
     "./icon": "./src/icon/Icon.tsx",
+    "./icon-map": "./src/icon/icon-map.ts",
     "./input": "./src/input/Input.tsx",
     "./navbar": "./src/navbar/Navbar.tsx",
     "./page-header": "./src/page-header/PageHeader.tsx",

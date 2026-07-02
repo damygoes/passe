@@ -1,5 +1,5 @@
 import { Platform } from 'react-native'
-import { fontFamilies, fontSizes, fontWeights, lineHeights } from '@passe/theme'
+import { fontFamilies } from '@passe/theme'
 
 export { fontSizes, fontWeights, lineHeights } from '@passe/theme'
 

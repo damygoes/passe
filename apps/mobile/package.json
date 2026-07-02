@@ -4,7 +4,9 @@
   "version": "1.0.0",
   "dependencies": {
     "@expo/ui": "~57.0.1",
+    "@hugeicons/react-native": "^1.0.15",
     "@passe/auth": "workspace:*",
+    "@passe/ui": "workspace:*",
     "@passe/hooks": "workspace:*",
     "@passe/i18n": "workspace:*",
     "@passe/logger": "workspace:*",
