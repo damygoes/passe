@@ -1,5 +1,5 @@
-import { useColorScheme } from 'react-native'
 import { theme } from '@/theme'
+import { useColorScheme } from 'react-native'
 
 export type { SemanticColors } from '@/theme'
 
@@ -18,3 +18,5 @@ export function useTheme() {
     colorScheme,
   }
 }
+
+export type AppTheme = ReturnType<typeof useTheme>

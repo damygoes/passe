@@ -1,10 +1,10 @@
-export { lightColors, darkColors, type SemanticColors } from './colors'
-export { spacing, borderRadius } from './spacing'
+export { darkColors, lightColors, type SemanticColors } from './colors'
+export { borderRadius, spacing } from './spacing'
 export { fonts, fontSizes, fontWeights, lineHeights, resolveLineHeight } from './typography'
 
 import { colors as palette } from '@passe/theme'
-import { lightColors, darkColors } from './colors'
-import { spacing, borderRadius } from './spacing'
+import { darkColors, lightColors } from './colors'
+import { borderRadius, spacing } from './spacing'
 import { fonts, fontSizes, fontWeights, lineHeights } from './typography'
 
 export const theme = {
@@ -17,4 +17,4 @@ export const theme = {
   lineHeights,
 } as const
 
-export type Theme = typeof theme
+export type ThemeDefinition = typeof theme

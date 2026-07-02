@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button/Button'
 import { useTheme } from '@/hooks/useTheme'
 import { resolveLineHeight } from '@/theme'
 import { useMemo } from 'react'
@@ -13,7 +14,7 @@ export default function Index() {
           flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: colors.primary,
+          backgroundColor: colors.background,
           padding: spacing[4],
         },
         text: {
@@ -30,6 +31,32 @@ export default function Index() {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Edit src/app/index.tsx to edit this screen.</Text>
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          gap: 6,
+        }}
+      >
+        <Button>Save</Button>
+
+        <Button variant="secondary">Cancel</Button>
+
+        <Button variant="danger">Delete</Button>
+
+        <Button variant="ghost">Back</Button>
+
+        <Button size="sm">Small</Button>
+
+        <Button size="lg">Large</Button>
+
+        <Button fullWidth>Continue</Button>
+
+        <Button loading>Saving...</Button>
+      </View>
     </View>
   )
 }
