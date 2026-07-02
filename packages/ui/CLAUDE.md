@@ -1,6 +1,6 @@
 # @passe/ui — Component Library Context
 
-Shared React component library consumed by `apps/web` and `apps/docs`.
+Shared React component library consumed by `apps/web`.
 Components are built on **Base UI** primitives (`@base-ui/react`), styled with **Tailwind CSS 4** and **CVA**.
 
 ---

@@ -45,9 +45,20 @@ src/
       screens/
       components/
   components/             # Shared native UI components
+    ui/                   # RN UI primitives (mobile equivalent of @passe/ui)
+      <name>/
+        <Name>.tsx        # Component implementation
+        <Name>.types.ts   # Props interface, variant/size union types
+        index.ts          # Re-exports component + types
     layouts/              # Layout wrappers (SafeAreaLayout, etc.)
   hooks/                  # App-level hooks (useTheme, etc.)
+  recipes/                # Component styling recipes (theme → StyleSheet)
+    <name>.ts             # create<Name>Recipe(theme: AppTheme): <Name>Recipe
   theme/                  # Local theme system — wraps @passe/theme JS tokens
+    colors.ts             # lightColors + darkColors (SemanticColors)
+    spacing.ts            # Re-exports spacing + borderRadius from @passe/theme
+    typography.ts         # Platform-aware fonts, fontSizes, fontWeights, resolveLineHeight()
+    index.ts              # Assembles full theme const, exports ThemeDefinition type
   lib/                    # API helpers, route constants, utilities
 ```
 
@@ -57,8 +68,58 @@ src/
 
 - `src/app/` is **routing only** — no logic, no hooks, no data fetching in route files. Every route file is a one-line shell: `export { ScreenName as default } from '@/features/<feature>/screens/<Name>Screen'`
 - All screen logic lives in `src/features/<feature>/screens/<Name>Screen.tsx`
-- Shared native components go in `src/components/<name>/<Name>.tsx`
+- Shared React Native UI primitives go in `src/components/ui/<name>/` — each with `<Name>.tsx`, `<Name>.types.ts`, and `index.ts` re-exporting both. Before using raw `TouchableOpacity` or `Text` wrappers in a feature, check the Component Library section below.
 - Shared layout wrappers go in `src/components/layouts/<Name>Layout.tsx`
+- Multi-variant component styles go in `src/recipes/<name>.ts` — never inline variant logic directly in a component file
+
+---
+
+## Component Library (`src/components/ui/`)
+
+This is the mobile equivalent of `@passe/ui` (which cannot run in React Native). Before writing raw `TouchableOpacity` / `Text` wrappers inside a feature, check here first.
+
+| Component | Import path            | Variants                            | Sizes       |
+|-----------|------------------------|-------------------------------------|-------------|
+| `Button`  | `@/components/ui/button` | `primary`, `secondary`, `ghost`, `danger` | `sm`, `md`, `lg` |
+
+**Adding a new component:**
+
+1. Create `src/components/ui/<name>/` with `<Name>.tsx`, `<Name>.types.ts`, and `index.ts`
+2. Define all variant/size types in `<Name>.types.ts`
+3. Create a matching recipe in `src/recipes/<name>.ts` (see Recipes section)
+4. Re-export component + types from `index.ts`
+5. Add it to this table
+
+---
+
+## Recipes (`src/recipes/`)
+
+Recipes replace CVA (which is web/Tailwind-only) for multi-variant component styling on mobile. A recipe is a function that takes the current theme and returns a typed object of `StyleSheet` entries grouped by slot (`base`, `variants`, `sizes`, `states`).
+
+**Pattern:**
+
+```ts
+// src/recipes/button.ts
+interface ButtonRecipe {
+  base: { container: ViewStyle; label: TextStyle }
+  variants: Record<ButtonVariant, { container: ViewStyle; label: TextStyle; spinnerColor: string }>
+  sizes: Record<ButtonSize, { container: ViewStyle; label: TextStyle }>
+  states: { disabled: { container: ViewStyle }; fullWidth: { container: ViewStyle } }
+}
+
+export function createButtonRecipe(theme: AppTheme): ButtonRecipe { ... }
+```
+
+```tsx
+// src/components/ui/button/Button.tsx
+const recipe = createButtonRecipe(useTheme())
+<TouchableOpacity style={[recipe.base.container, recipe.variants[variant].container, ...]} />
+```
+
+Rules:
+- One recipe file per component — `src/recipes/<name>.ts` maps 1:1 to `src/components/ui/<name>/`
+- Never define `StyleSheet.create()` calls with conditional variant logic inside a component file
+- Each slot value must be a frozen `StyleSheet` entry (call `StyleSheet.create({ style: ... }).style`)
 
 ---
 
@@ -131,24 +192,32 @@ export default function RootLayout() {
 - Never use `cn()` — there are no Tailwind class strings on mobile
 - All colors, spacing, typography, and borderRadius come from `useTheme()` → `src/theme/index.ts`
 - Dark mode is automatic: `useTheme()` reads `useColorScheme()` and returns the correct token set
+- For components with multiple variants or sizes, define styles in `src/recipes/` (see Recipes section) — not inline in the component
 
 ```tsx
 import { useTheme } from '@/hooks/useTheme'
 
 export function MyComponent() {
-  const { colors, spacing, typography } = useTheme()
-  return <View style={styles.container(colors, spacing)} />
-}
-
-const styles = {
-  container: (colors: Colors, spacing: Spacing) =>
-    StyleSheet.create({
-      wrapper: { backgroundColor: colors.background, padding: spacing.md },
-    }).wrapper,
+  const { colors, spacing } = useTheme()
+  const styles = StyleSheet.create({
+    wrapper: { backgroundColor: colors.background, padding: spacing[4] },
+  })
+  return <View style={styles.wrapper} />
 }
 ```
 
 Or define static styles at the bottom of the file when theme tokens are not needed.
+
+### Theme structure (`src/theme/`)
+
+Never import directly from `src/theme/` in components — always go through `useTheme()`.
+
+| File | Exports |
+|---|---|
+| `colors.ts` | `lightColors`, `darkColors` (`SemanticColors`) — Passé brand palette: `primary` (terracotta), `primaryForeground` (agedCream), `secondary` (sandyBeige), `secondaryForeground` (darkEspresso), `muted`, `mutedForeground`, `destructive`, etc. |
+| `spacing.ts` | `spacing` (numeric scale), `borderRadius` — re-exported from `@passe/theme` |
+| `typography.ts` | `fonts` (platform-aware font families), `fontSizes`, `fontWeights`, `lineHeights`, `resolveLineHeight(fontSize, multiplier)` |
+| `index.ts` | Assembles the full `theme` const; exports `ThemeDefinition` type |
 
 ---
 

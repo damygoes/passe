@@ -17,7 +17,6 @@ Everything (trips, memories) is **private by default**. Users explicitly make th
 apps/
   web/          Next.js 16 — main product (App Router, Clerk auth)
   mobile/       Expo 57 + Expo Router — iOS & Android app (Clerk auth, React Native)
-  docs/         Next.js 16 — documentation site
 packages/
   auth/         @passe/auth    — shared Clerk auth utilities (webhook handler, plan gates, constants)
   db/           @passe/db      — Drizzle ORM schema + Neon serverless client
@@ -157,4 +156,5 @@ These map to CSS custom properties defined by `@passe/theme`.
 - `apps/web/app/` is for routing only (pages, layouts, loading, error, not-found) — **never define components, utility functions, or perform data fetching inside route files**. Protected route pages must be pure one-line shells that delegate to a view in `src/features/`. Data fetching in protected views always goes through `@passe/hooks` → `app/api/` routes. The only exception is public views (e.g. `app/u/`) which are `async` server components that query the DB directly because `@passe/hooks` requires `ApiProvider`.
 - Use `<Image>` from `next/image` for all images in `apps/web` — never raw `<img>` tags. External image URLs require `remotePatterns` in `next.config.js`. For remote images with unknown dimensions, use `fill` with a `relative`-positioned parent and always include a `sizes` prop.
 - In `apps/mobile`, use `expo-image` for images, `StyleSheet.create()` for styles, and `useTheme()` from `@/hooks/useTheme` for design tokens — never use `cn()` or Tailwind class strings
+- In `apps/mobile`, component variants use the recipe pattern (`src/recipes/<name>.ts`) — never CVA (web/Tailwind-only). Shared UI primitives live in `src/components/ui/<name>/`
 - `apps/mobile/src/app/` is routing only (same rule as `apps/web/app/`) — all screen logic lives in `src/features/<feature>/screens/<Name>Screen.tsx`
