@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import type { PublicUser, UpdateUser } from '@passe/types/user'
+import type { AuthUser, PublicUser, UpdateUser } from '@passe/types/user'
 import { usePasseApi } from '../context'
 import { queryKeys } from '../query-keys'
 
@@ -7,7 +7,7 @@ export function useUser() {
   const { fetchApi } = usePasseApi()
   return useQuery({
     queryKey: queryKeys.user(),
-    queryFn: () => fetchApi<PublicUser>('/api/user'),
+    queryFn: () => fetchApi<AuthUser>('/api/user'),
   })
 }
 

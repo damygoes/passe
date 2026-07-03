@@ -2,7 +2,7 @@ import { clerkClient } from '@clerk/nextjs/server'
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
 import { db, users } from '@passe/db'
 import { createLogger } from '@passe/logger'
-import { PublicUserSchema, UpdateUserSchema } from '@passe/types/user'
+import { AuthUserSchema, PublicUserSchema, UpdateUserSchema } from '@passe/types/user'
 import { eq } from 'drizzle-orm'
 
 const log = createLogger({ context: { module: 'api/user' } })
@@ -18,7 +18,7 @@ export async function GET() {
 
   if (!user) return apiError('User not found', 404)
 
-  const parsed = PublicUserSchema.safeParse(user)
+  const parsed = AuthUserSchema.safeParse(user)
   if (!parsed.success) {
     log.error('DB output failed schema validation', { userId, issues: parsed.error.issues })
     return apiError('Invalid user data', 500)

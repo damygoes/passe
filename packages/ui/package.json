@@ -8,7 +8,9 @@
     "./avatar": "./src/avatar/Avatar.tsx",
     "./badge": "./src/badge/Badge.tsx",
     "./button": "./src/button/Button.tsx",
+    "./calendar": "./src/calendar/Calendar.tsx",
     "./card": "./src/card/Card.tsx",
+    "./date-picker": "./src/date-picker/DatePicker.tsx",
     "./dropdown-menu": "./src/dropdown-menu/DropdownMenu.tsx",
     "./empty": "./src/empty/Empty.tsx",
     "./icon": "./src/icon/Icon.tsx",
@@ -16,8 +18,10 @@
     "./input": "./src/input/Input.tsx",
     "./navbar": "./src/navbar/Navbar.tsx",
     "./page-header": "./src/page-header/PageHeader.tsx",
+    "./popover": "./src/popover/Popover.tsx",
     "./separator": "./src/separator/Separator.tsx",
     "./skeleton": "./src/skeleton/Skeleton.tsx",
+    "./switch": "./src/switch/Switch.tsx",
     "./textarea": "./src/textarea/Textarea.tsx"
   },
   "scripts": {
@@ -48,7 +52,9 @@
     "@hugeicons/react": "^1.1.9",
     "@passe/utils": "workspace:*",
     "class-variance-authority": "^0.7.1",
+    "date-fns": "^4.4.0",
     "react": "^19.2.0",
+    "react-day-picker": "^10.0.1",
     "react-dom": "^19.2.0"
   }
 }

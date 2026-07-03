@@ -120,6 +120,44 @@
       "new_trip": "New trip",
       "trips_error": "Could not load your trips. Try refreshing the page."
     },
+    "new": {
+      "back": "← Back to trips",
+      "title": "New trip",
+      "subtitle": "Give your trip a name, add the countries you visited, and set the dates.",
+      "title_label": "Title",
+      "title_placeholder": "Summer in Portugal",
+      "description_label": "Description",
+      "description_placeholder": "What was this trip about?",
+      "countries_label": "Countries",
+      "countries_placeholder": "Type a country and press enter",
+      "remove_country": "Remove",
+      "start_date_label": "Start date",
+      "end_date_label": "End date",
+      "date_placeholder": "Pick a date",
+      "date_done": "Done",
+      "public_label": "Make this trip public",
+      "public_hint": "Public trips can be shared on your portfolio.",
+      "public_gated_hint": "Upgrade to Explorer or Collector to share trips publicly.",
+      "limit_reached": "You've reached the trip limit for your plan.",
+      "upgrade_cta": "Upgrade your plan",
+      "create": "Create trip",
+      "creating": "Creating…",
+      "cancel": "Cancel",
+      "errors": {
+        "create_failed": "Could not create your trip. Please try again.",
+        "countries_required": "Add at least one country."
+      },
+      "validation": {
+        "title_required": "Give your trip a title.",
+        "title_max": "Title must be 100 characters or fewer.",
+        "description_max": "Description must be 500 characters or fewer.",
+        "countries_required": "Add at least one country.",
+        "start_date_required": "Pick a start date.",
+        "end_date_required": "Pick an end date.",
+        "end_before_start": "End date must be on or after the start date.",
+        "create_failed": "Could not create your trip. Please try again."
+      }
+    },
     "detail": {
       "back": "← Back",
       "memories_heading": "Memories",
