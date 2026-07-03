@@ -24,14 +24,6 @@ describe('UserSchema', () => {
     expect(UserSchema.safeParse({ ...validUser, plan: 'premium' }).success).toBe(false)
   })
 
-  it('rejects a username shorter than 3 characters', () => {
-    expect(UserSchema.safeParse({ ...validUser, username: 'ab' }).success).toBe(false)
-  })
-
-  it('rejects a username longer than 30 characters', () => {
-    expect(UserSchema.safeParse({ ...validUser, username: 'a'.repeat(31) }).success).toBe(false)
-  })
-
   it('defaults plan to free when omitted', () => {
     const { plan: _, ...withoutPlan } = validUser
     const result = UserSchema.safeParse(withoutPlan)
@@ -77,5 +69,9 @@ describe('UpdateUserSchema', () => {
 
   it('rejects a username that is too short', () => {
     expect(UpdateUserSchema.safeParse({ username: 'ab' }).success).toBe(false)
+  })
+
+  it('rejects a username longer than 30 characters', () => {
+    expect(UpdateUserSchema.safeParse({ username: 'a'.repeat(31) }).success).toBe(false)
   })
 })
