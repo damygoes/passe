@@ -26,6 +26,10 @@ export function TripCard({ trip, onPress }: TripCardProps) {
   const t = useTranslations('trips.card')
   const { spacing } = useTheme()
 
+  const resolvedCoverImageUrl =
+    trip.coverImageUrl ??
+    'https://images.unsplash.com/photo-1656066848895-30feffe87ed6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dHJpcCUyMHBsYWNlaG9sZGVyfGVufDB8fDB8fHwy'
+
   const styles = useMemo(
     () =>
       StyleSheet.create({
@@ -39,14 +43,13 @@ export function TripCard({ trip, onPress }: TripCardProps) {
 
   const card = (
     <Card>
-      {trip.coverImageUrl && (
-        <Image
-          source={{ uri: trip.coverImageUrl }}
-          style={styles.cover}
-          contentFit="cover"
-          accessibilityLabel={t('cover_alt', { title: trip.title })}
-        />
-      )}
+      <Image
+        source={{ uri: resolvedCoverImageUrl }}
+        style={styles.cover}
+        contentFit="cover"
+        accessibilityLabel={t('cover_alt', { title: trip.title })}
+      />
+
       <CardHeader>
         <View style={styles.headerText}>
           <CardTitle>{trip.title}</CardTitle>

@@ -21,6 +21,7 @@ export function Empty({ style, children, ...props }: EmptyProps) {
           borderColor: colors.border,
           borderStyle: 'dashed',
           padding: spacing[6],
+          gap: spacing[6],
         },
         style,
       ]}
@@ -69,7 +70,10 @@ export function EmptyTitle({ style, children, ...props }: EmptyTextSubProps) {
 
   return (
     <Text
-      style={[{ fontSize: fontSizes.sm, fontWeight: fontWeights.medium, color: colors.foreground }, style]}
+      style={[
+        { fontSize: fontSizes.sm, fontWeight: fontWeights.medium, color: colors.foreground },
+        style,
+      ]}
       {...props}
     >
       {children}
@@ -82,7 +86,10 @@ export function EmptyDescription({ style, children, ...props }: EmptyTextSubProp
 
   return (
     <Text
-      style={[{ fontSize: fontSizes.sm, color: colors.mutedForeground, textAlign: 'center' }, style]}
+      style={[
+        { fontSize: fontSizes.sm, color: colors.mutedForeground, textAlign: 'center' },
+        style,
+      ]}
       {...props}
     >
       {children}
@@ -95,7 +102,10 @@ export function EmptyContent({ style, children, ...props }: EmptyViewSubProps) {
 
   return (
     <View
-      style={[{ maxWidth: 320, alignItems: 'center', gap: spacing[2], marginTop: spacing[2] }, style]}
+      style={[
+        { maxWidth: 320, alignItems: 'center', gap: spacing[2], marginTop: spacing[2] },
+        style,
+      ]}
       {...props}
     >
       {children}

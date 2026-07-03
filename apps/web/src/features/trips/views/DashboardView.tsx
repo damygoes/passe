@@ -22,7 +22,7 @@ export function DashboardView() {
   const { uniqueCountries } = getUniqueStatsFromTrips({ trips })
 
   return (
-    <div className="container mx-auto w-full px-4 py-8 flex flex-col justify-start items-center gap-6">
+    <div className="container mx-auto w-full px-4 py-8 flex flex-col gap-6">
       <PageHeader className="w-full">
         <PageHeaderTitle>{t('title')}</PageHeaderTitle>
         {isLoading ? (

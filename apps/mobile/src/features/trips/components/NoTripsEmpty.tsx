@@ -1,7 +1,13 @@
 import { useRouter } from 'expo-router'
 
 import { Button } from '@/components/ui/button'
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import { useTranslations } from '@/i18n/useTranslations'
 
 export function NoTripsEmpty() {

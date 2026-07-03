@@ -26,8 +26,9 @@ export function createCardRecipe(theme: AppTheme): CardRecipe {
         style: {
           backgroundColor: colors.background,
           borderRadius: borderRadius.xl,
-          borderWidth: 1,
+          borderWidth: 0.5,
           borderColor: colors.border,
+          shadowColor: colors.border,
           overflow: 'hidden',
         },
       }).style,

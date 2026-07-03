@@ -1,7 +1,7 @@
-import DateTimePicker, {
-  type DateTimePickerEvent,
-} from '@react-native-community/datetimepicker'
 import { formatTripDateFull } from '@passe/utils'
+import DateTimePicker, {
+  type DateTimePickerChangeEvent,
+} from '@react-native-community/datetimepicker'
 import { useMemo, useState } from 'react'
 import { Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native'
 
@@ -57,16 +57,23 @@ export function DateField({
           borderTopRightRadius: borderRadius.xl,
           padding: spacing[4],
           gap: spacing[3],
+          flexDirection: 'column',
+          width: '100%',
         },
+        picker: { width: '100%', alignSelf: 'stretch' },
         modalActions: { alignItems: 'flex-end' },
       }),
     [colors, spacing, fontSizes, borderRadius, fonts, error],
   )
 
-  const handleChange = (event: DateTimePickerEvent, date?: Date) => {
+  // datetimepicker v9 deprecated `onChange` in favour of the split listeners.
+  // On Android the picker is a dialog, so a selection closes it; on iOS it stays
+  // open inside our modal until the user taps Done.
+  const handleValueChange = (_event: DateTimePickerChangeEvent, date: Date) => {
     if (Platform.OS !== 'ios') setShow(false)
-    if (event.type === 'set' && date) onChange(date)
+    onChange(date)
   }
+  const handleDismiss = () => setShow(false)
 
   return (
     <View style={styles.wrapper}>
@@ -89,7 +96,9 @@ export function DateField({
                   mode="date"
                   display="inline"
                   minimumDate={minimumDate}
-                  onChange={handleChange}
+                  style={styles.picker}
+                  onValueChange={handleValueChange}
+                  onDismiss={handleDismiss}
                 />
                 <View style={styles.modalActions}>
                   <Button size="sm" onPress={() => setShow(false)}>
@@ -105,7 +114,8 @@ export function DateField({
             mode="date"
             display="default"
             minimumDate={minimumDate}
-            onChange={handleChange}
+            onValueChange={handleValueChange}
+            onDismiss={handleDismiss}
           />
         ))}
     </View>

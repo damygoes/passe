@@ -12,7 +12,7 @@ export function TripStats({ countriesCount, citiesCount, yearsCount }: Props) {
   const t = useTranslations('trips.stats')
 
   return (
-    <div className="mt-6 flex gap-8 border-y py-4">
+    <div className="flex w-full gap-8 border-y py-4">
       <div>
         <p className="text-2xl font-semibold">{countriesCount}</p>
         <p className="text-sm text-muted-foreground">{t('countries', { count: countriesCount })}</p>
