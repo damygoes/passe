@@ -16,7 +16,7 @@ export function LogoutButton(props: Omit<ButtonProps, 'children' | 'onPress'>) {
   }
 
   return (
-    <Button variant="secondary" onPress={handleSignOut} {...props}>
+    <Button variant="danger" onPress={handleSignOut} {...props}>
       {t('log_out')}
     </Button>
   )

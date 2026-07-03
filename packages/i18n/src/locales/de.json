@@ -1,7 +1,8 @@
 {
   "common": {
     "app_name": "Passé.",
-    "app_tagline": "Die Vergangenheit, wunderschön bewahrt."
+    "app_tagline": "Die Vergangenheit, wunderschön bewahrt.",
+    "cancel": "Abbrechen"
   },
   "auth": {
     "layout": {
@@ -106,7 +107,10 @@
       "password_number": "Muss eine Zahl enthalten",
       "password_special": "Muss ein Sonderzeichen enthalten",
       "passwords_no_match": "Passwörter stimmen nicht überein",
-      "otp_length": "Gib den 6-stelligen Code ein"
+      "otp_length": "Gib den 6-stelligen Code ein",
+      "username_min": "Mindestens 3 Zeichen",
+      "username_max": "Maximal 30 Zeichen",
+      "bio_max": "Maximal 160 Zeichen"
     }
   },
   "trips": {
@@ -196,6 +200,7 @@
       "warning": "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden."
     },
     "errors": {
+      "load_failed": "Konto konnte nicht geladen werden. Bitte versuche es erneut.",
       "update_failed": "Profil konnte nicht aktualisiert werden. Bitte versuche es erneut.",
       "password_failed": "Passwort konnte nicht aktualisiert werden. Bitte überprüfe dein aktuelles Passwort.",
       "delete_failed": "Konto konnte nicht gelöscht werden. Bitte versuche es erneut.",

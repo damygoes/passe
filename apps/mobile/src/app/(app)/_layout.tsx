@@ -11,7 +11,7 @@ export default function AppLayout() {
     <Tabs>
       <Tabs.Screen name="trips/index" options={{ title: 'Trips' }} />
       <Tabs.Screen name="map/index" options={{ title: 'Map' }} />
-      <Tabs.Screen name="account/index" options={{ title: 'Account' }} />
+      <Tabs.Screen name="account" options={{ title: 'Account', headerShown: false }} />
     </Tabs>
   )
 }
