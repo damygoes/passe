@@ -156,7 +156,9 @@
     "portfolio": "My Portfolio",
     "account": "Account",
     "billing": "Billing",
-    "sign_out": "Sign out"
+    "sign_out": "Sign out",
+    "trips": "Trips",
+    "map": "Map"
   },
   "account": {
     "title": "Account Settings",

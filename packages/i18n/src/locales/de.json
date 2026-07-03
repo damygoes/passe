@@ -156,7 +156,9 @@
     "portfolio": "Mein Portfolio",
     "account": "Konto",
     "billing": "Abrechnung",
-    "sign_out": "Abmelden"
+    "sign_out": "Abmelden",
+    "trips": "Reisen",
+    "map": "Karte"
   },
   "account": {
     "title": "Kontoeinstellungen",
