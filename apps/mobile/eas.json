@@ -8,6 +8,10 @@
       "developmentClient": true,
       "distribution": "internal",
       "channel": "development",
+      "env": {
+        "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_ZXhwZXJ0LWJhcm5hY2xlLTkzLmNsZXJrLmFjY291bnRzLmRldiQ",
+        "EXPO_PUBLIC_API_URL": "http://localhost:3000"
+      },
       "ios": {
         "simulator": true
       }
@@ -20,15 +24,15 @@
       "autoIncrement": true,
       "channel": "production",
       "env": {
-        "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "TODO_pk_live_...",
-        "EXPO_PUBLIC_API_URL": "https://TODO-production-domain.com"
+        "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_ZXhwZXJ0LWJhcm5hY2xlLTkzLmNsZXJrLmFjY291bnRzLmRldiQ",
+        "EXPO_PUBLIC_API_URL": "https://passe.cc"
       }
     }
   },
   "submit": {
     "production": {
       "ios": {
-        "ascAppId": "TODO_AFTER_ASC_APP_CREATED"
+        "ascAppId": "6787004123"
       },
       "android": {
         "track": "internal"
