@@ -5,6 +5,9 @@
   "dependencies": {
     "@clerk/expo": "^3.6.5",
     "@expo/ui": "~57.0.1",
+    "@formatjs/intl-getcanonicallocales": "^3.2.10",
+    "@formatjs/intl-locale": "^5.3.9",
+    "@formatjs/intl-pluralrules": "^6.3.10",
     "@hookform/resolvers": "^5.4.0",
     "@hugeicons/react-native": "^1.0.15",
     "@passe/auth": "workspace:*",

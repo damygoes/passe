@@ -1,3 +1,5 @@
+import '@/i18n/polyfills'
+
 import { ClerkProvider, useAuth } from '@clerk/expo'
 import { tokenCache } from '@clerk/expo/token-cache'
 import { PasseApiProvider } from '@passe/hooks'

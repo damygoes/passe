@@ -67,6 +67,11 @@ export function AccountScreen() {
 
         <View style={styles.menu}>
           <AccountMenuRow
+            icon="globe"
+            label={t('portfolio')}
+            onPress={() => router.push('/(app)/account/portfolio')}
+          />
+          <AccountMenuRow
             icon="user"
             label={t('profile')}
             onPress={() => router.push('/(app)/account/profile')}

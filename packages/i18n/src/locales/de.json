@@ -165,7 +165,8 @@
     "tabs": {
       "profile": "Profil",
       "security": "Sicherheit",
-      "danger": "Gefahrenbereich"
+      "danger": "Gefahrenbereich",
+      "portfolio": "Mein Portfolio"
     },
     "profile": {
       "title": "Profil",
@@ -311,5 +312,12 @@
       "sign_in": "Anmelden",
       "sign_up": "Registrieren"
     }
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "trip_count": "{count, plural, one {# Reise} other {# Reisen}}",
+    "empty_title": "Hier gibt es noch nichts zu sehen",
+    "empty_description": "{displayName} hat noch keine öffentlichen Reisen geteilt.",
+    "error": "Dein Portfolio konnte nicht geladen werden. Bitte versuche es erneut."
   }
 }
