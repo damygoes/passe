@@ -14,4 +14,26 @@ config.resolver.nodeModulesPaths = [
   path.resolve(monorepoRoot, 'node_modules'),
 ]
 
+// Workspace packages (e.g. @passe/hooks) resolve peer deps like
+// @tanstack/react-query from their own node_modules, which pnpm keys against a
+// different react version — yielding two module instances and a broken React
+// context ("No QueryClient set"). Pin singletons to the app's copy.
+const singletonModules = ['react', 'react-dom', '@tanstack/react-query']
+const defaultResolveRequest = config.resolver.resolveRequest
+
+config.resolver.resolveRequest = (context, moduleName, platform) => {
+  const singleton = singletonModules.find(
+    (name) => moduleName === name || moduleName.startsWith(`${name}/`),
+  )
+  const resolve = defaultResolveRequest ?? context.resolveRequest
+  if (singleton) {
+    return resolve(
+      { ...context, originModulePath: path.join(projectRoot, 'package.json') },
+      moduleName,
+      platform,
+    )
+  }
+  return resolve(context, moduleName, platform)
+}
+
 module.exports = config

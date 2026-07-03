@@ -1,7 +1,8 @@
 {
   "common": {
     "app_name": "Passé.",
-    "app_tagline": "The past, beautifully kept."
+    "app_tagline": "The past, beautifully kept.",
+    "cancel": "Cancel"
   },
   "auth": {
     "layout": {
@@ -106,7 +107,10 @@
       "password_number": "Must include a number",
       "password_special": "Must include a special character",
       "passwords_no_match": "Passwords don't match",
-      "otp_length": "Enter the 6-digit code"
+      "otp_length": "Enter the 6-digit code",
+      "username_min": "At least 3 characters",
+      "username_max": "Max 30 characters",
+      "bio_max": "Max 160 characters"
     }
   },
   "trips": {
@@ -152,7 +156,9 @@
     "portfolio": "My Portfolio",
     "account": "Account",
     "billing": "Billing",
-    "sign_out": "Sign out"
+    "sign_out": "Sign out",
+    "trips": "Trips",
+    "map": "Map"
   },
   "account": {
     "title": "Account Settings",
@@ -196,6 +202,7 @@
       "warning": "This action is permanent and cannot be reversed."
     },
     "errors": {
+      "load_failed": "Failed to load account. Please try again.",
       "update_failed": "Failed to update profile. Please try again.",
       "password_failed": "Failed to update password. Please check your current password.",
       "delete_failed": "Failed to delete account. Please try again.",
