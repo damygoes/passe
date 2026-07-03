@@ -9,6 +9,7 @@ import { useTranslations } from '@/i18n/useTranslations'
 
 export function ProfileScreen() {
   const t = useTranslations('account.profile')
+  const tTabs = useTranslations('account.tabs')
   const tErrors = useTranslations('account.errors')
   const { data: user, isLoading, isError } = useUser()
   const { user: clerkUser } = useClerkUser()
@@ -16,7 +17,7 @@ export function ProfileScreen() {
   const email = clerkUser?.primaryEmailAddress?.emailAddress ?? ''
 
   return (
-    <AccountFormLayout description={t('description')}>
+    <AccountFormLayout title={tTabs('profile')} description={t('description')}>
       {isLoading ? (
         <ProfileFormSkeleton />
       ) : isError || !user ? (

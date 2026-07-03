@@ -57,7 +57,11 @@ export function PasswordForm() {
           fontWeight: fontWeights.semibold,
           color: colors.foreground,
         },
-        description: { fontSize: fontSizes.sm, color: colors.mutedForeground },
+        description: {
+          fontSize: fontSizes.sm,
+          color: colors.mutedForeground,
+          marginTop: -spacing[4],
+        },
       }),
     [colors, palette, spacing, fonts, fontSizes, fontWeights],
   )

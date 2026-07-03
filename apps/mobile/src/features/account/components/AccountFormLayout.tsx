@@ -7,11 +7,12 @@ import { useTheme } from '@/hooks/useTheme'
 import { resolveLineHeight } from '@/theme'
 
 interface AccountFormLayoutProps {
+  title?: string
   description?: string
   children: ReactNode
 }
 
-export function AccountFormLayout({ description, children }: AccountFormLayoutProps) {
+export function AccountFormLayout({ title, description, children }: AccountFormLayoutProps) {
   const { colors, spacing, fonts, fontSizes, lineHeights } = useTheme()
 
   const styles = useMemo(
@@ -23,6 +24,13 @@ export function AccountFormLayout({ description, children }: AccountFormLayoutPr
           flexGrow: 1,
           padding: spacing[6],
           gap: spacing[6],
+        },
+        header: { gap: spacing[1] },
+        title: {
+          fontFamily: fonts.heading,
+          fontSize: fontSizes.xl,
+          lineHeight: resolveLineHeight(fontSizes.xl, lineHeights.tight),
+          color: colors.foreground,
         },
         description: {
           fontFamily: fonts.body,
@@ -42,7 +50,12 @@ export function AccountFormLayout({ description, children }: AccountFormLayoutPr
         style={styles.flex}
       >
         <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
-          {description && <Text style={styles.description}>{description}</Text>}
+          {(title || description) && (
+            <View style={styles.header}>
+              {title && <Text style={styles.title}>{title}</Text>}
+              {description && <Text style={styles.description}>{description}</Text>}
+            </View>
+          )}
           <View style={styles.body}>{children}</View>
         </ScrollView>
       </KeyboardAvoidingView>

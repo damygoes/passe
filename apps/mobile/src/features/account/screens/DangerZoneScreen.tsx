@@ -25,6 +25,7 @@ const CONFIRM_PHRASE = 'delete my account'
 export function DangerZoneScreen() {
   const { colors, spacing, borderRadius, fontSizes, fontWeights } = useTheme()
   const t = useTranslations('account.danger')
+  const tTabs = useTranslations('account.tabs')
   const tCommon = useTranslations('common')
   const tErrors = useTranslations('account.errors')
   const router = useRouter()
@@ -85,7 +86,7 @@ export function DangerZoneScreen() {
   }
 
   return (
-    <AccountFormLayout description={t('description')}>
+    <AccountFormLayout title={tTabs('danger')} description={t('description')}>
       <View style={styles.card}>
         <View style={styles.cardHeader}>
           <Icon name="alert" size="md" color={colors.destructive} />
