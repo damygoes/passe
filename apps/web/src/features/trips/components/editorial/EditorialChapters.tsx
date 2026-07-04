@@ -9,6 +9,11 @@ import type { EditorialMemoryData } from './editorial-types'
 interface Props {
   chapters: EditorialChapter<EditorialMemoryData>[]
   photoAlt: string
+  // Carousel arrow labels — passed in rather than read via useTranslations
+  // because this tree also renders on public portfolio pages, which have no
+  // NextIntlClientProvider.
+  scrollLeftLabel: string
+  scrollRightLabel: string
   // Owner page injects the per-section toolbar here; public page omits it
   renderSectionFooter?: (memoryId: string, variant: EditorialSectionVariant) => ReactNode
 }
@@ -17,10 +22,14 @@ function Section({
   memory,
   variant,
   photoAlt,
+  scrollLeftLabel,
+  scrollRightLabel,
 }: {
   memory: EditorialMemoryData
   variant: EditorialSectionVariant
   photoAlt: string
+  scrollLeftLabel: string
+  scrollRightLabel: string
 }) {
   switch (variant) {
     case 'hero':
@@ -30,13 +39,26 @@ function Section({
     case 'imageRight':
       return <ImageTextSection memory={memory} side="right" photoAlt={photoAlt} />
     case 'carousel':
-      return <CarouselSection memory={memory} photoAlt={photoAlt} />
+      return (
+        <CarouselSection
+          memory={memory}
+          photoAlt={photoAlt}
+          scrollLeftLabel={scrollLeftLabel}
+          scrollRightLabel={scrollRightLabel}
+        />
+      )
     case 'text':
       return <TextSection memory={memory} />
   }
 }
 
-export function EditorialChapters({ chapters, photoAlt, renderSectionFooter }: Props) {
+export function EditorialChapters({
+  chapters,
+  photoAlt,
+  scrollLeftLabel,
+  scrollRightLabel,
+  renderSectionFooter,
+}: Props) {
   return (
     <div>
       {chapters.map((chapter) => (
@@ -54,7 +76,13 @@ export function EditorialChapters({ chapters, photoAlt, renderSectionFooter }: P
           <div className="space-y-12">
             {chapter.sections.map(({ memory, variant }) => (
               <div key={memory.id} className="group">
-                <Section memory={memory} variant={variant} photoAlt={photoAlt} />
+                <Section
+                  memory={memory}
+                  variant={variant}
+                  photoAlt={photoAlt}
+                  scrollLeftLabel={scrollLeftLabel}
+                  scrollRightLabel={scrollRightLabel}
+                />
                 {renderSectionFooter?.(memory.id, variant)}
               </div>
             ))}

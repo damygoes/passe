@@ -190,6 +190,7 @@
       "make_private": "Make private",
       "public_label": "Public",
       "private_label": "Private",
+      "edit": "Edit memory",
       "delete": "Delete",
       "delete_title": "Delete this memory?",
       "delete_description": "This will permanently remove the memory and its photos.",
@@ -242,6 +243,15 @@
         "content_required": "Add a photo or a note."
       }
     },
+    "edit_memory": {
+      "back": "← Back to trip",
+      "title": "Edit memory",
+      "subtitle": "Update the photos, note, or details for this moment.",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "update_failed": "Could not update your memory. Please try again.",
+      "not_found": "This memory could not be found."
+    },
     "editorial": {
       "layout_label": "Layout",
       "variant_auto": "Auto",
@@ -252,7 +262,9 @@
       "variant_text": "Text only",
       "flip": "Flip side",
       "move_up": "Move up",
-      "move_down": "Move down"
+      "move_down": "Move down",
+      "scroll_left": "Scroll left",
+      "scroll_right": "Scroll right"
     }
   },
   "nav": {

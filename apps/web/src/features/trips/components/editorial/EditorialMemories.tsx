@@ -14,6 +14,7 @@ interface Props {
 // Owner view: editorial layout plus the per-section override toolbar
 export function EditorialMemories({ memories }: Props) {
   const t = useTranslations('trips.memory_card')
+  const tEditorial = useTranslations('trips.editorial')
 
   const chapters = useMemo(() => buildEditorialChapters(memories), [memories])
 
@@ -29,6 +30,8 @@ export function EditorialMemories({ memories }: Props) {
     <EditorialChapters
       chapters={chapters}
       photoAlt={t('photo_alt')}
+      scrollLeftLabel={tEditorial('scroll_left')}
+      scrollRightLabel={tEditorial('scroll_right')}
       renderSectionFooter={(memoryId, variant) => {
         const memory = byId.get(memoryId)
         if (!memory) return null

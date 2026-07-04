@@ -4,7 +4,7 @@ import { PageHeader, PageHeaderDescription, PageHeaderTitle } from '@passe/ui/pa
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { tripRoute } from '@/lib/routes'
-import { NewMemoryForm } from '../components/memories/NewMemoryForm'
+import { MemoryForm } from '../components/memories/MemoryForm'
 
 interface Props {
   tripId: string
@@ -25,7 +25,7 @@ export function NewMemoryView({ tripId }: Props) {
         <PageHeaderTitle>{t('title')}</PageHeaderTitle>
         <PageHeaderDescription>{t('subtitle')}</PageHeaderDescription>
       </PageHeader>
-      <NewMemoryForm tripId={tripId} />
+      <MemoryForm tripId={tripId} />
     </div>
   )
 }
