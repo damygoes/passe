@@ -10,6 +10,19 @@ export type Coordinates = z.infer<typeof CoordinatesSchema>
 export const MediaTypeSchema = z.enum(['photo', 'video'])
 export type MediaType = z.infer<typeof MediaTypeSchema>
 
+// Editorial layout of a memory on the trip page. 'auto' lets the layout
+// engine decide; other values are explicit user overrides. Literals match
+// the Postgres enum exactly so no mapping layer is needed.
+export const LayoutVariantSchema = z.enum([
+  'auto',
+  'hero',
+  'image_left',
+  'image_right',
+  'carousel',
+  'text',
+])
+export type LayoutVariant = z.infer<typeof LayoutVariantSchema>
+
 // A single photo/video belonging to a memory. Nullable DB columns use
 // .nullish() so Drizzle rows (which return null) round-trip validation.
 export const MemoryMediaSchema = z.object({
@@ -47,11 +60,21 @@ export const MemorySchema = z.object({
   country: z.string().max(100).nullish(),
   capturedAt: z.coerce.date(),
   isPublic: z.boolean().default(false),
+  layoutVariant: LayoutVariantSchema.default('auto'),
+  // Explicit position on the editorial page; null = chronological (auto)
+  sortOrder: z.number().int().nullish(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
 })
 
 export type Memory = z.infer<typeof MemorySchema>
+
+// Body of PATCH /api/trips/[id]/memories/reorder — every memory of the trip
+// in its new display order.
+export const ReorderMemoriesSchema = z.object({
+  orderedIds: z.array(z.string().uuid()).min(1),
+})
+export type ReorderMemories = z.infer<typeof ReorderMemoriesSchema>
 
 export const CreateMemorySchema = MemorySchema.omit({
   id: true,
@@ -63,7 +86,9 @@ export const CreateMemorySchema = MemorySchema.omit({
   media: CreateMemoryMediaSchema.array().default([]),
 })
 
-export type CreateMemory = z.infer<typeof CreateMemorySchema>
+// Input type (defaults like isPublic/layoutVariant/media stay optional for
+// clients); the API validates and works with the parsed output type.
+export type CreateMemory = z.input<typeof CreateMemorySchema>
 
 // Create shape plus the cross-field rule that a memory must have some
 // content — a note or at least one media item. Used by the forms and the

@@ -241,6 +241,18 @@
         "create_failed": "Deine Erinnerung konnte nicht hinzugefügt werden. Bitte versuche es erneut.",
         "content_required": "Füge ein Foto oder eine Notiz hinzu."
       }
+    },
+    "editorial": {
+      "layout_label": "Layout",
+      "variant_auto": "Automatisch",
+      "variant_hero": "Volle Breite",
+      "variant_image_left": "Bild links",
+      "variant_image_right": "Bild rechts",
+      "variant_carousel": "Karussell",
+      "variant_text": "Nur Text",
+      "flip": "Seite wechseln",
+      "move_up": "Nach oben",
+      "move_down": "Nach unten"
     }
   },
   "nav": {
