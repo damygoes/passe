@@ -1,10 +1,18 @@
 import { formatDateRange } from '@passe/utils'
 import { Image } from 'expo-image'
 import { useMemo } from 'react'
-import { Pressable, StyleSheet, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Icon } from '@/components/ui/icon'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
@@ -24,7 +32,7 @@ interface TripCardProps {
 
 export function TripCard({ trip, onPress }: TripCardProps) {
   const t = useTranslations('trips.card')
-  const { spacing } = useTheme()
+  const { colors, spacing, fontSizes, borderRadius } = useTheme()
 
   const resolvedCoverImageUrl =
     trip.coverImageUrl ??
@@ -33,16 +41,30 @@ export function TripCard({ trip, onPress }: TripCardProps) {
   const styles = useMemo(
     () =>
       StyleSheet.create({
+        // Card keeps `overflow: hidden` (to clip the cover to rounded corners), which on
+        // iOS would clip a shadow — so the shadow lives on this outer wrapper instead.
+        cardShadow: {
+          borderRadius: borderRadius.xl,
+          backgroundColor: colors.popover,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.08,
+          shadowRadius: 8,
+          elevation: 2,
+        },
+        cardSurface: { borderWidth: 0, backgroundColor: colors.popover },
         cover: { width: '100%', aspectRatio: 16 / 9 },
         headerText: { flex: 1, gap: spacing[1] },
         badges: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing[1] },
+        footer: { justifyContent: 'space-between' },
+        footerText: { fontSize: fontSizes.sm, fontWeight: '500', color: colors.foreground },
         pressed: { opacity: 0.9 },
       }),
-    [spacing],
+    [colors, spacing, fontSizes, borderRadius],
   )
 
   const card = (
-    <Card>
+    <Card style={styles.cardSurface}>
       <Image
         source={{ uri: resolvedCoverImageUrl }}
         style={styles.cover}
@@ -67,6 +89,12 @@ export function TripCard({ trip, onPress }: TripCardProps) {
           </View>
         </CardContent>
       )}
+      {onPress && (
+        <CardFooter style={styles.footer}>
+          <Text style={styles.footerText}>{t('view')}</Text>
+          <Icon name="chevron-right" size="sm" color={colors.mutedForeground} />
+        </CardFooter>
+      )}
     </Card>
   )
 
@@ -76,12 +104,12 @@ export function TripCard({ trip, onPress }: TripCardProps) {
         onPress={onPress}
         accessibilityRole="button"
         accessibilityLabel={trip.title}
-        style={({ pressed }) => (pressed ? styles.pressed : undefined)}
+        style={({ pressed }) => [styles.cardShadow, pressed && styles.pressed]}
       >
         {card}
       </Pressable>
     )
   }
 
-  return card
+  return <View style={styles.cardShadow}>{card}</View>
 }

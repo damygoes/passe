@@ -12,6 +12,7 @@ export const routes = {
 } as const
 
 export const tripRoute = (id: string) => `/trips/${id}` as const
+export const tripEditRoute = (id: string) => `/trips/${id}/edit` as const
 
 export const publicPortfolioRoute = (username: string) => `/u/${username}` as const
 export const publicTripRoute = (username: string, tripId: string) => `/u/${username}/trips/${tripId}` as const

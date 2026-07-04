@@ -58,10 +58,13 @@ export function DateField({
           padding: spacing[4],
           gap: spacing[3],
           flexDirection: 'column',
+          alignItems: 'center',
           width: '100%',
         },
-        picker: { width: '100%', alignSelf: 'stretch' },
-        modalActions: { alignItems: 'flex-end' },
+        // The iOS inline picker has an intrinsic (fixed) width; centering it in the
+        // sheet keeps the calendar balanced instead of pinned to the left edge.
+        picker: { alignSelf: 'center' },
+        modalActions: { alignSelf: 'stretch', alignItems: 'flex-end' },
       }),
     [colors, spacing, fontSizes, borderRadius, fonts, error],
   )

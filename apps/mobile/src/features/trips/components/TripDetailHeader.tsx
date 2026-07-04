@@ -1,11 +1,18 @@
 import { useTrip } from '@passe/hooks'
 import { formatTripDateFull } from '@passe/utils'
 import { Image } from 'expo-image'
+import { useRouter } from 'expo-router'
 import { useMemo } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
 import { Badge } from '@/components/ui/badge'
-import { PageHeader, PageHeaderDescription, PageHeaderTitle } from '@/components/ui/page-header'
+import { Button } from '@/components/ui/button'
+import {
+  PageHeader,
+  PageHeaderAction,
+  PageHeaderDescription,
+  PageHeaderTitle,
+} from '@/components/ui/page-header'
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
@@ -17,6 +24,7 @@ interface TripDetailHeaderProps {
 
 export function TripDetailHeader({ id }: TripDetailHeaderProps) {
   const t = useTranslations('trips.detail')
+  const router = useRouter()
   const { data: trip, isLoading, isError } = useTrip(id)
   const { colors, spacing, fontSizes, borderRadius } = useTheme()
 
@@ -24,7 +32,7 @@ export function TripDetailHeader({ id }: TripDetailHeaderProps) {
     () =>
       StyleSheet.create({
         container: { gap: spacing[4] },
-        header: { flexDirection: 'column', gap: spacing[1] },
+        headerText: { flex: 1, gap: spacing[1] },
         badges: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing[1] },
         cover: { width: '100%', aspectRatio: 16 / 9, borderRadius: borderRadius.xl },
         description: { fontSize: fontSizes.base, color: colors.mutedForeground },
@@ -38,11 +46,18 @@ export function TripDetailHeader({ id }: TripDetailHeaderProps) {
 
   return (
     <View style={styles.container}>
-      <PageHeader style={styles.header}>
-        <PageHeaderTitle>{trip.title}</PageHeaderTitle>
-        <PageHeaderDescription>
-          {formatTripDateFull(trip.startDate)} – {formatTripDateFull(trip.endDate)}
-        </PageHeaderDescription>
+      <PageHeader>
+        <View style={styles.headerText}>
+          <PageHeaderTitle>{trip.title}</PageHeaderTitle>
+          <PageHeaderDescription>
+            {formatTripDateFull(trip.startDate)} – {formatTripDateFull(trip.endDate)}
+          </PageHeaderDescription>
+        </View>
+        <PageHeaderAction>
+          <Button variant="secondary" size="sm" onPress={() => router.push(`/(app)/trips/edit/${id}`)}>
+            {t('edit')}
+          </Button>
+        </PageHeaderAction>
       </PageHeader>
 
       {trip.countries.length > 0 && (

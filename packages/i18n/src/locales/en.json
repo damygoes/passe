@@ -158,8 +158,17 @@
         "create_failed": "Could not create your trip. Please try again."
       }
     },
+    "edit": {
+      "back": "← Back to trip",
+      "title": "Edit trip",
+      "subtitle": "Update your trip details, countries, and dates.",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "update_failed": "Could not save your changes. Please try again."
+    },
     "detail": {
       "back": "← Back",
+      "edit": "Edit",
       "memories_heading": "Memories",
       "trip_error": "Could not load trip. Try refreshing the page.",
       "memories_error": "Could not load memories. Try refreshing the page."

@@ -158,8 +158,17 @@
         "create_failed": "Deine Reise konnte nicht erstellt werden. Bitte versuche es erneut."
       }
     },
+    "edit": {
+      "back": "← Zurück zur Reise",
+      "title": "Reise bearbeiten",
+      "subtitle": "Aktualisiere die Details, Länder und Daten deiner Reise.",
+      "save": "Änderungen speichern",
+      "saving": "Wird gespeichert…",
+      "update_failed": "Deine Änderungen konnten nicht gespeichert werden. Bitte versuche es erneut."
+    },
     "detail": {
       "back": "← Zurück",
+      "edit": "Bearbeiten",
       "memories_heading": "Erinnerungen",
       "trip_error": "Reise konnte nicht geladen werden. Versuche, die Seite neu zu laden.",
       "memories_error": "Erinnerungen konnten nicht geladen werden. Versuche, die Seite neu zu laden."

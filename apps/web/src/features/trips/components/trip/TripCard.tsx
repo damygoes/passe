@@ -36,7 +36,7 @@ export function TripCard({ trip, href }: Props) {
     'https://images.unsplash.com/photo-1656066848895-30feffe87ed6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dHJpcCUyMHBsYWNlaG9sZGVyfGVufDB8fDB8fHwy'
 
   return (
-    <Card className="pt-0">
+    <Card className="pt-0 bg-popover ring-0 shadow-sm">
       <div className="relative aspect-video w-full overflow-hidden">
         <Image
           src={resolvedCoverImageUrl}
