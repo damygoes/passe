@@ -1,4 +1,5 @@
 export * from './cn'
 export * from './date'
+export * from './editorial'
 export * from './getUniqueCities'
 export * from './getUniqueStatsFromTrips'

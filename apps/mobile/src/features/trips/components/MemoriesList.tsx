@@ -8,8 +8,8 @@ import { Icon } from '@/components/ui/icon'
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
+import { EditorialMemories } from './EditorialMemories'
 import { MemoriesListSkeleton } from './MemoriesListSkeleton'
-import { MemoryCard } from './MemoryCard'
 import { NoMemoriesEmpty } from './NoMemoriesEmpty'
 
 interface MemoriesListProps {
@@ -73,11 +73,7 @@ export function MemoriesList({ tripId }: MemoriesListProps) {
       {memories.length === 0 ? (
         <NoMemoriesEmpty tripId={tripId} />
       ) : (
-        <View style={styles.list}>
-          {memories.map((memory) => (
-            <MemoryCard key={memory.id} memory={memory} />
-          ))}
-        </View>
+        <EditorialMemories memories={memories} />
       )}
     </View>
   )

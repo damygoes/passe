@@ -9,6 +9,7 @@ export {
   useCreateMemory,
   useUpdateMemory,
   useDeleteMemory,
+  useReorderMemories,
 } from './hooks/use-memories'
 export { useUploadImage } from './hooks/use-upload'
 export type { NativeUploadFile, UploadFile, UploadedImage } from './hooks/use-upload'

@@ -1,0 +1,50 @@
+import { cn, formatTripDateFull } from '@passe/utils'
+import Image from 'next/image'
+import { memoryMetaLabel, type EditorialMemoryData } from './editorial-types'
+
+interface Props {
+  memory: EditorialMemoryData
+  side: 'left' | 'right'
+  photoAlt: string
+}
+
+export function ImageTextSection({ memory, side, photoAlt }: Props) {
+  const cover = memory.media[0]
+  if (!cover) return null
+
+  const extraCount = memory.media.length - 1
+  const meta = memoryMetaLabel(memory)
+
+  return (
+    <div className="grid items-center gap-6 md:grid-cols-2 md:gap-10">
+      <div
+        className={cn(
+          'relative aspect-[4/3] overflow-hidden rounded-xl',
+          side === 'right' && 'md:order-2',
+        )}
+      >
+        <Image
+          src={cover.url}
+          alt={memory.note ?? photoAlt}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 448px"
+        />
+        {extraCount > 0 && (
+          <span className="absolute bottom-2 right-2 rounded-full bg-background/90 px-2 py-0.5 font-mono text-xs text-foreground">
+            +{extraCount}
+          </span>
+        )}
+      </div>
+
+      <div className="space-y-3">
+        <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          {[meta, formatTripDateFull(memory.capturedAt)].filter(Boolean).join(' · ')}
+        </p>
+        {memory.note && (
+          <p className="font-heading text-xl leading-relaxed text-foreground">{memory.note}</p>
+        )}
+      </div>
+    </div>
+  )
+}

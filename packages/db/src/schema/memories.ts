@@ -1,7 +1,28 @@
 import { sql } from 'drizzle-orm'
-import { boolean, index, pgTable, real, text, timestamp, uuid } from 'drizzle-orm/pg-core'
+import {
+  boolean,
+  index,
+  integer,
+  pgEnum,
+  pgTable,
+  real,
+  text,
+  timestamp,
+  uuid,
+} from 'drizzle-orm/pg-core'
 import { trips } from './trips'
 import { users } from './users'
+
+// How a memory renders on the editorial trip page. 'auto' lets the layout
+// engine pick; the rest are explicit per-section user overrides.
+export const layoutVariantEnum = pgEnum('layout_variant', [
+  'auto',
+  'hero',
+  'image_left',
+  'image_right',
+  'carousel',
+  'text',
+])
 
 export const memories = pgTable(
   'memories',
@@ -22,6 +43,9 @@ export const memories = pgTable(
     country: text('country'),
     capturedAt: timestamp('captured_at').notNull(),
     isPublic: boolean('is_public').notNull().default(false),
+    layoutVariant: layoutVariantEnum('layout_variant').notNull().default('auto'),
+    // Explicit position on the editorial page; null = chronological (auto)
+    sortOrder: integer('sort_order'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at')
       .notNull()

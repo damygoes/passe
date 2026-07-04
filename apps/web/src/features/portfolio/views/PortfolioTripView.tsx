@@ -1,9 +1,11 @@
+import { EditorialChapters } from '@/features/trips/components/editorial/EditorialChapters'
 import { db } from '@passe/db/client'
 import { memories, memoryMedia, trips, users } from '@passe/db/schema'
+import { buildEditorialChapters } from '@passe/utils'
 import { and, asc, eq } from 'drizzle-orm'
 import { notFound } from 'next/navigation'
+import { NoPublicMemoriesEmpty } from '../components/NoPublicMemoriesEmpty'
 import { PortfolioFooter } from '../components/PortfolioFooter'
-import { PortfolioMemoryGrid } from '../components/PortfolioMemoryGrid'
 import { PortfolioTripHeader } from '../components/PortfolioTripHeader'
 
 interface Props {
@@ -27,11 +29,17 @@ export async function PortfolioTripView({ slug, tripId }: Props) {
     with: { media: { orderBy: asc(memoryMedia.sortOrder) } },
   })
 
+  const chapters = buildEditorialChapters(publicMemories)
+
   return (
     <div className="min-h-screen bg-background">
       <PortfolioTripHeader slug={slug} user={user} trip={trip} />
       <main className="mx-auto max-w-4xl px-6 py-10">
-        <PortfolioMemoryGrid memories={publicMemories} />
+        {publicMemories.length === 0 ? (
+          <NoPublicMemoriesEmpty />
+        ) : (
+          <EditorialChapters chapters={chapters} photoAlt="Memory photo" />
+        )}
       </main>
       <PortfolioFooter />
     </div>

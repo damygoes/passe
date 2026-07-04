@@ -241,6 +241,18 @@
         "create_failed": "Could not add your memory. Please try again.",
         "content_required": "Add a photo or a note."
       }
+    },
+    "editorial": {
+      "layout_label": "Layout",
+      "variant_auto": "Auto",
+      "variant_hero": "Full width",
+      "variant_image_left": "Image left",
+      "variant_image_right": "Image right",
+      "variant_carousel": "Carousel",
+      "variant_text": "Text only",
+      "flip": "Flip side",
+      "move_up": "Move up",
+      "move_down": "Move down"
     }
   },
   "nav": {

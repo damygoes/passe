@@ -7,7 +7,7 @@ import { cn } from '@passe/utils'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { tripNewMemoryRoute } from '@/lib/routes'
-import { MemoryCard } from './MemoryCard'
+import { EditorialMemories } from '../editorial/EditorialMemories'
 import { MemoriesListSkeleton } from './MemoriesListSkeleton'
 import { NoMemoriesEmpty } from './NoMemoriesEmpty'
 
@@ -46,11 +46,7 @@ export function MemoriesList({ tripId }: Props) {
       {memories.length === 0 ? (
         <NoMemoriesEmpty tripId={tripId} />
       ) : (
-        <div className="flex flex-col gap-4">
-          {memories.map((memory) => (
-            <MemoryCard key={memory.id} memory={memory} />
-          ))}
-        </div>
+        <EditorialMemories memories={memories} />
       )}
     </div>
   )
