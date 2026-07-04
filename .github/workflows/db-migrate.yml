@@ -31,6 +31,20 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Fail loudly with a clear message if the secret is missing or malformed —
+      # drizzle-kit swallows connection errors and exits 1 without printing them
+      - name: Validate database URL
+        env:
+          DATABASE_URL_PROD: ${{ secrets.PROD_DATABASE_URL }}
+        run: |
+          node -e "
+            const raw = process.env.DATABASE_URL_PROD ?? ''
+            const url = raw.trim().replace(/^['\"]|['\"]\$/g, '')
+            if (!url) throw new Error('PROD_DATABASE_URL secret is empty')
+            const u = new URL(url)
+            console.log('URL ok — protocol:', u.protocol, 'length:', url.length)
+          "
+
       - name: Run migrations against production
         env:
           DATABASE_URL_PROD: ${{ secrets.PROD_DATABASE_URL }}
