@@ -85,9 +85,12 @@ function Button({
 
   const effectiveIconSize = iconSize ?? iconSizeMap[resolvedSize]
 
-  const isIconOnly = resolvedSize.startsWith('icon')
-
   const showIcon = isLoading || !!icon
+
+  // Icon-only layout applies only when there's actually an icon to render (via the
+  // `icon` prop or loading spinner). An icon-sized button that instead receives its
+  // glyph/text as `children` must still render them — otherwise the content vanishes.
+  const isIconOnly = resolvedSize.startsWith('icon') && showIcon
 
   const iconName: IconName | null = showIcon ? (isLoading ? 'loading' : (icon ?? null)) : null
 

@@ -27,6 +27,13 @@ export const PublicUserSchema = UserSchema.pick({
 })
 export type PublicUser = z.infer<typeof PublicUserSchema>
 
+// What the authenticated user sees about themselves — the public fields plus
+// plan, which drives client-side plan gating. Never exposed on public pages.
+export const AuthUserSchema = PublicUserSchema.extend({
+  plan: PlanSchema,
+})
+export type AuthUser = z.infer<typeof AuthUserSchema>
+
 // User input validation for profile form — separate from the DB schema so
 // length constraints only apply to what users can submit, not to what the DB stores
 export const UpdateUserSchema = z

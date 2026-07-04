@@ -22,6 +22,8 @@ export {
 } from './avatar/Avatar'
 export { Badge } from './badge/Badge'
 export { Button, buttonVariants } from './button/Button'
+export { Calendar, CalendarDayButton } from './calendar/Calendar'
+export { DatePicker } from './date-picker/DatePicker'
 export {
   Card,
   CardAction,
@@ -65,6 +67,15 @@ export {
   PageHeaderDescription,
   PageHeaderTitle,
 } from './page-header/PageHeader'
+export {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from './popover/Popover'
 export { Separator } from './separator/Separator'
 export { Skeleton } from './skeleton/Skeleton'
+export { Switch } from './switch/Switch'
 export { Textarea } from './textarea/Textarea'

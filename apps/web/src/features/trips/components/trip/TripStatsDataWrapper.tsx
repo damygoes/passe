@@ -2,8 +2,7 @@
 
 import { useAllMemories, useTrips } from '@passe/hooks'
 import { Skeleton } from '@passe/ui'
-import { getUniqueCities } from '../../utils/getUniqueCities'
-import { getUniqueStatsFromTrips } from '../../utils/getUniqueStatsFromTrips'
+import { getUniqueCities, getUniqueStatsFromTrips } from '@passe/utils'
 import { TripStats } from './TripStats'
 
 export function TripStatsDataWrapper() {

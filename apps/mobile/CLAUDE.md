@@ -22,22 +22,30 @@ src/
     (app)/                # Authenticated route group
       _layout.tsx         # Tab navigator (Trips, Map, Account) + auth guard
       trips/
+        _layout.tsx       # Stack navigator for trips screens
         index.tsx         # → features/trips/screens/TripsScreen
         [id].tsx          # → features/trips/screens/TripDetailScreen
-        new.tsx           # → features/trips/screens/NewTripScreen
+        new.tsx           # → features/trips/screens/NewTripScreen (not yet built)
       map/
         index.tsx         # → features/map/screens/MapScreen
       account/
+        _layout.tsx       # Stack navigator; sub-screens present as formSheets
         index.tsx         # → features/account/screens/AccountScreen
+        portfolio.tsx     # → features/portfolio/screens/PortfolioScreen
+        profile.tsx       # → features/account/screens/ProfileScreen
+        security.tsx      # → features/account/screens/SecurityScreen
+        danger.tsx        # → features/account/screens/DangerZoneScreen
   features/               # Domain-driven vertical slices
     auth/
       screens/            # AuthScreen components
       components/         # Auth-specific UI (forms, inputs)
       schemas/            # Zod form schemas
     trips/
-      screens/            # TripScreen components
-      components/         # Trip-specific UI (TripCard, MemoryCard, etc.)
-      utils/              # Pure helpers (getUniqueCities, etc.)
+      screens/            # TripsScreen, TripDetailScreen
+      components/         # Trip-specific UI (TripCard, MemoryCard, skeletons, empty states)
+    portfolio/
+      screens/            # PortfolioScreen (own portfolio preview)
+      components/         # PortfolioHeader, NoPublicTripsEmpty
     map/
       screens/
       components/

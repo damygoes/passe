@@ -120,8 +120,55 @@
       "new_trip": "Neue Reise",
       "trips_error": "Deine Reisen konnten nicht geladen werden. Versuche, die Seite neu zu laden."
     },
+    "new": {
+      "back": "← Zurück zu den Reisen",
+      "title": "Neue Reise",
+      "subtitle": "Gib deiner Reise einen Namen, füge die besuchten Länder hinzu und lege die Daten fest.",
+      "title_label": "Titel",
+      "title_placeholder": "Sommer in Portugal",
+      "description_label": "Beschreibung",
+      "description_placeholder": "Worum ging es auf dieser Reise?",
+      "countries_label": "Länder",
+      "countries_placeholder": "Land eingeben und Enter drücken",
+      "remove_country": "Entfernen",
+      "start_date_label": "Startdatum",
+      "end_date_label": "Enddatum",
+      "date_placeholder": "Datum wählen",
+      "date_done": "Fertig",
+      "public_label": "Diese Reise öffentlich machen",
+      "public_hint": "Öffentliche Reisen können in deinem Portfolio geteilt werden.",
+      "public_gated_hint": "Upgrade auf Explorer oder Collector, um Reisen öffentlich zu teilen.",
+      "limit_reached": "Du hast das Reiselimit deines Tarifs erreicht.",
+      "upgrade_cta": "Tarif upgraden",
+      "create": "Reise erstellen",
+      "creating": "Wird erstellt…",
+      "cancel": "Abbrechen",
+      "errors": {
+        "create_failed": "Deine Reise konnte nicht erstellt werden. Bitte versuche es erneut.",
+        "countries_required": "Füge mindestens ein Land hinzu."
+      },
+      "validation": {
+        "title_required": "Gib deiner Reise einen Titel.",
+        "title_max": "Der Titel darf höchstens 100 Zeichen lang sein.",
+        "description_max": "Die Beschreibung darf höchstens 500 Zeichen lang sein.",
+        "countries_required": "Füge mindestens ein Land hinzu.",
+        "start_date_required": "Wähle ein Startdatum.",
+        "end_date_required": "Wähle ein Enddatum.",
+        "end_before_start": "Das Enddatum muss am oder nach dem Startdatum liegen.",
+        "create_failed": "Deine Reise konnte nicht erstellt werden. Bitte versuche es erneut."
+      }
+    },
+    "edit": {
+      "back": "← Zurück zur Reise",
+      "title": "Reise bearbeiten",
+      "subtitle": "Aktualisiere die Details, Länder und Daten deiner Reise.",
+      "save": "Änderungen speichern",
+      "saving": "Wird gespeichert…",
+      "update_failed": "Deine Änderungen konnten nicht gespeichert werden. Bitte versuche es erneut."
+    },
     "detail": {
       "back": "← Zurück",
+      "edit": "Bearbeiten",
       "memories_heading": "Erinnerungen",
       "trip_error": "Reise konnte nicht geladen werden. Versuche, die Seite neu zu laden.",
       "memories_error": "Erinnerungen konnten nicht geladen werden. Versuche, die Seite neu zu laden."
@@ -165,7 +212,8 @@
     "tabs": {
       "profile": "Profil",
       "security": "Sicherheit",
-      "danger": "Gefahrenbereich"
+      "danger": "Gefahrenbereich",
+      "portfolio": "Mein Portfolio"
     },
     "profile": {
       "title": "Profil",
@@ -311,5 +359,12 @@
       "sign_in": "Anmelden",
       "sign_up": "Registrieren"
     }
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "trip_count": "{count, plural, one {# Reise} other {# Reisen}}",
+    "empty_title": "Hier gibt es noch nichts zu sehen",
+    "empty_description": "{displayName} hat noch keine öffentlichen Reisen geteilt.",
+    "error": "Dein Portfolio konnte nicht geladen werden. Bitte versuche es erneut."
   }
 }

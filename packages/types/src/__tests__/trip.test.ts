@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { TripSchema, CreateTripSchema, UpdateTripSchema } from '../trip'
+import { TripSchema, CreateTripSchema, CreateTripFormSchema, UpdateTripSchema } from '../trip'
 
 const validTrip = {
   id: '00000000-0000-0000-0000-000000000001',
@@ -63,6 +63,58 @@ describe('CreateTripSchema', () => {
   it('accepts a valid create payload without server-generated fields', () => {
     const { id: _, userId: __, createdAt: ___, updatedAt: ____, ...createFields } = validTrip
     expect(CreateTripSchema.safeParse(createFields).success).toBe(true)
+  })
+})
+
+describe('CreateTripFormSchema', () => {
+  const { id: _, userId: __, createdAt: ___, updatedAt: ____, ...createFields } = validTrip
+
+  it('accepts a payload where endDate is after startDate', () => {
+    expect(CreateTripFormSchema.safeParse(createFields).success).toBe(true)
+  })
+
+  it('accepts a single-day trip where endDate equals startDate', () => {
+    const sameDay = new Date('2024-03-01')
+    const result = CreateTripFormSchema.safeParse({
+      ...createFields,
+      startDate: sameDay,
+      endDate: sameDay,
+    })
+    expect(result.success).toBe(true)
+  })
+
+  it('rejects a payload where endDate is before startDate', () => {
+    const result = CreateTripFormSchema.safeParse({
+      ...createFields,
+      startDate: new Date('2024-03-15'),
+      endDate: new Date('2024-03-01'),
+    })
+    expect(result.success).toBe(false)
+  })
+
+  it('reports the date-order error on the endDate path', () => {
+    const result = CreateTripFormSchema.safeParse({
+      ...createFields,
+      startDate: new Date('2024-03-15'),
+      endDate: new Date('2024-03-01'),
+    })
+    expect(result.success).toBe(false)
+    if (!result.success) {
+      expect(result.error.issues[0]?.path).toEqual(['endDate'])
+    }
+  })
+
+  it('coerces ISO date strings before comparing them', () => {
+    const result = CreateTripFormSchema.safeParse({
+      ...createFields,
+      startDate: '2024-03-15T00:00:00.000Z',
+      endDate: '2024-03-01T00:00:00.000Z',
+    })
+    expect(result.success).toBe(false)
+  })
+
+  it('still enforces the base field rules (e.g. at least one country)', () => {
+    expect(CreateTripFormSchema.safeParse({ ...createFields, countries: [] }).success).toBe(false)
   })
 })
 

@@ -23,9 +23,10 @@ export default function AppLayout() {
       }}
     >
       <Tabs.Screen
-        name="trips/index"
+        name="trips"
         options={{
           title: t('trips'),
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <Icon name="luggage" size="lg" color={color as string} strokeWidth={focused ? 2 : 1.5} />
           ),

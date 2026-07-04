@@ -1,7 +1,7 @@
 'use client'
 
 import { Link } from '@/i18n/navigation'
-import { routes } from '@/lib/routes'
+import { routes, tripEditRoute } from '@/lib/routes'
 import { useTrip } from '@passe/hooks'
 import { Badge } from '@passe/ui/badge'
 import { buttonVariants } from '@passe/ui/button'
@@ -37,12 +37,18 @@ export function TripDetailHeader({ id }: Props) {
         <PageHeaderDescription>
           {formatTripDateFull(trip.startDate)} – {formatTripDateFull(trip.endDate)}
         </PageHeaderDescription>
-        <PageHeaderAction>
+        <PageHeaderAction className="flex items-center gap-2">
           <Link
             href={routes.dashboard}
             className={buttonVariants({ variant: 'ghost', size: 'sm' })}
           >
             {t('back')}
+          </Link>
+          <Link
+            href={tripEditRoute(trip.id)}
+            className={buttonVariants({ variant: 'outline', size: 'sm' })}
+          >
+            {t('edit')}
           </Link>
         </PageHeaderAction>
       </PageHeader>
@@ -58,13 +64,14 @@ export function TripDetailHeader({ id }: Props) {
       )}
 
       {trip.coverImageUrl && (
-        <div className="relative mt-6 aspect-video overflow-hidden rounded-xl">
+        <div className="relative mt-6 h-56 w-full overflow-hidden rounded-xl sm:h-72 md:h-80">
           <Image
             src={trip.coverImageUrl}
             alt={`Cover photo for ${trip.title}`}
             fill
+            priority
             className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+            sizes="100vw"
           />
         </div>
       )}

@@ -1,8 +1,9 @@
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
-import { db, trips } from '@passe/db'
+import { canCreateTrip, canMakePortfolioPublic } from '@passe/auth/plan-gates'
+import { db, trips, users } from '@passe/db'
 import { createLogger } from '@passe/logger'
-import { CreateTripSchema, TripSchema } from '@passe/types/trip'
-import { desc, eq } from 'drizzle-orm'
+import { CreateTripFormSchema, TripSchema } from '@passe/types/trip'
+import { count, desc, eq } from 'drizzle-orm'
 
 const log = createLogger({ context: { module: 'api/trips' } })
 
@@ -35,10 +36,29 @@ export async function POST(req: Request) {
   if (error) return error
 
   const body = await req.json()
-  const parsed = CreateTripSchema.safeParse(body)
+  const parsed = CreateTripFormSchema.safeParse(body)
 
   if (!parsed.success) {
     return apiError(JSON.stringify(parsed.error.flatten().fieldErrors), 400)
+  }
+
+  // Enforce plan limits server-side — the client mirrors these checks, but the
+  // server is authoritative.
+  const user = await db.query.users.findFirst({ where: eq(users.id, userId) })
+  if (!user) return apiError('User not found', 404)
+
+  const countRows = await db
+    .select({ tripCount: count() })
+    .from(trips)
+    .where(eq(trips.userId, userId))
+  const tripCount = countRows[0]?.tripCount ?? 0
+
+  if (!canCreateTrip(user.plan, tripCount)) {
+    return apiError('Trip limit reached for your plan', 403)
+  }
+
+  if (parsed.data.isPublic && !canMakePortfolioPublic(user.plan)) {
+    return apiError('Upgrade to share trips publicly', 403)
   }
 
   let trip

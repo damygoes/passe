@@ -4,10 +4,15 @@ import { Link } from '@/i18n/navigation'
 import { routes } from '@/lib/routes'
 import { useTrips } from '@passe/hooks'
 import { buttonVariants } from '@passe/ui/button'
-import { PageHeader, PageHeaderAction, PageHeaderDescription, PageHeaderTitle } from '@passe/ui/page-header'
+import {
+  PageHeader,
+  PageHeaderAction,
+  PageHeaderDescription,
+  PageHeaderTitle,
+} from '@passe/ui/page-header'
 import { Skeleton } from '@passe/ui/skeleton'
+import { getUniqueStatsFromTrips } from '@passe/utils'
 import { useTranslations } from 'next-intl'
-import { getUniqueStatsFromTrips } from '../utils/getUniqueStatsFromTrips'
 import { TripsList } from '../components/trip/TripsList'
 import { TripStatsDataWrapper } from '../components/trip/TripStatsDataWrapper'
 
@@ -17,7 +22,7 @@ export function DashboardView() {
   const { uniqueCountries } = getUniqueStatsFromTrips({ trips })
 
   return (
-    <div className="container mx-auto w-full px-4 py-8 flex flex-col justify-start items-center gap-6">
+    <div className="container mx-auto w-full px-4 py-8 flex flex-col gap-6">
       <PageHeader className="w-full">
         <PageHeaderTitle>{t('title')}</PageHeaderTitle>
         {isLoading ? (
