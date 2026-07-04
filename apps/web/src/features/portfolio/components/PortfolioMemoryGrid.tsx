@@ -4,7 +4,7 @@ import { PublicMemoryCard } from './PublicMemoryCard'
 interface MemoryData {
   id: string
   note?: string | null
-  photoUrl?: string | null
+  media: { id: string; url: string }[]
   city?: string | null
   country?: string | null
 }

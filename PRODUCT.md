@@ -1,6 +1,6 @@
 # Passé. — Product Identity
 
-> *The past, beautifully kept.*
+> _The past, beautifully kept._
 
 A personal travel portfolio app for individual travellers. Users create **trips**, attach **memories** (photos, notes, GPS locations), and optionally share trips and memories publicly via a personal portfolio URL.
 
@@ -9,12 +9,15 @@ A personal travel portfolio app for individual travellers. Users create **trips*
 ## Core Principles
 
 ### Privacy-first
+
 Everything is **private by default**. Trips and memories are only visible to the owner until explicitly made public. Sharing is an intentional act, not the default.
 
 ### Not a social network
+
 Passé is a personal journal, not a feed. There are no followers, likes, or discovery algorithms. A public portfolio exists to share with people you choose — not to grow an audience.
 
 ### Editorial quality
+
 Every public-facing page should feel like a beautifully designed travel book, not a generic photo gallery.
 
 ---
@@ -26,6 +29,7 @@ Every public-facing page should feel like a beautifully designed travel book, no
 **Tagline:** The past, beautifully kept.
 
 ### Voice & tone
+
 - "Where did life take you this year?"
 - "Your Morocco trip is looking beautiful."
 - "47 cities. 12 countries. All yours."
@@ -35,26 +39,26 @@ Every public-facing page should feel like a beautifully designed travel book, no
 
 ## Colour Palette
 
-| Token | Hex | Role |
-|---|---|---|
-| Terracotta | `#C4622D` | Primary — CTAs, highlights, logo |
-| Sandy Beige | `#E8D5B0` | Secondary — backgrounds, cards, surfaces |
-| Deep Olive | `#5C6B3A` | Accent — tags, badges, map overlays |
-| Aged Cream | `#FAF6EE` | Background — the canvas everything sits on |
-| Warm White | `#FFFDF8` | Surface — cards, modals, elevated surfaces |
-| Dark Espresso | `#2C1A0E` | Text primary — headlines, body, icons |
-| Muted Taupe | `#8C7B6B` | Text secondary — captions, metadata |
+| Token         | Hex       | Role                                       |
+| ------------- | --------- | ------------------------------------------ |
+| Terracotta    | `#C4622D` | Primary — CTAs, highlights, logo           |
+| Sandy Beige   | `#E8D5B0` | Secondary — backgrounds, cards, surfaces   |
+| Deep Olive    | `#5C6B3A` | Accent — tags, badges, map overlays        |
+| Aged Cream    | `#FAF6EE` | Background — the canvas everything sits on |
+| Warm White    | `#FFFDF8` | Surface — cards, modals, elevated surfaces |
+| Dark Espresso | `#2C1A0E` | Text primary — headlines, body, icons      |
+| Muted Taupe   | `#8C7B6B` | Text secondary — captions, metadata        |
 
 ---
 
 ## Typography
 
-| Role | Typeface |
-|---|---|
-| Display / hero text | Playfair Display |
-| Headings / section titles | Lora |
-| Body / UI text | Helvetica |
-| Labels / dates / metadata | DM Mono |
+| Role                      | Typeface         |
+| ------------------------- | ---------------- |
+| Display / hero text       | Playfair Display |
+| Headings / section titles | Lora             |
+| Body / UI text            | Helvetica        |
+| Labels / dates / metadata | DM Mono          |
 
 ---
 
@@ -73,12 +77,14 @@ Every public-facing page should feel like a beautifully designed travel book, no
 ## Monetisation Tiers
 
 ### FREE — €0/month
+
 - Up to **3 trips**
 - **10 memories** per trip
 - Private travel journal (no public sharing)
 - Basic world map view
 
 ### EXPLORER — €5/month
+
 - Up to **20 trips**
 - **50 memories** per trip
 - **Public portfolio** page at `passé.app/u/[username]`
@@ -87,6 +93,7 @@ Every public-facing page should feel like a beautifully designed travel book, no
 - HD photo storage
 
 ### COLLECTOR — €9/month
+
 - **Unlimited trips**
 - **Unlimited memories**
 - Everything in Explorer
@@ -97,11 +104,11 @@ Every public-facing page should feel like a beautifully designed travel book, no
 
 ## Public Memory Limits (per trip)
 
-| Plan | Public memories per trip |
-|---|---|
-| Free | 3 (pre-select for when you upgrade) |
-| Explorer | Unlimited |
-| Collector | Unlimited |
+| Plan      | Public memories per trip            |
+| --------- | ----------------------------------- |
+| Free      | 3 (pre-select for when you upgrade) |
+| Explorer  | Unlimited                           |
+| Collector | Unlimited                           |
 
 ---
 

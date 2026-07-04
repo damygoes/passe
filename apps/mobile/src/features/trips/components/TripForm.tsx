@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button'
 import { FormField } from '@/components/ui/form-field'
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
 import { CountryTagsInput } from '@/features/trips/components/CountryTagsInput'
+import { CoverImagePicker } from '@/features/trips/components/CoverImagePicker'
 import { DateField } from '@/features/trips/components/DateField'
 import { createTripSchema, type TripFormValues } from '@/features/trips/schemas/trip'
 import { useTheme } from '@/hooks/useTheme'
@@ -52,12 +53,13 @@ export function TripForm({ trip }: TripFormProps) {
       ? {
           title: trip.title,
           description: trip.description ?? '',
+          coverImageUrl: trip.coverImageUrl ?? null,
           countries: trip.countries,
           startDate: new Date(trip.startDate),
           endDate: new Date(trip.endDate),
           isPublic: trip.isPublic,
         }
-      : { title: '', description: '', countries: [], isPublic: false },
+      : { title: '', description: '', coverImageUrl: null, countries: [], isPublic: false },
   })
 
   const startDate = useWatch({ control, name: 'startDate' })
@@ -155,6 +157,17 @@ export function TripForm({ trip }: TripFormProps) {
           />
         )}
       />
+
+      <View style={styles.fieldGroup}>
+        <Text style={styles.fieldLabel}>{t('cover_label')}</Text>
+        <Controller
+          control={control}
+          name="coverImageUrl"
+          render={({ field }) => (
+            <CoverImagePicker value={field.value} onChange={field.onChange} disabled={isPending} />
+          )}
+        />
+      </View>
 
       <View style={styles.fieldGroup}>
         <Text style={styles.fieldLabel}>{t('countries_label')}</Text>

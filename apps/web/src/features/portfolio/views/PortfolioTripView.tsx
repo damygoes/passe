@@ -1,6 +1,6 @@
 import { db } from '@passe/db/client'
-import { memories, trips, users } from '@passe/db/schema'
-import { and, eq } from 'drizzle-orm'
+import { memories, memoryMedia, trips, users } from '@passe/db/schema'
+import { and, asc, eq } from 'drizzle-orm'
 import { notFound } from 'next/navigation'
 import { PortfolioFooter } from '../components/PortfolioFooter'
 import { PortfolioMemoryGrid } from '../components/PortfolioMemoryGrid'
@@ -22,10 +22,10 @@ export async function PortfolioTripView({ slug, tripId }: Props) {
     .limit(1)
   if (!trip) notFound()
 
-  const publicMemories = await db
-    .select()
-    .from(memories)
-    .where(and(eq(memories.tripId, tripId), eq(memories.isPublic, true)))
+  const publicMemories = await db.query.memories.findMany({
+    where: and(eq(memories.tripId, tripId), eq(memories.isPublic, true)),
+    with: { media: { orderBy: asc(memoryMedia.sortOrder) } },
+  })
 
   return (
     <div className="min-h-screen bg-background">

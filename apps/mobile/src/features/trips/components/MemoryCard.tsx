@@ -14,7 +14,7 @@ interface MemoryCardData {
   tripId: string
   isPublic: boolean
   note?: string | null
-  photoUrl?: string | null
+  media: { id: string; url: string }[]
   city?: string | null
   country?: string | null
 }
@@ -31,7 +31,21 @@ export function MemoryCard({ memory }: MemoryCardProps) {
   const styles = useMemo(
     () =>
       StyleSheet.create({
+        photoWrapper: { width: '100%' },
         photo: { width: '100%', aspectRatio: 16 / 9 },
+        photoCountBadge: {
+          position: 'absolute',
+          right: spacing[2],
+          bottom: spacing[2],
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: spacing[1],
+          borderRadius: 999,
+          paddingHorizontal: spacing[2],
+          paddingVertical: spacing[1],
+          backgroundColor: colors.background,
+        },
+        photoCountText: { fontSize: fontSizes.xs, color: colors.foreground },
         note: { fontSize: fontSizes.sm, color: colors.foreground },
         footer: { justifyContent: 'flex-end' },
         toggleContent: { flexDirection: 'row', alignItems: 'center', gap: spacing[1] },
@@ -46,13 +60,23 @@ export function MemoryCard({ memory }: MemoryCardProps) {
 
   return (
     <Card>
-      {memory.photoUrl && (
-        <Image
-          source={{ uri: memory.photoUrl }}
-          style={styles.photo}
-          contentFit="cover"
-          accessibilityLabel={t('photo_alt')}
-        />
+      {memory.media.length > 0 && (
+        <View style={styles.photoWrapper}>
+          <Image
+            source={{ uri: memory.media[0]!.url }}
+            style={styles.photo}
+            contentFit="cover"
+            accessibilityLabel={t('photo_alt')}
+          />
+          {memory.media.length > 1 && (
+            <View style={styles.photoCountBadge}>
+              <Icon name="camera" size="xs" color={colors.foreground} />
+              <Text style={styles.photoCountText}>
+                {t('photo_count', { count: memory.media.length })}
+              </Text>
+            </View>
+          )}
+        </View>
       )}
       {(memory.city || memory.country) && (
         <CardHeader>

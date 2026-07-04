@@ -1,10 +1,10 @@
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
 import { fromDbMemory, toDbMemoryValues } from '@/lib/memory'
-import { db, memories, trips, users } from '@passe/db'
+import { db, memories, memoryMedia, trips, users } from '@passe/db'
 import { canAddMemory } from '@passe/auth/plan-gates'
 import { createLogger } from '@passe/logger'
-import { CreateMemorySchema, MemorySchema } from '@passe/types/memory'
-import { and, count, desc, eq } from 'drizzle-orm'
+import { CreateMemoryFormSchema, MemorySchema } from '@passe/types/memory'
+import { and, asc, count, desc, eq } from 'drizzle-orm'
 
 const log = createLogger({ context: { module: 'api/trips/id/memories' } })
 
@@ -25,6 +25,7 @@ export async function GET(_req: Request, ctx: RouteContext<'/api/trips/[id]/memo
   const tripMemories = await db.query.memories.findMany({
     where: eq(memories.tripId, tripId),
     orderBy: desc(memories.capturedAt),
+    with: { media: { orderBy: asc(memoryMedia.sortOrder) } },
   })
 
   const parsed = MemorySchema.array().safeParse(tripMemories.map(fromDbMemory))
@@ -50,7 +51,11 @@ export async function POST(req: Request, ctx: RouteContext<'/api/trips/[id]/memo
 
   if (!trip) return apiError('Trip not found', 404)
 
-  const [user] = await db.select({ plan: users.plan }).from(users).where(eq(users.id, userId)).limit(1)
+  const [user] = await db
+    .select({ plan: users.plan })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1)
   if (!user) return apiError('User not found', 404)
 
   const countResult = await db
@@ -64,7 +69,7 @@ export async function POST(req: Request, ctx: RouteContext<'/api/trips/[id]/memo
   }
 
   const body = await req.json()
-  const parsed = CreateMemorySchema.safeParse({ ...body, tripId })
+  const parsed = CreateMemoryFormSchema.safeParse({ ...body, tripId })
 
   if (!parsed.success) {
     return apiError(JSON.stringify(parsed.error.flatten().fieldErrors), 400)
@@ -86,7 +91,39 @@ export async function POST(req: Request, ctx: RouteContext<'/api/trips/[id]/memo
 
   if (!memory) return apiError('Failed to create memory', 500)
 
-  const validatedResponse = MemorySchema.safeParse(fromDbMemory(memory))
+  // The Neon HTTP driver has no transactions — insert media after the memory
+  // row and roll the memory back manually if the media insert fails.
+  let mediaRows: (typeof memoryMedia.$inferSelect)[] = []
+  if (parsed.data.media.length > 0) {
+    try {
+      mediaRows = await db
+        .insert(memoryMedia)
+        .values(
+          parsed.data.media.map((item, index) => ({
+            memoryId: memory.id,
+            url: item.url,
+            mediaType: item.mediaType,
+            sortOrder: index,
+            width: item.width ?? null,
+            height: item.height ?? null,
+          })),
+        )
+        .returning()
+    } catch (err) {
+      log.error('DB write failed for memory media, rolling back memory', {
+        tripId,
+        memoryId: memory.id,
+        error: err instanceof Error ? err.message : String(err),
+      })
+      await db
+        .delete(memories)
+        .where(eq(memories.id, memory.id))
+        .catch(() => undefined)
+      return apiError('Internal server error', 500)
+    }
+  }
+
+  const validatedResponse = MemorySchema.safeParse(fromDbMemory({ ...memory, media: mediaRows }))
   if (!validatedResponse.success) {
     log.error('DB output failed schema validation', {
       tripId,

@@ -16,7 +16,6 @@ export const memories = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
     note: text('note'),
-    photoUrl: text('photo_url'),
     lat: real('lat'),
     lng: real('lng'),
     city: text('city'),
@@ -24,7 +23,10 @@ export const memories = pgTable(
     capturedAt: timestamp('captured_at').notNull(),
     isPublic: boolean('is_public').notNull().default(false),
     createdAt: timestamp('created_at').notNull().defaultNow(),
-    updatedAt: timestamp('updated_at').notNull().defaultNow().$onUpdate(() => new Date()),
+    updatedAt: timestamp('updated_at')
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
   },
   (t) => [index('memories_trip_id_idx').on(t.tripId), index('memories_user_id_idx').on(t.userId)],
 )

@@ -156,7 +156,8 @@
         "end_date_required": "Pick an end date.",
         "end_before_start": "End date must be on or after the start date.",
         "create_failed": "Could not create your trip. Please try again."
-      }
+      },
+      "cover_label": "Cover photo"
     },
     "edit": {
       "back": "← Back to trip",
@@ -171,7 +172,8 @@
       "edit": "Edit",
       "memories_heading": "Memories",
       "trip_error": "Could not load trip. Try refreshing the page.",
-      "memories_error": "Could not load memories. Try refreshing the page."
+      "memories_error": "Could not load memories. Try refreshing the page.",
+      "add_memory": "Add memory"
     },
     "stats": {
       "countries": "{count, plural, one {Country} other {Countries}}",
@@ -187,7 +189,13 @@
       "make_public": "Make public",
       "make_private": "Make private",
       "public_label": "Public",
-      "private_label": "Private"
+      "private_label": "Private",
+      "delete": "Delete",
+      "delete_title": "Delete this memory?",
+      "delete_description": "This will permanently remove the memory and its photos.",
+      "delete_confirm": "Delete",
+      "delete_cancel": "Cancel",
+      "photo_count": "{count, plural, one {# photo} other {# photos}}"
     },
     "empty": {
       "no_trips_title": "No trips yet",
@@ -196,6 +204,43 @@
       "no_memories_title": "No memories yet",
       "no_memories_description": "Add photos, notes, and GPS-tagged moments from this trip.",
       "add_first_memory": "Add first memory"
+    },
+    "image_upload": {
+      "upload_prompt": "Upload a photo",
+      "uploading": "Uploading…",
+      "remove": "Remove",
+      "upload_failed": "Could not upload the image. Please try again.",
+      "preview_alt": "Uploaded photo preview"
+    },
+    "new_memory": {
+      "back": "← Back to trip",
+      "title": "New memory",
+      "subtitle": "Add photos and a note from a moment on this trip.",
+      "photos_label": "Photos",
+      "add_photo": "Add photo",
+      "remove_photo": "Remove photo",
+      "note_label": "Note",
+      "note_placeholder": "What do you want to remember about this moment?",
+      "date_label": "Date",
+      "city_label": "City",
+      "city_placeholder": "Marrakech",
+      "country_label": "Country",
+      "country_placeholder": "Morocco",
+      "create": "Add memory",
+      "creating": "Adding…",
+      "cancel": "Cancel",
+      "limit_reached": "You've reached the memory limit for this trip on your plan.",
+      "upgrade_cta": "Upgrade your plan",
+      "pick_from_library": "Choose photos",
+      "take_photo": "Take a photo",
+      "location_label": "Location",
+      "use_current_location": "Use current location",
+      "locating": "Getting location…",
+      "location_permission_denied": "Location permission denied.",
+      "errors": {
+        "create_failed": "Could not add your memory. Please try again.",
+        "content_required": "Add a photo or a note."
+      }
     }
   },
   "nav": {
