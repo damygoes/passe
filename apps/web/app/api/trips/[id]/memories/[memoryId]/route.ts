@@ -1,10 +1,10 @@
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
 import { fromDbMemory, toDbMemoryValues } from '@/lib/memory'
-import { db, memories, users } from '@passe/db'
+import { db, memories, memoryMedia, users } from '@passe/db'
 import { canMakeMemoryPublic } from '@passe/auth/plan-gates'
 import { createLogger } from '@passe/logger'
 import { MemorySchema, UpdateMemorySchema } from '@passe/types/memory'
-import { and, count, eq, ne } from 'drizzle-orm'
+import { and, asc, count, eq, ne } from 'drizzle-orm'
 
 const log = createLogger({ context: { module: 'api/trips/id/memories/id' } })
 
@@ -25,13 +25,19 @@ export async function PATCH(
   }
 
   if (parsed.data.isPublic === true) {
-    const [user] = await db.select({ plan: users.plan }).from(users).where(eq(users.id, userId)).limit(1)
+    const [user] = await db
+      .select({ plan: users.plan })
+      .from(users)
+      .where(eq(users.id, userId))
+      .limit(1)
     if (!user) return apiError('User not found', 404)
 
     const countResult = await db
       .select({ publicCount: count() })
       .from(memories)
-      .where(and(eq(memories.tripId, tripId), eq(memories.isPublic, true), ne(memories.id, memoryId)))
+      .where(
+        and(eq(memories.tripId, tripId), eq(memories.isPublic, true), ne(memories.id, memoryId)),
+      )
     const publicCount = countResult[0]?.publicCount ?? 0
 
     if (!canMakeMemoryPublic(user.plan, publicCount)) {
@@ -44,7 +50,9 @@ export async function PATCH(
     ;[updated] = await db
       .update(memories)
       .set({ ...toDbMemoryValues(parsed.data), updatedAt: new Date() })
-      .where(and(eq(memories.id, memoryId), eq(memories.tripId, tripId), eq(memories.userId, userId)))
+      .where(
+        and(eq(memories.id, memoryId), eq(memories.tripId, tripId), eq(memories.userId, userId)),
+      )
       .returning()
   } catch (err) {
     log.error('DB write failed', {
@@ -56,7 +64,38 @@ export async function PATCH(
 
   if (!updated) return apiError('Memory not found', 404)
 
-  const validatedResponse = MemorySchema.safeParse(fromDbMemory(updated))
+  // When the request includes media, replace the memory's media set wholesale
+  // (delete + reinsert; array position = sortOrder).
+  if (parsed.data.media !== undefined) {
+    try {
+      await db.delete(memoryMedia).where(eq(memoryMedia.memoryId, memoryId))
+      if (parsed.data.media.length > 0) {
+        await db.insert(memoryMedia).values(
+          parsed.data.media.map((item, index) => ({
+            memoryId,
+            url: item.url,
+            mediaType: item.mediaType,
+            sortOrder: index,
+            width: item.width ?? null,
+            height: item.height ?? null,
+          })),
+        )
+      }
+    } catch (err) {
+      log.error('DB write failed for memory media', {
+        memoryId,
+        error: err instanceof Error ? err.message : String(err),
+      })
+      return apiError('Internal server error', 500)
+    }
+  }
+
+  const mediaRows = await db.query.memoryMedia.findMany({
+    where: eq(memoryMedia.memoryId, memoryId),
+    orderBy: asc(memoryMedia.sortOrder),
+  })
+
+  const validatedResponse = MemorySchema.safeParse(fromDbMemory({ ...updated, media: mediaRows }))
   if (!validatedResponse.success) {
     log.error('DB output failed schema validation', {
       memoryId,
@@ -82,7 +121,9 @@ export async function DELETE(
   try {
     ;[deleted] = await db
       .delete(memories)
-      .where(and(eq(memories.id, memoryId), eq(memories.tripId, tripId), eq(memories.userId, userId)))
+      .where(
+        and(eq(memories.id, memoryId), eq(memories.tripId, tripId), eq(memories.userId, userId)),
+      )
       .returning()
   } catch (err) {
     log.error('DB write failed', {

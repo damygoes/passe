@@ -17,6 +17,7 @@ export default function TripsLayout() {
   const t = useTranslations('nav')
   const tTrips = useTranslations('trips.new')
   const tEdit = useTranslations('trips.edit')
+  const tMemory = useTranslations('trips.new_memory')
 
   return (
     <Stack>
@@ -27,6 +28,7 @@ export default function TripsLayout() {
       <Stack.Screen name="[id]" options={{ title: '', headerBackButtonDisplayMode: 'minimal' }} />
       <Stack.Screen name="new" options={{ ...sheetOptions, title: tTrips('title') }} />
       <Stack.Screen name="edit/[id]" options={{ ...sheetOptions, title: tEdit('title') }} />
+      <Stack.Screen name="new-memory/[id]" options={{ ...sheetOptions, title: tMemory('title') }} />
     </Stack>
   )
 }

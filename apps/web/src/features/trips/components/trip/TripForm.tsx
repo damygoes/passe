@@ -15,6 +15,7 @@ import { Controller, useForm, type Resolver } from 'react-hook-form'
 import { Link, useRouter } from '@/i18n/navigation'
 import { routes, tripRoute } from '@/lib/routes'
 import { CountryTagsInput } from './CountryTagsInput'
+import { ImageUploadField } from './ImageUploadField'
 
 interface Props {
   // When provided, the form edits this trip; otherwise it creates a new one.
@@ -50,6 +51,7 @@ export function TripForm({ trip }: Props) {
       ? {
           title: trip.title,
           description: trip.description ?? '',
+          coverImageUrl: trip.coverImageUrl ?? null,
           countries: trip.countries,
           startDate: trip.startDate,
           endDate: trip.endDate,
@@ -58,6 +60,7 @@ export function TripForm({ trip }: Props) {
       : {
           title: '',
           description: '',
+          coverImageUrl: null,
           countries: [],
           isPublic: false,
         },
@@ -132,6 +135,25 @@ export function TripForm({ trip }: Props) {
         />
         {errors.description && (
           <p className="text-xs text-destructive">{errors.description.message}</p>
+        )}
+      </div>
+
+      <div className="space-y-1.5">
+        <span className="text-sm font-medium text-foreground">{t('cover_label')}</span>
+        <Controller
+          control={control}
+          name="coverImageUrl"
+          render={({ field }) => (
+            <ImageUploadField
+              id="coverImageUrl"
+              value={field.value}
+              onChange={field.onChange}
+              disabled={isPending}
+            />
+          )}
+        />
+        {errors.coverImageUrl && (
+          <p className="text-xs text-destructive">{errors.coverImageUrl.message}</p>
         )}
       </div>
 

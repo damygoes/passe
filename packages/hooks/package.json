@@ -7,7 +7,8 @@
     "./context": "./src/context.tsx",
     "./user": "./src/hooks/use-user.ts",
     "./trips": "./src/hooks/use-trips.ts",
-    "./memories": "./src/hooks/use-memories.ts"
+    "./memories": "./src/hooks/use-memories.ts",
+    "./upload": "./src/hooks/use-upload.ts"
   },
   "scripts": {
     "check-types": "tsc --noEmit",

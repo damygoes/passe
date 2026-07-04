@@ -15,6 +15,13 @@
       "when": 1782883862233,
       "tag": "0001_numerous_radioactive_man",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1783168475045,
+      "tag": "0002_workable_proemial_gods",
+      "breakpoints": true
     }
   ]
 }

@@ -4,7 +4,7 @@ import Image from 'next/image'
 interface MemoryData {
   id: string
   note?: string | null
-  photoUrl?: string | null
+  media: { id: string; url: string }[]
   city?: string | null
   country?: string | null
 }
@@ -14,12 +14,14 @@ interface Props {
 }
 
 export function PublicMemoryCard({ memory }: Props) {
+  const coverMedia = memory.media[0]
+
   return (
     <Card>
-      {memory.photoUrl && (
+      {coverMedia && (
         <div className="relative aspect-video w-full overflow-hidden">
           <Image
-            src={memory.photoUrl}
+            src={coverMedia.url}
             alt={memory.city ?? 'Memory photo'}
             fill
             className="object-cover"
@@ -29,7 +31,9 @@ export function PublicMemoryCard({ memory }: Props) {
       )}
       <CardHeader>
         {(memory.city || memory.country) && (
-          <CardDescription>{[memory.city, memory.country].filter(Boolean).join(', ')}</CardDescription>
+          <CardDescription>
+            {[memory.city, memory.country].filter(Boolean).join(', ')}
+          </CardDescription>
         )}
       </CardHeader>
       {memory.note && (

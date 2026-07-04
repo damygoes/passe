@@ -40,7 +40,20 @@
         }
       ],
       "expo-localization",
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Passé needs access to your photo library so you can add photos to your trips and memories.",
+          "cameraPermission": "Passé needs camera access so you can capture new memories."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Passé uses your location to tag memories with the place they were captured."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

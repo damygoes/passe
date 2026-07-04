@@ -8,7 +8,12 @@ export default withNextIntl({
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'res.cloudinary.com',
+      },
+      // Placeholder cover image fallback used by TripCard
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
       },
     ],
   },

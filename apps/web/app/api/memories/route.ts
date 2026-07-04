@@ -1,9 +1,9 @@
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
 import { fromDbMemory } from '@/lib/memory'
-import { db, memories } from '@passe/db'
+import { db, memories, memoryMedia } from '@passe/db'
 import { createLogger } from '@passe/logger'
 import { MemorySchema } from '@passe/types/memory'
-import { desc, eq } from 'drizzle-orm'
+import { asc, desc, eq } from 'drizzle-orm'
 
 const log = createLogger({ context: { module: 'api/memories' } })
 
@@ -14,6 +14,7 @@ export async function GET() {
   const userMemories = await db.query.memories.findMany({
     where: eq(memories.userId, userId),
     orderBy: desc(memories.capturedAt),
+    with: { media: { orderBy: asc(memoryMedia.sortOrder) } },
   })
 
   const parsed = MemorySchema.array().safeParse(userMemories.map(fromDbMemory))

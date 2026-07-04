@@ -18,19 +18,28 @@ that only need TypeScript types (e.g. server actions that receive already-fetche
 
 ---
 
-## Environment variables
+## Environment variables — two databases
 
-| Variable       | File                  | Used by                              |
-| -------------- | --------------------- | ------------------------------------ |
-| `DATABASE_URL` | `packages/db/.env`    | drizzle-kit CLI commands             |
-| `DATABASE_URL` | `apps/web/.env.local` | Next.js app at runtime               |
+There are **two Neon instances**: development and production.
 
-Both must use the **pooled** connection string from Neon (HTTP mode via `@neondatabase/serverless`).
+| Variable            | File                  | Points at   | Used by                                     |
+| ------------------- | --------------------- | ----------- | ------------------------------------------- |
+| `DATABASE_URL`      | `packages/db/.env`    | development | everyday drizzle-kit commands               |
+| `DATABASE_URL`      | `apps/web/.env.local` | development | Next.js app at runtime (must match above)   |
+| `DATABASE_URL_PROD` | `packages/db/.env`    | production  | `db:migrate:prod` / `db:studio:prod` only   |
+| `PROD_DATABASE_URL` | GitHub repo secret    | production  | `.github/workflows/db-migrate.yml`          |
+
+All must be the **pooled** connection string from Neon (HTTP mode via `@neondatabase/serverless`).
 Do not use the direct connection string.
 
-drizzle-kit loads `.env` from the directory where the command runs (`packages/db/`). Copy
-`.env.example` → `.env` and fill in your Neon pooled connection string before running any
-`db:*` commands.
+**Why two variable names:** drizzle-kit loads `packages/db/.env` with override behavior — an
+exported `DATABASE_URL` silently loses to the file's value. Production therefore uses a distinct
+variable (`DATABASE_URL_PROD`) read by a separate config (`drizzle.prod.config.ts`), so a prod
+command can never accidentally hit dev and vice versa.
+
+`packages/db/.env` **must always keep `DATABASE_URL` = the same dev database the web app uses**
+(`apps/web/.env.local`). If these ever diverge, migrations will apply to a database the app
+doesn't read and the app will 500 on new tables.
 
 ---
 
@@ -39,11 +48,25 @@ drizzle-kit loads `.env` from the directory where the command runs (`packages/db
 Run from repo root:
 
 ```bash
-pnpm --filter @passe/db db:generate   # introspect src/schema and write SQL to ./drizzle/
-pnpm --filter @passe/db db:migrate    # apply ./drizzle/*.sql migrations to DATABASE_URL
-pnpm --filter @passe/db db:push       # push schema directly without migrations (dev only)
-pnpm --filter @passe/db db:studio     # open Drizzle Studio GUI at localhost:4983
+pnpm --filter @passe/db db:generate       # introspect src/schema and write SQL to ./migrations/
+pnpm --filter @passe/db db:migrate        # apply pending migrations to DEVELOPMENT
+pnpm --filter @passe/db db:push           # push schema directly (dev only, no migrations)
+pnpm --filter @passe/db db:studio         # Drizzle Studio GUI against DEVELOPMENT
+pnpm --filter @passe/db db:migrate:prod   # apply pending migrations to PRODUCTION (rarely needed locally — CI does this)
+pnpm --filter @passe/db db:studio:prod    # Drizzle Studio against PRODUCTION (read with care)
 ```
+
+### Schema-change workflow (dev → prod)
+
+1. Edit `src/schema/*.ts`
+2. `db:generate` — writes a new SQL file to `./migrations/` (hand-edit only for data backfills)
+3. `db:migrate` — applies it to **development**; test the app against it
+4. Commit the migration files together with the schema change
+5. Merge to `main` — the **`DB Migrate (production)`** GitHub Action detects changes under
+   `packages/db/migrations/**` and runs `db:migrate:prod` against production automatically
+   (also triggerable manually via `gh workflow run db-migrate.yml`)
+
+Never run `db:push` against production — it bypasses the migration journal.
 
 ---
 

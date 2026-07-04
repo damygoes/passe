@@ -156,7 +156,8 @@
         "end_date_required": "Wähle ein Enddatum.",
         "end_before_start": "Das Enddatum muss am oder nach dem Startdatum liegen.",
         "create_failed": "Deine Reise konnte nicht erstellt werden. Bitte versuche es erneut."
-      }
+      },
+      "cover_label": "Titelbild"
     },
     "edit": {
       "back": "← Zurück zur Reise",
@@ -171,7 +172,8 @@
       "edit": "Bearbeiten",
       "memories_heading": "Erinnerungen",
       "trip_error": "Reise konnte nicht geladen werden. Versuche, die Seite neu zu laden.",
-      "memories_error": "Erinnerungen konnten nicht geladen werden. Versuche, die Seite neu zu laden."
+      "memories_error": "Erinnerungen konnten nicht geladen werden. Versuche, die Seite neu zu laden.",
+      "add_memory": "Erinnerung hinzufügen"
     },
     "stats": {
       "countries": "{count, plural, one {Land} other {Länder}}",
@@ -187,7 +189,13 @@
       "make_public": "Öffentlich machen",
       "make_private": "Privat machen",
       "public_label": "Öffentlich",
-      "private_label": "Privat"
+      "private_label": "Privat",
+      "delete": "Löschen",
+      "delete_title": "Diese Erinnerung löschen?",
+      "delete_description": "Die Erinnerung und ihre Fotos werden dauerhaft entfernt.",
+      "delete_confirm": "Löschen",
+      "delete_cancel": "Abbrechen",
+      "photo_count": "{count, plural, one {# Foto} other {# Fotos}}"
     },
     "empty": {
       "no_trips_title": "Noch keine Reisen",
@@ -196,6 +204,43 @@
       "no_memories_title": "Noch keine Erinnerungen",
       "no_memories_description": "Füge Fotos, Notizen und GPS-getaggte Momente aus dieser Reise hinzu.",
       "add_first_memory": "Erste Erinnerung hinzufügen"
+    },
+    "image_upload": {
+      "upload_prompt": "Foto hochladen",
+      "uploading": "Wird hochgeladen…",
+      "remove": "Entfernen",
+      "upload_failed": "Das Bild konnte nicht hochgeladen werden. Bitte versuche es erneut.",
+      "preview_alt": "Vorschau des hochgeladenen Fotos"
+    },
+    "new_memory": {
+      "back": "← Zurück zur Reise",
+      "title": "Neue Erinnerung",
+      "subtitle": "Füge Fotos und eine Notiz zu einem Moment dieser Reise hinzu.",
+      "photos_label": "Fotos",
+      "add_photo": "Foto hinzufügen",
+      "remove_photo": "Foto entfernen",
+      "note_label": "Notiz",
+      "note_placeholder": "Was möchtest du über diesen Moment festhalten?",
+      "date_label": "Datum",
+      "city_label": "Stadt",
+      "city_placeholder": "Marrakesch",
+      "country_label": "Land",
+      "country_placeholder": "Marokko",
+      "create": "Erinnerung hinzufügen",
+      "creating": "Wird hinzugefügt…",
+      "cancel": "Abbrechen",
+      "limit_reached": "Du hast das Erinnerungslimit für diese Reise in deinem Tarif erreicht.",
+      "upgrade_cta": "Tarif upgraden",
+      "pick_from_library": "Fotos auswählen",
+      "take_photo": "Foto aufnehmen",
+      "location_label": "Ort",
+      "use_current_location": "Aktuellen Standort verwenden",
+      "locating": "Standort wird ermittelt…",
+      "location_permission_denied": "Standortzugriff verweigert.",
+      "errors": {
+        "create_failed": "Deine Erinnerung konnte nicht hinzugefügt werden. Bitte versuche es erneut.",
+        "content_required": "Füge ein Foto oder eine Notiz hinzu."
+      }
     }
   },
   "nav": {

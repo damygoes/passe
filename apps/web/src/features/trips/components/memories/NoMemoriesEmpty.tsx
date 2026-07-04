@@ -1,9 +1,16 @@
 'use client'
 
+import { buttonVariants } from '@passe/ui/button'
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@passe/ui/empty'
 import { useTranslations } from 'next-intl'
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@passe/ui/empty'
+import { Link } from '@/i18n/navigation'
+import { tripNewMemoryRoute } from '@/lib/routes'
 
-export function NoMemoriesEmpty() {
+interface Props {
+  tripId: string
+}
+
+export function NoMemoriesEmpty({ tripId }: Props) {
   const t = useTranslations('trips.empty')
 
   return (
@@ -12,6 +19,11 @@ export function NoMemoriesEmpty() {
         <EmptyTitle>{t('no_memories_title')}</EmptyTitle>
         <EmptyDescription>{t('no_memories_description')}</EmptyDescription>
       </EmptyHeader>
+      <EmptyContent>
+        <Link href={tripNewMemoryRoute(tripId)} className={buttonVariants({ size: 'sm' })}>
+          {t('add_first_memory')}
+        </Link>
+      </EmptyContent>
     </Empty>
   )
 }
