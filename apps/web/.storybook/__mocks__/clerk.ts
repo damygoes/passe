@@ -25,7 +25,19 @@ export const useAuth = () => ({
   isSignedIn: true,
 })
 export const useUser = () => ({
-  user: { id: 'user_mock', fullName: 'Test User' },
+  user: {
+    id: 'user_mock',
+    fullName: 'Test User',
+    primaryEmailAddress: { emailAddress: 'test@example.com' },
+    updatePassword: resolved({}),
+  },
   isLoaded: true,
   isSignedIn: true,
+})
+export const useSession = () => ({
+  session: {
+    startVerification: resolved({ supportedFirstFactors: [] }),
+    prepareFirstFactorVerification: resolved({}),
+    attemptFirstFactorVerification: resolved({ status: 'complete' }),
+  },
 })

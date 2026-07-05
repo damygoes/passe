@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@passe/eslint-config": "workspace:*",
+    "@passe/theme": "workspace:*",
     "@passe/typescript-config": "workspace:*",
     "@storybook/react-vite": "^10.4.6",
     "@tailwindcss/postcss": "^4.3.1",

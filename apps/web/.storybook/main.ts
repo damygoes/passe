@@ -33,6 +33,9 @@ const config: StorybookConfig = {
       { find: /^@clerk\/nextjs\/errors$/, replacement: mock('clerk-errors.ts') },
       { find: /^@clerk\/nextjs$/, replacement: mock('clerk.ts') },
       { find: '@/i18n/navigation', replacement: mock('i18n-navigation.tsx') },
+      // next-intl/server's getTranslations() needs a Next.js request context
+      // (cookies/headers) that doesn't exist in Storybook's Vite environment
+      { find: /^next-intl\/server$/, replacement: mock('next-intl-server.ts') },
     ]
 
     // Prevent Vite from pre-bundling Clerk — the alias must intercept it at transform time
@@ -41,6 +44,7 @@ const config: StorybookConfig = {
       ...(config.optimizeDeps.exclude ?? []),
       '@clerk/nextjs',
       '@clerk/nextjs/errors',
+      'next-intl/server',
     ]
 
     return config

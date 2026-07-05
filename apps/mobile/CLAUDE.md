@@ -25,7 +25,9 @@ src/
         _layout.tsx       # Stack navigator for trips screens
         index.tsx         # → features/trips/screens/TripsScreen
         [id].tsx          # → features/trips/screens/TripDetailScreen
-        new.tsx           # → features/trips/screens/NewTripScreen (not yet built)
+        new.tsx           # → features/trips/screens/NewTripScreen
+        edit/[id].tsx     # → features/trips/screens/EditTripScreen
+        new-memory/[id].tsx # → features/trips/screens/AddMemoryScreen
       map/
         index.tsx         # → features/map/screens/MapScreen
       account/
