@@ -503,6 +503,9 @@ importers:
       '@passe/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
+      '@passe/theme':
+        specifier: workspace:*
+        version: link:../theme
       '@passe/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
