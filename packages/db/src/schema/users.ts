@@ -10,6 +10,7 @@ export const users = pgTable('users', {
   bio: text('bio'),
   avatarUrl: text('avatar_url'),
   plan: planEnum('plan').notNull().default('free'),
+  stripeCustomerId: text('stripe_customer_id').unique(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow().$onUpdate(() => new Date()),
 })

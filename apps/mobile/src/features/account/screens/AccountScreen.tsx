@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Separator } from '@/components/ui/separator'
 import { LogoutButton } from '@/features/auth/components/LogoutButton'
 import { AccountMenuRow } from '@/features/account/components/AccountMenuRow'
+import { PlanSection } from '@/features/account/components/PlanSection'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
@@ -64,6 +65,8 @@ export function AccountScreen() {
         </View>
 
         <Separator />
+
+        <PlanSection />
 
         <View style={styles.menu}>
           <AccountMenuRow

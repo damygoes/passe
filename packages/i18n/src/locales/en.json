@@ -324,6 +324,10 @@
       "password_failed": "Failed to update password. Please check your current password.",
       "delete_failed": "Failed to delete account. Please try again.",
       "reverification_failed": "Verification failed. Please try again."
+    },
+    "plan": {
+      "title": "Plan",
+      "managed_on_web": "Subscriptions are managed on the Passé website."
     }
   },
   "landing": {
@@ -435,5 +439,18 @@
     "empty_title": "Nothing to see here yet",
     "empty_description": "{displayName} hasn't shared any public trips yet.",
     "error": "Could not load your portfolio. Try again later."
+  },
+  "billing": {
+    "title": "Billing",
+    "subtitle": "Your plan and subscription, managed through Stripe.",
+    "current_plan": "Your current plan",
+    "upgrade_to": "Upgrade to {plan}",
+    "switch_to": "Switch to {plan}",
+    "manage_subscription": "Manage subscription",
+    "portal_hint": "Switch plans, update your payment method, or cancel in the billing portal.",
+    "success_banner": "Thank you! Your subscription is active — your plan updates within a few seconds.",
+    "canceled_banner": "Checkout cancelled — your plan has not changed.",
+    "load_error": "Could not load your billing details.",
+    "action_error": "Something went wrong. Please try again."
   }
 }

@@ -8,7 +8,8 @@
     "./user": "./src/hooks/use-user.ts",
     "./trips": "./src/hooks/use-trips.ts",
     "./memories": "./src/hooks/use-memories.ts",
-    "./upload": "./src/hooks/use-upload.ts"
+    "./upload": "./src/hooks/use-upload.ts",
+    "./billing": "./src/hooks/use-billing.ts"
   },
   "scripts": {
     "check-types": "tsc --noEmit",

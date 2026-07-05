@@ -324,6 +324,10 @@
       "password_failed": "Passwort konnte nicht aktualisiert werden. Bitte überprüfe dein aktuelles Passwort.",
       "delete_failed": "Konto konnte nicht gelöscht werden. Bitte versuche es erneut.",
       "reverification_failed": "Überprüfung fehlgeschlagen. Bitte versuche es erneut."
+    },
+    "plan": {
+      "title": "Tarif",
+      "managed_on_web": "Abos werden auf der Passé-Website verwaltet."
     }
   },
   "landing": {
@@ -435,5 +439,18 @@
     "empty_title": "Hier gibt es noch nichts zu sehen",
     "empty_description": "{displayName} hat noch keine öffentlichen Reisen geteilt.",
     "error": "Dein Portfolio konnte nicht geladen werden. Bitte versuche es erneut."
+  },
+  "billing": {
+    "title": "Abrechnung",
+    "subtitle": "Dein Tarif und Abo, verwaltet über Stripe.",
+    "current_plan": "Dein aktueller Tarif",
+    "upgrade_to": "Auf {plan} upgraden",
+    "switch_to": "Zu {plan} wechseln",
+    "manage_subscription": "Abo verwalten",
+    "portal_hint": "Tarif wechseln, Zahlungsmethode ändern oder im Abrechnungsportal kündigen.",
+    "success_banner": "Danke! Dein Abo ist aktiv — dein Tarif wird in wenigen Sekunden aktualisiert.",
+    "canceled_banner": "Checkout abgebrochen — dein Tarif wurde nicht geändert.",
+    "load_error": "Deine Abrechnungsdaten konnten nicht geladen werden.",
+    "action_error": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
   }
 }

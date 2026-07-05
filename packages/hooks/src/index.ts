@@ -12,4 +12,5 @@ export {
   useReorderMemories,
 } from './hooks/use-memories'
 export { useUploadImage } from './hooks/use-upload'
+export { useCreateCheckoutSession, useCreatePortalSession } from './hooks/use-billing'
 export type { NativeUploadFile, UploadFile, UploadedImage } from './hooks/use-upload'
