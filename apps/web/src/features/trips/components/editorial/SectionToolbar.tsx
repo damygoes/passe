@@ -13,7 +13,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@passe/ui/alert-dialog'
-import { Button } from '@passe/ui/button'
+import { Button, buttonVariants } from '@passe/ui/button'
+import { cn } from '@passe/utils'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +25,8 @@ import { Icon } from '@passe/ui/icon'
 import type { EditorialSectionVariant } from '@passe/utils'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
+import { Link } from '@/i18n/navigation'
+import { memoryEditRoute } from '@/lib/routes'
 
 const VARIANT_OPTIONS: LayoutVariant[] = [
   'auto',
@@ -148,6 +151,17 @@ export function SectionToolbar({ memory, resolvedVariant, orderedIds, index }: P
         <Icon name={memory.isPublic ? 'eye' : 'eye-off'} size="sm" />
         {memory.isPublic ? tCard('public_label') : tCard('private_label')}
       </Button>
+
+      <Link
+        href={memoryEditRoute(memory.tripId, memory.id)}
+        aria-label={tCard('edit')}
+        className={cn(
+          buttonVariants({ variant: 'ghost', size: 'icon-sm' }),
+          'text-muted-foreground',
+        )}
+      >
+        <Icon name="edit" size="sm" />
+      </Link>
 
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <AlertDialogTrigger

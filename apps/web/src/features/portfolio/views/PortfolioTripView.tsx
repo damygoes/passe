@@ -38,7 +38,12 @@ export async function PortfolioTripView({ slug, tripId }: Props) {
         {publicMemories.length === 0 ? (
           <NoPublicMemoriesEmpty />
         ) : (
-          <EditorialChapters chapters={chapters} photoAlt="Memory photo" />
+          <EditorialChapters
+            chapters={chapters}
+            photoAlt="Memory photo"
+            scrollLeftLabel="Scroll left"
+            scrollRightLabel="Scroll right"
+          />
         )}
       </main>
       <PortfolioFooter />

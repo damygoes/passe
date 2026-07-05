@@ -190,6 +190,7 @@
       "make_private": "Privat machen",
       "public_label": "Öffentlich",
       "private_label": "Privat",
+      "edit": "Erinnerung bearbeiten",
       "delete": "Löschen",
       "delete_title": "Diese Erinnerung löschen?",
       "delete_description": "Die Erinnerung und ihre Fotos werden dauerhaft entfernt.",
@@ -242,6 +243,15 @@
         "content_required": "Füge ein Foto oder eine Notiz hinzu."
       }
     },
+    "edit_memory": {
+      "back": "← Zurück zur Reise",
+      "title": "Erinnerung bearbeiten",
+      "subtitle": "Aktualisiere Fotos, Notiz oder Details für diesen Moment.",
+      "save": "Änderungen speichern",
+      "saving": "Speichern…",
+      "update_failed": "Deine Erinnerung konnte nicht aktualisiert werden. Bitte versuche es erneut.",
+      "not_found": "Diese Erinnerung konnte nicht gefunden werden."
+    },
     "editorial": {
       "layout_label": "Layout",
       "variant_auto": "Automatisch",
@@ -252,7 +262,9 @@
       "variant_text": "Nur Text",
       "flip": "Seite wechseln",
       "move_up": "Nach oben",
-      "move_down": "Nach unten"
+      "move_down": "Nach unten",
+      "scroll_left": "Nach links scrollen",
+      "scroll_right": "Nach rechts scrollen"
     }
   },
   "nav": {

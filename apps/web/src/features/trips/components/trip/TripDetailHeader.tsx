@@ -64,13 +64,21 @@ export function TripDetailHeader({ id }: Props) {
       )}
 
       {trip.coverImageUrl && (
-        <div className="relative mt-6 h-56 w-full overflow-hidden rounded-xl sm:h-72 md:h-80">
+        <div className="relative mt-6 h-56 w-full overflow-hidden rounded-xl bg-muted sm:h-72 md:h-96">
+          <Image
+            src={trip.coverImageUrl}
+            alt=""
+            aria-hidden="true"
+            fill
+            className="scale-110 object-cover opacity-60 blur-2xl"
+            sizes="100vw"
+          />
           <Image
             src={trip.coverImageUrl}
             alt={`Cover photo for ${trip.title}`}
             fill
             priority
-            className="object-cover"
+            className="object-contain"
             sizes="100vw"
           />
         </div>

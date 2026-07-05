@@ -2,8 +2,14 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { canAddMemory } from '@passe/auth/plan-gates'
-import { useCreateMemory, useMemories, useUser, type UploadedImage } from '@passe/hooks'
-import { CreateMemorySchema } from '@passe/types/memory'
+import {
+  useCreateMemory,
+  useMemories,
+  useUpdateMemory,
+  useUser,
+  type UploadedImage,
+} from '@passe/hooks'
+import { CreateMemorySchema, type Memory } from '@passe/types/memory'
 import { Button } from '@passe/ui/button'
 import { DatePicker } from '@passe/ui/date-picker'
 import { Input } from '@passe/ui/input'
@@ -27,20 +33,33 @@ type MemoryFormFields = z.infer<typeof MemoryFormFieldsSchema>
 
 interface Props {
   tripId: string
+  // When provided, the form edits this memory; otherwise it creates a new one.
+  memory?: Memory
 }
 
-export function NewMemoryForm({ tripId }: Props) {
+export function MemoryForm({ tripId, memory }: Props) {
   const t = useTranslations('trips.new_memory')
+  const tEdit = useTranslations('trips.edit_memory')
   const router = useRouter()
   const { data: user } = useUser()
   const { data: memories = [] } = useMemories(tripId)
-  const { mutateAsync: createMemory, isPending } = useCreateMemory()
-  const [photos, setPhotos] = useState<UploadedImage[]>([])
+  const { mutateAsync: createMemory, isPending: isCreating } = useCreateMemory()
+  const { mutateAsync: updateMemory, isPending: isUpdating } = useUpdateMemory()
+  const [photos, setPhotos] = useState<UploadedImage[]>(
+    () =>
+      memory?.media.map((item) => ({
+        url: item.url,
+        width: item.width ?? null,
+        height: item.height ?? null,
+      })) ?? [],
+  )
   const [globalError, setGlobalError] = useState<string | null>(null)
   const [contentError, setContentError] = useState<string | null>(null)
 
+  const isEditing = Boolean(memory)
+  const isPending = isCreating || isUpdating
   const plan = user?.plan ?? 'free'
-  const atMemoryLimit = !canAddMemory(plan, memories.length)
+  const atMemoryLimit = !isEditing && !canAddMemory(plan, memories.length)
 
   const {
     register,
@@ -49,7 +68,14 @@ export function NewMemoryForm({ tripId }: Props) {
     formState: { errors },
   } = useForm<MemoryFormFields>({
     resolver: zodResolver(MemoryFormFieldsSchema) as Resolver<MemoryFormFields>,
-    defaultValues: { note: '', capturedAt: new Date(), city: '', country: '' },
+    defaultValues: memory
+      ? {
+          note: memory.note ?? '',
+          capturedAt: memory.capturedAt,
+          city: memory.city ?? '',
+          country: memory.country ?? '',
+        }
+      : { note: '', capturedAt: new Date(), city: '', country: '' },
   })
 
   const onSubmit = async (data: MemoryFormFields) => {
@@ -62,24 +88,39 @@ export function NewMemoryForm({ tripId }: Props) {
     }
     setContentError(null)
 
+    const media = photos.map((photo) => ({
+      url: photo.url,
+      mediaType: 'photo' as const,
+      width: photo.width,
+      height: photo.height,
+    }))
+
     try {
-      await createMemory({
-        tripId,
-        note: note || undefined,
-        capturedAt: data.capturedAt,
-        city: data.city?.trim() || undefined,
-        country: data.country?.trim() || undefined,
-        isPublic: false,
-        media: photos.map((photo) => ({
-          url: photo.url,
-          mediaType: 'photo' as const,
-          width: photo.width,
-          height: photo.height,
-        })),
-      })
+      if (memory) {
+        await updateMemory({
+          id: memory.id,
+          tripId,
+          note: note || undefined,
+          capturedAt: data.capturedAt,
+          city: data.city?.trim() || undefined,
+          country: data.country?.trim() || undefined,
+          media,
+        })
+      } else {
+        await createMemory({
+          tripId,
+          note: note || undefined,
+          capturedAt: data.capturedAt,
+          city: data.city?.trim() || undefined,
+          country: data.country?.trim() || undefined,
+          isPublic: false,
+          media,
+        })
+      }
       router.push(tripRoute(tripId))
     } catch (err) {
-      setGlobalError(err instanceof Error ? err.message : t('errors.create_failed'))
+      const fallback = isEditing ? tEdit('update_failed') : t('errors.create_failed')
+      setGlobalError(err instanceof Error ? err.message : fallback)
     }
   }
 
@@ -191,7 +232,13 @@ export function NewMemoryForm({ tripId }: Props) {
 
       <div className="flex items-center gap-3 pt-1">
         <Button type="submit" disabled={isPending || atMemoryLimit} isLoading={isPending}>
-          {isPending ? t('creating') : t('create')}
+          {isEditing
+            ? isPending
+              ? tEdit('saving')
+              : tEdit('save')
+            : isPending
+              ? t('creating')
+              : t('create')}
         </Button>
         <Link
           href={tripRoute(tripId)}
