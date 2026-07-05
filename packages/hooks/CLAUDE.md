@@ -44,7 +44,10 @@ export { useUser, useUpdateUser, useDeleteAccount }
 export { useTrips, useTrip, useCreateTrip, useUpdateTrip, useDeleteTrip }
 
 // Memories
-export { useMemories, useAllMemories, useCreateMemory, useUpdateMemory, useDeleteMemory }
+export { useMemories, useAllMemories, useCreateMemory, useUpdateMemory, useDeleteMemory, useReorderMemories }
+
+// Uploads
+export { useUploadImage }
 ```
 
 All data hooks must be called inside a component tree that has `PasseApiProvider` as an ancestor, otherwise they throw.
