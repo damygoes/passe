@@ -64,7 +64,7 @@ export function MobileMenu({ username }: MobileMenuProps) {
             </div>
 
             {/* Scrollable content */}
-            <div className="flex flex-1 flex-col gap-4 justify-start items-center overflow-y-auto p-24">
+            <div className="no-scrollbar flex flex-1 flex-col gap-4 justify-start items-center overflow-y-auto p-24">
               <Link
                 href={routes.dashboard}
                 onClick={close}

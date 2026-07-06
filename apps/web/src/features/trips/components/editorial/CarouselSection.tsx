@@ -52,7 +52,10 @@ export function CarouselSection({ memory, photoAlt, scrollLeftLabel, scrollRight
   return (
     <figure className="space-y-3">
       <div className="group/carousel relative">
-        <div ref={scrollerRef} className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2">
+        <div
+          ref={scrollerRef}
+          className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2"
+        >
           {memory.media.map((item) => (
             <div
               key={item.id}

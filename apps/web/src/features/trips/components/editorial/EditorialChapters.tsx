@@ -63,7 +63,7 @@ export function EditorialChapters({
     <div>
       {chapters.map((chapter) => (
         <section key={chapter.key}>
-          <header className="mb-8 mt-16 first:mt-8">
+          <header className="mb-8 mt-16 animate-fade-in-up first:mt-8">
             {chapter.subtitle && (
               <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
                 {chapter.subtitle}
@@ -74,8 +74,12 @@ export function EditorialChapters({
           </header>
 
           <div className="space-y-12">
-            {chapter.sections.map(({ memory, variant }) => (
-              <div key={memory.id} className="group">
+            {chapter.sections.map(({ memory, variant }, index) => (
+              <div
+                key={memory.id}
+                className="group animate-fade-in-up"
+                style={{ animationDelay: `${Math.min(index * 50, 300)}ms` }}
+              >
                 <Section
                   memory={memory}
                   variant={variant}

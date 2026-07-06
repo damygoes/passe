@@ -14,6 +14,7 @@ import {
 import { formatTripDateFull } from '@passe/utils'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
+import { useEffect, useRef, useState } from 'react'
 import { TripDetailHeaderSkeleton } from './TripDetailHeaderSkeleton'
 
 interface Props {
@@ -23,6 +24,15 @@ interface Props {
 export function TripDetailHeader({ id }: Props) {
   const t = useTranslations('trips.detail')
   const { data: trip, isLoading, isError } = useTrip(id)
+  const [aspectRatio, setAspectRatio] = useState<number | null>(null)
+  const imgRef = useRef<HTMLImageElement>(null)
+
+  useEffect(() => {
+    const img = imgRef.current
+    if (img?.complete && img.naturalWidth && img.naturalHeight) {
+      setAspectRatio(img.naturalWidth / img.naturalHeight)
+    }
+  }, [trip?.coverImageUrl])
 
   if (isLoading) return <TripDetailHeaderSkeleton />
 
@@ -64,22 +74,28 @@ export function TripDetailHeader({ id }: Props) {
       )}
 
       {trip.coverImageUrl && (
-        <div className="relative mt-6 h-56 w-full overflow-hidden rounded-xl bg-muted sm:h-72 md:h-96">
+        <div
+          className="relative mx-auto mt-6 max-w-full overflow-hidden rounded-xl bg-muted"
+          style={{
+            height: 'min(70vh, 40rem)',
+            aspectRatio: aspectRatio ?? undefined,
+            width: aspectRatio ? 'auto' : '100%',
+          }}
+        >
           <Image
-            src={trip.coverImageUrl}
-            alt=""
-            aria-hidden="true"
-            fill
-            className="scale-110 object-cover opacity-60 blur-2xl"
-            sizes="100vw"
-          />
-          <Image
+            ref={imgRef}
             src={trip.coverImageUrl}
             alt={`Cover photo for ${trip.title}`}
             fill
             priority
             className="object-contain"
             sizes="100vw"
+            onLoad={(event) => {
+              const img = event.currentTarget
+              if (img.naturalWidth && img.naturalHeight) {
+                setAspectRatio(img.naturalWidth / img.naturalHeight)
+              }
+            }}
           />
         </div>
       )}
