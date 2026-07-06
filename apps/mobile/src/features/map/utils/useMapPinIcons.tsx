@@ -1,4 +1,4 @@
-import { Location01Icon } from '@hugeicons/core-free-icons'
+import { iconMap } from '@passe/ui/icon-map'
 import { Image, type ImageRef } from 'expo-image'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -8,7 +8,7 @@ import { useTheme } from '@/hooks/useTheme'
 
 export const SINGLE_PIN_BUCKET = 'single'
 
-const LOCATION_ICON_PATHS = Location01Icon.map((element) => String(element[1].d))
+const LOCATION_ICON_PATHS = iconMap.location.map((element) => String(element[1].d))
 
 // Rasterized once per bucket key at 4x the SVG viewBox for a crisp result on
 // retina screens, then cached for the lifetime of the map screen.
