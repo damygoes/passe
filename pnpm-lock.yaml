@@ -313,9 +313,6 @@ importers:
       '@clerk/testing':
         specifier: ^1.0.0
         version: 1.14.8(@playwright/test@1.61.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@next/env':
-        specifier: ^16.2.10
-        version: 16.2.10
       '@passe/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
@@ -353,7 +350,7 @@ importers:
         specifier: ^1.9.20
         version: 1.9.21
       '@types/node':
-        specifier: ^22.15.3
+        specifier: ^22.20.0
         version: 22.20.0
       '@types/react':
         specifier: 19.2.2
@@ -370,6 +367,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^4.1.9
         version: 4.1.10(@vitest/browser@4.1.10)(vitest@4.1.10)
+      dotenv:
+        specifier: 17.2.2
+        version: 17.2.2
       eslint:
         specifier: ^9.39.1
         version: 9.39.4(jiti@2.7.0)
@@ -2402,9 +2402,6 @@ packages:
 
   '@next/env@16.2.0':
     resolution: {integrity: sha512-OZIbODWWAi0epQRCRjNe1VO45LOFBzgiyqmTLzIqWq6u1wrxKnAyz1HH6tgY/Mc81YzIjRPoYsPAEr4QV4l9TA==}
-
-  '@next/env@16.2.10':
-    resolution: {integrity: sha512-zLPxg9M0MEHmygpj5OuxjQ+vHMiy/K7cSp74G8ecYolmgUWw0RwN02tF56npup/+qaI8JB97hQgS/r2Hb6QwVA==}
 
   '@next/eslint-plugin-next@16.2.10':
     resolution: {integrity: sha512-Gs8D2m21VnJeFo9qvYIIqJH94frWerWYu41BprU1pLtRVF7PCQNLiFZZ3fG+iPuj3K83Cwv/rt+msLOy8Qgu3Q==}
@@ -11143,8 +11140,6 @@ snapshots:
   '@next/env@16.0.0': {}
 
   '@next/env@16.2.0': {}
-
-  '@next/env@16.2.10': {}
 
   '@next/eslint-plugin-next@16.2.10':
     dependencies:

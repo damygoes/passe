@@ -2,12 +2,19 @@ import type { Page } from '@playwright/test'
 import { expect, test } from './fixtures'
 
 // The date-picker trigger has id="startDate"/"endDate" (see TripForm.tsx). Clicking it opens a
-// Base UI popover with a react-day-picker calendar; day cells are buttons whose accessible name
-// is just the day-of-month. Picking days within the current month keeps this independent of
-// today's date without needing month navigation.
+// Base UI popover with a react-day-picker calendar; day cells are buttons whose visible text is
+// just the day-of-month, but whose *accessible name* (what getByRole matches against) is the
+// full date — e.g. "Friday, July 10th, 2026". Match the ordinal-day pattern instead of the bare
+// number, with a `\b` before the day so day 1 doesn't also match inside "21st"/"31st". Picking
+// days within the current month keeps this independent of today's date without needing month
+// navigation.
 async function pickDate(page: Page, triggerId: string, day: number) {
   await page.locator(`#${triggerId}`).click()
-  await page.getByRole('button', { name: new RegExp(`^${day}$`) }).click()
+  await page.getByRole('button', { name: new RegExp(`\\b${day}(st|nd|rd|th),`) }).click()
+  // Wait for this popover to actually close before the caller opens the next one — otherwise
+  // a still-closing first popover and the newly-opened second one can both briefly show the
+  // same day, and getByRole matches both (strict-mode violation).
+  await page.getByRole('dialog').waitFor({ state: 'hidden' })
 }
 
 test.describe('authenticated trip flows', () => {
@@ -32,7 +39,8 @@ test.describe('authenticated trip flows', () => {
 
     await page.getByRole('button', { name: 'Create trip' }).click()
     await expect(page).toHaveURL(/\/trips\/[^/]+$/)
-    await expect(page.getByRole('heading', { name: tripTitle })).toBeVisible()
+    // PageHeaderTitle renders a plain styled <div>, not a semantic heading element.
+    await expect(page.getByText(tripTitle)).toBeVisible()
 
     const tripId = page.url().split('/trips/')[1]!.split(/[/?]/)[0]!
 
@@ -54,7 +62,7 @@ test.describe('authenticated trip flows', () => {
     await page.getByRole('button', { name: 'Save changes' }).click()
 
     await expect(page).toHaveURL(new RegExp(`/trips/${tripId}$`))
-    await expect(page.getByRole('heading', { name: updatedTitle })).toBeVisible()
+    await expect(page.getByText(updatedTitle)).toBeVisible()
 
     // --- Cleanup — no delete UI exists for trips (or a reliable one for memories) on web,
     // so remove what this test created directly via the authenticated API. ---

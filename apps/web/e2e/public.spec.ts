@@ -5,7 +5,9 @@ test.describe('landing page', () => {
     await page.goto('/en')
 
     await expect(page.getByRole('heading', { name: /The past,/ })).toBeVisible()
-    await expect(page.getByRole('link', { name: 'Start for free' })).toBeVisible()
+    // "Start for free" appears in the hero, the pricing card, and the final CTA — any one of
+    // them proves the page rendered.
+    await expect(page.getByRole('link', { name: 'Start for free' }).first()).toBeVisible()
     await expect(
       page.getByRole('heading', { name: 'Everything you need to preserve your travels' }),
     ).toBeVisible()

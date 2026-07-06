@@ -1,6 +1,7 @@
 import { clerkSetup } from '@clerk/testing/playwright'
 import { createClerkClient } from '@clerk/backend'
-import { db, users } from '@passe/db'
+import { db } from '@passe/db/client'
+import { users } from '@passe/db/schema'
 
 const E2E_USERNAME = 'e2e-test-user'
 
