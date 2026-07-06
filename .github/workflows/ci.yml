@@ -49,10 +49,9 @@ jobs:
   e2e:
     name: Playwright e2e
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    # Requires real dev-instance secrets (see apps/web/.env.local.example) — this job fails
-    # until E2E_CLERK_PUBLISHABLE_KEY, E2E_CLERK_SECRET_KEY, E2E_DATABASE_URL,
-    # E2E_CLERK_TEST_EMAIL, and E2E_CLERK_TEST_PASSWORD are added as repo secrets.
+    timeout-minutes: 20
+    # Uses real dev-instance secrets (see apps/web/.env.local.example): E2E_CLERK_PUBLISHABLE_KEY,
+    # E2E_CLERK_SECRET_KEY, E2E_DATABASE_URL, E2E_CLERK_TEST_EMAIL, E2E_CLERK_TEST_PASSWORD.
     env:
       NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.E2E_CLERK_PUBLISHABLE_KEY }}
       CLERK_SECRET_KEY: ${{ secrets.E2E_CLERK_SECRET_KEY }}
@@ -74,6 +73,13 @@ jobs:
 
       - name: Install Playwright browsers
         run: pnpm --filter passe-web exec playwright install --with-deps chromium
+
+      # e2e runs against `next start` in CI (see playwright.config.ts webServer) — the dev
+      # server's on-demand route compilation is too slow on CI runners and flakes the suite.
+      # Plain `next build` (not turbo) so the remote cache never serves a build with the
+      # quality job's placeholder NEXT_PUBLIC_* values baked in.
+      - name: Build web app
+        run: pnpm --filter passe-web build
 
       - name: Run e2e tests
         run: pnpm --filter passe-web test:e2e

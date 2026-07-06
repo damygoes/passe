@@ -24,6 +24,10 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 2 : undefined,
+  // CI headroom: the trip-flow test is a long multi-page journey, and 2-core runners are slow
+  // enough that the local 30s/5s budgets flake even against a production server.
+  timeout: process.env.CI ? 60_000 : 30_000,
+  expect: { timeout: process.env.CI ? 10_000 : 5_000 },
   reporter: 'html',
   globalSetup: './e2e/global-setup.ts',
   use: {
@@ -37,7 +41,11 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'pnpm dev',
+    // CI must serve a production build (`next start`; the workflow runs `next build` as a prior
+    // step) — `next dev` compiles every route on first hit, and on a 2-core CI runner those
+    // on-demand compiles blow navigation/expect timeouts and make the suite flaky. Locally the
+    // dev server is fine (and is usually already running, so it gets reused).
+    command: process.env.CI ? 'pnpm start' : 'pnpm dev',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

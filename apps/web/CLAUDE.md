@@ -477,6 +477,37 @@ pnpm --filter passe-web build-storybook
 
 ---
 
+## E2E testing (Playwright)
+
+Tests live in `apps/web/e2e/` (`trips.spec.ts`, `public.spec.ts`, shared auth fixture in
+`fixtures.ts`, test-user provisioning in `global-setup.ts`).
+
+```bash
+pnpm --filter passe-web test:e2e
+```
+
+- The suite runs against the **real dev Clerk instance and dev Neon branch** configured in
+  `apps/web/.env.local` (`E2E_CLERK_TEST_EMAIL` / `E2E_CLERK_TEST_PASSWORD` — see
+  `.env.local.example`). `global-setup.ts` provisions the e2e test user idempotently.
+- **`global-setup.ts` deletes all of the e2e user's trips before every run.** A test that fails
+  mid-flow leaks the trip it created (cleanup is the test's last step), and the e2e user is on
+  the free plan (`maxTrips: 3`) — without the sweep, a few failed runs fill the quota, the
+  "Create trip" button renders disabled ("You've reached the trip limit for your plan."), and
+  the suite fails deterministically until the dev DB is cleaned by hand. This actually happened
+  (July 2026). Any new test that creates data must tolerate — or be covered by — this sweep.
+- Locally, the config reuses an already-running dev server on :3000, or starts `pnpm dev` itself.
+- **CI must run e2e against a production build (`next build` + `next start`) — never `next dev`.**
+  The dev server compiles every route on first hit; on a 2-core CI runner those on-demand
+  compiles exceed navigation/expect timeouts and make the suite flaky (this happened — see the
+  `webServer` comment in `playwright.config.ts`). The CI workflow builds the app in a dedicated
+  step before `test:e2e`, and the config switches `webServer.command` to `pnpm start` when
+  `process.env.CI` is set.
+- CI also gets larger budgets in `playwright.config.ts` (60s per test, 10s per expect) because
+  the trip-flow test is a long multi-page journey; local defaults stay at 30s/5s to keep catching
+  real slowness during development.
+
+---
+
 ## External documentation
 
 - [Clerk Next.js quickstart](https://clerk.com/docs/quickstarts/nextjs)

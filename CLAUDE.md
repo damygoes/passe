@@ -71,6 +71,16 @@ Browse the component library:
 pnpm --filter @passe/ui storybook   # opens at localhost:6006
 ```
 
+Web e2e tests (Playwright, `apps/web/e2e/` — needs real dev Clerk + DB creds in `apps/web/.env.local`):
+
+```bash
+pnpm --filter passe-web test:e2e
+```
+
+In CI, e2e runs against a production build (`next build` + `next start`), never the dev server —
+on-demand route compilation is too slow on CI runners and flakes the suite. See
+`apps/web/CLAUDE.md` → "E2E testing (Playwright)".
+
 Database (`@passe/db`):
 
 ```bash
