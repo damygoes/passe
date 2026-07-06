@@ -6,7 +6,6 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated'
 import type { SharedValue } from 'react-native-reanimated'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
@@ -35,7 +34,6 @@ export function TripStatsStickyBar({
 }: TripStatsStickyBarProps) {
   const t = useTranslations('trips.stats')
   const { colors, spacing, fontSizes, fontWeights } = useTheme()
-  const insets = useSafeAreaInsets()
 
   const recap = [
     `${countriesCount} ${t('countries', { count: countriesCount })}`,
@@ -60,10 +58,10 @@ export function TripStatsStickyBar({
     () =>
       StyleSheet.create({
         bar: {
-          // Absolute positioning ignores the SafeAreaView's top padding, so
-          // the status-bar inset must be applied explicitly
+          // The native header already reserves the status-bar inset, so the
+          // sticky bar anchors to the top of the screen content below it
           position: 'absolute',
-          top: insets.top,
+          top: 0,
           left: 0,
           right: 0,
           zIndex: 10,
@@ -80,7 +78,7 @@ export function TripStatsStickyBar({
           color: colors.foreground,
         },
       }),
-    [colors, spacing, fontSizes, fontWeights, insets.top],
+    [colors, spacing, fontSizes, fontWeights],
   )
 
   return (

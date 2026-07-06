@@ -23,7 +23,7 @@ export function TripDetailScreen() {
   )
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
+    <SafeAreaView style={styles.safeArea} edges={[]}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <Animated.View entering={enterUp(0)}>
           <TripDetailHeader id={id} />

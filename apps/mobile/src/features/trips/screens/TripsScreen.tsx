@@ -2,8 +2,8 @@ import { queryKeys, useTrips } from '@passe/hooks'
 import { getUniqueStatsFromTrips } from '@passe/utils'
 import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useMemo, useState } from 'react'
-import { RefreshControl, StyleSheet } from 'react-native'
 import type { LayoutChangeEvent } from 'react-native'
+import { RefreshControl, StyleSheet } from 'react-native'
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -64,7 +64,7 @@ export function TripsScreen() {
   )
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
+    <SafeAreaView style={styles.safeArea} edges={[]}>
       <Animated.ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
@@ -79,7 +79,10 @@ export function TripsScreen() {
               <Skeleton style={styles.descriptionSkeleton} />
             ) : !isError ? (
               <PageHeaderDescription>
-                {t('description', { tripsCount: trips.length, countriesCount: uniqueCountries.size })}
+                {t('description', {
+                  tripsCount: trips.length,
+                  countriesCount: uniqueCountries.size,
+                })}
               </PageHeaderDescription>
             ) : null}
           </PageHeader>
