@@ -1,4 +1,5 @@
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
+import { geocodeCityCountry } from '@/lib/geocode'
 import { fromDbMemory, toDbMemoryValues } from '@/lib/memory'
 import { db, memories, memoryMedia, trips, users } from '@passe/db'
 import { canAddMemory } from '@passe/auth/plan-gates'
@@ -75,11 +76,19 @@ export async function POST(req: Request, ctx: RouteContext<'/api/trips/[id]/memo
     return apiError(JSON.stringify(parsed.error.flatten().fieldErrors), 400)
   }
 
+  // A brand-new memory always gets a best-effort location: use the precise
+  // GPS coordinates if the client sent them, otherwise fall back to
+  // geocoding the city/country the user typed.
+  const dataForDb =
+    parsed.data.location == null
+      ? { ...parsed.data, location: await geocodeCityCountry(parsed.data.city, parsed.data.country) }
+      : parsed.data
+
   let memory
   try {
     ;[memory] = await db
       .insert(memories)
-      .values({ ...toDbMemoryValues(parsed.data), userId })
+      .values({ ...toDbMemoryValues(dataForDb), userId })
       .returning()
   } catch (err) {
     log.error('DB write failed', {

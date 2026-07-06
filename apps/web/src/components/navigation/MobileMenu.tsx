@@ -75,6 +75,16 @@ export function MobileMenu({ username }: MobileMenuProps) {
               >
                 {t('dashboard')}
               </Link>
+              <Link
+                href={routes.map}
+                onClick={close}
+                className={cn(
+                  buttonVariants({ variant: 'ghost', size: 'sm' }),
+                  'w-full justify-center uppercase text-xl',
+                )}
+              >
+                {t('map')}
+              </Link>
               {username && (
                 <a
                   href={publicPortfolioRoute(username)}

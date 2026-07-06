@@ -37,6 +37,9 @@ export async function AppNavbar({ displayName, email, avatarUrl, username }: App
         >
           {t('dashboard')}
         </Link>
+        <Link href={routes.map} className={buttonVariants({ variant: 'ghost', size: 'sm' })}>
+          {t('map')}
+        </Link>
         {username && (
           <a
             href={publicPortfolioRoute(username)}

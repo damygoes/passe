@@ -1,4 +1,5 @@
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
+import { geocodeCityCountry } from '@/lib/geocode'
 import { fromDbMemory, toDbMemoryValues } from '@/lib/memory'
 import { db, memories, memoryMedia, users } from '@passe/db'
 import { canMakeMemoryPublic } from '@passe/auth/plan-gates'
@@ -45,11 +46,20 @@ export async function PATCH(
     }
   }
 
+  // The client explicitly sends `location: null` when it has no GPS fix for
+  // this save (see MemoryForm) — that's our signal to fall back to geocoding
+  // the city/country. If `location` isn't a key at all, this update doesn't
+  // touch location and toDbMemoryValues leaves any existing coordinates alone.
+  const dataForDb =
+    'location' in parsed.data && parsed.data.location == null
+      ? { ...parsed.data, location: await geocodeCityCountry(parsed.data.city, parsed.data.country) }
+      : parsed.data
+
   let updated
   try {
     ;[updated] = await db
       .update(memories)
-      .set({ ...toDbMemoryValues(parsed.data), updatedAt: new Date() })
+      .set({ ...toDbMemoryValues(dataForDb), updatedAt: new Date() })
       .where(
         and(eq(memories.id, memoryId), eq(memories.tripId, tripId), eq(memories.userId, userId)),
       )

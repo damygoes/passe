@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import type { CreateMemory, Memory, UpdateMemory } from '@passe/types/memory'
+import type { CreateMemory, MapPoint, Memory, UpdateMemory } from '@passe/types/memory'
 import { usePasseApi } from '../context'
 import { queryKeys } from '../query-keys'
 
@@ -22,6 +22,15 @@ export function useAllMemories() {
   return useQuery({
     queryKey: queryKeys.allMemories(),
     queryFn: () => fetchApi<Memory[]>('/api/memories'),
+  })
+}
+
+// Lean, geotagged-only projection for the /map view — see GET /api/memories/map.
+export function useMapPoints() {
+  const { fetchApi } = usePasseApi()
+  return useQuery({
+    queryKey: queryKeys.mapPoints(),
+    queryFn: () => fetchApi<MapPoint[]>('/api/memories/map'),
   })
 }
 
