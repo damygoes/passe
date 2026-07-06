@@ -7,6 +7,7 @@ import {
 import { Image } from 'expo-image'
 import { useMemo } from 'react'
 import { ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native'
+import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated'
 
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
@@ -184,13 +185,18 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
     <View style={styles.container}>
       {chapters.map((chapter) => (
         <View key={chapter.key} style={styles.chapter}>
-          <View style={styles.chapterHeader}>
+          <Animated.View entering={FadeIn.duration(220)} style={styles.chapterHeader}>
             {chapter.subtitle && <Text style={styles.chapterSubtitle}>{chapter.subtitle}</Text>}
             <Text style={styles.chapterTitle}>{chapter.title}</Text>
             <View style={styles.chapterRule} />
-          </View>
-          {chapter.sections.map(({ memory, variant }) => (
-            <View key={memory.id}>{renderSection(memory, variant)}</View>
+          </Animated.View>
+          {chapter.sections.map(({ memory, variant }, index) => (
+            <Animated.View
+              key={memory.id}
+              entering={FadeInDown.delay(Math.min(index * 50, 300)).duration(220)}
+            >
+              {renderSection(memory, variant)}
+            </Animated.View>
           ))}
         </View>
       ))}

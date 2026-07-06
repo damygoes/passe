@@ -1,5 +1,6 @@
 import { useMapPoints } from '@passe/hooks'
 import { Text } from 'react-native'
+import Animated, { FadeIn } from 'react-native-reanimated'
 
 import { Skeleton } from '@/components/ui/skeleton'
 import { useTheme } from '@/hooks/useTheme'
@@ -16,5 +17,9 @@ export function MapDataWrapper() {
   if (isError) return <Text style={{ color: colors.destructive }}>{t('load_error')}</Text>
   if (points.length === 0) return <NoGeotaggedMemoriesEmpty />
 
-  return <WorldMap points={points} />
+  return (
+    <Animated.View entering={FadeIn.duration(200)} style={{ flex: 1 }}>
+      <WorldMap points={points} />
+    </Animated.View>
+  )
 }

@@ -1,7 +1,8 @@
 import { useTrips } from '@passe/hooks'
 import { useRouter } from 'expo-router'
 import { useMemo } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
+import Animated, { FadeIn } from 'react-native-reanimated'
 
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
 import { useTheme } from '@/hooks/useTheme'
@@ -34,14 +35,15 @@ export function TripsList() {
   }
 
   return (
-    <View style={styles.list}>
-      {trips.map((trip) => (
+    <Animated.View entering={FadeIn.duration(200)} style={styles.list}>
+      {trips.map((trip, index) => (
         <TripCard
           key={trip.id}
           trip={trip}
           onPress={() => router.push(`/(app)/trips/${trip.id}`)}
+          entranceDelay={Math.min(index * 50, 300)}
         />
       ))}
-    </View>
+    </Animated.View>
   )
 }

@@ -1,10 +1,14 @@
+import { createLogger } from '@passe/logger'
 import { iconMap } from '@passe/ui/icon-map'
+import { File, Paths } from 'expo-file-system'
 import { Image, type ImageRef } from 'expo-image'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Circle, G, Path, Svg, Text as SvgText } from 'react-native-svg'
 
 import { useTheme } from '@/hooks/useTheme'
+
+const log = createLogger({ context: { module: 'map/useMapPinIcons' } })
 
 export const SINGLE_PIN_BUCKET = 'single'
 
@@ -37,15 +41,62 @@ interface PinIconSvgProps {
   onCaptured: (bucketKey: string, image: ImageRef) => void
 }
 
+const MAX_CAPTURE_ATTEMPTS = 4
+
+// react-native-svg's native toDataURL retries once internally and, if the
+// SVG view still hasn't finished rendering, invokes the callback with no
+// argument at all (an empty base64 string here). Retrying from JS with a
+// short backoff rides out that timing gap instead of writing/loading a
+// missing image. Defined at module scope (rather than via useCallback) so
+// the recursive retry isn't a self-referencing hook value.
+function captureSvgToIcon(
+  svg: InstanceType<typeof Svg> | null,
+  bucketKey: string,
+  onCaptured: (bucketKey: string, image: ImageRef) => void,
+  attempt = 0,
+) {
+  svg?.toDataURL((base64) => {
+    if (!base64) {
+      if (attempt < MAX_CAPTURE_ATTEMPTS) {
+        setTimeout(() => captureSvgToIcon(svg, bucketKey, onCaptured, attempt + 1), 50 * (attempt + 1))
+      } else {
+        log.error('Map pin icon rasterization produced no data after retries', { bucketKey })
+      }
+      return
+    }
+
+    // expo-image's Image.loadAsync unreliably loads `data:` URIs on iOS
+    // (fails with CFNetwork error -10), so the rasterized PNG is written
+    // to a cache file and loaded from a `file://` URI instead.
+    try {
+      const file = new File(Paths.cache, `map-pin-${bucketKey}.png`)
+      if (file.exists) file.delete()
+      file.write(base64, { encoding: 'base64' })
+
+      Image.loadAsync({ uri: file.uri })
+        .then((image) => {
+          onCaptured(bucketKey, image)
+        })
+        .catch((error) => {
+          log.error('Failed to load rasterized map pin icon', {
+            bucketKey,
+            error: error instanceof Error ? error.message : String(error),
+          })
+        })
+    } catch (error) {
+      log.error('Failed to write map pin icon to disk', {
+        bucketKey,
+        error: error instanceof Error ? error.message : String(error),
+      })
+    }
+  })
+}
+
 function PinIconSvg({ bucket, primaryColor, onCaptured }: PinIconSvgProps) {
   const svgRef = useRef<InstanceType<typeof Svg>>(null)
 
   const handleLayout = useCallback(() => {
-    svgRef.current?.toDataURL((base64) => {
-      Image.loadAsync({ uri: `data:image/png;base64,${base64}` }).then((image) => {
-        onCaptured(bucket.key, image)
-      })
-    })
+    captureSvgToIcon(svgRef.current, bucket.key, onCaptured)
   }, [bucket.key, onCaptured])
 
   if (bucket.key === SINGLE_PIN_BUCKET) {

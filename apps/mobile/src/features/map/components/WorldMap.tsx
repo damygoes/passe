@@ -3,6 +3,7 @@ import { AppleMaps, GoogleMaps } from 'expo-maps'
 import { useRouter } from 'expo-router'
 import { useCallback, useMemo, useState, type ReactNode } from 'react'
 import { Platform, StyleSheet, View } from 'react-native'
+import Animated, { Easing, FadeInDown, FadeOutDown } from 'react-native-reanimated'
 
 import { useTheme } from '@/hooks/useTheme'
 import { MapMemoryCard } from './MapMemoryCard'
@@ -141,7 +142,11 @@ export function WorldMap({ points }: WorldMapProps) {
       {map}
       {pending}
       {selectedGroup && selectedPoint && (
-        <View style={styles.cardWrapper}>
+        <Animated.View
+          entering={FadeInDown.duration(250).easing(Easing.out(Easing.cubic))}
+          exiting={FadeOutDown.duration(180).easing(Easing.in(Easing.cubic))}
+          style={styles.cardWrapper}
+        >
           <MapMemoryCard
             point={selectedPoint}
             onViewTrip={handleViewTrip}
@@ -157,7 +162,7 @@ export function WorldMap({ points }: WorldMapProps) {
                 : undefined
             }
           />
-        </View>
+        </Animated.View>
       )}
     </View>
   )
