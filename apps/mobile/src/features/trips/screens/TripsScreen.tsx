@@ -2,14 +2,16 @@ import { queryKeys, useTrips } from '@passe/hooks'
 import { getUniqueStatsFromTrips } from '@passe/utils'
 import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useMemo, useState } from 'react'
-import { RefreshControl, ScrollView, StyleSheet } from 'react-native'
-import Animated from 'react-native-reanimated'
+import { RefreshControl, StyleSheet } from 'react-native'
+import type { LayoutChangeEvent } from 'react-native'
+import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { PageHeader, PageHeaderDescription, PageHeaderTitle } from '@/components/ui/page-header'
 import { Skeleton } from '@/components/ui/skeleton'
 import { TripsList } from '@/features/trips/components/TripsList'
 import { TripStatsDataWrapper } from '@/features/trips/components/TripStatsDataWrapper'
+import { TripStatsStickyBarDataWrapper } from '@/features/trips/components/TripStatsStickyBarDataWrapper'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 import { enterUp } from '@/lib/motion'
@@ -21,6 +23,19 @@ export function TripsScreen() {
   const { uniqueCountries } = getUniqueStatsFromTrips({ trips })
   const queryClient = useQueryClient()
   const [refreshing, setRefreshing] = useState(false)
+
+  const scrollY = useSharedValue(0)
+  const statsBottom = useSharedValue(0)
+  const scrollHandler = useAnimatedScrollHandler((event) => {
+    scrollY.value = event.contentOffset.y
+  })
+  const onStatsLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      const { y, height } = event.nativeEvent.layout
+      statsBottom.set(y + height)
+    },
+    [statsBottom],
+  )
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
@@ -50,9 +65,11 @@ export function TripsScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
-      <ScrollView
+      <Animated.ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
         <Animated.View entering={enterUp(0)}>
@@ -67,11 +84,12 @@ export function TripsScreen() {
             ) : null}
           </PageHeader>
         </Animated.View>
-        <Animated.View entering={enterUp(80)}>
+        <Animated.View entering={enterUp(80)} onLayout={onStatsLayout}>
           <TripStatsDataWrapper />
         </Animated.View>
         <TripsList />
-      </ScrollView>
+      </Animated.ScrollView>
+      <TripStatsStickyBarDataWrapper scrollY={scrollY} threshold={statsBottom} />
     </SafeAreaView>
   )
 }
