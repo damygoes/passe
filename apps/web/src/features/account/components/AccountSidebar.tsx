@@ -29,7 +29,7 @@ export function AccountSidebar({ activeTab, onTabChange }: AccountSidebarProps) 
   return (
     <nav
       aria-label="Account settings navigation"
-      className="flex flex-row md:flex-col gap-1 overflow-x-auto md:overflow-x-visible w-full md:w-52 md:shrink-0 pb-1 md:pb-0"
+      className="no-scrollbar flex flex-row md:flex-col gap-1 overflow-x-auto md:overflow-x-visible w-full md:w-52 md:shrink-0 pb-1 md:pb-0"
     >
       {SIDEBAR_ITEMS.map((item) => {
         const isActive = activeTab === item.key

@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'tw-animate-css';
 @import '@passe/theme/styles';
 @custom-variant dark (&:where(.dark, .dark *));
 @source '../../node_modules/@passe/ui/src';
@@ -8,9 +9,11 @@
 @theme {
   --animate-fade-up: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-fade-in: fade-in 0.8s ease-out both;
+  --animate-fade-in-up: fade-in-up 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-drift: drift 20s ease-in-out infinite alternate;
   --animate-float: float 7s ease-in-out infinite;
   --animate-marquee: marquee 45s linear infinite;
+  --animate-pulse: pulse-fade 1.6s ease-in-out infinite;
 
   @keyframes fade-up {
     from {
@@ -28,6 +31,25 @@
     }
     to {
       opacity: 1;
+    }
+  }
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes pulse-fade {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
     }
   }
   @keyframes drift {
@@ -55,6 +77,31 @@
       transform: translateX(-50%);
     }
   }
+}
+
+/* Hides the scrollbar on an otherwise-scrollable element without disabling scroll —
+   used on the page body and any horizontal/vertical scroll container (carousels,
+   dropdown menus, mobile tab bars) where a visible scrollbar breaks the layout. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* The root <html> element is the actual scrolling box in standard mode, but it
+   can't take the no-scrollbar className: next-themes mutates <html>'s class
+   attribute directly (outside React) to toggle "dark"/"light", and a static
+   React-rendered className fights that on every re-render, stripping the theme
+   class. Target it with a plain selector instead. */
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar {
+  display: none;
 }
 
 /* Scroll reveal — consumed by src/components/shared/Reveal.tsx.
@@ -88,6 +135,7 @@
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up,
   .animate-fade-in,
+  .animate-fade-in-up,
   .animate-drift,
   .animate-float,
   .animate-marquee {

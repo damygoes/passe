@@ -66,6 +66,31 @@ const componentVariants = cva('base-classes', {
 })
 ```
 
+### Buttons vs. navigation links
+
+Use `<Button>` for in-page actions (submit, delete, toggle, open a dialog). Use `<Link>`
+(`next/link`, or the locale-aware `@/i18n/navigation` Link in `apps/web`) styled with the
+component's exported variants function (e.g. `buttonVariants`) when the control navigates to
+another route but should look like a button:
+
+```tsx
+<Link href={routes.signUp} className={buttonVariants({ size: 'lg' })}>
+  Sign up
+</Link>
+```
+
+See `apps/web/src/features/landing/components/HeroSection.tsx` for a real example. Never
+substitute `<Button onClick={...router.push...}>` for a real link to fake this.
+
+`Button` renders a native `<button>` (Base UI's `ButtonPrimitive`) with no navigation
+semantics — no `href`, no prefetch, no crawlability. Route changes belong on an `<a>` for
+crawlability, correct assistive-tech link semantics, and native affordances (middle-click /
+Cmd-click / right-click "open in new tab").
+
+This is why CVA-based components in this package export their variants function alongside
+the component (`export { Button, buttonVariants }`) — so consumers can apply the same styling
+to a different underlying element when semantics require it, not just for internal reuse.
+
 ### Props interface
 
 ```tsx

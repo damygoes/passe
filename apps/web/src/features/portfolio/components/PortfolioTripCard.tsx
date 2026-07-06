@@ -19,7 +19,7 @@ interface Props {
 
 export function PortfolioTripCard({ trip, href }: Props) {
   const card = (
-    <Card className={href ? 'transition-opacity hover:opacity-90' : undefined}>
+    <Card className={href ? 'transition-shadow duration-200 hover:shadow-md' : undefined}>
       {trip.coverImageUrl && (
         <div className="relative aspect-video w-full overflow-hidden">
           <Image
