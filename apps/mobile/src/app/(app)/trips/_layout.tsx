@@ -27,6 +27,7 @@ export default function TripsLayout() {
         headerStyle: { backgroundColor: colors.background },
         headerTintColor: colors.foreground,
         headerTitleStyle: { color: colors.foreground },
+        headerShown: false,
       }}
     >
       <Stack.Screen
