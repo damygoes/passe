@@ -31,6 +31,10 @@ export const Ghost: Story = {
   args: { variant: 'ghost' },
 }
 
+export const Stamp: Story = {
+  args: { variant: 'stamp', children: 'Indonesia' },
+}
+
 export const AllVariants: Story = {
   render: () => (
     <div className="flex flex-wrap gap-2">
@@ -39,6 +43,7 @@ export const AllVariants: Story = {
       <Badge variant="destructive">Destructive</Badge>
       <Badge variant="outline">Outline</Badge>
       <Badge variant="ghost">Ghost</Badge>
+      <Badge variant="stamp">Stamp</Badge>
     </div>
   ),
 }

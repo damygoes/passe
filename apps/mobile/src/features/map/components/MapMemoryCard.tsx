@@ -1,12 +1,12 @@
 import type { MapPoint } from '@passe/types/memory'
 import { Image } from 'expo-image'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter } from '@/components/ui/card'
 import { Icon } from '@/components/ui/icon'
+import { PressableScale } from '@/components/ui/pressable-scale'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
@@ -27,16 +27,6 @@ interface MapMemoryCardProps {
 export function MapMemoryCard({ point, onViewTrip, onClose, pager }: MapMemoryCardProps) {
   const t = useTranslations('map')
   const { colors, spacing, fontSizes, borderRadius } = useTheme()
-  const [closePressed, setClosePressed] = useState(false)
-  const closeScale = useSharedValue(1)
-
-  useEffect(() => {
-    closeScale.value = withTiming(closePressed ? 0.9 : 1, { duration: 100 })
-  }, [closePressed, closeScale])
-
-  const closeAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: closeScale.value }],
-  }))
 
   const location = [point.city, point.country].filter(Boolean).join(', ')
 
@@ -79,17 +69,15 @@ export function MapMemoryCard({ point, onViewTrip, onClose, pager }: MapMemoryCa
         {point.thumbnailUrl && (
           <Image source={{ uri: point.thumbnailUrl }} style={styles.thumbnail} contentFit="cover" />
         )}
-        <Animated.View style={[styles.closeButton, closeAnimatedStyle]}>
-          <Pressable
-            onPress={onClose}
-            onPressIn={() => setClosePressed(true)}
-            onPressOut={() => setClosePressed(false)}
-            accessibilityRole="button"
-            accessibilityLabel={t('close')}
-          >
-            <Icon name="close" size="sm" color={colors.foreground} />
-          </Pressable>
-        </Animated.View>
+        <PressableScale
+          onPress={onClose}
+          pressedScale={0.9}
+          containerStyle={styles.closeButton}
+          accessibilityRole="button"
+          accessibilityLabel={t('close')}
+        >
+          <Icon name="close" size="sm" color={colors.foreground} />
+        </PressableScale>
         <CardContent style={styles.content}>
           {location.length > 0 && <CardDescription>{location}</CardDescription>}
           {point.note && (

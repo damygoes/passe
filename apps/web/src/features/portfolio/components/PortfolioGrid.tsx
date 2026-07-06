@@ -30,7 +30,11 @@ export function PortfolioGrid({ slug, displayName, trips }: Props) {
           className="animate-fade-in-up"
           style={{ animationDelay: `${Math.min(index * 40, 300)}ms` }}
         >
-          <PortfolioTripCard trip={trip} href={publicTripRoute(slug, trip.id)} />
+          <PortfolioTripCard
+            trip={trip}
+            href={publicTripRoute(slug, trip.id)}
+            tilt={index % 2 === 0 ? 'left' : 'right'}
+          />
         </div>
       ))}
     </div>

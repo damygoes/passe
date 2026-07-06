@@ -1,5 +1,6 @@
 'use client'
 
+import { Stagger, StaggerItem } from '@/components/motion/Stagger'
 import { tripRoute } from '@/lib/routes'
 import { useTrips } from '@passe/hooks'
 import { useTranslations } from 'next-intl'
@@ -24,16 +25,16 @@ export function TripsList() {
   }
 
   return (
-    <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <Stagger className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {trips.map((trip, index) => (
-        <div
-          key={trip.id}
-          className="animate-fade-in-up"
-          style={{ animationDelay: `${Math.min(index * 40, 300)}ms` }}
-        >
-          <TripCard trip={trip} href={tripRoute(trip.id)} />
-        </div>
+        <StaggerItem key={trip.id}>
+          <TripCard
+            trip={trip}
+            href={tripRoute(trip.id)}
+            tilt={index % 2 === 0 ? 'left' : 'right'}
+          />
+        </StaggerItem>
       ))}
-    </div>
+    </Stagger>
   )
 }

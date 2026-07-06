@@ -57,3 +57,18 @@ export const NoLink: Story = {
     },
   },
 }
+
+export const Tilted: Story = {
+  args: {
+    trip: {
+      id: 'trip_4',
+      title: 'Kyoto in Autumn',
+      startDate: '2024-11-02',
+      endDate: '2024-11-12',
+      countries: ['Japan'],
+      coverImageUrl: 'https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?w=800&q=80',
+    },
+    href: '/trips/trip_4',
+    tilt: 'left',
+  },
+}

@@ -62,6 +62,26 @@ export function createBadgeRecipe(theme: AppTheme): BadgeRecipe {
         container: { backgroundColor: colors.muted, borderColor: 'transparent' },
         label: { color: colors.mutedForeground },
       },
+
+      // Passport-stamp look: dashed ink border, uppercase label, slight tilt
+      stamp: {
+        container: {
+          backgroundColor: 'transparent',
+          borderWidth: 1.5,
+          borderStyle: 'dashed',
+          borderColor: colors.primary,
+          borderRadius: borderRadius.sm,
+          paddingHorizontal: spacing[2] - 2,
+          transform: [{ rotate: '-1deg' }],
+        },
+        label: {
+          color: colors.primary,
+          fontSize: 10,
+          fontWeight: fontWeights.semibold,
+          letterSpacing: 1.2,
+          textTransform: 'uppercase',
+        },
+      },
     },
   }
 }

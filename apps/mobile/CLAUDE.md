@@ -94,7 +94,8 @@ This is the mobile equivalent of `@passe/ui` (which cannot run in React Native).
 | `Icon` | `@/components/ui/icon` | sizes: `xs`, `sm`, `md`, `lg`, `xl`, `2xl`–`5xl` | Same icon names as `@passe/ui`; icon data from `@passe/ui/icon-map` |
 | `Separator` | `@/components/ui/separator` | orientations: `horizontal`, `vertical` | |
 | `Badge` | `@/components/ui/badge` | variants: `default`, `secondary`, `destructive`, `outline`, `ghost` | |
-| `Skeleton` | `@/components/ui/skeleton` | — | Reanimated pulse; size via `style` prop |
+| `Skeleton` | `@/components/ui/skeleton` | — | Reanimated shimmer; size via `style` prop |
+| `PressableScale` | `@/components/ui/pressable-scale` | — | Pressable with springy scale-down feedback; optional `restRotation` tilt that straightens while pressed; wrapper styles via `containerStyle` |
 | `Input` | `@/components/ui/input` | — | Supports `icon`, `iconPosition`, `isLoading`, `onIconPress`, `inputStyle` |
 | `FormField` | `@/components/ui/form-field` | — | Wraps `Input` with a label, optional `labelRight` slot, and error text |
 | `Textarea` | `@/components/ui/textarea` | — | Multiline `TextInput`, auto-grows |

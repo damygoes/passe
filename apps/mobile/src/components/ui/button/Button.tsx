@@ -1,9 +1,13 @@
 import { useTheme } from '@/hooks/useTheme'
+import { pressSpring } from '@/lib/motion'
 import { createButtonRecipe } from '@/recipes/button'
 
 import { ActivityIndicator, Text, TouchableOpacity } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
 
 import type { ButtonProps } from './Button.types'
+
+const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity)
 
 export function Button({
   children,
@@ -13,26 +17,42 @@ export function Button({
   disabled = false,
   fullWidth = false,
   style,
+  onPressIn,
+  onPressOut,
   ...props
 }: ButtonProps) {
   const theme = useTheme()
   const recipe = createButtonRecipe(theme)
+  const pressed = useSharedValue(0)
 
   const isDisabled = disabled || loading
 
   const variantRecipe = recipe.variants[variant]
   const sizeRecipe = recipe.sizes[size]
 
+  const pressStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: 1 - pressed.value * 0.03 }],
+  }))
+
   return (
-    <TouchableOpacity
+    <AnimatedTouchable
       activeOpacity={0.8}
       disabled={isDisabled}
+      onPressIn={(event) => {
+        pressed.value = withSpring(1, pressSpring)
+        onPressIn?.(event)
+      }}
+      onPressOut={(event) => {
+        pressed.value = withSpring(0, pressSpring)
+        onPressOut?.(event)
+      }}
       style={[
         recipe.base.container,
         variantRecipe.container,
         sizeRecipe.container,
         fullWidth && recipe.states.fullWidth.container,
         isDisabled && recipe.states.disabled.container,
+        pressStyle,
         style,
       ]}
       {...props}
@@ -44,6 +64,6 @@ export function Button({
       ) : (
         children
       )}
-    </TouchableOpacity>
+    </AnimatedTouchable>
   )
 }

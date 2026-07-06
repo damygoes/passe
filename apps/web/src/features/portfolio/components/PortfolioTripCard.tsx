@@ -1,5 +1,11 @@
 import { Badge } from '@passe/ui/badge'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@passe/ui/card'
+import {
+  MediaCard,
+  MediaCardDescription,
+  MediaCardMedia,
+  MediaCardScrim,
+  MediaCardTitle,
+} from '@passe/ui/media-card'
 import { formatDateRange } from '@passe/utils'
 import Image from 'next/image'
 
@@ -15,38 +21,43 @@ interface TripData {
 interface Props {
   trip: TripData
   href?: string
+  tilt?: 'none' | 'left' | 'right'
 }
 
-export function PortfolioTripCard({ trip, href }: Props) {
+export function PortfolioTripCard({ trip, href, tilt = 'none' }: Props) {
   const card = (
-    <Card className={href ? 'transition-shadow duration-200 hover:shadow-md' : undefined}>
+    <MediaCard
+      tilt={tilt}
+      className={
+        trip.coverImageUrl
+          ? undefined
+          : 'bg-gradient-to-br from-sandy-beige via-sandy-beige-dark to-terracotta/40'
+      }
+    >
       {trip.coverImageUrl && (
-        <div className="relative aspect-video w-full overflow-hidden">
+        <MediaCardMedia>
           <Image
             src={trip.coverImageUrl}
             alt={trip.title}
             fill
-            className="object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
-        </div>
+        </MediaCardMedia>
       )}
-      <CardHeader>
-        <CardTitle>{trip.title}</CardTitle>
-        <CardDescription>{formatDateRange(trip.startDate, trip.endDate)}</CardDescription>
-      </CardHeader>
-      {trip.countries.length > 0 && (
-        <CardContent>
-          <div className="flex flex-wrap gap-1">
+      <MediaCardScrim>
+        <MediaCardTitle>{trip.title}</MediaCardTitle>
+        <MediaCardDescription>{formatDateRange(trip.startDate, trip.endDate)}</MediaCardDescription>
+        {trip.countries.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 pt-0.5">
             {trip.countries.map((country) => (
-              <Badge key={country} variant="outline">
+              <Badge key={country} variant="stamp" className="text-aged-cream">
                 {country}
               </Badge>
             ))}
           </div>
-        </CardContent>
-      )}
-    </Card>
+        )}
+      </MediaCardScrim>
+    </MediaCard>
   )
 
   if (href) {
