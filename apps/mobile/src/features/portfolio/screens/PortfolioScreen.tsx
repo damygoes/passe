@@ -1,4 +1,5 @@
 import { useTrips, useUser } from '@passe/hooks'
+import { useRouter } from 'expo-router'
 import { useMemo } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -15,6 +16,7 @@ import { PortfolioHeader } from '@/features/portfolio/components/PortfolioHeader
 export function PortfolioScreen() {
   const t = useTranslations('portfolio')
   const { colors, spacing } = useTheme()
+  const router = useRouter()
   const { data: user, isLoading: userLoading, isError: userError } = useUser()
   const { data: trips = [], isLoading: tripsLoading, isError: tripsError } = useTrips()
 
@@ -52,7 +54,14 @@ export function PortfolioScreen() {
             ) : (
               <View style={styles.list}>
                 {publicTrips.map((trip) => (
-                  <TripCard key={trip.id} trip={trip} />
+                  <TripCard
+                    key={trip.id}
+                    trip={trip}
+                    onPress={() => {
+                      router.dismiss()
+                      router.push(`/(app)/trips/${trip.id}`)
+                    }}
+                  />
                 ))}
               </View>
             )}
