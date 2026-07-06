@@ -1,6 +1,12 @@
 'use client'
 
+import { CountUp } from '@/components/motion/CountUp'
+import { SECTION_STEP, STAGGER_INTERVAL } from '@/lib/motion'
+import { Card, CardContent } from '@passe/ui/card'
+import { Icon, type IconName } from '@passe/ui/icon'
 import { useTranslations } from 'next-intl'
+import { useRef } from 'react'
+import { TripStatsStickyBar } from './TripStatsStickyBar'
 
 interface Props {
   countriesCount: number
@@ -10,21 +16,37 @@ interface Props {
 
 export function TripStats({ countriesCount, citiesCount, yearsCount }: Props) {
   const t = useTranslations('trips.stats')
+  const gridRef = useRef<HTMLDivElement>(null)
+
+  const stats: { icon: IconName; count: number; label: string }[] = [
+    { icon: 'globe', count: countriesCount, label: t('countries', { count: countriesCount }) },
+    { icon: 'location', count: citiesCount, label: t('cities', { count: citiesCount }) },
+    { icon: 'calendar', count: yearsCount, label: t('years', { count: yearsCount }) },
+  ]
 
   return (
-    <div className="flex w-full gap-8 border-y py-4">
-      <div>
-        <p className="text-2xl font-semibold">{countriesCount}</p>
-        <p className="text-sm text-muted-foreground">{t('countries', { count: countriesCount })}</p>
+    <>
+      <div ref={gridRef} className="grid w-full grid-cols-3 gap-3 sm:gap-4">
+        {stats.map((stat, index) => (
+          <Card key={stat.icon} size="sm" className="rounded-lg">
+            <CardContent className="flex flex-col gap-1">
+              <Icon name={stat.icon} size="md" className="text-primary" aria-hidden />
+              <CountUp
+                value={stat.count}
+                delay={SECTION_STEP + index * STAGGER_INTERVAL}
+                className="text-2xl font-semibold"
+              />
+              <p className="text-sm text-muted-foreground">{stat.label}</p>
+            </CardContent>
+          </Card>
+        ))}
       </div>
-      <div>
-        <p className="text-2xl font-semibold">{citiesCount}</p>
-        <p className="text-sm text-muted-foreground">{t('cities', { count: citiesCount })}</p>
-      </div>
-      <div>
-        <p className="text-2xl font-semibold">{yearsCount}</p>
-        <p className="text-sm text-muted-foreground">{t('years', { count: yearsCount })}</p>
-      </div>
-    </div>
+      <TripStatsStickyBar
+        sentinelRef={gridRef}
+        countriesCount={countriesCount}
+        citiesCount={citiesCount}
+        yearsCount={yearsCount}
+      />
+    </>
   )
 }

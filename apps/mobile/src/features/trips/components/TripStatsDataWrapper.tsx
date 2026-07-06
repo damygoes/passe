@@ -15,7 +15,7 @@ export function TripStatsDataWrapper() {
   const { uniqueCities } = getUniqueCities({ allMemories })
 
   if (tripsLoading || memoriesLoading) {
-    return <Skeleton style={{ height: 96, width: '100%' }} />
+    return <Skeleton style={{ height: 110, width: '100%', borderRadius: 16 }} />
   }
 
   if (tripsError || memoriesError) {

@@ -16,7 +16,13 @@ export function TripStatsDataWrapper() {
   const { uniqueCities } = getUniqueCities({ allMemories })
 
   if (tripsLoading || memoriesLoading) {
-    return <Skeleton className="h-24 w-full" />
+    return (
+      <div className="grid w-full grid-cols-3 gap-3 sm:gap-4">
+        <Skeleton className="h-28 rounded-2xl" />
+        <Skeleton className="h-28 rounded-2xl" />
+        <Skeleton className="h-28 rounded-2xl" />
+      </div>
+    )
   }
 
   if (tripsError || memoriesError) {

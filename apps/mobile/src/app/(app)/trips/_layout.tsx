@@ -15,7 +15,6 @@ const sheetOptions = {
 }
 
 export default function TripsLayout() {
-  const t = useTranslations('nav')
   const tTrips = useTranslations('trips.new')
   const tEdit = useTranslations('trips.edit')
   const tMemory = useTranslations('trips.new_memory')
@@ -27,13 +26,9 @@ export default function TripsLayout() {
         headerStyle: { backgroundColor: colors.background },
         headerTintColor: colors.foreground,
         headerTitleStyle: { color: colors.foreground },
-        headerShown: false,
       }}
     >
-      <Stack.Screen
-        name="index"
-        options={{ title: t('trips'), headerRight: () => <NewTripHeaderButton /> }}
-      />
+      <Stack.Screen name="index" options={{ title: '', headerRight: () => <NewTripHeaderButton /> }} />
       <Stack.Screen name="[id]" options={{ title: '', headerBackButtonDisplayMode: 'minimal' }} />
       <Stack.Screen name="new" options={{ ...sheetOptions, title: tTrips('title') }} />
       <Stack.Screen name="edit/[id]" options={{ ...sheetOptions, title: tEdit('title') }} />
