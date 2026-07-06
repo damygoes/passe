@@ -83,7 +83,7 @@ Every public-facing page should feel like a beautifully designed travel book, no
 - Private travel journal (no public sharing)
 - Basic world map view
 
-### EXPLORER — €5/month
+### EXPLORER — €4/month
 
 - Up to **20 trips**
 - **50 memories** per trip
@@ -92,6 +92,8 @@ Every public-facing page should feel like a beautifully designed travel book, no
 - Custom URL slug
 - HD photo storage
 
+> Planned (post-MVP): annual billing at €40/year (~2 months free)
+
 ### COLLECTOR — €9/month
 
 - **Unlimited trips**
@@ -99,6 +101,8 @@ Every public-facing page should feel like a beautifully designed travel book, no
 - Everything in Explorer
 - **PDF memory book export**
 - Priority support
+
+> Planned (post-MVP): annual billing at €90/year (~2 months free)
 
 ---
 

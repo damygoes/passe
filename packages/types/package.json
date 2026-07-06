@@ -6,7 +6,8 @@
     ".": "./src/index.ts",
     "./user": "./src/user.ts",
     "./trip": "./src/trip.ts",
-    "./memory": "./src/memory.ts"
+    "./memory": "./src/memory.ts",
+    "./billing": "./src/billing.ts"
   },
   "scripts": {
     "test": "vitest run"

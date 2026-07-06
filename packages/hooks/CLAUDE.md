@@ -48,6 +48,9 @@ export { useMemories, useAllMemories, useCreateMemory, useUpdateMemory, useDelet
 
 // Uploads
 export { useUploadImage }
+
+// Billing (web-only in practice — mobile never sells; both resolve { url } to redirect to)
+export { useCreateCheckoutSession, useCreatePortalSession }
 ```
 
 All data hooks must be called inside a component tree that has `PasseApiProvider` as an ancestor, otherwise they throw.

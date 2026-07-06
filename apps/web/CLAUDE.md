@@ -251,8 +251,27 @@ app/api/
   trips/[id]/memories/route.ts           — GET, POST /api/trips/[id]/memories
   trips/[id]/memories/[memoryId]/route.ts — PATCH, DELETE /api/trips/[id]/memories/[memoryId]
   memories/route.ts                      — GET /api/memories (all user memories)
+  billing/checkout/route.ts              — POST /api/billing/checkout (Stripe Checkout session)
+  billing/portal/route.ts                — POST /api/billing/portal (Stripe Customer Portal session)
   webhooks/clerk/route.ts                — POST /api/webhooks/clerk
+  webhooks/stripe/route.ts               — POST /api/webhooks/stripe (updates users.plan)
 ```
+
+### Billing (Stripe)
+
+Purchases happen on the web only — mobile displays the plan but sells nothing (App Store rules).
+`users.plan` in the DB is the single source of truth; the Stripe webhook is the only writer.
+
+- `src/lib/stripe.ts` — lazy Stripe client, `planToPriceId`/`priceIdToPlan` (from
+  `STRIPE_PRICE_EXPLORER`/`STRIPE_PRICE_COLLECTOR` env), `getOrCreateStripeCustomer`
+- `POST /api/billing/checkout` rejects users who already have a paid plan (409) — plan
+  switches and cancellation go through the Customer Portal instead
+- `POST /api/webhooks/stripe` verifies the signature over the raw body and maps
+  `customer.subscription.created/updated/deleted` → `users.plan`. `checkout.session.completed`
+  is intentionally not handled (subscription.created carries the same data)
+- The Clerk webhook deletes the Stripe customer on `user.deleted` so cancelled accounts
+  stop being charged
+- Local testing: `stripe listen --forward-to localhost:3000/api/webhooks/stripe`
 
 ### Shared helpers — `src/lib/api.ts`
 
@@ -397,6 +416,8 @@ export function TripList() {
 | `useCreateMemory()`   | POST /api/trips/[id]/memories         |
 | `useUpdateMemory()`   | PATCH /api/trips/[id]/memories/[id]   |
 | `useDeleteMemory()`   | DELETE /api/trips/[id]/memories/[id]  |
+| `useCreateCheckoutSession()` | POST /api/billing/checkout — resolves `{ url }` to redirect to |
+| `useCreatePortalSession()`   | POST /api/billing/portal — resolves `{ url }` to redirect to   |
 
 Mutation hooks auto-invalidate related query keys on success (e.g. `useDeleteTrip` invalidates
 both `trips` list and the individual `trip` cache entry).
