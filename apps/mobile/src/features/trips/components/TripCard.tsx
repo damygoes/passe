@@ -1,13 +1,12 @@
 import { colors as brandColors } from '@passe/theme'
 import { formatDateRange } from '@passe/utils'
-import { BlurView } from 'expo-blur'
 import { Image } from 'expo-image'
-import { LinearGradient } from 'expo-linear-gradient'
 import { useMemo } from 'react'
-import { Platform, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import Animated from 'react-native-reanimated'
 
 import { Badge } from '@/components/ui/badge'
+import { LinearGradient } from '@/components/ui/linear-gradient'
 import { PressableScale } from '@/components/ui/pressable-scale'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
@@ -65,7 +64,7 @@ export function TripCard({ trip, onPress, entranceDelay = 0, tilt = 0 }: TripCar
         },
         cover: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
         scrim: { position: 'absolute', left: 0, right: 0, bottom: 0 },
-        // Extends above the glass band so the darkening fades in gradually
+        // Extends above the text band so the darkening fades in gradually
         scrimFade: {
           position: 'absolute',
           left: 0,
@@ -94,31 +93,26 @@ export function TripCard({ trip, onPress, entranceDelay = 0, tilt = 0 }: TripCar
 
       <View style={styles.scrim} pointerEvents="none">
         <LinearGradient
-          colors={[`${espresso}00`, `${espresso}66`, `${espresso}A6`]}
+          colors={[`${espresso}00`, `${espresso}66`, `${espresso}B3`]}
           style={styles.scrimFade}
         />
-        <View>
-          {Platform.OS === 'ios' && (
-            <BlurView intensity={14} tint="dark" style={StyleSheet.absoluteFill} />
+        <View style={styles.content}>
+          <Text style={styles.title}>{trip.title}</Text>
+          <Text style={styles.date}>{formatDateRange(trip.startDate, trip.endDate)}</Text>
+          {trip.countries.length > 0 && (
+            <View style={styles.badges}>
+              {trip.countries.map((country) => (
+                <Badge
+                  key={country}
+                  variant="stamp"
+                  style={styles.stampChip}
+                  labelStyle={styles.stampLabel}
+                >
+                  {country}
+                </Badge>
+              ))}
+            </View>
           )}
-          <View style={styles.content}>
-            <Text style={styles.title}>{trip.title}</Text>
-            <Text style={styles.date}>{formatDateRange(trip.startDate, trip.endDate)}</Text>
-            {trip.countries.length > 0 && (
-              <View style={styles.badges}>
-                {trip.countries.map((country) => (
-                  <Badge
-                    key={country}
-                    variant="stamp"
-                    style={styles.stampChip}
-                    labelStyle={styles.stampLabel}
-                  >
-                    {country}
-                  </Badge>
-                ))}
-              </View>
-            )}
-          </View>
         </View>
       </View>
     </View>

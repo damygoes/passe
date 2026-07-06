@@ -8,7 +8,13 @@ const monorepoRoot = path.resolve(projectRoot, '../..')
 /** @type {import('expo/metro-config').MetroConfig} */
 const config = getDefaultConfig(projectRoot)
 
-config.watchFolders = [monorepoRoot]
+// Watch only what mobile actually imports (workspace packages + hoisted deps).
+// Watching the monorepo root would include apps/web/.next, whose constant dev-server
+// writes trigger endless Fast Refresh ("Refreshing...") in the dev client.
+config.watchFolders = [
+  path.resolve(monorepoRoot, 'node_modules'),
+  path.resolve(monorepoRoot, 'packages'),
+]
 config.resolver.nodeModulesPaths = [
   path.resolve(projectRoot, 'node_modules'),
   path.resolve(monorepoRoot, 'node_modules'),

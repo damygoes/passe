@@ -5,17 +5,17 @@ import * as React from 'react'
 const mediaCardVariants = cva(
   [
     'group/media-card relative isolate block aspect-[4/3] overflow-hidden rounded-xl bg-sandy-beige',
-    'shadow-lg shadow-dark-espresso/15',
+    'transform-gpu shadow-lg shadow-dark-espresso/15',
     'transition-all duration-300 ease-out',
-    'hover:-translate-y-1 hover:rounded-xl hover:shadow-xl hover:shadow-dark-espresso/25',
+    'hover:-translate-y-1 hover:shadow-xl hover:shadow-dark-espresso/25',
     'motion-reduce:transition-none motion-reduce:hover:translate-y-0',
   ].join(' '),
   {
     variants: {
       tilt: {
         none: '',
-        left: '-rotate-1 hover:rotate-0 hover:rounded-xl',
-        right: 'rotate-1 hover:rotate-0 hover:rounded-xl',
+        left: '-rotate-1 hover:rotate-0',
+        right: 'rotate-1 hover:rotate-0',
       },
     },
     defaultVariants: {
@@ -60,8 +60,9 @@ function MediaCardMedia({ className, ...props }: React.ComponentProps<'div'>) {
 }
 
 /**
- * Bottom glass band: a blur layer masked to fade upward plus a warm tint
- * gradient, with content rendered on top.
+ * Bottom scrim: a soft dark gradient hugging the text so the photo stays
+ * visible, with content rendered on top. No backdrop blur — backdrop-filter
+ * loses the card's rounded clipping while the hover transform animates.
  */
 function MediaCardScrim({ className, children, ...props }: React.ComponentProps<'div'>) {
   return (
@@ -72,9 +73,9 @@ function MediaCardScrim({ className, children, ...props }: React.ComponentProps<
     >
       <div
         aria-hidden
-        className="absolute inset-0 bg-gradient-to-t from-dark-espresso/65 via-dark-espresso/30 to-transparent backdrop-blur-sm [mask-image:linear-gradient(to_top,black_45%,transparent)]"
+        className="absolute inset-0 bg-gradient-to-t from-dark-espresso/70 via-dark-espresso/20 to-transparent"
       />
-      <div className="relative flex flex-col gap-1.5 p-4 pt-8">{children}</div>
+      <div className="relative flex flex-col gap-1.5 p-4 pt-6">{children}</div>
     </div>
   )
 }
@@ -96,7 +97,7 @@ function MediaCardDescription({ className, ...props }: React.ComponentProps<'div
   return (
     <div
       data-slot="media-card-description"
-      className={cn('text-xs text-aged-cream/85', className)}
+      className={cn('text-xs text-aged-cream/85 drop-shadow-sm', className)}
       {...props}
     />
   )

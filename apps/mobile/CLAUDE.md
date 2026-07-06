@@ -95,6 +95,7 @@ This is the mobile equivalent of `@passe/ui` (which cannot run in React Native).
 | `Separator` | `@/components/ui/separator` | orientations: `horizontal`, `vertical` | |
 | `Badge` | `@/components/ui/badge` | variants: `default`, `secondary`, `destructive`, `outline`, `ghost` | |
 | `Skeleton` | `@/components/ui/skeleton` | — | Reanimated shimmer; size via `style` prop |
+| `LinearGradient` | `@/components/ui/linear-gradient` | — | Drop-in for expo-linear-gradient drawn with react-native-svg (no extra native module); props: `colors`, `locations?`, `start?`, `end?`, `style?` |
 | `PressableScale` | `@/components/ui/pressable-scale` | — | Pressable with springy scale-down feedback; optional `restRotation` tilt that straightens while pressed; wrapper styles via `containerStyle` |
 | `Input` | `@/components/ui/input` | — | Supports `icon`, `iconPosition`, `isLoading`, `onIconPress`, `inputStyle` |
 | `FormField` | `@/components/ui/form-field` | — | Wraps `Input` with a label, optional `labelRight` slot, and error text |

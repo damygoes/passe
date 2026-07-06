@@ -1,5 +1,5 @@
+import { LinearGradient } from '@/components/ui/linear-gradient'
 import { useTheme } from '@/hooks/useTheme'
-import { LinearGradient } from 'expo-linear-gradient'
 import { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import Animated, {
