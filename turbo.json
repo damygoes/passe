@@ -42,6 +42,12 @@
       "dependsOn": ["^build"],
       "outputs": [],
       "cache": true
+    },
+    "test:e2e": {
+      "dependsOn": ["^build"],
+      "env": ["NEXT_PUBLIC_*", "CLERK_*", "DATABASE_URL", "E2E_CLERK_TEST_*"],
+      "outputs": ["playwright-report/**"],
+      "cache": false
     }
   }
 }

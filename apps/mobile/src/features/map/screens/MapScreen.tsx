@@ -22,7 +22,7 @@ export function MapScreen() {
   )
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={[]}>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       <PageHeader style={styles.header}>
         <PageHeaderTitle>{t('title')}</PageHeaderTitle>
       </PageHeader>

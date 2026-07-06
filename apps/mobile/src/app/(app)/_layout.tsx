@@ -20,6 +20,7 @@ export default function AppLayout() {
         tabBarInactiveTintColor: colors.mutedForeground,
         tabBarStyle: { backgroundColor: colors.background, borderTopColor: colors.border },
         tabBarLabelStyle: { fontFamily: fonts.body, fontSize: fontSizes.xs },
+        headerShown: false,
       }}
     >
       <Tabs.Screen
