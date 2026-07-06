@@ -28,7 +28,12 @@ export default function AppLayout() {
           title: t('trips'),
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <Icon name="luggage" size="lg" color={color as string} strokeWidth={focused ? 2 : 1.5} />
+            <Icon
+              name="luggage"
+              size="lg"
+              color={color as string}
+              strokeWidth={focused ? 2 : 1.5}
+            />
           ),
         }}
       />

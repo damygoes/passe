@@ -3,9 +3,9 @@ import { StyleSheet, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { PageHeader, PageHeaderTitle } from '@/components/ui/page-header'
+import { MapDataWrapper } from '@/features/map/components/MapDataWrapper'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
-import { MapDataWrapper } from '@/features/map/components/MapDataWrapper'
 
 export function MapScreen() {
   const t = useTranslations('map')
@@ -22,7 +22,7 @@ export function MapScreen() {
   )
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['bottom']}>
+    <SafeAreaView style={styles.safeArea} edges={[]}>
       <PageHeader style={styles.header}>
         <PageHeaderTitle>{t('title')}</PageHeaderTitle>
       </PageHeader>

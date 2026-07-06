@@ -6,6 +6,8 @@ import { Platform, StyleSheet, View } from 'react-native'
 
 import { useTheme } from '@/hooks/useTheme'
 import { MapMemoryCard } from './MapMemoryCard'
+import { groupPointsByLocation, type LocationGroup } from '../utils/groupPointsByLocation'
+import { bucketKeyForCount, useMapPinIcons } from '../utils/useMapPinIcons'
 
 interface WorldMapProps {
   points: MapPoint[]
@@ -30,7 +32,12 @@ export function WorldMap({ points }: WorldMapProps) {
   const router = useRouter()
   const { spacing } = useTheme()
   const camera = useMemo(() => computeCamera(points), [points])
-  const [selectedPoint, setSelectedPoint] = useState<MapPoint | null>(null)
+  const groups = useMemo(() => groupPointsByLocation(points), [points])
+  const counts = useMemo(() => groups.map((group) => group.points.length), [groups])
+  const { icons, pending } = useMapPinIcons(counts)
+
+  const [selectedGroup, setSelectedGroup] = useState<LocationGroup | null>(null)
+  const [selectedIndex, setSelectedIndex] = useState(0)
 
   const styles = useMemo(
     () =>
@@ -49,45 +56,72 @@ export function WorldMap({ points }: WorldMapProps) {
 
   const handleMarkerClick = useCallback(
     (marker: ClickedMarker) => {
-      const point = points.find((candidate) => candidate.id === marker.id)
-      if (point) setSelectedPoint(point)
+      const group = groups.find((candidate) => candidate.key === marker.id)
+      if (group) {
+        setSelectedGroup(group)
+        setSelectedIndex(0)
+      }
     },
-    [points],
+    [groups],
   )
 
-  const handleMapClick = useCallback(() => setSelectedPoint(null), [])
+  const handleMapClick = useCallback(() => setSelectedGroup(null), [])
+
+  const selectedPoint = selectedGroup?.points[selectedIndex] ?? null
 
   const handleViewTrip = useCallback(() => {
     if (!selectedPoint) return
     router.push(`/(app)/trips/${selectedPoint.tripId}`)
-    setSelectedPoint(null)
+    setSelectedGroup(null)
   }, [router, selectedPoint])
 
-  const handleClose = useCallback(() => setSelectedPoint(null), [])
+  const handleClose = useCallback(() => setSelectedGroup(null), [])
+
+  const handlePrev = useCallback(() => {
+    setSelectedIndex((index) => Math.max(0, index - 1))
+  }, [])
+
+  const handleNext = useCallback(() => {
+    setSelectedIndex((index) => (selectedGroup ? Math.min(selectedGroup.points.length - 1, index + 1) : index))
+  }, [selectedGroup])
 
   let map: ReactNode = null
 
   if (Platform.OS === 'ios') {
-    const markers = points.map((point) => ({
-      id: point.id,
-      coordinates: { latitude: point.lat, longitude: point.lng },
-      systemImage: 'mappin.circle.fill',
-    }))
+    const annotations = groups.flatMap((group) => {
+      const icon = icons[bucketKeyForCount(group.points.length)]
+      if (!icon) return []
+      return [
+        {
+          id: group.key,
+          coordinates: { latitude: group.lat, longitude: group.lng },
+          icon,
+        },
+      ]
+    })
 
     map = (
       <AppleMaps.View
         style={styles.map}
         cameraPosition={camera}
-        markers={markers}
-        onMarkerClick={handleMarkerClick}
+        annotations={annotations}
+        onAnnotationClick={handleMarkerClick}
         onMapClick={handleMapClick}
       />
     )
   } else if (Platform.OS === 'android') {
-    const markers = points.map((point) => ({
-      id: point.id,
-      coordinates: { latitude: point.lat, longitude: point.lng },
-    }))
+    const markers = groups.flatMap((group) => {
+      const icon = icons[bucketKeyForCount(group.points.length)]
+      if (!icon) return []
+      return [
+        {
+          id: group.key,
+          coordinates: { latitude: group.lat, longitude: group.lng },
+          icon,
+          anchor: { x: 0.5, y: 1 },
+        },
+      ]
+    })
 
     map = (
       <GoogleMaps.View
@@ -105,9 +139,24 @@ export function WorldMap({ points }: WorldMapProps) {
   return (
     <View style={styles.container}>
       {map}
-      {selectedPoint && (
+      {pending}
+      {selectedGroup && selectedPoint && (
         <View style={styles.cardWrapper}>
-          <MapMemoryCard point={selectedPoint} onViewTrip={handleViewTrip} onClose={handleClose} />
+          <MapMemoryCard
+            point={selectedPoint}
+            onViewTrip={handleViewTrip}
+            onClose={handleClose}
+            pager={
+              selectedGroup.points.length > 1
+                ? {
+                    index: selectedIndex,
+                    total: selectedGroup.points.length,
+                    onPrev: handlePrev,
+                    onNext: handleNext,
+                  }
+                : undefined
+            }
+          />
         </View>
       )}
     </View>

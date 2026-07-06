@@ -9,13 +9,21 @@ import { Icon } from '@/components/ui/icon'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
+interface MapMemoryCardPager {
+  index: number
+  total: number
+  onPrev: () => void
+  onNext: () => void
+}
+
 interface MapMemoryCardProps {
   point: MapPoint
   onViewTrip: () => void
   onClose: () => void
+  pager?: MapMemoryCardPager
 }
 
-export function MapMemoryCard({ point, onViewTrip, onClose }: MapMemoryCardProps) {
+export function MapMemoryCard({ point, onViewTrip, onClose, pager }: MapMemoryCardProps) {
   const t = useTranslations('map')
   const { colors, spacing, fontSizes, borderRadius } = useTheme()
 
@@ -46,9 +54,12 @@ export function MapMemoryCard({ point, onViewTrip, onClose }: MapMemoryCardProps
         },
         note: { fontSize: fontSizes.sm, color: colors.foreground },
         content: { gap: spacing[1] },
-        footer: { justifyContent: 'flex-end' },
+        footer: { justifyContent: pager ? 'space-between' : 'flex-end' },
+        pager: { flexDirection: 'row', alignItems: 'center', gap: spacing[1] },
+        pagerText: { fontSize: fontSizes.sm, color: colors.mutedForeground },
+        pagerButton: { padding: spacing[1] },
       }),
-    [colors, spacing, fontSizes, borderRadius],
+    [colors, spacing, fontSizes, borderRadius, pager],
   )
 
   return (
@@ -74,6 +85,37 @@ export function MapMemoryCard({ point, onViewTrip, onClose }: MapMemoryCardProps
           )}
         </CardContent>
         <CardFooter style={styles.footer}>
+          {pager && (
+            <View style={styles.pager}>
+              <Pressable
+                onPress={pager.onPrev}
+                disabled={pager.index === 0}
+                accessibilityRole="button"
+                style={styles.pagerButton}
+              >
+                <Icon
+                  name="chevron-left"
+                  size="sm"
+                  color={pager.index === 0 ? colors.mutedForeground : colors.foreground}
+                />
+              </Pressable>
+              <Text style={styles.pagerText}>
+                {pager.index + 1} / {pager.total}
+              </Text>
+              <Pressable
+                onPress={pager.onNext}
+                disabled={pager.index === pager.total - 1}
+                accessibilityRole="button"
+                style={styles.pagerButton}
+              >
+                <Icon
+                  name="chevron-right"
+                  size="sm"
+                  color={pager.index === pager.total - 1 ? colors.mutedForeground : colors.foreground}
+                />
+              </Pressable>
+            </View>
+          )}
           <Button variant="primary" size="sm" onPress={onViewTrip}>
             {t('view_trip')}
           </Button>
