@@ -9,6 +9,7 @@ export const routes = {
   tripsNew: '/trips/new',
   account: '/account',
   billing: '/billing',
+  map: '/map',
 } as const
 
 export const tripRoute = (id: string) => `/trips/${id}` as const

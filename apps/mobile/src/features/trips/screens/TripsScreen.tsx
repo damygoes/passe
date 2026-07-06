@@ -33,7 +33,13 @@ export function TripsScreen() {
     () =>
       StyleSheet.create({
         safeArea: { flex: 1, backgroundColor: colors.background },
-        scrollContent: { padding: spacing[4], gap: spacing[6] },
+        scroll: { flex: 1 },
+        scrollContent: {
+          backgroundColor: colors.background,
+          padding: spacing[4],
+          gap: spacing[6],
+          flexGrow: 1,
+        },
         header: { flexDirection: 'column', gap: spacing[1] },
         descriptionSkeleton: { height: 20, width: 96 },
       }),
@@ -41,8 +47,9 @@ export function TripsScreen() {
   )
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['bottom']}>
+    <SafeAreaView style={styles.safeArea} edges={[]}>
       <ScrollView
+        style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >

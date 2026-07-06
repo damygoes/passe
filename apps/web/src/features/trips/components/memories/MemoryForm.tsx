@@ -5,13 +5,15 @@ import { canAddMemory } from '@passe/auth/plan-gates'
 import {
   useCreateMemory,
   useMemories,
+  useReverseGeocode,
   useUpdateMemory,
   useUser,
   type UploadedImage,
 } from '@passe/hooks'
-import { CreateMemorySchema, type Memory } from '@passe/types/memory'
+import { CreateMemorySchema, type Coordinates, type Memory } from '@passe/types/memory'
 import { Button } from '@passe/ui/button'
 import { DatePicker } from '@passe/ui/date-picker'
+import { Icon } from '@passe/ui/icon'
 import { Input } from '@passe/ui/input'
 import { Textarea } from '@passe/ui/textarea'
 import { useTranslations } from 'next-intl'
@@ -45,6 +47,7 @@ export function MemoryForm({ tripId, memory }: Props) {
   const { data: memories = [] } = useMemories(tripId)
   const { mutateAsync: createMemory, isPending: isCreating } = useCreateMemory()
   const { mutateAsync: updateMemory, isPending: isUpdating } = useUpdateMemory()
+  const reverseGeocode = useReverseGeocode()
   const [photos, setPhotos] = useState<UploadedImage[]>(
     () =>
       memory?.media.map((item) => ({
@@ -53,6 +56,9 @@ export function MemoryForm({ tripId, memory }: Props) {
         height: item.height ?? null,
       })) ?? [],
   )
+  const [coords, setCoords] = useState<Coordinates | null>(memory?.location ?? null)
+  const [isLocating, setIsLocating] = useState(false)
+  const [locationError, setLocationError] = useState<string | null>(null)
   const [globalError, setGlobalError] = useState<string | null>(null)
   const [contentError, setContentError] = useState<string | null>(null)
 
@@ -65,6 +71,7 @@ export function MemoryForm({ tripId, memory }: Props) {
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm<MemoryFormFields>({
     resolver: zodResolver(MemoryFormFieldsSchema) as Resolver<MemoryFormFields>,
@@ -77,6 +84,35 @@ export function MemoryForm({ tripId, memory }: Props) {
         }
       : { note: '', capturedAt: new Date(), city: '', country: '' },
   })
+
+  const handleUseLocation = async () => {
+    setLocationError(null)
+
+    if (!navigator.geolocation) {
+      setLocationError(t('location_permission_denied'))
+      return
+    }
+
+    setIsLocating(true)
+    try {
+      const position = await new Promise<GeolocationPosition>((resolve, reject) =>
+        navigator.geolocation.getCurrentPosition(resolve, reject),
+      )
+      const nextCoords: Coordinates = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      }
+      setCoords(nextCoords)
+
+      const place = await reverseGeocode.mutateAsync(nextCoords)
+      if (place.city) setValue('city', place.city)
+      if (place.country) setValue('country', place.country)
+    } catch {
+      setLocationError(t('location_permission_denied'))
+    } finally {
+      setIsLocating(false)
+    }
+  }
 
   const onSubmit = async (data: MemoryFormFields) => {
     setGlobalError(null)
@@ -104,6 +140,7 @@ export function MemoryForm({ tripId, memory }: Props) {
           capturedAt: data.capturedAt,
           city: data.city?.trim() || undefined,
           country: data.country?.trim() || undefined,
+          location: coords,
           media,
         })
       } else {
@@ -113,6 +150,7 @@ export function MemoryForm({ tripId, memory }: Props) {
           capturedAt: data.capturedAt,
           city: data.city?.trim() || undefined,
           country: data.country?.trim() || undefined,
+          location: coords,
           isPublic: false,
           media,
         })
@@ -198,6 +236,21 @@ export function MemoryForm({ tripId, memory }: Props) {
         {errors.capturedAt && (
           <p className="text-xs text-destructive">{errors.capturedAt.message}</p>
         )}
+      </div>
+
+      <div className="space-y-1.5">
+        <label className="text-sm font-medium text-foreground">{t('location_label')}</label>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={handleUseLocation}
+          disabled={isPending || isLocating}
+        >
+          <Icon name="location" size="sm" />
+          {isLocating ? t('locating') : t('use_current_location')}
+        </Button>
+        {locationError && <p className="text-xs text-destructive">{locationError}</p>}
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">

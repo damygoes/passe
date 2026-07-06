@@ -276,6 +276,17 @@
     "trips": "Trips",
     "map": "Map"
   },
+  "map": {
+    "title": "Map",
+    "subtitle": "Every place you've captured a memory.",
+    "view_trip": "View trip",
+    "close": "Close",
+    "load_error": "Couldn't load your map. Try refreshing the page.",
+    "empty": {
+      "title": "No pins yet",
+      "description": "Add a location to a memory to see it appear on your map."
+    }
+  },
   "account": {
     "title": "Account Settings",
     "tabs": {

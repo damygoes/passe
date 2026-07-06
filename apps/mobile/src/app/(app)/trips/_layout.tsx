@@ -1,6 +1,7 @@
 import { Stack } from 'expo-router'
 
 import { NewTripHeaderButton } from '@/features/trips/components/NewTripHeaderButton'
+import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
 // Native headers are not rendered inside formSheet presentations, so the new-trip
@@ -18,9 +19,16 @@ export default function TripsLayout() {
   const tTrips = useTranslations('trips.new')
   const tEdit = useTranslations('trips.edit')
   const tMemory = useTranslations('trips.new_memory')
+  const { colors } = useTheme()
 
   return (
-    <Stack>
+    <Stack
+      screenOptions={{
+        headerStyle: { backgroundColor: colors.background },
+        headerTintColor: colors.foreground,
+        headerTitleStyle: { color: colors.foreground },
+      }}
+    >
       <Stack.Screen
         name="index"
         options={{ title: t('trips'), headerRight: () => <NewTripHeaderButton /> }}

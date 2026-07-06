@@ -69,6 +69,22 @@ export const MemorySchema = z.object({
 
 export type Memory = z.infer<typeof MemorySchema>
 
+// Lean shape for the /map view — only what's needed to plot a pin. Lat/lng
+// are flattened (never null; the API only returns geotagged memories) and
+// media collapses to a single thumbnail instead of the full gallery.
+export const MapPointSchema = z.object({
+  id: z.string().uuid(),
+  tripId: z.string().uuid(),
+  lat: z.number(),
+  lng: z.number(),
+  city: z.string().nullish(),
+  country: z.string().nullish(),
+  note: z.string().nullish(),
+  thumbnailUrl: z.string().url().nullish(),
+})
+
+export type MapPoint = z.infer<typeof MapPointSchema>
+
 // Body of PATCH /api/trips/[id]/memories/reorder — every memory of the trip
 // in its new display order.
 export const ReorderMemoriesSchema = z.object({

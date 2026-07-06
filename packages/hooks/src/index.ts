@@ -6,11 +6,13 @@ export { useTrips, useTrip, useCreateTrip, useUpdateTrip, useDeleteTrip } from '
 export {
   useMemories,
   useAllMemories,
+  useMapPoints,
   useCreateMemory,
   useUpdateMemory,
   useDeleteMemory,
   useReorderMemories,
 } from './hooks/use-memories'
 export { useUploadImage } from './hooks/use-upload'
+export { useReverseGeocode } from './hooks/use-geocode'
 export { useCreateCheckoutSession, useCreatePortalSession } from './hooks/use-billing'
 export type { NativeUploadFile, UploadFile, UploadedImage } from './hooks/use-upload'

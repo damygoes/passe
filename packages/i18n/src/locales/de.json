@@ -276,6 +276,17 @@
     "trips": "Reisen",
     "map": "Karte"
   },
+  "map": {
+    "title": "Karte",
+    "subtitle": "Jeder Ort, an dem du eine Erinnerung festgehalten hast.",
+    "view_trip": "Reise ansehen",
+    "close": "Schließen",
+    "load_error": "Deine Karte konnte nicht geladen werden. Bitte lade die Seite neu.",
+    "empty": {
+      "title": "Noch keine Pins",
+      "description": "Füge einer Erinnerung einen Ort hinzu, damit er auf deiner Karte erscheint."
+    }
+  },
   "account": {
     "title": "Kontoeinstellungen",
     "tabs": {

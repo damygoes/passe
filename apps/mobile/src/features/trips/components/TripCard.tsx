@@ -1,7 +1,13 @@
 import { formatDateRange } from '@passe/utils'
 import { Image } from 'expo-image'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
+import Animated, {
+  FadeInDown,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated'
 
 import { Badge } from '@/components/ui/badge'
 import {
@@ -28,11 +34,22 @@ interface TripCardData {
 interface TripCardProps {
   trip: TripCardData
   onPress?: () => void
+  entranceDelay?: number
 }
 
-export function TripCard({ trip, onPress }: TripCardProps) {
+export function TripCard({ trip, onPress, entranceDelay = 0 }: TripCardProps) {
   const t = useTranslations('trips.card')
   const { colors, spacing, fontSizes, borderRadius } = useTheme()
+  const [pressed, setPressed] = useState(false)
+  const scale = useSharedValue(1)
+
+  useEffect(() => {
+    scale.value = withTiming(pressed ? 0.97 : 1, { duration: 100 })
+  }, [pressed, scale])
+
+  const pressAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }))
 
   const resolvedCoverImageUrl =
     trip.coverImageUrl ??
@@ -100,16 +117,26 @@ export function TripCard({ trip, onPress }: TripCardProps) {
 
   if (onPress) {
     return (
-      <Pressable
-        onPress={onPress}
-        accessibilityRole="button"
-        accessibilityLabel={trip.title}
-        style={({ pressed }) => [styles.cardShadow, pressed && styles.pressed]}
-      >
-        {card}
-      </Pressable>
+      <Animated.View entering={FadeInDown.delay(entranceDelay).duration(220)}>
+        <Animated.View style={[styles.cardShadow, pressAnimatedStyle]}>
+          <Pressable
+            onPress={onPress}
+            onPressIn={() => setPressed(true)}
+            onPressOut={() => setPressed(false)}
+            accessibilityRole="button"
+            accessibilityLabel={trip.title}
+            style={({ pressed }) => [pressed && styles.pressed]}
+          >
+            {card}
+          </Pressable>
+        </Animated.View>
+      </Animated.View>
     )
   }
 
-  return <View style={styles.cardShadow}>{card}</View>
+  return (
+    <Animated.View entering={FadeInDown.delay(entranceDelay).duration(220)} style={styles.cardShadow}>
+      {card}
+    </Animated.View>
+  )
 }

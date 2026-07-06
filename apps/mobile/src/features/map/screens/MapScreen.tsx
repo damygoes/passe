@@ -1,29 +1,34 @@
 import { useMemo } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
+import { PageHeader, PageHeaderTitle } from '@/components/ui/page-header'
+import { MapDataWrapper } from '@/features/map/components/MapDataWrapper'
 import { useTheme } from '@/hooks/useTheme'
+import { useTranslations } from '@/i18n/useTranslations'
 
 export function MapScreen() {
-  const { colors, spacing, fontSizes } = useTheme()
+  const t = useTranslations('map')
+  const { colors, spacing } = useTheme()
 
   const styles = useMemo(
     () =>
       StyleSheet.create({
-        container: {
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: colors.background,
-          padding: spacing[4],
-        },
-        text: { fontSize: fontSizes.lg, color: colors.foreground },
+        safeArea: { flex: 1, backgroundColor: colors.background },
+        header: { paddingHorizontal: spacing[4], paddingVertical: spacing[3] },
+        mapContainer: { flex: 1 },
       }),
-    [colors, spacing, fontSizes],
+    [colors, spacing],
   )
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Map</Text>
-    </View>
+    <SafeAreaView style={styles.safeArea} edges={[]}>
+      <PageHeader style={styles.header}>
+        <PageHeaderTitle>{t('title')}</PageHeaderTitle>
+      </PageHeader>
+      <View style={styles.mapContainer}>
+        <MapDataWrapper />
+      </View>
+    </SafeAreaView>
   )
 }

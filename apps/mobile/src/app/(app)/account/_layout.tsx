@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router'
 
+import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
 // Native headers are not rendered inside formSheet presentations, so the sheet
@@ -14,9 +15,16 @@ const sheetOptions = {
 
 export default function AccountLayout() {
   const t = useTranslations('account')
+  const { colors } = useTheme()
 
   return (
-    <Stack>
+    <Stack
+      screenOptions={{
+        headerStyle: { backgroundColor: colors.background },
+        headerTintColor: colors.foreground,
+        headerTitleStyle: { color: colors.foreground },
+      }}
+    >
       <Stack.Screen name="index" options={{ title: t('title') }} />
       <Stack.Screen name="portfolio" options={{ ...sheetOptions, title: t('tabs.portfolio') }} />
       <Stack.Screen name="profile" options={{ ...sheetOptions, title: t('tabs.profile') }} />

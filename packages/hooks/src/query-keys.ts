@@ -4,4 +4,5 @@ export const queryKeys = {
   trip: (id: string) => ['trips', id] as const,
   memories: (tripId: string) => ['trips', tripId, 'memories'] as const,
   allMemories: () => ['memories'] as const,
+  mapPoints: () => ['memories', 'map'] as const,
 }

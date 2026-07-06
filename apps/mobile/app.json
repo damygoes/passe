@@ -53,6 +53,15 @@
         {
           "locationWhenInUsePermission": "Passé uses your location to tag memories with the place they were captured."
         }
+      ],
+      "expo-maps",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "17.0"
+          }
+        }
       ]
     ],
     "experiments": {
