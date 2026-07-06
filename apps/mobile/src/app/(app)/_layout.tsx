@@ -36,6 +36,7 @@ export default function AppLayout() {
         name="map/index"
         options={{
           title: t('map'),
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <Icon name="map" size="lg" color={color as string} strokeWidth={focused ? 2 : 1.5} />
           ),

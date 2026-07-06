@@ -1,17 +1,11 @@
+import type { MapPoint } from '@passe/types/memory'
 import { AppleMaps, GoogleMaps } from 'expo-maps'
 import { useRouter } from 'expo-router'
-import { useCallback, useMemo } from 'react'
-import { Platform, StyleSheet } from 'react-native'
+import { useCallback, useMemo, useState, type ReactNode } from 'react'
+import { Platform, StyleSheet, View } from 'react-native'
 
-export interface MapPoint {
-  id: string
-  tripId: string
-  lat: number
-  lng: number
-  city: string | null | undefined
-  country: string | null | undefined
-  note: string | null | undefined
-}
+import { useTheme } from '@/hooks/useTheme'
+import { MapMemoryCard } from './MapMemoryCard'
 
 interface WorldMapProps {
   points: MapPoint[]
@@ -34,56 +28,88 @@ function computeCamera(points: MapPoint[]) {
 
 export function WorldMap({ points }: WorldMapProps) {
   const router = useRouter()
+  const { spacing } = useTheme()
   const camera = useMemo(() => computeCamera(points), [points])
+  const [selectedPoint, setSelectedPoint] = useState<MapPoint | null>(null)
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: { flex: 1 },
+        map: { flex: 1 },
+        cardWrapper: {
+          position: 'absolute',
+          left: spacing[4],
+          right: spacing[4],
+          bottom: spacing[4],
+        },
+      }),
+    [spacing],
+  )
 
   const handleMarkerClick = useCallback(
     (marker: ClickedMarker) => {
       const point = points.find((candidate) => candidate.id === marker.id)
-      if (point) router.push(`/(app)/trips/${point.tripId}`)
+      if (point) setSelectedPoint(point)
     },
-    [points, router],
+    [points],
   )
+
+  const handleMapClick = useCallback(() => setSelectedPoint(null), [])
+
+  const handleViewTrip = useCallback(() => {
+    if (!selectedPoint) return
+    router.push(`/(app)/trips/${selectedPoint.tripId}`)
+    setSelectedPoint(null)
+  }, [router, selectedPoint])
+
+  const handleClose = useCallback(() => setSelectedPoint(null), [])
+
+  let map: ReactNode = null
 
   if (Platform.OS === 'ios') {
     const markers = points.map((point) => ({
       id: point.id,
       coordinates: { latitude: point.lat, longitude: point.lng },
-      title: [point.city, point.country].filter(Boolean).join(', ') || undefined,
       systemImage: 'mappin.circle.fill',
     }))
 
-    return (
+    map = (
       <AppleMaps.View
         style={styles.map}
         cameraPosition={camera}
         markers={markers}
         onMarkerClick={handleMarkerClick}
+        onMapClick={handleMapClick}
       />
     )
-  }
-
-  if (Platform.OS === 'android') {
+  } else if (Platform.OS === 'android') {
     const markers = points.map((point) => ({
       id: point.id,
       coordinates: { latitude: point.lat, longitude: point.lng },
-      title: [point.city, point.country].filter(Boolean).join(', ') || undefined,
-      snippet: point.note ?? undefined,
-      showCallout: true,
     }))
 
-    return (
+    map = (
       <GoogleMaps.View
         style={styles.map}
         cameraPosition={camera}
         markers={markers}
         onMarkerClick={handleMarkerClick}
+        onMapClick={handleMapClick}
       />
     )
   }
 
-  return null
-}
+  if (!map) return null
 
-const styles = StyleSheet.create({
-  map: { flex: 1 },
-})
+  return (
+    <View style={styles.container}>
+      {map}
+      {selectedPoint && (
+        <View style={styles.cardWrapper}>
+          <MapMemoryCard point={selectedPoint} onViewTrip={handleViewTrip} onClose={handleClose} />
+        </View>
+      )}
+    </View>
+  )
+}
