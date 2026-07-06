@@ -1,4 +1,5 @@
 import { currentUser } from '@clerk/nextjs/server'
+import { MotionProvider } from '@/components/motion/MotionProvider'
 import { AppNavbar } from '@/components/navigation/AppNavbar'
 import type { ReactNode } from 'react'
 
@@ -20,7 +21,9 @@ export default async function ProtectedLayout({ children }: Props) {
         avatarUrl={user?.hasImage ? (user.imageUrl ?? null) : null}
         username={user?.username ?? null}
       />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1">
+        <MotionProvider>{children}</MotionProvider>
+      </main>
     </div>
   )
 }

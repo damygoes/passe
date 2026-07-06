@@ -3,6 +3,7 @@ import { getUniqueStatsFromTrips } from '@passe/utils'
 import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useMemo, useState } from 'react'
 import { RefreshControl, ScrollView, StyleSheet } from 'react-native'
+import Animated from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { PageHeader, PageHeaderDescription, PageHeaderTitle } from '@/components/ui/page-header'
@@ -11,6 +12,7 @@ import { TripsList } from '@/features/trips/components/TripsList'
 import { TripStatsDataWrapper } from '@/features/trips/components/TripStatsDataWrapper'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
+import { enterUp } from '@/lib/motion'
 
 export function TripsScreen() {
   const t = useTranslations('trips.dashboard')
@@ -53,17 +55,21 @@ export function TripsScreen() {
         contentContainerStyle={styles.scrollContent}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
-        <PageHeader style={styles.header}>
-          <PageHeaderTitle>{t('title')}</PageHeaderTitle>
-          {isLoading ? (
-            <Skeleton style={styles.descriptionSkeleton} />
-          ) : !isError ? (
-            <PageHeaderDescription>
-              {t('description', { tripsCount: trips.length, countriesCount: uniqueCountries.size })}
-            </PageHeaderDescription>
-          ) : null}
-        </PageHeader>
-        <TripStatsDataWrapper />
+        <Animated.View entering={enterUp(0)}>
+          <PageHeader style={styles.header}>
+            <PageHeaderTitle>{t('title')}</PageHeaderTitle>
+            {isLoading ? (
+              <Skeleton style={styles.descriptionSkeleton} />
+            ) : !isError ? (
+              <PageHeaderDescription>
+                {t('description', { tripsCount: trips.length, countriesCount: uniqueCountries.size })}
+              </PageHeaderDescription>
+            ) : null}
+          </PageHeader>
+        </Animated.View>
+        <Animated.View entering={enterUp(80)}>
+          <TripStatsDataWrapper />
+        </Animated.View>
         <TripsList />
       </ScrollView>
     </SafeAreaView>

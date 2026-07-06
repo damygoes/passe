@@ -16,6 +16,7 @@
     "./icon": "./src/icon/Icon.tsx",
     "./icon-map": "./src/icon/icon-map.ts",
     "./input": "./src/input/Input.tsx",
+    "./media-card": "./src/media-card/MediaCard.tsx",
     "./navbar": "./src/navbar/Navbar.tsx",
     "./page-header": "./src/page-header/PageHeader.tsx",
     "./popover": "./src/popover/Popover.tsx",

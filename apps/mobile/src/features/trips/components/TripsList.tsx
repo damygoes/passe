@@ -7,6 +7,7 @@ import Animated, { FadeIn } from 'react-native-reanimated'
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
+import { LIST_STAGGER_MS, MAX_STAGGER_DELAY_MS } from '@/lib/motion'
 import { NoTripsEmpty } from './NoTripsEmpty'
 import { TripCard } from './TripCard'
 import { TripsListSkeleton } from './TripsListSkeleton'
@@ -41,7 +42,8 @@ export function TripsList() {
           key={trip.id}
           trip={trip}
           onPress={() => router.push(`/(app)/trips/${trip.id}`)}
-          entranceDelay={Math.min(index * 50, 300)}
+          entranceDelay={Math.min(index * LIST_STAGGER_MS, MAX_STAGGER_DELAY_MS)}
+          tilt={index % 2 === 0 ? -0.8 : 0.8}
         />
       ))}
     </Animated.View>

@@ -60,6 +60,14 @@ export {
 } from './empty/Empty'
 export { Icon } from './icon/Icon'
 export { Input } from './input/Input'
+export {
+  MediaCard,
+  MediaCardDescription,
+  MediaCardMedia,
+  MediaCardScrim,
+  MediaCardTitle,
+  mediaCardVariants,
+} from './media-card/MediaCard'
 export { Navbar, NavbarBrand, NavbarLinks, NavbarUser } from './navbar/Navbar'
 export {
   PageHeader,

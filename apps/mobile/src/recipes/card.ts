@@ -28,7 +28,14 @@ export function createCardRecipe(theme: AppTheme): CardRecipe {
           borderRadius: borderRadius.xl,
           borderWidth: 0.5,
           borderColor: colors.border,
-          shadowColor: colors.border,
+          // iOS shadows are clipped by overflow: hidden — consumers needing a
+          // visible iOS shadow wrap the card (see TripCard); elevation still
+          // renders on Android.
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.06,
+          shadowRadius: 8,
+          elevation: 2,
           overflow: 'hidden',
         },
       }).style,

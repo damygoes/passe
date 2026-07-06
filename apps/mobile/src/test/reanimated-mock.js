@@ -16,7 +16,10 @@ const chainable = () => {
     delay: () => builder,
     springify: () => builder,
     damping: () => builder,
+    stiffness: () => builder,
+    mass: () => builder,
     easing: () => builder,
+    reduceMotion: () => builder,
   }
   return builder
 }
@@ -58,6 +61,11 @@ module.exports = {
     cubic: identity,
     bezier: () => identity,
     inOut: (fn) => fn,
+  },
+  ReduceMotion: {
+    System: 'system',
+    Always: 'always',
+    Never: 'never',
   },
   FadeIn: chainable(),
   FadeInDown: chainable(),

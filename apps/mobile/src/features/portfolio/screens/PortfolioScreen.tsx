@@ -2,6 +2,7 @@ import { useTrips, useUser } from '@passe/hooks'
 import { useRouter } from 'expo-router'
 import { useMemo } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
+import Animated from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { Skeleton } from '@/components/ui/skeleton'
@@ -10,6 +11,7 @@ import { TripCard } from '@/features/trips/components/TripCard'
 import { TripsListSkeleton } from '@/features/trips/components/TripsListSkeleton'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
+import { enterUp, LIST_STAGGER_MS, MAX_STAGGER_DELAY_MS } from '@/lib/motion'
 import { NoPublicTripsEmpty } from '@/features/portfolio/components/NoPublicTripsEmpty'
 import { PortfolioHeader } from '@/features/portfolio/components/PortfolioHeader'
 
@@ -48,15 +50,19 @@ export function PortfolioScreen() {
           <ErrorBanner message={t('error')} />
         ) : (
           <>
-            <PortfolioHeader user={user} tripCount={publicTrips.length} />
+            <Animated.View entering={enterUp(0)}>
+              <PortfolioHeader user={user} tripCount={publicTrips.length} />
+            </Animated.View>
             {publicTrips.length === 0 ? (
               <NoPublicTripsEmpty displayName={user.displayName} />
             ) : (
               <View style={styles.list}>
-                {publicTrips.map((trip) => (
+                {publicTrips.map((trip, index) => (
                   <TripCard
                     key={trip.id}
                     trip={trip}
+                    entranceDelay={Math.min((index + 1) * LIST_STAGGER_MS, MAX_STAGGER_DELAY_MS)}
+                    tilt={index % 2 === 0 ? -0.8 : 0.8}
                     onPress={() => {
                       router.dismiss()
                       router.push(`/(app)/trips/${trip.id}`)

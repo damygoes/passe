@@ -1,11 +1,13 @@
 import { useLocalSearchParams } from 'expo-router'
 import { useMemo } from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
+import Animated from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { MemoriesList } from '@/features/trips/components/MemoriesList'
 import { TripDetailHeader } from '@/features/trips/components/TripDetailHeader'
 import { useTheme } from '@/hooks/useTheme'
+import { enterUp } from '@/lib/motion'
 
 export function TripDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>()
@@ -21,10 +23,14 @@ export function TripDetailScreen() {
   )
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['bottom']}>
+    <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <TripDetailHeader id={id} />
-        <MemoriesList tripId={id} />
+        <Animated.View entering={enterUp(0)}>
+          <TripDetailHeader id={id} />
+        </Animated.View>
+        <Animated.View entering={enterUp(80)}>
+          <MemoriesList tripId={id} />
+        </Animated.View>
       </ScrollView>
     </SafeAreaView>
   )

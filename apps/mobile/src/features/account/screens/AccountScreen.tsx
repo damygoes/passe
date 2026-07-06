@@ -2,6 +2,7 @@ import { useUser } from '@clerk/expo'
 import { useRouter } from 'expo-router'
 import { useMemo } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import Animated from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -11,6 +12,7 @@ import { AccountMenuRow } from '@/features/account/components/AccountMenuRow'
 import { PlanSection } from '@/features/account/components/PlanSection'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
+import { enterUp } from '@/lib/motion'
 
 export function AccountScreen() {
   const { colors, spacing, fontSizes, fontWeights } = useTheme()
@@ -53,7 +55,7 @@ export function AccountScreen() {
   return (
     <SafeAreaView style={styles.safeArea} edges={['bottom']}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={styles.userHeader}>
+        <Animated.View entering={enterUp(0)} style={styles.userHeader}>
           <Avatar size="lg">
             <AvatarFallback>{initials}</AvatarFallback>
             {user?.imageUrl && <AvatarImage source={{ uri: user.imageUrl }} />}
@@ -62,13 +64,15 @@ export function AccountScreen() {
             <Text style={styles.userName}>{displayName}</Text>
             {email && <Text style={styles.userEmail}>{email}</Text>}
           </View>
-        </View>
+        </Animated.View>
 
         <Separator />
 
-        <PlanSection />
+        <Animated.View entering={enterUp(80)}>
+          <PlanSection />
+        </Animated.View>
 
-        <View style={styles.menu}>
+        <Animated.View entering={enterUp(160)} style={styles.menu}>
           <AccountMenuRow
             icon="globe"
             label={t('portfolio')}
@@ -90,7 +94,7 @@ export function AccountScreen() {
             destructive
             onPress={() => router.push('/(app)/account/danger')}
           />
-        </View>
+        </Animated.View>
 
         <View style={styles.footer}>
           <LogoutButton fullWidth />

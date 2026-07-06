@@ -1,7 +1,8 @@
 import { clerkSetup } from '@clerk/testing/playwright'
 import { createClerkClient } from '@clerk/backend'
 import { db } from '@passe/db/client'
-import { users } from '@passe/db/schema'
+import { trips, users } from '@passe/db/schema'
+import { eq } from 'drizzle-orm'
 
 const E2E_USERNAME = 'e2e-test-user'
 
@@ -53,4 +54,10 @@ export default async function globalSetup() {
       plan: 'free',
     })
     .onConflictDoNothing({ target: users.id })
+
+  // Sweep trips leaked by earlier failed runs. The trip-flow test only deletes its trip in its
+  // final step, so any failure before that leaks one trip per attempt — and once the free plan's
+  // maxTrips (3) is reached, "Create trip" is disabled and the whole suite fails deterministically
+  // until someone cleans the dev DB by hand. Memories and media cascade on trip delete.
+  await db.delete(trips).where(eq(trips.userId, clerkUserId))
 }
