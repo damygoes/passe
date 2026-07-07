@@ -1,14 +1,10 @@
 'use client'
 
-import {
-  PageHeader,
-  PageHeaderDescription,
-  PageHeaderTitle,
-} from '@passe/ui/page-header'
-import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { routes } from '@/lib/routes'
-import { NewTripForm } from '../components/trip/NewTripForm'
+import { PageHeader, PageHeaderDescription, PageHeaderTitle } from '@passe/ui/page-header'
+import { useTranslations } from 'next-intl'
+import { NewTripForm } from '../components/trip/forms/NewTripForm'
 
 export function NewTripView() {
   const t = useTranslations('trips.new')
