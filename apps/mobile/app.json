@@ -13,7 +13,8 @@
       "bundleIdentifier": "cc.passe",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
-      }
+      },
+      "usesAppleSignIn": true
     },
     "android": {
       "package": "cc.passe",
