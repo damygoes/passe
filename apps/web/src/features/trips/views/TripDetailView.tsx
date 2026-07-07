@@ -3,7 +3,7 @@
 import { FadeIn } from '@/components/motion/FadeIn'
 import { SECTION_STEP } from '@/lib/motion'
 import { MemoriesList } from '../components/memories/MemoriesList'
-import { TripDetailHeader } from '../components/trip/TripDetailHeader'
+import { TripDetailHeader } from '../components/trip/trip-detail/TripDetailHeader'
 
 interface Props {
   id: string

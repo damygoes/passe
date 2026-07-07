@@ -61,6 +61,7 @@ export default defineConfig({
           // importOriginal) so drizzle-orm's eq()/and()/etc. get real Column instances —
           // this placeholder just needs to be present, never a real connection is made.
           env: { DATABASE_URL: 'postgres://user:pass@localhost:5432/test' },
+          setupFiles: [path.join(dirname, 'src/test/setup-api.ts')],
         },
       },
     ],

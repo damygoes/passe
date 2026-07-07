@@ -1,12 +1,12 @@
 'use client'
 
+import { Link } from '@/i18n/navigation'
+import { tripRoute } from '@/lib/routes'
 import { useTrip } from '@passe/hooks'
 import { PageHeader, PageHeaderDescription, PageHeaderTitle } from '@passe/ui/page-header'
 import { Skeleton } from '@passe/ui/skeleton'
 import { useTranslations } from 'next-intl'
-import { Link } from '@/i18n/navigation'
-import { tripRoute } from '@/lib/routes'
-import { TripForm } from '../components/trip/TripForm'
+import { TripForm } from '../components/trip/forms/TripForm'
 
 interface Props {
   id: string

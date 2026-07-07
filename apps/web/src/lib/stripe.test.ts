@@ -1,6 +1,6 @@
 import { db } from '@passe/db/client'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { getOrCreateStripeCustomer, planToPriceId, priceIdToPlan } from './stripe'
+import { cancelStripeBilling, getOrCreateStripeCustomer, planToPriceId, priceIdToPlan } from './stripe'
 
 vi.mock('@passe/db/client', () => ({
   db: {
@@ -10,9 +10,10 @@ vi.mock('@passe/db/client', () => ({
 }))
 
 const mockCustomersCreate = vi.fn()
+const mockCustomersDel = vi.fn()
 vi.mock('stripe', () => ({
   default: vi.fn().mockImplementation(function StripeMock() {
-    return { customers: { create: mockCustomersCreate } }
+    return { customers: { create: mockCustomersCreate, del: mockCustomersDel } }
   }),
 }))
 
@@ -87,5 +88,39 @@ describe('getOrCreateStripeCustomer', () => {
     })
     expect(mockSet).toHaveBeenCalledWith({ stripeCustomerId: 'cus_new' })
     expect(result).toBe('cus_new')
+  })
+})
+
+describe('cancelStripeBilling', () => {
+  it('does nothing when the user has no Stripe customer id', async () => {
+    vi.mocked(db.query.users.findFirst).mockResolvedValue({
+      id: 'user_1',
+      stripeCustomerId: null,
+    } as never)
+
+    await cancelStripeBilling('user_1')
+
+    expect(mockCustomersDel).not.toHaveBeenCalled()
+  })
+
+  it('deletes the Stripe customer when one exists', async () => {
+    vi.mocked(db.query.users.findFirst).mockResolvedValue({
+      id: 'user_1',
+      stripeCustomerId: 'cus_1',
+    } as never)
+
+    await cancelStripeBilling('user_1')
+
+    expect(mockCustomersDel).toHaveBeenCalledWith('cus_1')
+  })
+
+  it('swallows errors from Stripe so callers are never blocked', async () => {
+    vi.mocked(db.query.users.findFirst).mockResolvedValue({
+      id: 'user_1',
+      stripeCustomerId: 'cus_1',
+    } as never)
+    mockCustomersDel.mockRejectedValueOnce(new Error('stripe down'))
+
+    await expect(cancelStripeBilling('user_1')).resolves.toBeUndefined()
   })
 })

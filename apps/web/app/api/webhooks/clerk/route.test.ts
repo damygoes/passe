@@ -8,17 +8,10 @@ vi.mock('@clerk/nextjs/webhooks', () => ({ verifyWebhook: vi.fn() }))
 const mockSyncClerkUser = vi.fn()
 vi.mock('@passe/auth/webhook', () => ({ syncClerkUser: (...args: unknown[]) => mockSyncClerkUser(...args) }))
 
-const mockCustomersDel = vi.fn()
-vi.mock('@/lib/stripe', () => ({ getStripe: () => ({ customers: { del: mockCustomersDel } }) }))
-
-const mockDb = vi.hoisted(() => ({
-  query: { users: { findFirst: vi.fn() } },
+const mockCancelStripeBilling = vi.fn()
+vi.mock('@/lib/stripe', () => ({
+  cancelStripeBilling: (...args: unknown[]) => mockCancelStripeBilling(...args),
 }))
-
-vi.mock('@passe/db', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@passe/db')>()
-  return { ...actual, db: mockDb }
-})
 
 function req() {
   return new Request('http://localhost/api/webhooks/clerk', { method: 'POST' }) as NextRequest
@@ -27,6 +20,7 @@ function req() {
 beforeEach(() => {
   vi.clearAllMocks()
   mockSyncClerkUser.mockResolvedValue(undefined)
+  mockCancelStripeBilling.mockResolvedValue(undefined)
 })
 
 describe('POST /api/webhooks/clerk', () => {
@@ -52,11 +46,10 @@ describe('POST /api/webhooks/clerk', () => {
       type: 'user.deleted',
       data: { id: 'user_1' },
     } as never)
-    mockDb.query.users.findFirst.mockResolvedValue({ id: 'user_1', stripeCustomerId: 'cus_1' })
 
     const res = await POST(req())
     expect(res.status).toBe(200)
-    expect(mockCustomersDel).toHaveBeenCalledWith('cus_1')
+    expect(mockCancelStripeBilling).toHaveBeenCalledWith('user_1')
     expect(mockSyncClerkUser).toHaveBeenCalled()
   })
 

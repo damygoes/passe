@@ -6,7 +6,7 @@ import { Card, CardContent } from '@passe/ui/card'
 import { Icon, type IconName } from '@passe/ui/icon'
 import { useTranslations } from 'next-intl'
 import { useRef } from 'react'
-import { TripStatsStickyBar } from './TripStatsStickyBar'
+import { TripStatsStickyBar } from '../stats/TripStatsStickyBar'
 
 interface Props {
   countriesCount: number

@@ -5,6 +5,7 @@ import Animated, { FadeIn } from 'react-native-reanimated'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
+import { spacing } from '@passe/theme'
 import { NoGeotaggedMemoriesEmpty } from './NoGeotaggedMemoriesEmpty'
 import { WorldMap } from './WorldMap'
 
@@ -15,7 +16,13 @@ export function MapDataWrapper() {
 
   if (isLoading) return <Skeleton style={{ flex: 1 }} />
   if (isError) return <Text style={{ color: colors.destructive }}>{t('load_error')}</Text>
-  if (points.length === 0) return <NoGeotaggedMemoriesEmpty />
+  if (points.length === 0) {
+    return (
+      <Animated.View entering={FadeIn.duration(200)} style={{ flex: 1, padding: spacing[8] }}>
+        <NoGeotaggedMemoriesEmpty />
+      </Animated.View>
+    )
+  }
 
   return (
     <Animated.View entering={FadeIn.duration(200)} style={{ flex: 1 }}>
