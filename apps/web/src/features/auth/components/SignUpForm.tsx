@@ -12,7 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@passe/ui/button'
 import { Input } from '@passe/ui/input'
 import { useTranslations } from 'next-intl'
-import { useRouter } from '@/i18n/navigation'
+import { Link, useRouter } from '@/i18n/navigation'
 import { routes } from '@/lib/routes'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -25,6 +25,7 @@ export function SignUpForm() {
   const { signUp, setActive, isLoaded } = useSignUp()
   const router = useRouter()
   const t = useTranslations('auth.form')
+  const tSignUp = useTranslations('auth.sign_up')
   const tErrors = useTranslations('auth.errors')
   const tValidation = useTranslations('auth.validation')
   const [step, setStep] = useState<Step>('details')
@@ -76,7 +77,9 @@ export function SignUpForm() {
       setStep('verify')
     } catch (err) {
       if (isClerkAPIResponseError(err)) {
-        setGlobalError(err.errors[0]?.longMessage ?? err.errors[0]?.message ?? tErrors('sign_up_failed'))
+        setGlobalError(
+          err.errors[0]?.longMessage ?? err.errors[0]?.message ?? tErrors('sign_up_failed'),
+        )
       } else {
         setGlobalError(tErrors('generic'))
       }
@@ -115,7 +118,12 @@ export function SignUpForm() {
 
   if (step === 'verify') {
     return (
-      <form onSubmit={otpForm.handleSubmit(onOTPSubmit)} className="space-y-4" noValidate autoComplete="off">
+      <form
+        onSubmit={otpForm.handleSubmit(onOTPSubmit)}
+        className="space-y-4"
+        noValidate
+        autoComplete="off"
+      >
         <div className="space-y-1 text-center">
           <p className="text-sm text-foreground font-medium">{t('check_email_heading')}</p>
           <p className="text-xs text-muted-foreground">
@@ -271,6 +279,26 @@ export function SignUpForm() {
       >
         {isSubmitting ? t('creating_account') : t('create_account')}
       </Button>
+      <p className="text-center text-xs text-muted-foreground">
+        {tSignUp.rich('consent', {
+          terms: (chunks) => (
+            <Link
+              href={routes.termsOfService}
+              className="underline underline-offset-2 transition-colors hover:text-foreground"
+            >
+              {chunks}
+            </Link>
+          ),
+          privacy: (chunks) => (
+            <Link
+              href={routes.privacyPolicy}
+              className="underline underline-offset-2 transition-colors hover:text-foreground"
+            >
+              {chunks}
+            </Link>
+          ),
+        })}
+      </p>
       <div id="clerk-captcha" />
     </form>
   )

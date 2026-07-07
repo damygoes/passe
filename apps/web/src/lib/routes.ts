@@ -10,6 +10,10 @@ export const routes = {
   account: '/account',
   billing: '/billing',
   map: '/map',
+  privacyPolicy: '/privacy-policy',
+  termsOfService: '/terms-of-service',
+  support: '/support',
+  impressum: '/impressum',
 } as const
 
 export const tripRoute = (id: string) => `/trips/${id}` as const

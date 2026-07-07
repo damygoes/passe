@@ -23,7 +23,21 @@ export async function LandingFooter() {
           </Link>
         </nav>
       </div>
-      <p className="mt-8 text-center text-xs text-muted-foreground">{t('copyright', { year })}</p>
+      <nav className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
+        <Link href={routes.privacyPolicy} className="transition-colors hover:text-foreground">
+          {t('privacy_policy')}
+        </Link>
+        <Link href={routes.termsOfService} className="transition-colors hover:text-foreground">
+          {t('terms_of_service')}
+        </Link>
+        <Link href={routes.impressum} className="transition-colors hover:text-foreground">
+          {t('impressum')}
+        </Link>
+        <Link href={routes.support} className="transition-colors hover:text-foreground">
+          {t('support')}
+        </Link>
+      </nav>
+      <p className="mt-6 text-center text-xs text-muted-foreground">{t('copyright', { year })}</p>
     </footer>
   )
 }
