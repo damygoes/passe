@@ -14,12 +14,18 @@ vi.mock('@clerk/nextjs/server', () => ({
 const mockDb = vi.hoisted(() => ({
   query: { users: { findFirst: vi.fn() } },
   update: vi.fn(),
+  delete: vi.fn(),
 }))
 
 vi.mock('@passe/db', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@passe/db')>()
   return { ...actual, db: mockDb }
 })
+
+const mockCancelStripeBilling = vi.fn()
+vi.mock('@/lib/stripe', () => ({
+  cancelStripeBilling: (...args: unknown[]) => mockCancelStripeBilling(...args),
+}))
 
 import { dbChain } from '@/test/db-mock'
 
@@ -40,7 +46,10 @@ function patchReq(body: unknown) {
 }
 
 beforeEach(() => {
+  vi.clearAllMocks()
   vi.mocked(auth).mockResolvedValue({ userId: 'user-1' } as Awaited<ReturnType<typeof auth>>)
+  mockCancelStripeBilling.mockResolvedValue(undefined)
+  mockDb.delete.mockReturnValue(dbChain(undefined))
 })
 
 describe('GET /api/user', () => {
@@ -103,15 +112,27 @@ describe('DELETE /api/user', () => {
     expect(res.status).toBe(401)
   })
 
-  it('deletes the Clerk account on success', async () => {
+  it('deletes the Clerk account, cancels billing, and removes the DB row on success', async () => {
     mockClerkClient.users.deleteUser.mockResolvedValue({})
     const res = await DELETE()
     expect(res.status).toBe(200)
+    expect(mockClerkClient.users.deleteUser).toHaveBeenCalledWith('user-1')
+    expect(mockCancelStripeBilling).toHaveBeenCalledWith('user-1')
+    expect(mockDb.delete).toHaveBeenCalled()
   })
 
-  it('returns 500 when Clerk deletion fails', async () => {
+  it('returns 500 when Clerk deletion fails, without touching billing or the DB row', async () => {
     mockClerkClient.users.deleteUser.mockRejectedValue(new Error('clerk down'))
     const res = await DELETE()
     expect(res.status).toBe(500)
+    expect(mockCancelStripeBilling).not.toHaveBeenCalled()
+    expect(mockDb.delete).not.toHaveBeenCalled()
+  })
+
+  it('still reports success when post-deletion cleanup fails', async () => {
+    mockClerkClient.users.deleteUser.mockResolvedValue({})
+    mockCancelStripeBilling.mockRejectedValue(new Error('stripe down'))
+    const res = await DELETE()
+    expect(res.status).toBe(200)
   })
 })

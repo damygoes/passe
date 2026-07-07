@@ -38,6 +38,10 @@
       "google": "Mit Google fortfahren",
       "apple": "Mit Apple fortfahren"
     },
+    "sso_callback": {
+      "heading": "Anmeldung läuft…",
+      "subheading": "Einen Moment, wir richten dein Konto ein."
+    },
     "form": {
       "email_label": "E-Mail",
       "email_placeholder": "du@beispiel.de",

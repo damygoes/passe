@@ -51,7 +51,7 @@ export function TripCard({ trip, href, tilt = 'none' }: Props) {
         {trip.countries.length > 0 && (
           <div className="flex flex-wrap gap-1.5 pt-0.5">
             {trip.countries.map((country) => (
-              <Badge key={country} variant="stamp" className="text-aged-cream">
+              <Badge key={country} variant="stamp" className="text-aged-cream px-2 py-3 rounded-lg">
                 {country}
               </Badge>
             ))}

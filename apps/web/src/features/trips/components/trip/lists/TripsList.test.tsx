@@ -1,11 +1,13 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { TripsList } from './TripsList'
+import { TripsList } from './lists/TripsList'
 
 const mockUseTrips = vi.fn()
 vi.mock('@passe/hooks', () => ({ useTrips: () => mockUseTrips() }))
 
-vi.mock('./TripCard', () => ({ TripCard: ({ trip }: { trip: { title: string } }) => <div>{trip.title}</div> }))
+vi.mock('./TripCard', () => ({
+  TripCard: ({ trip }: { trip: { title: string } }) => <div>{trip.title}</div>,
+}))
 vi.mock('./TripsListSkeleton', () => ({ TripsListSkeleton: () => <div>loading-skeleton</div> }))
 vi.mock('./NoTripsEmpty', () => ({ NoTripsEmpty: () => <div>no-trips</div> }))
 
@@ -30,7 +32,10 @@ describe('TripsList', () => {
 
   it('renders a card per trip', () => {
     mockUseTrips.mockReturnValue({
-      data: [{ id: '1', title: 'Japan' }, { id: '2', title: 'France' }],
+      data: [
+        { id: '1', title: 'Japan' },
+        { id: '2', title: 'France' },
+      ],
       isLoading: false,
       isError: false,
     })

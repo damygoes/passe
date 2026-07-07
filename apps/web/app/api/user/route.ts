@@ -1,5 +1,6 @@
 import { clerkClient } from '@clerk/nextjs/server'
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
+import { cancelStripeBilling } from '@/lib/stripe'
 import { db, users } from '@passe/db'
 import { createLogger } from '@passe/logger'
 import { AuthUserSchema, PublicUserSchema, UpdateUserSchema } from '@passe/types/user'
@@ -99,7 +100,6 @@ export async function DELETE() {
   try {
     const client = await clerkClient()
     await client.users.deleteUser(userId)
-    return apiSuccess({ deleted: true })
   } catch (err) {
     log.error('Account deletion failed', {
       userId,
@@ -107,4 +107,19 @@ export async function DELETE() {
     })
     return apiError('Failed to delete account', 500)
   }
+
+  // The Clerk `user.deleted` webhook normally finishes this cleanup, but its delivery isn't
+  // guaranteed (e.g. no public endpoint in local dev) — do it synchronously here so deleting an
+  // account never leaves an orphaned DB row or an active Stripe subscription behind.
+  try {
+    await cancelStripeBilling(userId)
+    await db.delete(users).where(eq(users.id, userId))
+  } catch (err) {
+    log.error('Post-deletion cleanup failed', {
+      userId,
+      error: err instanceof Error ? err.message : String(err),
+    })
+  }
+
+  return apiSuccess({ deleted: true })
 }

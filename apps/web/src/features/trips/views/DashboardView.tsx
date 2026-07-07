@@ -15,8 +15,8 @@ import {
 import { Skeleton } from '@passe/ui/skeleton'
 import { getUniqueStatsFromTrips } from '@passe/utils'
 import { useTranslations } from 'next-intl'
-import { TripsList } from '../components/trip/TripsList'
-import { TripStatsDataWrapper } from '../components/trip/TripStatsDataWrapper'
+import { TripsList } from '../components/trip/lists/TripsList'
+import { TripStatsDataWrapper } from '../components/trip/stats/TripStatsDataWrapper'
 
 export function DashboardView() {
   const t = useTranslations('trips.dashboard')

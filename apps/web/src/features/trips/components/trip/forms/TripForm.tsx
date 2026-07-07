@@ -1,5 +1,7 @@
 'use client'
 
+import { Link, useRouter } from '@/i18n/navigation'
+import { routes, tripRoute } from '@/lib/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { canCreateTrip, canMakePortfolioPublic } from '@passe/auth/plan-gates'
 import { useCreateTrip, useTrips, useUpdateTrip, useUser } from '@passe/hooks'
@@ -12,10 +14,8 @@ import { Textarea } from '@passe/ui/textarea'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { Controller, useForm, type Resolver } from 'react-hook-form'
-import { Link, useRouter } from '@/i18n/navigation'
-import { routes, tripRoute } from '@/lib/routes'
-import { CountryTagsInput } from './CountryTagsInput'
-import { ImageUploadField } from './ImageUploadField'
+import { CountryTagsInput } from '../country-tags/CountryTagsInput'
+import { ImageUploadField } from '../image-upload/ImageUploadField'
 
 interface Props {
   // When provided, the form edits this trip; otherwise it creates a new one.

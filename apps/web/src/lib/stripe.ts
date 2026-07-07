@@ -1,8 +1,11 @@
 import { db } from '@passe/db/client'
 import { users } from '@passe/db/schema'
+import { createLogger } from '@passe/logger'
 import type { PaidPlan } from '@passe/types'
 import { eq } from 'drizzle-orm'
 import Stripe from 'stripe'
+
+const log = createLogger({ context: { module: 'lib/stripe' } })
 
 // Lazy singleton — module can be imported in files that never touch Stripe
 // (e.g. during build) without requiring STRIPE_SECRET_KEY to be set.
@@ -53,4 +56,23 @@ export async function getOrCreateStripeCustomer(userId: string): Promise<string>
   await db.update(users).set({ stripeCustomerId: customer.id }).where(eq(users.id, userId))
 
   return customer.id
+}
+
+// Deleting the Stripe customer cancels its subscriptions immediately —
+// without this, deleted accounts would keep getting charged.
+export async function cancelStripeBilling(userId: string): Promise<void> {
+  const user = await db.query.users.findFirst({ where: eq(users.id, userId) })
+  if (!user?.stripeCustomerId) return
+
+  try {
+    await getStripe().customers.del(user.stripeCustomerId)
+  } catch (err) {
+    // Don't block the caller — log loudly so the orphaned
+    // subscription can be cancelled manually in the Stripe dashboard
+    log.error('Failed to delete Stripe customer for deleted user', {
+      userId,
+      stripeCustomerId: user.stripeCustomerId,
+      error: err instanceof Error ? err.message : String(err),
+    })
+  }
 }

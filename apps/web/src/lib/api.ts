@@ -1,4 +1,5 @@
 import { auth } from '@clerk/nextjs/server'
+import { ensureUserExists } from './ensure-user'
 
 // Consistent error response shape
 export function apiError(message: string, status: number) {
@@ -16,5 +17,6 @@ export async function requireAuth() {
   if (!userId) {
     return { userId: null, error: apiError('Unauthorised', 401) }
   }
+  await ensureUserExists(userId)
   return { userId, error: null }
 }

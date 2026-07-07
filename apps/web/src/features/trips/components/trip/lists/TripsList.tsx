@@ -4,8 +4,8 @@ import { Stagger, StaggerItem } from '@/components/motion/Stagger'
 import { tripRoute } from '@/lib/routes'
 import { useTrips } from '@passe/hooks'
 import { useTranslations } from 'next-intl'
-import { NoTripsEmpty } from './NoTripsEmpty'
-import { TripCard } from './TripCard'
+import { TripCard } from '../card/TripCard'
+import { NoTripsEmpty } from '../empty/NoTripsEmpty'
 import { TripsListSkeleton } from './TripsListSkeleton'
 
 export function TripsList() {

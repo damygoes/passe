@@ -6,6 +6,10 @@ vi.mock('@clerk/nextjs/server', () => ({
   auth: vi.fn(),
 }))
 
+vi.mock('./ensure-user', () => ({
+  ensureUserExists: vi.fn(),
+}))
+
 describe('apiError', () => {
   it('returns the message and status in a consistent shape', async () => {
     const res = apiError('Not found', 404)

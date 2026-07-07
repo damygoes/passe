@@ -38,6 +38,10 @@
       "google": "Continue with Google",
       "apple": "Continue with Apple"
     },
+    "sso_callback": {
+      "heading": "Signing you in…",
+      "subheading": "Just a moment while we finish setting up your account."
+    },
     "form": {
       "email_label": "Email",
       "email_placeholder": "you@example.com",
