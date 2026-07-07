@@ -16,11 +16,11 @@ vi.mock('@passe/hooks', () => ({
   useUpdateTrip: () => ({ mutateAsync: mockUpdateTrip, isPending: false }),
 }))
 
-vi.mock('./ImageUploadField', () => ({
+vi.mock('../image-upload/ImageUploadField', () => ({
   ImageUploadField: () => <div>image-upload-field</div>,
 }))
 
-vi.mock('./CountryTagsInput', () => ({
+vi.mock('../country-tags/CountryTagsInput', () => ({
   CountryTagsInput: ({ value, onChange }: { value: string[]; onChange: (v: string[]) => void }) => (
     <button type="button" onClick={() => onChange(['FR'])} data-testid="countries">
       countries:{value.join(',')}
