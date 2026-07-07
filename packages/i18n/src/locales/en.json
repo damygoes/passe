@@ -344,6 +344,13 @@
     "plan": {
       "title": "Plan",
       "managed_on_web": "Subscriptions are managed on the Passé website."
+    },
+    "legal": {
+      "title": "Legal",
+      "privacy_policy": "Privacy Policy",
+      "terms_of_service": "Terms of Service",
+      "impressum": "Impressum",
+      "support": "Support"
     }
   },
   "landing": {

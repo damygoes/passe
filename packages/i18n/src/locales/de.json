@@ -344,6 +344,13 @@
     "plan": {
       "title": "Tarif",
       "managed_on_web": "Abos werden auf der Passé-Website verwaltet."
+    },
+    "legal": {
+      "title": "Rechtliches",
+      "privacy_policy": "Datenschutzerklärung",
+      "terms_of_service": "Nutzungsbedingungen",
+      "impressum": "Impressum",
+      "support": "Support"
     }
   },
   "landing": {

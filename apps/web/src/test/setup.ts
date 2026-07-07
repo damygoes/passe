@@ -7,10 +7,15 @@ import { afterEach, vi } from 'vitest'
 // useTranslations and the locale-aware navigation helpers, so mocking them once here
 // avoids repeating boilerplate in every test file. Tests needing real interpolation or
 // specific pathname/router assertions can override via vi.mocked(...) per test.
-vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string) => key,
-  useLocale: () => 'en',
-}))
+vi.mock('next-intl', () => {
+  const translate = Object.assign((key: string) => key, {
+    rich: (key: string) => key,
+  })
+  return {
+    useTranslations: () => translate,
+    useLocale: () => 'en',
+  }
+})
 
 vi.mock('@/i18n/navigation', () => import('@/test/navigation-mock'))
 

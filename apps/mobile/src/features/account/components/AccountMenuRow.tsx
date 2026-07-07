@@ -9,10 +9,17 @@ interface AccountMenuRowProps {
   icon: IconName
   label: string
   destructive?: boolean
+  trailingIcon?: IconName
   onPress: () => void
 }
 
-export function AccountMenuRow({ icon, label, destructive = false, onPress }: AccountMenuRowProps) {
+export function AccountMenuRow({
+  icon,
+  label,
+  destructive = false,
+  trailingIcon = 'chevron-right',
+  onPress,
+}: AccountMenuRowProps) {
   const { colors, spacing, borderRadius, fontSizes, fontWeights } = useTheme()
 
   const styles = useMemo(
@@ -48,7 +55,7 @@ export function AccountMenuRow({ icon, label, destructive = false, onPress }: Ac
     >
       <Icon name={icon} size="md" color={tint} />
       <Text style={[styles.label, destructive && styles.labelDestructive]}>{label}</Text>
-      <Icon name="chevron-right" size="sm" color={colors.mutedForeground} />
+      <Icon name={trailingIcon} size="sm" color={colors.mutedForeground} />
     </Pressable>
   )
 }

@@ -1,4 +1,5 @@
 import { buttonVariants } from '@passe/ui/button'
+import { Logo } from '@passe/ui/logo'
 import { Navbar, NavbarBrand, NavbarLinks } from '@passe/ui/navbar'
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
@@ -23,18 +24,16 @@ export async function AppNavbar({ displayName, email, avatarUrl, username }: App
       <NavbarBrand>
         <Link
           href={routes.dashboard}
-          className="font-display text-3xl font-bold tracking-tight text-foreground hover:opacity-80 transition-opacity"
+          className="text-foreground hover:opacity-80 transition-opacity"
+          aria-label="Passé"
         >
-          Passé.
+          <Logo className="h-7 w-auto" />
         </Link>
       </NavbarBrand>
 
       {/* Desktop nav links */}
       <NavbarLinks className="hidden md:flex">
-        <Link
-          href={routes.dashboard}
-          className={buttonVariants({ variant: 'ghost', size: 'sm' })}
-        >
+        <Link href={routes.dashboard} className={buttonVariants({ variant: 'ghost', size: 'sm' })}>
           {t('dashboard')}
         </Link>
         <Link href={routes.map} className={buttonVariants({ variant: 'ghost', size: 'sm' })}>

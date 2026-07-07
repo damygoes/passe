@@ -60,6 +60,7 @@ export {
 } from './empty/Empty'
 export { Icon } from './icon/Icon'
 export { Input } from './input/Input'
+export { Logo } from './logo/Logo'
 export {
   MediaCard,
   MediaCardDescription,

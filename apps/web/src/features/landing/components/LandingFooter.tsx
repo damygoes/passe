@@ -1,3 +1,4 @@
+import { Logo } from '@passe/ui/logo'
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import { routes } from '@/lib/routes'
@@ -11,7 +12,7 @@ export async function LandingFooter() {
     <footer className="border-t px-6 py-10">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 sm:flex-row sm:justify-between">
         <div className="text-center sm:text-left">
-          <p className="font-display text-lg font-bold tracking-tight">Passé.</p>
+          <Logo className="mx-auto h-5 w-auto sm:mx-0" />
           <p className="mt-1 text-sm text-muted-foreground">{tCommon('app_tagline')}</p>
         </div>
         <nav className="flex items-center gap-6 text-sm text-muted-foreground">

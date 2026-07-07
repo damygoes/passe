@@ -1,4 +1,5 @@
 import { buttonVariants } from '@passe/ui/button'
+import { Logo } from '@passe/ui/logo'
 import { Navbar, NavbarBrand, NavbarUser } from '@passe/ui/navbar'
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
@@ -14,9 +15,10 @@ export async function LandingHeader() {
       <NavbarBrand>
         <Link
           href={routes.home}
-          className="font-display text-2xl font-bold tracking-tight text-foreground transition-opacity hover:opacity-80"
+          className="text-foreground transition-opacity hover:opacity-80"
+          aria-label="Passé"
         >
-          Passé.
+          <Logo className="h-6 w-auto" />
         </Link>
       </NavbarBrand>
 
