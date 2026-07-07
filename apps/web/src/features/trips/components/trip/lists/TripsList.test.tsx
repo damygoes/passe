@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { TripsList } from './lists/TripsList'
+import { TripsList } from '../lists/TripsList'
 
 const mockUseTrips = vi.fn()
 vi.mock('@passe/hooks', () => ({ useTrips: () => mockUseTrips() }))
