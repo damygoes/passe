@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Separator } from '@/components/ui/separator'
 import { LogoutButton } from '@/features/auth/components/LogoutButton'
 import { AccountMenuRow } from '@/features/account/components/AccountMenuRow'
+import { LegalSection } from '@/features/account/components/LegalSection'
 import { PlanSection } from '@/features/account/components/PlanSection'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
@@ -94,6 +95,12 @@ export function AccountScreen() {
             destructive
             onPress={() => router.push('/(app)/account/danger')}
           />
+        </Animated.View>
+
+        <Separator />
+
+        <Animated.View entering={enterUp(240)}>
+          <LegalSection />
         </Animated.View>
 
         <View style={styles.footer}>

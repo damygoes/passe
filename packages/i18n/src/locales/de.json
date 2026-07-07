@@ -21,7 +21,8 @@
       "subheading": "Bewahre deine Erinnerungen mit Passé",
       "or_email": "oder weiter mit E-Mail",
       "have_account": "Bereits ein Konto?",
-      "sign_in_link": "Anmelden"
+      "sign_in_link": "Anmelden",
+      "consent": "Mit der Erstellung eines Kontos stimmst du unseren <terms>Nutzungsbedingungen</terms> und unserer <privacy>Datenschutzerklärung</privacy> zu."
     },
     "forgot_password": {
       "heading": "Passwort vergessen?",
@@ -343,6 +344,13 @@
     "plan": {
       "title": "Tarif",
       "managed_on_web": "Abos werden auf der Passé-Website verwaltet."
+    },
+    "legal": {
+      "title": "Rechtliches",
+      "privacy_policy": "Datenschutzerklärung",
+      "terms_of_service": "Nutzungsbedingungen",
+      "impressum": "Impressum",
+      "support": "Support"
     }
   },
   "landing": {
@@ -445,7 +453,11 @@
     "footer": {
       "copyright": "© {year} Passé",
       "sign_in": "Anmelden",
-      "sign_up": "Registrieren"
+      "sign_up": "Registrieren",
+      "privacy_policy": "Datenschutz",
+      "terms_of_service": "Nutzungsbedingungen",
+      "impressum": "Impressum",
+      "support": "Support"
     }
   },
   "portfolio": {
@@ -467,5 +479,232 @@
     "canceled_banner": "Checkout abgebrochen — dein Tarif wurde nicht geändert.",
     "load_error": "Deine Abrechnungsdaten konnten nicht geladen werden.",
     "action_error": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+  },
+  "info": {
+    "privacy": {
+      "meta": {
+        "title": "Datenschutzerklärung — Passé",
+        "description": "Wie Passé deine personenbezogenen Daten erhebt, nutzt und schützt."
+      },
+      "eyebrow": "Rechtliches",
+      "title": "Datenschutzerklärung",
+      "last_updated": "Stand: 7. Juli 2026",
+      "sections": {
+        "controller": {
+          "heading": "Verantwortlicher",
+          "p1": "Diese Datenschutzerklärung informiert darüber, wie personenbezogene Daten bei der Nutzung von Passé verarbeitet werden — der Web-App unter passe.cc und der Passé Mobile-App (zusammen der \"Dienst\").",
+          "p2": "Verantwortlicher im Sinne der Datenschutz-Grundverordnung (DSGVO) ist: {legalName}, {legalStreet}, {legalCity}, Deutschland.",
+          "p3": "Du erreichst uns jederzeit unter {email}."
+        },
+        "overview": {
+          "heading": "Privatsphäre als Standard",
+          "p1": "Passé ist konsequent privacy-first gebaut. Jede Reise und jede Erinnerung, die du erstellst, ist standardmäßig privat und nur für dich sichtbar. Nichts, was du hochlädst, wird anderen angezeigt, solange du es nicht ausdrücklich veröffentlichst.",
+          "p2": "Wir erheben nur die Daten, die wir für den Betrieb des Dienstes benötigen. Wir verkaufen deine personenbezogenen Daten nicht und nutzen sie nicht für Werbung."
+        },
+        "data": {
+          "heading": "Welche Daten wir verarbeiten",
+          "p1": "Je nachdem, wie du den Dienst nutzt, verarbeiten wir folgende Kategorien personenbezogener Daten:",
+          "li1": "Kontodaten — dein Name, deine E-Mail-Adresse und dein Passwort (von unserem Authentifizierungsanbieter ausschließlich in gehashter Form gespeichert). Wenn du dich mit Google oder Apple anmeldest, erhalten wir von diesem Anbieter deinen Namen, deine E-Mail-Adresse und dein Profilbild.",
+          "li2": "Inhaltsdaten — die Reisen und Erinnerungen, die du erstellst, einschließlich Fotos, Notizen, Daten, Ländern, Städten und den Standortkoordinaten, die du Erinnerungen zuordnest.",
+          "li3": "Zahlungsdaten — wenn du einen kostenpflichtigen Tarif abonnierst, verarbeitet unser Zahlungsdienstleister Stripe deine Zahlungsdaten. Wir sehen und speichern deine vollständige Kartennummer nie; wir speichern nur deinen Abo-Status und Tarif.",
+          "li4": "Technische Daten — IP-Adresse, Browser- bzw. Geräteinformationen und Server-Logs, die bei der Nutzung des Dienstes automatisch anfallen."
+        },
+        "purposes": {
+          "heading": "Zwecke und Rechtsgrundlagen",
+          "p1": "Wir verarbeiten deine Daten auf folgenden Rechtsgrundlagen nach Art. 6 Abs. 1 DSGVO:",
+          "li1": "Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO) — Erstellung deines Kontos, Speicherung deiner Reisen und Erinnerungen, Anzeige der Inhalte, die du veröffentlicht hast, und Verwaltung deines Abos.",
+          "li2": "Berechtigte Interessen (Art. 6 Abs. 1 lit. f DSGVO) — Absicherung des Dienstes, Missbrauchsprävention und Fehlerdiagnose.",
+          "li3": "Rechtliche Verpflichtungen (Art. 6 Abs. 1 lit. c DSGVO) — Aufbewahrung von Abrechnungsunterlagen nach Handels- und Steuerrecht.",
+          "li4": "Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) — soweit du sie erteilt hast, etwa für optionale Funktionen; du kannst sie jederzeit mit Wirkung für die Zukunft widerrufen."
+        },
+        "processors": {
+          "heading": "Dienstleister",
+          "p1": "Für den Betrieb von Passé setzen wir folgende Dienstleister (Auftragsverarbeiter) ein. Jeder erhält nur die Daten, die für seine Funktion erforderlich sind:",
+          "li1": "Clerk (Clerk, Inc., USA) — Authentifizierung und Kontoverwaltung, einschließlich Anmeldung mit Google und Apple.",
+          "li2": "Neon (Neon, Inc., USA) — Hosting unserer Datenbank, in der deine Konto-, Reise- und Erinnerungsdaten gespeichert sind.",
+          "li3": "Cloudinary (Cloudinary Ltd.) — Speicherung und Auslieferung der Fotos, die du hochlädst.",
+          "li4": "Stripe (Stripe, Inc., USA / Stripe Payments Europe Ltd., Irland) — Zahlungsabwicklung und Abo-Verwaltung.",
+          "li5": "Vercel (Vercel, Inc., USA) — Hosting der Web-Anwendung.",
+          "li6": "OpenStreetMap Nominatim (OpenStreetMap Foundation, UK) — Umwandlung von Standortkoordinaten in Ortsnamen (und umgekehrt), wenn du einer Erinnerung einen Ort zuordnest."
+        },
+        "public_content": {
+          "heading": "Öffentliche Inhalte",
+          "p1": "Wenn du dein Portfolio, eine Reise oder einzelne Erinnerungen veröffentlichst, sind diese Inhalte — einschließlich Fotos, Notizen, Ortsnamen und deinem Anzeigenamen — für alle sichtbar, die den Link haben, auch ohne Anmeldung. Öffentliche Seiten können von Suchmaschinen indexiert werden.",
+          "p2": "Du kannst öffentliche Inhalte jederzeit wieder auf privat stellen. Von Dritten (z. B. Suchmaschinen) zwischengespeicherte Kopien können danach noch eine Zeit lang verfügbar sein."
+        },
+        "cookies": {
+          "heading": "Cookies und Local Storage",
+          "p1": "Wir verwenden nur Cookies und ähnliche Technologien, die für den Betrieb des Dienstes zwingend erforderlich sind: um dich angemeldet zu halten (Session-Cookies unseres Authentifizierungsanbieters) und um deine Sprach- und Design-Einstellungen zu speichern.",
+          "p2": "Werbe-, Tracking- oder Analyse-Cookies setzen wir nicht ein."
+        },
+        "transfers": {
+          "heading": "Datenübermittlung in Drittländer",
+          "p1": "Einige unserer Dienstleister haben ihren Sitz in den USA. Soweit personenbezogene Daten außerhalb der EU bzw. des EWR verarbeitet werden, ist die Übermittlung durch einen Angemessenheitsbeschluss (etwa das EU-US Data Privacy Framework) oder die EU-Standardvertragsklauseln abgesichert."
+        },
+        "retention": {
+          "heading": "Speicherdauer",
+          "p1": "Wir speichern deine personenbezogenen Daten, solange dein Konto besteht. Wenn du dein Konto löschst, werden deine Kontodaten, Reisen, Erinnerungen und Fotos gelöscht.",
+          "p2": "Daten, zu deren Aufbewahrung wir gesetzlich verpflichtet sind (z. B. Abrechnungsunterlagen), werden für die Dauer der gesetzlichen Aufbewahrungsfristen gespeichert und danach gelöscht."
+        },
+        "rights": {
+          "heading": "Deine Rechte",
+          "p1": "Nach der DSGVO hast du in Bezug auf deine personenbezogenen Daten folgende Rechte:",
+          "li1": "Auskunft (Art. 15 DSGVO) — eine Kopie der Daten erhalten, die wir über dich gespeichert haben.",
+          "li2": "Berichtigung (Art. 16 DSGVO) — unrichtige Daten korrigieren lassen.",
+          "li3": "Löschung (Art. 17 DSGVO) — deine Daten löschen lassen.",
+          "li4": "Einschränkung der Verarbeitung (Art. 18 DSGVO).",
+          "li5": "Datenübertragbarkeit (Art. 20 DSGVO) — deine Daten in einem maschinenlesbaren Format erhalten.",
+          "li6": "Widerspruch (Art. 21 DSGVO) — gegen eine Verarbeitung auf Grundlage berechtigter Interessen.",
+          "li7": "Widerruf von Einwilligungen (Art. 7 Abs. 3 DSGVO) — jederzeit mit Wirkung für die Zukunft.",
+          "o1": "Außerdem hast du das Recht, dich bei einer Datenschutzaufsichtsbehörde zu beschweren, insbesondere in dem EU-Mitgliedstaat deines Wohnorts oder Arbeitsplatzes."
+        },
+        "changes": {
+          "heading": "Änderungen dieser Datenschutzerklärung",
+          "p1": "Wir passen diese Datenschutzerklärung an, wenn sich der Dienst oder die rechtlichen Anforderungen ändern. Die aktuelle Fassung ist immer auf dieser Seite verfügbar; das Datum oben zeigt den Stand der letzten Überarbeitung."
+        },
+        "contact": {
+          "heading": "Kontakt",
+          "p1": "Bei Fragen zu dieser Datenschutzerklärung oder deinen Daten erreichst du uns unter {email}."
+        }
+      }
+    },
+    "terms": {
+      "meta": {
+        "title": "Nutzungsbedingungen — Passé",
+        "description": "Die Bedingungen für die Nutzung von Passé."
+      },
+      "eyebrow": "Rechtliches",
+      "title": "Nutzungsbedingungen",
+      "last_updated": "Stand: 7. Juli 2026",
+      "sections": {
+        "scope": {
+          "heading": "Geltungsbereich",
+          "p1": "Diese Nutzungsbedingungen gelten für die Nutzung von Passé — der Web-App unter passe.cc und der Passé Mobile-App (zusammen der \"Dienst\") — betrieben von {legalName}, {legalStreet}, {legalCity}, Deutschland (\"wir\", \"uns\").",
+          "p2": "Mit der Erstellung eines Kontos stimmst du diesen Bedingungen zu."
+        },
+        "service": {
+          "heading": "Der Dienst",
+          "p1": "Mit Passé erstellst du Reisen, fügst ihnen Erinnerungen (Fotos, Notizen und Orte) hinzu und kannst optional ein öffentliches Portfolio und öffentliche Reiseseiten teilen.",
+          "p2": "Den Dienst gibt es in einem kostenlosen Tarif sowie den kostenpflichtigen Tarifen Explorer und Collector. Die in den Tarifen enthaltenen Funktionen sind im Preisbereich unserer Website beschrieben und können sich weiterentwickeln."
+        },
+        "account": {
+          "heading": "Dein Konto",
+          "p1": "Du musst mindestens 16 Jahre alt sein, um Passé zu nutzen. Du verpflichtest dich, bei der Registrierung korrekte Angaben zu machen und deine Zugangsdaten geheim zu halten.",
+          "p2": "Du bist für alle Aktivitäten über dein Konto verantwortlich. Informiere uns umgehend unter {email}, wenn du eine unbefugte Nutzung vermutest."
+        },
+        "billing": {
+          "heading": "Tarife, Zahlung und Kündigung",
+          "p1": "Kostenpflichtige Tarife werden monatlich im Voraus abgerechnet: Explorer kostet 4 € pro Monat, Collector 9 € pro Monat. Die Preise verstehen sich inklusive Umsatzsteuer, soweit anwendbar. Zahlungen werden über Stripe abgewickelt.",
+          "p2": "Abos verlängern sich automatisch um jeweils einen Monat, bis sie gekündigt werden. Du kannst jederzeit im Abrechnungsportal kündigen; dein kostenpflichtiger Tarif bleibt dann bis zum Ende des laufenden Abrechnungszeitraums aktiv und wird nicht verlängert. Eine anteilige Erstattung für angebrochene Zeiträume erfolgt nicht, soweit gesetzlich nichts anderes vorgeschrieben ist.",
+          "p3": "Preisänderungen kündigen wir vorher an; sie gelten ab dem nächsten Abrechnungszeitraum nach der Ankündigung."
+        },
+        "content": {
+          "heading": "Deine Inhalte",
+          "p1": "Alle Rechte an den Fotos, Notizen und sonstigen Inhalten, die du hochlädst, bleiben bei dir. Du räumst uns die technisch notwendige Lizenz ein, deine Inhalte zu speichern, zu verarbeiten und anzuzeigen, soweit dies für den Betrieb des Dienstes erforderlich ist.",
+          "p2": "Für Inhalte, die du ausdrücklich veröffentlichst, räumst du uns zusätzlich das Recht ein, sie Besuchern deines öffentlichen Portfolios und deiner öffentlichen Reiseseiten anzuzeigen.",
+          "p3": "Für deine Inhalte bist du selbst verantwortlich. Du versicherst, dass du die erforderlichen Rechte an allem hast, was du hochlädst, und dass deine Inhalte weder geltendes Recht noch Rechte Dritter verletzen."
+        },
+        "acceptable_use": {
+          "heading": "Zulässige Nutzung",
+          "p1": "Es ist dir nicht gestattet:",
+          "li1": "Inhalte hochzuladen, die rechtswidrig sind, geistiges Eigentum oder Persönlichkeitsrechte Dritter verletzen oder Personen ohne das Recht zur Verbreitung ihres Bildes zeigen;",
+          "li2": "den Dienst zu nutzen, um andere zu belästigen, zu täuschen oder zu schädigen;",
+          "li3": "dir unbefugten Zugriff auf den Dienst zu verschaffen, seinen Betrieb zu stören oder Tarifgrenzen zu umgehen;",
+          "li4": "Inhalte ohne unsere Erlaubnis zu scrapen, weiterzuverkaufen oder systematisch auszulesen."
+        },
+        "privacy": {
+          "heading": "Datenschutz",
+          "p1": "Deine Inhalte sind standardmäßig privat und werden für andere erst sichtbar, wenn du sie ausdrücklich veröffentlichst. Wie wir mit personenbezogenen Daten umgehen, beschreibt unsere Datenschutzerklärung."
+        },
+        "availability": {
+          "heading": "Verfügbarkeit",
+          "p1": "Wir betreiben den Dienst mit angemessener Sorgfalt, garantieren aber keine ununterbrochene Verfügbarkeit. Wir können den Dienst weiterentwickeln; wesentliche bezahlte Funktionen entfernen wir nicht während eines bereits bezahlten Zeitraums. Bitte bewahre eigene Kopien unersetzlicher Fotos auf."
+        },
+        "termination": {
+          "heading": "Beendigung",
+          "p1": "Du kannst die Nutzung jederzeit beenden und dein Konto in den Kontoeinstellungen löschen. Mit der Löschung deines Kontos werden deine Reisen, Erinnerungen und Fotos gelöscht.",
+          "p2": "Wir können Konten sperren oder kündigen, die erheblich gegen diese Bedingungen verstoßen — soweit zumutbar nach vorheriger Abmahnung. Gesetzliche Kündigungsrechte bleiben unberührt."
+        },
+        "liability": {
+          "heading": "Haftung",
+          "p1": "Wir haften unbeschränkt für Vorsatz und grobe Fahrlässigkeit sowie für Schäden aus der Verletzung von Leben, Körper oder Gesundheit. Die Haftung nach dem Produkthaftungsgesetz bleibt unberührt.",
+          "p2": "Bei einfacher Fahrlässigkeit haften wir nur für die Verletzung wesentlicher Vertragspflichten (Pflichten, deren Erfüllung die ordnungsgemäße Durchführung des Vertrags überhaupt erst ermöglicht), begrenzt auf den bei Vertragsschluss vorhersehbaren, vertragstypischen Schaden."
+        },
+        "changes": {
+          "heading": "Änderungen dieser Bedingungen",
+          "p1": "Wir können diese Bedingungen mit Wirkung für die Zukunft anpassen, etwa bei neuen Funktionen oder geänderten rechtlichen Anforderungen. Über wesentliche Änderungen informieren wir dich mindestens 14 Tage vor Inkrafttreten per E-Mail oder in der App. Wenn du nicht einverstanden bist, kannst du dein Konto vor Inkrafttreten der Änderungen kündigen."
+        },
+        "law": {
+          "heading": "Anwendbares Recht",
+          "p1": "Es gilt deutsches Recht unter Ausschluss des UN-Kaufrechts. Bist du Verbraucher, bleiben zwingende Verbraucherschutzvorschriften des Staates deines gewöhnlichen Aufenthalts unberührt."
+        }
+      }
+    },
+    "impressum": {
+      "meta": {
+        "title": "Impressum — Passé",
+        "description": "Impressum von Passé gemäß § 5 DDG."
+      },
+      "eyebrow": "Rechtliches",
+      "title": "Impressum",
+      "sections": {
+        "provider": {
+          "heading": "Angaben gemäß § 5 DDG",
+          "p1": "{legalName}",
+          "p2": "{legalStreet}",
+          "p3": "{legalCity}, Deutschland"
+        },
+        "contact": {
+          "heading": "Kontakt",
+          "p1": "E-Mail: {email}"
+        },
+        "responsible": {
+          "heading": "Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV",
+          "p1": "{legalName}, {legalStreet}, {legalCity}"
+        },
+        "dispute": {
+          "heading": "EU-Streitschlichtung",
+          "p1": "Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: https://ec.europa.eu/consumers/odr. Unsere E-Mail-Adresse findest du oben.",
+          "p2": "Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
+        }
+      }
+    },
+    "support": {
+      "meta": {
+        "title": "Support — Passé",
+        "description": "Hilfe zu Passé — häufige Fragen und Kontakt."
+      },
+      "eyebrow": "Hilfe",
+      "title": "Support",
+      "intro": "Fragen, Probleme oder Feedback? Schau in die Antworten unten — und wenn das nicht weiterhilft, schreib uns eine E-Mail. Wir sind ein kleines Team und lesen alles.",
+      "contact_cta": "E-Mail an den Support",
+      "faq_title": "Häufige Fragen",
+      "faq": {
+        "what": {
+          "question": "Was ist Passé?",
+          "answer": "Passé ist eine Plattform für Reiseerinnerungen. Du erstellst Reisen, fügst ihnen Erinnerungen — Fotos, Notizen und Orte — hinzu und führst so ein schön organisiertes Archiv deiner Reisen."
+        },
+        "visibility": {
+          "question": "Wer kann meine Reisen und Erinnerungen sehen?",
+          "answer": "Nur du — solange du nichts anderes entscheidest. Alles ist standardmäßig privat. Mit den Tarifen Explorer und Collector kannst du ein öffentliches Portfolio und einzelne Reiseseiten veröffentlichen — und jederzeit wieder zurückziehen."
+        },
+        "plans": {
+          "question": "Was kosten die Tarife?",
+          "answer": "Mit dem kostenlosen Tarif startest du dein Archiv mit bis zu drei Reisen. Explorer kostet 4 € pro Monat, Collector 9 € pro Monat — beide schalten öffentliches Teilen und höhere Limits frei. Den vollständigen Vergleich findest du im Preisbereich der Startseite."
+        },
+        "cancel": {
+          "question": "Wie kündige ich mein Abo?",
+          "answer": "Öffne in deinem Konto den Bereich Abrechnung und wähle \"Abo verwalten\" — das führt dich ins Stripe-Abrechnungsportal, wo du den Tarif wechseln oder kündigen kannst. Dein bezahlter Tarif bleibt bis zum Ende des bereits bezahlten Zeitraums aktiv."
+        },
+        "delete": {
+          "question": "Wie lösche ich meine Daten oder mein Konto?",
+          "answer": "Einzelne Erinnerungen und Reisen kannst du jederzeit in der App löschen. Mit der Löschung deines Kontos werden deine Reisen, Erinnerungen und Fotos entfernt. Wenn du Hilfe brauchst oder vorher eine Kopie deiner Daten möchtest, schreib uns an {email}."
+        },
+        "contact": {
+          "question": "Wie erreiche ich einen Menschen?",
+          "answer": "Schreib uns an {email}. Wir antworten in der Regel innerhalb weniger Werktage."
+        }
+      }
+    }
   }
 }

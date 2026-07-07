@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { Button, buttonVariants } from '@passe/ui/button'
+import { Logo } from '@passe/ui/logo'
 import { Separator } from '@passe/ui/separator'
 import { cn } from '@passe/utils'
 import { useTranslations } from 'next-intl'
@@ -53,7 +54,7 @@ export function MobileMenu({ username }: MobileMenuProps) {
           >
             {/* Overlay header — mirrors the navbar height */}
             <div className="flex h-16 shrink-0 items-center justify-between border-b px-4">
-              <span className="font-display text-3xl font-bold tracking-tight">Passé.</span>
+              <Logo className="h-7 w-auto" />
               <Button
                 variant="ghost"
                 size="icon-sm"

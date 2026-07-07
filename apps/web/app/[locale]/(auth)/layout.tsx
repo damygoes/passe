@@ -1,3 +1,5 @@
+import { Link } from '@/i18n/navigation'
+import { Logo } from '@passe/ui'
 import { getTranslations } from 'next-intl/server'
 import type { ReactNode } from 'react'
 
@@ -13,9 +15,13 @@ export default async function AuthLayout({ children }: { children: ReactNode }) 
         <div className="pointer-events-none absolute inset-0 opacity-[0.03] bg-[radial-gradient(circle_at_1px_1px,_white_1px,_transparent_0)] [background-size:24px_24px]" />
 
         <div className="relative">
-          <span className="font-display text-2xl font-bold tracking-tight text-aged-cream">
-            {tCommon('app_name')}
-          </span>
+          <Link
+            href="/"
+            className="text-foreground transition-opacity hover:opacity-80"
+            aria-label="Passé"
+          >
+            <Logo className="h-6 w-auto" />
+          </Link>
         </div>
 
         <div className="relative space-y-5">

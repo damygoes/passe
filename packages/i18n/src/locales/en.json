@@ -21,7 +21,8 @@
       "subheading": "Start preserving your memories with Passé",
       "or_email": "or continue with email",
       "have_account": "Already have an account?",
-      "sign_in_link": "Sign in"
+      "sign_in_link": "Sign in",
+      "consent": "By creating an account you agree to our <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>."
     },
     "forgot_password": {
       "heading": "Forgot your password?",
@@ -343,6 +344,13 @@
     "plan": {
       "title": "Plan",
       "managed_on_web": "Subscriptions are managed on the Passé website."
+    },
+    "legal": {
+      "title": "Legal",
+      "privacy_policy": "Privacy Policy",
+      "terms_of_service": "Terms of Service",
+      "impressum": "Impressum",
+      "support": "Support"
     }
   },
   "landing": {
@@ -445,7 +453,11 @@
     "footer": {
       "copyright": "© {year} Passé",
       "sign_in": "Sign in",
-      "sign_up": "Sign up"
+      "sign_up": "Sign up",
+      "privacy_policy": "Privacy Policy",
+      "terms_of_service": "Terms of Service",
+      "impressum": "Impressum",
+      "support": "Support"
     }
   },
   "portfolio": {
@@ -467,5 +479,232 @@
     "canceled_banner": "Checkout cancelled — your plan has not changed.",
     "load_error": "Could not load your billing details.",
     "action_error": "Something went wrong. Please try again."
+  },
+  "info": {
+    "privacy": {
+      "meta": {
+        "title": "Privacy Policy — Passé",
+        "description": "How Passé collects, uses, and protects your personal data."
+      },
+      "eyebrow": "Legal",
+      "title": "Privacy Policy",
+      "last_updated": "Last updated: 7 July 2026",
+      "sections": {
+        "controller": {
+          "heading": "Data Controller",
+          "p1": "This privacy policy explains how personal data is processed when you use Passé — the web app at passe.cc and the Passé mobile app (together, the \"Service\").",
+          "p2": "The controller within the meaning of the General Data Protection Regulation (GDPR) is: {legalName}, {legalStreet}, {legalCity}, Germany.",
+          "p3": "You can reach us at any time at {email}."
+        },
+        "overview": {
+          "heading": "Privacy by Default",
+          "p1": "Passé is built privacy-first. Every trip and every memory you create is private by default and visible only to you. Nothing you upload is shown to anyone else unless you explicitly make it public.",
+          "p2": "We only collect the data we need to operate the Service. We do not sell your personal data and we do not use it for advertising."
+        },
+        "data": {
+          "heading": "Data We Collect",
+          "p1": "Depending on how you use the Service, we process the following categories of personal data:",
+          "li1": "Account data — your name, email address, and password (stored in hashed form by our authentication provider). If you sign in with Google or Apple, we receive your name, email address, and profile picture from that provider.",
+          "li2": "Content data — the trips and memories you create, including photos, notes, dates, countries, cities, and the location coordinates you attach to memories.",
+          "li3": "Payment data — if you subscribe to a paid plan, our payment provider Stripe processes your payment details. We never see or store your full card number; we only store your subscription status and plan.",
+          "li4": "Technical data — IP address, browser or device information, and server logs generated automatically when you use the Service."
+        },
+        "purposes": {
+          "heading": "Purposes and Legal Bases",
+          "p1": "We process your data on the following legal bases under Art. 6(1) GDPR:",
+          "li1": "Performance of the contract (Art. 6(1)(b) GDPR) — creating your account, storing your trips and memories, displaying content you chose to make public, and managing your subscription.",
+          "li2": "Legitimate interests (Art. 6(1)(f) GDPR) — securing the Service, preventing abuse, and diagnosing technical problems.",
+          "li3": "Legal obligations (Art. 6(1)(c) GDPR) — retaining billing records under commercial and tax law.",
+          "li4": "Consent (Art. 6(1)(a) GDPR) — where you have given it, for example for optional features; you can withdraw consent at any time with effect for the future."
+        },
+        "processors": {
+          "heading": "Service Providers",
+          "p1": "We use the following service providers (processors) to operate Passé. Each receives only the data required for its function:",
+          "li1": "Clerk (Clerk, Inc., USA) — authentication and account management, including sign-in with Google and Apple.",
+          "li2": "Neon (Neon, Inc., USA) — hosting of our database, where your account, trip, and memory data is stored.",
+          "li3": "Cloudinary (Cloudinary Ltd.) — storage and delivery of the photos you upload.",
+          "li4": "Stripe (Stripe, Inc., USA / Stripe Payments Europe Ltd., Ireland) — payment processing and subscription management.",
+          "li5": "Vercel (Vercel, Inc., USA) — hosting of the web application.",
+          "li6": "OpenStreetMap Nominatim (OpenStreetMap Foundation, UK) — converting location coordinates into place names (and vice versa) when you attach a location to a memory."
+        },
+        "public_content": {
+          "heading": "Public Content",
+          "p1": "If you make your portfolio, a trip, or individual memories public, that content — including photos, notes, place names, and your display name — is visible to anyone who has the link, without signing in. Search engines may index public pages.",
+          "p2": "You can make public content private again at any time. Copies cached by third parties (for example search engines) may remain available for some time after that."
+        },
+        "cookies": {
+          "heading": "Cookies and Local Storage",
+          "p1": "We only use cookies and similar technologies that are strictly necessary to operate the Service: keeping you signed in (session cookies set by our authentication provider) and remembering your language and theme preferences.",
+          "p2": "We do not use advertising, tracking, or analytics cookies."
+        },
+        "transfers": {
+          "heading": "International Data Transfers",
+          "p1": "Some of our service providers are based in the United States. Where personal data is transferred outside the EU/EEA, the transfer is protected by an adequacy decision (such as the EU–US Data Privacy Framework) or the EU Standard Contractual Clauses."
+        },
+        "retention": {
+          "heading": "Data Retention",
+          "p1": "We keep your personal data for as long as your account exists. When you delete your account, your account data, trips, memories, and photos are deleted.",
+          "p2": "Data we are legally required to retain (for example billing records) is kept for the statutory retention periods and deleted afterwards."
+        },
+        "rights": {
+          "heading": "Your Rights",
+          "p1": "Under the GDPR you have the following rights regarding your personal data:",
+          "li1": "Access (Art. 15 GDPR) — obtain a copy of the data we hold about you.",
+          "li2": "Rectification (Art. 16 GDPR) — have inaccurate data corrected.",
+          "li3": "Erasure (Art. 17 GDPR) — have your data deleted.",
+          "li4": "Restriction of processing (Art. 18 GDPR).",
+          "li5": "Data portability (Art. 20 GDPR) — receive your data in a machine-readable format.",
+          "li6": "Objection (Art. 21 GDPR) — object to processing based on legitimate interests.",
+          "li7": "Withdrawal of consent (Art. 7(3) GDPR) — at any time, with effect for the future.",
+          "o1": "You also have the right to lodge a complaint with a data protection supervisory authority, in particular in the EU member state of your residence or workplace."
+        },
+        "changes": {
+          "heading": "Changes to This Policy",
+          "p1": "We may update this privacy policy when the Service or the legal requirements change. The current version is always available on this page; the date above shows when it was last revised."
+        },
+        "contact": {
+          "heading": "Contact",
+          "p1": "For any questions about this privacy policy or your personal data, contact us at {email}."
+        }
+      }
+    },
+    "terms": {
+      "meta": {
+        "title": "Terms of Service — Passé",
+        "description": "The terms that govern your use of Passé."
+      },
+      "eyebrow": "Legal",
+      "title": "Terms of Service",
+      "last_updated": "Last updated: 7 July 2026",
+      "sections": {
+        "scope": {
+          "heading": "Scope",
+          "p1": "These terms of service govern the use of Passé — the web app at passe.cc and the Passé mobile app (together, the \"Service\") — operated by {legalName}, {legalStreet}, {legalCity}, Germany (\"we\", \"us\").",
+          "p2": "By creating an account you agree to these terms."
+        },
+        "service": {
+          "heading": "The Service",
+          "p1": "Passé lets you create trips, attach memories (photos, notes, and locations) to them, and optionally share a public portfolio and public trip pages.",
+          "p2": "The Service is offered in a free plan and the paid Explorer and Collector plans. The features included in each plan are described in the pricing section of our website and may evolve over time."
+        },
+        "account": {
+          "heading": "Your Account",
+          "p1": "You must be at least 16 years old to use Passé. You agree to provide accurate information when registering and to keep your credentials confidential.",
+          "p2": "You are responsible for all activity that happens through your account. Notify us immediately at {email} if you suspect unauthorized use."
+        },
+        "billing": {
+          "heading": "Plans, Payment, and Cancellation",
+          "p1": "Paid plans are billed monthly in advance: Explorer costs €4 per month and Collector costs €9 per month. Prices include VAT where applicable. Payments are processed by Stripe.",
+          "p2": "Subscriptions renew automatically each month until cancelled. You can cancel at any time in the billing portal; your paid plan then remains active until the end of the current billing period and is not renewed. There are no refunds for partial billing periods, except where required by law.",
+          "p3": "If we change prices, we will notify you in advance; price changes apply from the next billing period after the notice."
+        },
+        "content": {
+          "heading": "Your Content",
+          "p1": "You keep all rights to the photos, notes, and other content you upload. You grant us the technical license required to store, process, and display your content for the purpose of operating the Service.",
+          "p2": "For content you explicitly make public, you additionally grant us the right to display it to visitors of your public portfolio and trip pages.",
+          "p3": "You are responsible for your content. You confirm that you own the necessary rights to everything you upload and that your content does not violate applicable law or the rights of others."
+        },
+        "acceptable_use": {
+          "heading": "Acceptable Use",
+          "p1": "You must not:",
+          "li1": "upload content that is illegal, infringes intellectual property or privacy rights of others, or depicts people without the right to share their image;",
+          "li2": "use the Service to harass, deceive, or harm others;",
+          "li3": "attempt to gain unauthorized access to the Service, disrupt its operation, or circumvent plan limits;",
+          "li4": "scrape, resell, or systematically extract content from the Service without our permission."
+        },
+        "privacy": {
+          "heading": "Privacy",
+          "p1": "Your content is private by default and only becomes visible to others if you explicitly make it public. How we handle personal data is described in our privacy policy."
+        },
+        "availability": {
+          "heading": "Availability",
+          "p1": "We operate the Service with reasonable care and skill but do not guarantee uninterrupted availability. We may modify the Service; we will not remove core paid features during a period you have already paid for. Please keep your own copies of irreplaceable photos."
+        },
+        "termination": {
+          "heading": "Termination",
+          "p1": "You can stop using the Service and delete your account at any time in your account settings. Deleting your account deletes your trips, memories, and photos.",
+          "p2": "We may suspend or terminate accounts that materially violate these terms, after a warning where reasonable. Statutory termination rights remain unaffected."
+        },
+        "liability": {
+          "heading": "Liability",
+          "p1": "We are liable without limitation for intent and gross negligence, and for injury to life, body, or health. Liability under the German Product Liability Act remains unaffected.",
+          "p2": "In cases of slight negligence we are liable only for breaches of essential contractual obligations (obligations whose fulfilment makes the proper performance of the contract possible in the first place), and only up to the damage that was foreseeable and typical at the time the contract was concluded."
+        },
+        "changes": {
+          "heading": "Changes to These Terms",
+          "p1": "We may amend these terms with effect for the future, for example when we add features or when legal requirements change. We will notify you of material changes by email or in the app at least 14 days before they take effect. If you do not agree, you can terminate your account before the changes take effect."
+        },
+        "law": {
+          "heading": "Governing Law",
+          "p1": "German law applies, excluding the UN Convention on Contracts for the International Sale of Goods. If you are a consumer, the mandatory consumer protection rules of your country of residence remain unaffected."
+        }
+      }
+    },
+    "impressum": {
+      "meta": {
+        "title": "Impressum — Passé",
+        "description": "Legal notice for Passé in accordance with § 5 DDG."
+      },
+      "eyebrow": "Legal",
+      "title": "Impressum",
+      "sections": {
+        "provider": {
+          "heading": "Information in accordance with § 5 DDG",
+          "p1": "{legalName}",
+          "p2": "{legalStreet}",
+          "p3": "{legalCity}, Germany"
+        },
+        "contact": {
+          "heading": "Contact",
+          "p1": "Email: {email}"
+        },
+        "responsible": {
+          "heading": "Responsible for content in accordance with § 18 (2) MStV",
+          "p1": "{legalName}, {legalStreet}, {legalCity}"
+        },
+        "dispute": {
+          "heading": "EU Dispute Resolution",
+          "p1": "The European Commission provides a platform for online dispute resolution (ODR): https://ec.europa.eu/consumers/odr. You can find our email address above.",
+          "p2": "We are neither willing nor obliged to participate in dispute resolution proceedings before a consumer arbitration board."
+        }
+      }
+    },
+    "support": {
+      "meta": {
+        "title": "Support — Passé",
+        "description": "Get help with Passé — frequently asked questions and contact."
+      },
+      "eyebrow": "Help",
+      "title": "Support",
+      "intro": "Questions, problems, or feedback? Check the answers below — and if that doesn't help, email us. We're a small team and we read everything.",
+      "contact_cta": "Email support",
+      "faq_title": "Frequently asked questions",
+      "faq": {
+        "what": {
+          "question": "What is Passé?",
+          "answer": "Passé is a travel memory platform. You create trips, attach memories — photos, notes, and places — to them, and keep a beautifully organized archive of where you've been."
+        },
+        "visibility": {
+          "question": "Who can see my trips and memories?",
+          "answer": "Only you, unless you decide otherwise. Everything is private by default. On the Explorer and Collector plans you can publish a public portfolio and individual trip pages — and unpublish them again at any time."
+        },
+        "plans": {
+          "question": "What do the plans cost?",
+          "answer": "The free plan lets you start your archive with up to three trips. Explorer costs €4 per month, Collector €9 per month — both unlock public sharing and higher limits. You can see the full comparison in the pricing section of the homepage."
+        },
+        "cancel": {
+          "question": "How do I cancel my subscription?",
+          "answer": "Open Billing in your account and choose \"Manage subscription\" — this takes you to the Stripe billing portal, where you can switch plans or cancel. Your paid plan stays active until the end of the billing period you already paid for."
+        },
+        "delete": {
+          "question": "How do I delete my data or my account?",
+          "answer": "You can delete individual memories and trips at any time in the app. Deleting your account removes your trips, memories, and photos. If you need help or want a copy of your data first, email us at {email}."
+        },
+        "contact": {
+          "question": "How do I reach a human?",
+          "answer": "Email us at {email}. We usually reply within a couple of business days."
+        }
+      }
+    }
   }
 }
