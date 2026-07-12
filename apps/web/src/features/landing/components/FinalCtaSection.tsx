@@ -12,7 +12,7 @@ export async function FinalCtaSection() {
   return (
     <section className="px-6 pb-24 md:pb-32">
       <Reveal className="mx-auto max-w-4xl">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-terracotta to-terracotta-dark px-8 py-16 text-center text-aged-cream">
+        <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-terracotta to-terracotta-dark px-8 py-16 text-center text-aged-cream">
           <Icon
             name="sparkles"
             size="2xl"
