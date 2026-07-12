@@ -5,6 +5,7 @@ import { tokenCache } from '@clerk/expo/token-cache'
 import { PasseApiProvider } from '@passe/hooks'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Stack } from 'expo-router'
+import { Platform } from 'react-native'
 import * as WebBrowser from 'expo-web-browser'
 
 import { I18nProvider } from '@/i18n/I18nProvider'
@@ -24,7 +25,11 @@ const publishableKey = getRequiredEnvVar(
   'EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY',
   process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY,
 )
-const apiUrl = getRequiredEnvVar('EXPO_PUBLIC_API_URL', process.env.EXPO_PUBLIC_API_URL)
+const rawApiUrl = getRequiredEnvVar('EXPO_PUBLIC_API_URL', process.env.EXPO_PUBLIC_API_URL)
+// Android emulator can't resolve the host machine's `localhost` — it needs the 10.0.2.2 alias.
+// iOS Simulator shares the host's network namespace, so `localhost` works there unchanged.
+const apiUrl =
+  Platform.OS === 'android' ? rawApiUrl.replace('localhost', '10.0.2.2') : rawApiUrl
 
 function ApiConnectedApp() {
   const { getToken } = useAuth()
