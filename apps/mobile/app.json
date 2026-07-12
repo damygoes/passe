@@ -27,12 +27,7 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false,
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyBFV665nLzri5tChleQumtXxNLRbZzKmEo"
-        }
-      }
+      "predictiveBackGestureEnabled": false
     },
     "web": {
       "output": "static",
@@ -63,7 +58,7 @@
           "locationWhenInUsePermission": "Passé uses your location to tag memories with the place they were captured."
         }
       ],
-      "expo-maps",
+      "@maplibre/maplibre-react-native",
       [
         "expo-build-properties",
         {

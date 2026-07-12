@@ -1,0 +1,13 @@
+/* MapMemoryPopup renders its own card chrome (rounded corners, shadow,
+   background) — strip maplibre-gl's default popup bubble styling so it
+   doesn't double up. */
+.maplibregl-popup-content {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.maplibregl-popup-tip {
+  display: none;
+}
