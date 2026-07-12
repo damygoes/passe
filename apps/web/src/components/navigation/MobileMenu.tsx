@@ -8,10 +8,11 @@ import { Separator } from '@passe/ui/separator'
 import { cn } from '@passe/utils'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
-import { routes, publicPortfolioRoute } from '@/lib/routes'
+import { routes } from '@/lib/routes'
 import { LocaleDropdownMenu } from '@/components/shared/LocaleDropdownMenu'
 import { ThemeDropdownMenu } from '@/components/shared/ThemeDropdownMenu'
 import { LogoutButton } from '@/features/auth/components/LogoutButton'
+import { PortfolioLink } from './PortfolioLink'
 
 interface MobileMenuProps {
   username: string | null
@@ -86,18 +87,11 @@ export function MobileMenu({ username }: MobileMenuProps) {
               >
                 {t('map')}
               </Link>
-              {username && (
-                <a
-                  href={publicPortfolioRoute(username)}
-                  onClick={close}
-                  className={cn(
-                    buttonVariants({ variant: 'ghost', size: 'sm' }),
-                    'w-full justify-center uppercase text-xl',
-                  )}
-                >
-                  {t('portfolio')}
-                </a>
-              )}
+              <PortfolioLink
+                username={username}
+                onClick={close}
+                className="w-full justify-center uppercase text-xl"
+              />
               <Link
                 href={routes.account}
                 onClick={close}

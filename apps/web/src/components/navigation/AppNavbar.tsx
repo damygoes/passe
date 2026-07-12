@@ -3,11 +3,12 @@ import { Logo } from '@passe/ui/logo'
 import { Navbar, NavbarBrand, NavbarLinks } from '@passe/ui/navbar'
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
-import { routes, publicPortfolioRoute } from '@/lib/routes'
+import { routes } from '@/lib/routes'
 import { LocaleDropdownMenu } from '@/components/shared/LocaleDropdownMenu'
 import { ThemeDropdownMenu } from '@/components/shared/ThemeDropdownMenu'
 import { MobileMenu } from './MobileMenu'
 import { NavbarUserMenu } from './NavbarUserMenu'
+import { PortfolioLink } from './PortfolioLink'
 
 interface AppNavbarProps {
   displayName: string
@@ -39,14 +40,7 @@ export async function AppNavbar({ displayName, email, avatarUrl, username }: App
         <Link href={routes.map} className={buttonVariants({ variant: 'ghost', size: 'sm' })}>
           {t('map')}
         </Link>
-        {username && (
-          <a
-            href={publicPortfolioRoute(username)}
-            className={buttonVariants({ variant: 'ghost', size: 'sm' })}
-          >
-            {t('portfolio')}
-          </a>
-        )}
+        <PortfolioLink username={username} />
       </NavbarLinks>
 
       {/* Desktop user section */}
