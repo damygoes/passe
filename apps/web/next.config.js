@@ -15,6 +15,10 @@ export default withNextIntl({
         protocol: 'https',
         hostname: 'images.unsplash.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+      },
     ],
   },
   allowedDevOrigins: ['192.168.68.57', 'localhost:3000'],
