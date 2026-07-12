@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl'
 import dynamic from 'next/dynamic'
 import { NoGeotaggedMemoriesEmpty } from './NoGeotaggedMemoriesEmpty'
 
-// Leaflet touches `window`/`document`, so it can only run on the client.
+// MapLibre GL touches `window`/`document`, so it can only run on the client.
 const WorldMap = dynamic(() => import('./WorldMap').then((mod) => mod.WorldMap), {
   ssr: false,
   loading: () => <Skeleton className="h-[70vh] w-full rounded-xl" />,

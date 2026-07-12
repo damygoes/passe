@@ -1,75 +1,59 @@
 'use client'
 
-import '@maptiler/sdk/style.css'
-import 'leaflet/dist/leaflet.css'
-import 'react-leaflet-cluster/dist/assets/MarkerCluster.css'
+import 'maplibre-gl/dist/maplibre-gl.css'
+import './map-popup.css'
 
-import { Language, MapStyle, MaptilerLayer } from '@maptiler/leaflet-maptilersdk'
+import { colors } from '@passe/theme'
 import type { MapPoint } from '@passe/types/memory'
-import { Icon } from '@passe/ui/icon'
-import { divIcon, type LatLngTuple } from 'leaflet'
-import { useEffect } from 'react'
-import { renderToStaticMarkup } from 'react-dom/server'
-import { MapContainer, Marker, Popup, useMap } from 'react-leaflet'
-import MarkerClusterGroup from 'react-leaflet-cluster'
+import { useCallback, useMemo, useRef, useState } from 'react'
+import Map, { Marker, Popup, type MapRef, type MarkerEvent } from 'react-map-gl/maplibre'
+import Supercluster from 'supercluster'
 import { MapMemoryPopup } from './MapMemoryPopup'
 
 interface WorldMapProps {
   points: MapPoint[]
 }
 
-// Vector tiles top out well below 22 — without an explicit maxZoom, Leaflet
-// has nothing to fall back to once the raster `<TileLayer>` (which used to
-// supply one implicitly) is gone, and throws "Map has no maxZoom specified".
+// Vector tiles top out well below 22 — without an explicit maxZoom, MapLibre
+// has nothing to fall back to for a raster layer that isn't there.
 const MAX_ZOOM = 19
+const PIN_SIZE = 26
+const CLUSTER_RADIUS = 60
 
-// Vector basemap rendered via MapTiler SDK (production-grade tile infra, not
-// the OSM community demo server). `Language.AUTO` reads the viewer's own
-// browser language, so labels are localized per-visitor with no extra code.
-// `MapStyle.STREETS_V4` is pinned explicitly — the `STREETS` alias still
-// defaults to the deprecated "streets-v2" style, which MapTiler's servers
-// reject and silently fall back from.
-function MapTilerBaseLayer() {
-  const map = useMap()
+// Classic "map pin" glyph (same silhouette as Google Maps markers / Material's
+// `place` icon) — a slim teardrop with a punched-out circle, in a 24x24
+// viewBox. Used as a raw path (not the shared Icon set) so it renders
+// identically on web and mobile from one source of truth for the `d` string.
+const PIN_PATH =
+  'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z'
 
-  useEffect(() => {
-    const layer = new MaptilerLayer({
-      apiKey: process.env.NEXT_PUBLIC_MAPTILER_KEY ?? '',
-      style: MapStyle.STREETS_V4,
-      language: Language.AUTO,
-    }).addTo(map)
-
-    return () => {
-      layer.remove()
-    }
-  }, [map])
-
-  return null
+function mapStyleUrl() {
+  const key = process.env.NEXT_PUBLIC_MAPTILER_KEY ?? ''
+  return `https://api.maptiler.com/maps/streets-v4/style.json?key=${key}`
 }
 
-const PIN_SIZE = 40
+function computeBounds(points: MapPoint[]): [[number, number], [number, number]] {
+  const bounds = points.reduce(
+    (acc, point) => ({
+      minLng: Math.min(acc.minLng, point.lng),
+      maxLng: Math.max(acc.maxLng, point.lng),
+      minLat: Math.min(acc.minLat, point.lat),
+      maxLat: Math.max(acc.maxLat, point.lat),
+    }),
+    { minLng: Infinity, maxLng: -Infinity, minLat: Infinity, maxLat: -Infinity },
+  )
 
-// Custom pin instead of Leaflet's default marker images, which need
-// per-bundler asset-path fixes to resolve correctly under Next.js/Turbopack.
-// The teardrop background is rotated for the classic pin shape; the icon
-// glyph sits in a non-rotated layer on top so it stays upright.
-const pinIcon = divIcon({
-  className: 'passe-map-pin',
-  html: `
-    <div style="position:relative;width:${PIN_SIZE}px;height:${PIN_SIZE}px;">
-      <span style="position:absolute;inset:0;border-radius:50% 50% 50% 0;background:var(--color-primary);transform:rotate(-45deg);border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.4);"></span>
-      <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
-        ${renderToStaticMarkup(<Icon name="location" size="md" color="#fff" />)}
-      </span>
-    </div>
-  `,
-  iconSize: [PIN_SIZE, PIN_SIZE],
-  iconAnchor: [PIN_SIZE / 2, PIN_SIZE],
-  popupAnchor: [0, -PIN_SIZE + 4],
-})
+  return [
+    [bounds.minLng, bounds.minLat],
+    [bounds.maxLng, bounds.maxLat],
+  ]
+}
 
-interface ClusterLike {
-  getChildCount: () => number
+// GeoJSON `Position` types as `number[]`, so indexed access loses the
+// fixed-length tuple guarantee under `noUncheckedIndexedAccess`. Coordinates
+// always come back as [lng, lat] pairs from Supercluster's own output.
+function toLngLat(coordinates: number[]): [number, number] {
+  return [coordinates[0] ?? 0, coordinates[1] ?? 0]
 }
 
 function clusterIconSize(count: number) {
@@ -78,46 +62,172 @@ function clusterIconSize(count: number) {
   return 52
 }
 
-// Brand-colored replacement for the plugin's default green/yellow/orange
-// circles, which blend into the basemap's own green landcover shading.
-function createClusterIcon(cluster: ClusterLike) {
-  const count = cluster.getChildCount()
+// Custom pin instead of a raster marker image, which would need per-bundler
+// asset-path fixes to resolve correctly under Next.js/Turbopack.
+function MapPin() {
+  return (
+    <svg
+      width={PIN_SIZE}
+      height={PIN_SIZE}
+      viewBox="0 0 24 24"
+      style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.4))' }}
+    >
+      <path d={PIN_PATH} fill={colors.terracotta.DEFAULT} />
+    </svg>
+  )
+}
+
+// Brand-colored cluster bubble, replacing the plugin-default green/yellow/
+// orange circles that used to blend into the basemap's own landcover shading.
+function ClusterBubble({ count }: { count: number }) {
   const size = clusterIconSize(count)
 
-  return divIcon({
-    className: 'passe-map-cluster',
-    html: `
-      <div style="display:flex;align-items:center;justify-content:center;width:${size}px;height:${size}px;border-radius:50%;background:var(--color-primary);border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.4);color:#fff;font-weight:600;font-size:14px;">
-        ${count}
-      </div>
-    `,
-    iconSize: [size, size],
-  })
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: size,
+        height: size,
+        borderRadius: '50%',
+        background: colors.terracotta.DEFAULT,
+        border: '3px solid #fff',
+        boxShadow: '0 1px 4px rgba(0,0,0,0.4)',
+        color: '#fff',
+        fontWeight: 600,
+        fontSize: 14,
+      }}
+    >
+      {count}
+    </div>
+  )
+}
+
+interface Viewport {
+  zoom: number
+  bbox: [number, number, number, number]
 }
 
 export function WorldMap({ points }: WorldMapProps) {
-  const bounds: LatLngTuple[] = points.map((point) => [point.lat, point.lng])
+  const mapRef = useRef<MapRef>(null)
+  const [selectedPoint, setSelectedPoint] = useState<MapPoint | null>(null)
+  const [viewport, setViewport] = useState<Viewport | null>(null)
+
+  const bounds = useMemo(() => computeBounds(points), [points])
+
+  // Proximity-based clustering (same engine react-map-gl's own clustering
+  // examples use) — recomputed only when the point set changes; queried
+  // against the live viewport on every move.
+  const index = useMemo(() => {
+    const cluster = new Supercluster<MapPoint>({ radius: CLUSTER_RADIUS, maxZoom: 16 })
+    cluster.load(
+      points.map((point) => ({
+        type: 'Feature',
+        properties: point,
+        geometry: { type: 'Point', coordinates: [point.lng, point.lat] },
+      })),
+    )
+    return cluster
+  }, [points])
+
+  const syncViewport = useCallback(() => {
+    const map = mapRef.current
+    if (!map) return
+    const mapBounds = map.getBounds()
+    setViewport({
+      zoom: Math.round(map.getZoom()),
+      bbox: [
+        mapBounds.getWest(),
+        mapBounds.getSouth(),
+        mapBounds.getEast(),
+        mapBounds.getNorth(),
+      ],
+    })
+  }, [])
+
+  const clusters = viewport
+    ? index.getClusters(viewport.bbox, viewport.zoom)
+    : []
+
+  const handleClusterClick = useCallback(
+    (event: MarkerEvent<MouseEvent>, cluster: Supercluster.ClusterFeature<MapPoint>) => {
+      event.originalEvent.stopPropagation()
+      const map = mapRef.current
+      if (!map) return
+      const [lng, lat] = toLngLat(cluster.geometry.coordinates)
+      const expansionZoom = Math.min(index.getClusterExpansionZoom(cluster.properties.cluster_id), MAX_ZOOM)
+      map.easeTo({ center: [lng, lat], zoom: expansionZoom, duration: 300 })
+    },
+    [index],
+  )
+
+  const handlePointClick = useCallback((event: MarkerEvent<MouseEvent>, point: MapPoint) => {
+    event.originalEvent.stopPropagation()
+    setSelectedPoint(point)
+  }, [])
 
   return (
     <div className="h-[80vh] w-full overflow-hidden rounded-xl border">
-      <MapContainer
-        bounds={bounds}
-        boundsOptions={{ padding: [40, 40], maxZoom: 12 }}
+      <Map
+        ref={mapRef}
+        initialViewState={{
+          bounds,
+          fitBoundsOptions: { padding: 40, maxZoom: 12 },
+        }}
         maxZoom={MAX_ZOOM}
-        scrollWheelZoom
-        className="h-full w-full"
+        mapStyle={mapStyleUrl()}
+        onLoad={syncViewport}
+        onMoveEnd={syncViewport}
+        style={{ width: '100%', height: '100%' }}
       >
-        <MapTilerBaseLayer />
-        <MarkerClusterGroup chunkedLoading iconCreateFunction={createClusterIcon}>
-          {points.map((point) => (
-            <Marker key={point.id} position={[point.lat, point.lng]} icon={pinIcon}>
-              <Popup>
-                <MapMemoryPopup point={point} />
-              </Popup>
+        {clusters.map((feature) => {
+          const [lng, lat] = toLngLat(feature.geometry.coordinates)
+
+          if ('cluster' in feature.properties && feature.properties.cluster) {
+            const cluster = feature as Supercluster.ClusterFeature<MapPoint>
+            return (
+              <Marker
+                key={`cluster-${cluster.properties.cluster_id}`}
+                longitude={lng}
+                latitude={lat}
+                anchor="center"
+                onClick={(event) => handleClusterClick(event, cluster)}
+              >
+                <ClusterBubble count={cluster.properties.point_count} />
+              </Marker>
+            )
+          }
+
+          const point = (feature as Supercluster.PointFeature<MapPoint>).properties
+
+          return (
+            <Marker
+              key={point.id}
+              longitude={lng}
+              latitude={lat}
+              anchor="bottom"
+              onClick={(event) => handlePointClick(event, point)}
+            >
+              <MapPin />
             </Marker>
-          ))}
-        </MarkerClusterGroup>
-      </MapContainer>
+          )
+        })}
+
+        {selectedPoint && (
+          <Popup
+            longitude={selectedPoint.lng}
+            latitude={selectedPoint.lat}
+            anchor="bottom"
+            offset={PIN_SIZE + 4}
+            closeButton={false}
+            closeOnClick={false}
+            onClose={() => setSelectedPoint(null)}
+          >
+            <MapMemoryPopup point={selectedPoint} onClose={() => setSelectedPoint(null)} />
+          </Popup>
+        )}
+      </Map>
     </div>
   )
 }
