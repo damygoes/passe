@@ -69,12 +69,25 @@ export function TripCard({ trip, onPress, entranceDelay = 0, tilt = 0 }: TripCar
           position: 'absolute',
           left: 0,
           right: 0,
-          top: -spacing[12],
+          top: -spacing[16],
           bottom: 0,
         },
         content: { padding: spacing[4], gap: spacing[1] },
-        title: { fontSize: fontSizes.base, fontWeight: fontWeights.semibold, color: cream },
-        date: { fontSize: fontSizes.xs, color: `${cream}D9` },
+        title: {
+          fontSize: fontSizes.lg,
+          fontWeight: fontWeights.semibold,
+          color: cream,
+          textShadowColor: 'rgba(0, 0, 0, 0.6)',
+          textShadowOffset: { width: 0, height: 1 },
+          textShadowRadius: 3,
+        },
+        date: {
+          fontSize: fontSizes.sm,
+          color: `${cream}D9`,
+          textShadowColor: 'rgba(0, 0, 0, 0.6)',
+          textShadowOffset: { width: 0, height: 1 },
+          textShadowRadius: 2,
+        },
         badges: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing[2] - 2, paddingTop: 2 },
         stampChip: { borderColor: `${cream}B3` },
         stampLabel: { color: cream },
@@ -93,7 +106,7 @@ export function TripCard({ trip, onPress, entranceDelay = 0, tilt = 0 }: TripCar
 
       <View style={styles.scrim} pointerEvents="none">
         <LinearGradient
-          colors={[`${espresso}00`, `${espresso}66`, `${espresso}B3`]}
+          colors={[`${espresso}00`, `${espresso}80`, `${espresso}D9`]}
           style={styles.scrimFade}
         />
         <View style={styles.content}>

@@ -73,7 +73,7 @@ function MediaCardScrim({ className, children, ...props }: React.ComponentProps<
     >
       <div
         aria-hidden
-        className="absolute inset-0 bg-gradient-to-t from-dark-espresso/70 via-dark-espresso/20 to-transparent"
+        className="absolute inset-x-0 -top-16 bottom-0 bg-gradient-to-t from-dark-espresso/90 via-dark-espresso/55 to-transparent"
       />
       <div className="relative flex flex-col gap-1.5 p-4 pt-6">{children}</div>
     </div>
@@ -85,7 +85,7 @@ function MediaCardTitle({ className, ...props }: React.ComponentProps<'div'>) {
     <div
       data-slot="media-card-title"
       className={cn(
-        'cn-font-heading text-base leading-snug font-semibold text-aged-cream drop-shadow-sm',
+        'cn-font-heading text-lg leading-snug font-semibold text-aged-cream drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]',
         className,
       )}
       {...props}
@@ -97,7 +97,10 @@ function MediaCardDescription({ className, ...props }: React.ComponentProps<'div
   return (
     <div
       data-slot="media-card-description"
-      className={cn('text-xs text-aged-cream/85 drop-shadow-sm', className)}
+      className={cn(
+        'text-sm text-aged-cream/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]',
+        className,
+      )}
       {...props}
     />
   )

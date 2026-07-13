@@ -1,6 +1,8 @@
-import { currentUser } from '@clerk/nextjs/server'
 import { MotionProvider } from '@/components/motion/MotionProvider'
-import { AppNavbar } from '@/components/navigation/AppNavbar'
+import { AppSidebar } from '@/components/navigation/AppSidebar'
+import { SiteHeader } from '@/components/navigation/SiteHeader'
+import { currentUser } from '@clerk/nextjs/server'
+import { SidebarInset, SidebarProvider } from '@passe/ui'
 import type { ReactNode } from 'react'
 
 interface Props {
@@ -14,16 +16,27 @@ export default async function ProtectedLayout({ children }: Props) {
     user?.primaryEmailAddress?.emailAddress ?? user?.emailAddresses?.[0]?.emailAddress ?? ''
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <AppNavbar
+    <SidebarProvider
+      style={
+        {
+          '--sidebar-width': 'calc(var(--spacing) * 62)',
+          '--header-height': 'calc(var(--spacing) * 12)',
+        } as React.CSSProperties
+      }
+    >
+      <AppSidebar
+        variant="inset"
         displayName={user?.fullName ?? user?.username ?? 'User'}
         email={email}
         avatarUrl={user?.hasImage ? (user.imageUrl ?? null) : null}
         username={user?.username ?? null}
       />
-      <main className="flex-1">
-        <MotionProvider>{children}</MotionProvider>
-      </main>
-    </div>
+      <SidebarInset>
+        <SiteHeader />
+        <main className="flex-1">
+          <MotionProvider>{children}</MotionProvider>
+        </main>
+      </SidebarInset>
+    </SidebarProvider>
   )
 }

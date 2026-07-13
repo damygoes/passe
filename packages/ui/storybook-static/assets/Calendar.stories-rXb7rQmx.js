@@ -1,0 +1,7 @@
+import{i as e,s as t}from"./preload-helper-CT_b8DTk.js";import{t as n}from"./iframe-BzKUYKUQ.js";import{t as r}from"./jsx-runtime-DqZldVDK.js";import{n as i,t as a}from"./Calendar-tTp4opXs.js";function o(){let[e,t]=c.useState(new Date);return(0,l.jsx)(a,{mode:`single`,selected:e,onSelect:t,className:`rounded-xl ring-1 ring-foreground/10`})}function s(){let[e,t]=c.useState({from:new Date,to:void 0});return(0,l.jsx)(a,{mode:`range`,selected:e,onSelect:t,className:`rounded-xl ring-1 ring-foreground/10`})}var c,l,u,d,f,p,m;e((()=>{c=t(n()),i(),l=r(),u={title:`Components/Calendar`,component:a,tags:[`autodocs`]},d={render:()=>(0,l.jsx)(o,{})},f={render:()=>(0,l.jsx)(s,{})},p={render:()=>(0,l.jsx)(a,{mode:`single`,selected:new Date,disabled:!0,className:`rounded-xl ring-1 ring-foreground/10`})},d.parameters={...d.parameters,docs:{...d.parameters?.docs,source:{originalSource:`{
+  render: () => <SingleSelect />
+}`,...d.parameters?.docs?.source}}},f.parameters={...f.parameters,docs:{...f.parameters?.docs,source:{originalSource:`{
+  render: () => <RangeSelect />
+}`,...f.parameters?.docs?.source}}},p.parameters={...p.parameters,docs:{...p.parameters?.docs,source:{originalSource:`{
+  render: () => <Calendar mode="single" selected={new Date()} disabled className="rounded-xl ring-1 ring-foreground/10" />
+}`,...p.parameters?.docs?.source}}},m=[`Default`,`Range`,`Disabled`]}))();export{d as Default,p as Disabled,f as Range,m as __namedExportsOrder,u as default};

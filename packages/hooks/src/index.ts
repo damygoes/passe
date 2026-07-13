@@ -1,18 +1,19 @@
 export { PasseApiProvider, usePasseApi } from './context'
 export type { PasseApiContextValue } from './context'
-export { queryKeys } from './query-keys'
-export { useUser, useUpdateUser, useDeleteAccount } from './hooks/use-user'
-export { useTrips, useTrip, useCreateTrip, useUpdateTrip, useDeleteTrip } from './hooks/use-trips'
-export {
-  useMemories,
-  useAllMemories,
-  useMapPoints,
-  useCreateMemory,
-  useUpdateMemory,
-  useDeleteMemory,
-  useReorderMemories,
-} from './hooks/use-memories'
-export { useUploadImage } from './hooks/use-upload'
-export { useReverseGeocode } from './hooks/use-geocode'
 export { useCreateCheckoutSession, useCreatePortalSession } from './hooks/use-billing'
-export type { NativeUploadFile, UploadFile, UploadedImage } from './hooks/use-upload'
+export { useReverseGeocode } from './hooks/use-geocode'
+export {
+  useAllMemories,
+  useCreateMemory,
+  useDeleteMemory,
+  useMapPoints,
+  useMemories,
+  useReorderMemories,
+  useUpdateMemory,
+} from './hooks/use-memories'
+export { useIsMobile } from './hooks/use-mobile'
+export { useCreateTrip, useDeleteTrip, useTrip, useTrips, useUpdateTrip } from './hooks/use-trips'
+export { useUploadImage } from './hooks/use-upload'
+export type { NativeUploadFile, UploadedImage, UploadFile } from './hooks/use-upload'
+export { useDeleteAccount, useUpdateUser, useUser } from './hooks/use-user'
+export { queryKeys } from './query-keys'
