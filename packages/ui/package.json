@@ -22,9 +22,12 @@
     "./page-header": "./src/page-header/PageHeader.tsx",
     "./popover": "./src/popover/Popover.tsx",
     "./separator": "./src/separator/Separator.tsx",
+    "./sidebar": "./src/sidebar/Sidebar.tsx",
+    "./sheet": "./src/sheet/Sheet.tsx",
     "./skeleton": "./src/skeleton/Skeleton.tsx",
     "./switch": "./src/switch/Switch.tsx",
-    "./textarea": "./src/textarea/Textarea.tsx"
+    "./textarea": "./src/textarea/Textarea.tsx",
+    "./tooltip": "./src/tooltip/Tooltip.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -54,6 +57,7 @@
     "@hugeicons/core-free-icons": "^4.2.2",
     "@hugeicons/react": "^1.1.9",
     "@passe/utils": "workspace:*",
+    "@passe/hooks": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "date-fns": "^4.4.0",
     "react": "^19.2.0",

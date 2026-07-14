@@ -1,5 +1,6 @@
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import '@/styles/globals.css'
+import { TooltipProvider } from '@passe/ui'
 import type { Metadata } from 'next'
 import { getLocale } from 'next-intl/server'
 import type { ReactNode } from 'react'
@@ -20,7 +21,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <TooltipProvider>{children}</TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

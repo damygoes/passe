@@ -9,7 +9,8 @@
     "./trips": "./src/hooks/use-trips.ts",
     "./memories": "./src/hooks/use-memories.ts",
     "./upload": "./src/hooks/use-upload.ts",
-    "./billing": "./src/hooks/use-billing.ts"
+    "./billing": "./src/hooks/use-billing.ts",
+    "./useIsMobile": "./src/hooks/use-mobile.ts"
   },
   "scripts": {
     "check-types": "tsc --noEmit",

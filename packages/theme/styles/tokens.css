@@ -46,6 +46,13 @@
 
   --color-destructive: #ef4444;
 
+  --color-sidebar: var(--color-sandy-beige-light);
+  --color-sidebar-foreground: var(--color-dark-espresso);
+  --color-sidebar-accent: var(--color-sandy-beige);
+  --color-sidebar-accent-foreground: var(--color-dark-espresso);
+  --color-sidebar-border: var(--color-sandy-beige-dark);
+  --color-sidebar-ring: var(--color-terracotta);
+
   /* Font families */
   --font-display: 'Playfair Display', Georgia, serif;
   --font-heading: 'Lora', Georgia, serif;
@@ -93,4 +100,11 @@
   --color-border: #4a3020;
   --color-input: #3a2518;
   --color-ring: var(--color-terracotta);
+
+  --color-sidebar: #221407;
+  --color-sidebar-foreground: var(--color-aged-cream);
+  --color-sidebar-accent: #3a2518;
+  --color-sidebar-accent-foreground: var(--color-sandy-beige);
+  --color-sidebar-border: #4a3020;
+  --color-sidebar-ring: var(--color-terracotta);
 }

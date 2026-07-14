@@ -1,6 +1,11 @@
 // @ts-check
 require('react-native-gesture-handler/jestSetup')
 
+// CI runners are heavily CPU-contended when turbo runs lint/check-types/test/build
+// concurrently (e.g. TripForm.test.tsx alone took 70s in CI vs <1s locally), so the
+// default 5000ms per-test timeout spuriously fails otherwise-fast async tests.
+jest.setTimeout(30000)
+
 // Reanimated 4 (and even its own /mock export) pulls in the native worklets binding on
 // require(), which doesn't exist under Jest's Node environment — use a hand-rolled JS-only
 // mock instead. See src/test/reanimated-mock.js for details.

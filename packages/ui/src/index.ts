@@ -23,7 +23,6 @@ export {
 export { Badge } from './badge/Badge'
 export { Button, buttonVariants } from './button/Button'
 export { Calendar, CalendarDayButton } from './calendar/Calendar'
-export { DatePicker } from './date-picker/DatePicker'
 export {
   Card,
   CardAction,
@@ -33,6 +32,7 @@ export {
   CardHeader,
   CardTitle,
 } from './card/Card'
+export { DatePicker } from './date-picker/DatePicker'
 export {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -85,6 +85,42 @@ export {
   PopoverTrigger,
 } from './popover/Popover'
 export { Separator } from './separator/Separator'
+export {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from './sheet/Sheet'
+export {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupAction,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInput,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuAction,
+  SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSkeleton,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarProvider,
+  SidebarRail,
+  SidebarSeparator,
+  SidebarTrigger,
+} from './sidebar/Sidebar'
 export { Skeleton } from './skeleton/Skeleton'
 export { Switch } from './switch/Switch'
 export { Textarea } from './textarea/Textarea'
+export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip/Tooltip'
