@@ -1,5 +1,6 @@
 import {
   Alert01Icon,
+  AppleIcon,
   ArrowDataTransferHorizontalIcon,
   ArrowDown01Icon,
   ArrowLeft01Icon,
@@ -31,6 +32,7 @@ import {
   Orbit01Icon,
   PanelLeftIcon,
   PencilEdit01Icon,
+  PlayStoreIcon,
   PlusSignIcon,
   Share01Icon,
   Shield01Icon,
@@ -44,6 +46,7 @@ import type { IconName, IconSvgObject } from './types'
 
 export const iconMap = {
   alert: Alert01Icon,
+  apple: AppleIcon,
   'arrow-right': ArrowRight02Icon,
   at: AtIcon,
   calendar: Calendar03Icon,
@@ -76,6 +79,7 @@ export const iconMap = {
   menu: Menu01Icon,
   moon: Moon02Icon,
   'panel-left': PanelLeftIcon,
+  'play-store': PlayStoreIcon,
   plus: PlusSignIcon,
   share: Share01Icon,
   shield: Shield01Icon,

@@ -411,6 +411,15 @@
       "point2": "You choose exactly what goes public",
       "point3": "Make anything private again, any time"
     },
+    "mobileApp": {
+      "eyebrow": "Also on mobile",
+      "heading": "Take your archive with you",
+      "description": "Capture memories on the go and keep every trip synced — the Passé app for iOS and Android.",
+      "ios_eyebrow": "Download on the",
+      "ios_name": "App Store",
+      "android": "Google Play",
+      "screenshotAlt": "The Passé app showing a traveller's trip archive"
+    },
     "pricing": {
       "heading": "Simple plans for every traveller",
       "subheading": "Start free. Upgrade when your archive outgrows it.",

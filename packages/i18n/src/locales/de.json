@@ -411,6 +411,15 @@
       "point2": "Du entscheidest genau, was öffentlich wird",
       "point3": "Mach alles jederzeit wieder privat"
     },
+    "mobileApp": {
+      "eyebrow": "Auch mobil",
+      "heading": "Nimm dein Archiv überall mit",
+      "description": "Halte Erinnerungen unterwegs fest und halte jede Reise synchron — die Passé App für iOS und Android.",
+      "ios_eyebrow": "Download on the",
+      "ios_name": "App Store",
+      "android": "Google Play",
+      "screenshotAlt": "Die Passé App mit dem Reisearchiv einer Nutzerin"
+    },
     "pricing": {
       "heading": "Einfache Pläne für alle Reisenden",
       "subheading": "Starte kostenlos. Upgrade, wenn dein Archiv wächst.",

@@ -1,9 +1,9 @@
+import { Link } from '@/i18n/navigation'
+import { routes } from '@/lib/routes'
 import { Badge } from '@passe/ui/badge'
 import { buttonVariants } from '@passe/ui/button'
 import { Icon } from '@passe/ui/icon'
 import { getTranslations } from 'next-intl/server'
-import { Link } from '@/i18n/navigation'
-import { routes } from '@/lib/routes'
 
 const MARQUEE_PLACES = [
   'Kyoto',
@@ -24,10 +24,6 @@ export async function HeroSection() {
   return (
     <section className="relative flex min-h-[calc(100svh-4rem)] flex-col overflow-hidden">
       {/* Ambient background */}
-      <div
-        aria-hidden
-        className="animate-drift absolute -top-32 -left-32 size-[32rem] rounded-full bg-terracotta/10 blur-3xl"
-      />
       <div
         aria-hidden
         className="animate-drift absolute -right-32 -bottom-16 size-[36rem] rounded-full bg-deep-olive/10 blur-3xl [animation-delay:-10s]"

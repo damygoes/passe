@@ -1,17 +1,24 @@
+import { LocaleDropdownMenu } from '@/components/shared/LocaleDropdownMenu'
+import { ThemeDropdownMenu } from '@/components/shared/ThemeDropdownMenu'
+import { Link } from '@/i18n/navigation'
+import { routes } from '@/lib/routes'
 import { buttonVariants } from '@passe/ui/button'
 import { Logo } from '@passe/ui/logo'
 import { Navbar, NavbarBrand, NavbarUser } from '@passe/ui/navbar'
 import { getTranslations } from 'next-intl/server'
-import { Link } from '@/i18n/navigation'
-import { routes } from '@/lib/routes'
-import { LocaleDropdownMenu } from '@/components/shared/LocaleDropdownMenu'
-import { ThemeDropdownMenu } from '@/components/shared/ThemeDropdownMenu'
 
 export async function LandingHeader() {
   const t = await getTranslations('landing.nav')
 
   return (
-    <Navbar className="border-border/40 bg-background/70 px-6 backdrop-blur-md">
+    <Navbar className="border-none bg-background/75 px-6 backdrop-blur-md">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden [mask-image:radial-gradient(64rem_16rem_at_5%_0%,#c4622d,transparent)]"
+      >
+        <div className="absolute -top-50 -left-20 size-[30rem] rounded-full bg-terracotta/15 blur-3xl" />
+      </div>
+
       <NavbarBrand>
         <Link
           href={routes.home}
