@@ -1,6 +1,7 @@
 import { useDeleteMemory, useReorderMemories, useUpdateMemory } from '@passe/hooks'
 import type { LayoutVariant, Memory } from '@passe/types/memory'
 import type { EditorialSectionVariant } from '@passe/utils'
+import { useRouter } from 'expo-router'
 import { useMemo, useState } from 'react'
 import { Pressable, Text, View } from 'react-native'
 
@@ -52,6 +53,7 @@ export function MemoryLayoutMenu({
   const t = useTranslations('trips.editorial')
   const tCard = useTranslations('trips.memory_card')
   const tEdit = useTranslations('trips.edit_memory')
+  const router = useRouter()
   const theme = useTheme()
   const recipe = useMemo(() => createMemoryLayoutMenuRecipe(theme), [theme])
   const updateMemory = useUpdateMemory()
@@ -96,6 +98,10 @@ export function MemoryLayoutMenu({
     )
   }
 
+  function handleEdit() {
+    router.push(`/(app)/trips/edit-memory/${memory.id}?tripId=${memory.tripId}`)
+  }
+
   function handleDelete() {
     setError(null)
     deleteMemory.mutate(
@@ -110,7 +116,7 @@ export function MemoryLayoutMenu({
         <DropdownMenu>
           <DropdownMenuTrigger>
             <View style={[recipe.base.trigger, isBusy && recipe.states.disabled.trigger]}>
-              <Icon name="layout" size="xs" color={theme.colors.mutedForeground} />
+              <Icon name="layout" size="sm" color={theme.colors.mutedForeground} />
               <Text style={recipe.base.triggerLabel}>{t(`variant_${memory.layoutVariant}`)}</Text>
             </View>
           </DropdownMenuTrigger>
@@ -121,7 +127,7 @@ export function MemoryLayoutMenu({
                 onPress={() => setVariant(option)}
                 icon={
                   memory.layoutVariant === option ? (
-                    <Icon name="check" size="xs" color={theme.colors.primary} />
+                    <Icon name="check" size="sm" color={theme.colors.primary} />
                   ) : undefined
                 }
               >
@@ -139,7 +145,7 @@ export function MemoryLayoutMenu({
             style={[recipe.base.iconButton, isBusy && recipe.states.disabled.iconButton]}
             accessibilityLabel={t('flip')}
           >
-            <Icon name="swap" size="xs" color={theme.colors.mutedForeground} />
+            <Icon name="swap" size="sm" color={theme.colors.mutedForeground} />
           </Pressable>
         )}
 
@@ -153,7 +159,7 @@ export function MemoryLayoutMenu({
           ]}
           accessibilityLabel={t('move_up')}
         >
-          <Icon name="chevron-up" size="xs" color={theme.colors.mutedForeground} />
+          <Icon name="chevron-up" size="sm" color={theme.colors.mutedForeground} />
         </Pressable>
 
         <Pressable
@@ -166,7 +172,7 @@ export function MemoryLayoutMenu({
           ]}
           accessibilityLabel={t('move_down')}
         >
-          <Icon name="chevronDown" size="xs" color={theme.colors.mutedForeground} />
+          <Icon name="chevronDown" size="sm" color={theme.colors.mutedForeground} />
         </Pressable>
 
         <Pressable
@@ -181,15 +187,24 @@ export function MemoryLayoutMenu({
         >
           <Icon
             name={memory.isPublic ? 'eye' : 'eye-off'}
-            size="xs"
+            size="sm"
             color={theme.colors.mutedForeground}
           />
+        </Pressable>
+
+        <Pressable
+          onPress={handleEdit}
+          hitSlop={8}
+          style={recipe.base.iconButton}
+          accessibilityLabel={tCard('edit')}
+        >
+          <Icon name="edit" size="sm" color={theme.colors.mutedForeground} />
         </Pressable>
 
         <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
           <AlertDialogTrigger>
             <View style={recipe.base.iconButton} accessibilityLabel={tCard('delete')}>
-              <Icon name="delete" size="xs" color={theme.colors.destructive} />
+              <Icon name="delete" size="sm" color={theme.colors.destructive} />
             </View>
           </AlertDialogTrigger>
           <AlertDialogContent>

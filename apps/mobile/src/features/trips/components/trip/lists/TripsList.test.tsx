@@ -9,11 +9,11 @@ jest.mock('./TripsListSkeleton', () => {
   const { Text } = require('react-native')
   return { TripsListSkeleton: () => <Text>loading-skeleton</Text> }
 })
-jest.mock('./NoTripsEmpty', () => {
+jest.mock('@/features/trips/components/trip/empty/NoTripsEmpty', () => {
   const { Text } = require('react-native')
   return { NoTripsEmpty: () => <Text>no-trips</Text> }
 })
-jest.mock('./TripCard', () => {
+jest.mock('@/features/trips/components/trip/card/TripCard', () => {
   const { Text, TouchableOpacity } = require('react-native')
   return {
     TripCard: ({ trip, onPress }: { trip: { id: string; title: string }; onPress: () => void }) => (

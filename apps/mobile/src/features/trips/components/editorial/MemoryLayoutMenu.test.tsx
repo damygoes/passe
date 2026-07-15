@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react-native'
 import type { Memory } from '@passe/types/memory'
+import { mockPush } from '@/test/expo-router-mock'
 import { MemoryLayoutMenu } from './MemoryLayoutMenu'
 
 const mockUpdateMutate = jest.fn()
@@ -36,6 +37,7 @@ describe('MemoryLayoutMenu', () => {
     mockUpdateMutate.mockClear()
     mockReorderMutate.mockClear()
     mockDeleteMutate.mockClear()
+    mockPush.mockClear()
   })
 
   it('shows the current layout variant on the trigger', () => {
@@ -202,6 +204,19 @@ describe('MemoryLayoutMenu', () => {
       { id: 'memory-1', tripId: 'trip-1', isPublic: false },
       expect.any(Object),
     )
+  })
+
+  it('navigates to the edit-memory route when the edit button is pressed', () => {
+    render(
+      <MemoryLayoutMenu
+        memory={baseMemory}
+        resolvedVariant="hero"
+        orderedIds={orderedIds}
+        index={1}
+      />,
+    )
+    fireEvent.press(screen.getByLabelText('edit'))
+    expect(mockPush).toHaveBeenCalledWith('/(app)/trips/edit-memory/memory-1?tripId=trip-1')
   })
 
   describe('delete', () => {

@@ -1,7 +1,7 @@
 import { useLocalSearchParams } from 'expo-router'
 
 import { AccountFormLayout } from '@/features/account/components/AccountFormLayout'
-import { AddMemoryForm } from '@/features/trips/components/AddMemoryForm'
+import { AddMemoryForm } from '@/features/trips/components/memories/AddMemoryForm'
 import { useTranslations } from '@/i18n/useTranslations'
 
 export function AddMemoryScreen() {

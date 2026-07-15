@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router'
 
-import { NewTripHeaderButton } from '@/features/trips/components/NewTripHeaderButton'
+import { NewTripHeaderButton } from '@/features/trips/components/trip/lists/NewTripHeaderButton'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
@@ -18,6 +18,7 @@ export default function TripsLayout() {
   const tTrips = useTranslations('trips.new')
   const tEdit = useTranslations('trips.edit')
   const tMemory = useTranslations('trips.new_memory')
+  const tEditMemory = useTranslations('trips.edit_memory')
   const { colors } = useTheme()
 
   return (
@@ -28,11 +29,18 @@ export default function TripsLayout() {
         headerTitleStyle: { color: colors.foreground },
       }}
     >
-      <Stack.Screen name="index" options={{ title: '', headerRight: () => <NewTripHeaderButton /> }} />
+      <Stack.Screen
+        name="index"
+        options={{ title: '', headerRight: () => <NewTripHeaderButton /> }}
+      />
       <Stack.Screen name="[id]" options={{ title: '', headerBackButtonDisplayMode: 'minimal' }} />
       <Stack.Screen name="new" options={{ ...sheetOptions, title: tTrips('title') }} />
       <Stack.Screen name="edit/[id]" options={{ ...sheetOptions, title: tEdit('title') }} />
       <Stack.Screen name="new-memory/[id]" options={{ ...sheetOptions, title: tMemory('title') }} />
+      <Stack.Screen
+        name="edit-memory/[id]"
+        options={{ ...sheetOptions, title: tEditMemory('title') }}
+      />
     </Stack>
   )
 }

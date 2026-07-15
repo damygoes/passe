@@ -41,7 +41,7 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
     () =>
       StyleSheet.create({
         container: { gap: spacing[8] },
-        chapter: { gap: spacing[5] },
+        chapter: { gap: spacing[6] },
         chapterHeader: { gap: spacing[1] },
         chapterSubtitle: {
           fontSize: fontSizes.xs,

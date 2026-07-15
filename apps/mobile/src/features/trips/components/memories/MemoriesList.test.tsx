@@ -13,7 +13,7 @@ jest.mock('./NoMemoriesEmpty', () => {
   const { Text } = require('react-native')
   return { NoMemoriesEmpty: () => <Text>no-memories</Text> }
 })
-jest.mock('./EditorialMemories', () => {
+jest.mock('@/features/trips/components/editorial/EditorialMemories', () => {
   const { Text } = require('react-native')
   return {
     EditorialMemories: ({ memories }: { memories: unknown[] }) => (

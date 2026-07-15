@@ -73,7 +73,7 @@ export function EditorialChapters({
             <div className="mt-3 h-px w-16 bg-primary" />
           </header>
 
-          <div className="space-y-12">
+          <div className="space-y-16">
             {chapter.sections.map(({ memory, variant }, index) => (
               <div
                 key={memory.id}

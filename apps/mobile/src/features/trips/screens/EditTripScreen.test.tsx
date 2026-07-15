@@ -5,7 +5,7 @@ import { EditTripScreen } from './EditTripScreen'
 const mockUseTrip = jest.fn()
 jest.mock('@passe/hooks', () => ({ useTrip: (id: string) => mockUseTrip(id) }))
 
-jest.mock('@/features/trips/components/TripForm', () => {
+jest.mock('@/features/trips/components/trip/forms/TripForm', () => {
   const { Text } = require('react-native')
   return { TripForm: ({ trip }: { trip: { title: string } }) => <Text>trip-form:{trip.title}</Text> }
 })

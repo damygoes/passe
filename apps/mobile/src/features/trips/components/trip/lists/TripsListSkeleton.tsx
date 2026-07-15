@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { StyleSheet, View } from 'react-native'
 
 import { useTheme } from '@/hooks/useTheme'
-import { TripCardSkeleton } from './TripCardSkeleton'
+import { TripCardSkeleton } from '@/features/trips/components/trip/card/TripCardSkeleton'
 
 export function TripsListSkeleton() {
   const { spacing } = useTheme()

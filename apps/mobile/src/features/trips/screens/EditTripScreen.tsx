@@ -6,7 +6,7 @@ import { StyleSheet, View } from 'react-native'
 import { Skeleton } from '@/components/ui/skeleton'
 import { AccountFormLayout } from '@/features/account/components/AccountFormLayout'
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
-import { TripForm } from '@/features/trips/components/TripForm'
+import { TripForm } from '@/features/trips/components/trip/forms/TripForm'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 

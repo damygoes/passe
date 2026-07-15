@@ -8,7 +8,7 @@ import { Icon } from '@/components/ui/icon'
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
-import { EditorialMemories } from './EditorialMemories'
+import { EditorialMemories } from '@/features/trips/components/editorial/EditorialMemories'
 import { MemoriesListSkeleton } from './MemoriesListSkeleton'
 import { NoMemoriesEmpty } from './NoMemoriesEmpty'
 

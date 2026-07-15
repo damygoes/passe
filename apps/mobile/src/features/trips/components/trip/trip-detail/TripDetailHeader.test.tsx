@@ -3,7 +3,11 @@ import { mockPush } from '@/test/expo-router-mock'
 import { TripDetailHeader } from './TripDetailHeader'
 
 const mockUseTrip = jest.fn()
-jest.mock('@passe/hooks', () => ({ useTrip: (id: string) => mockUseTrip(id) }))
+const mockDeleteMutate = jest.fn()
+jest.mock('@passe/hooks', () => ({
+  useTrip: (id: string) => mockUseTrip(id),
+  useDeleteTrip: () => ({ mutate: mockDeleteMutate, isPending: false }),
+}))
 
 jest.mock('./TripDetailHeaderSkeleton', () => {
   const { Text } = require('react-native')

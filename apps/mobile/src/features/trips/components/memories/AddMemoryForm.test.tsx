@@ -1,20 +1,40 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native'
+import type { Memory } from '@passe/types/memory'
 import { mockPush } from '@/test/expo-router-mock'
 import { AddMemoryForm } from './AddMemoryForm'
 
 const mockUseUser = jest.fn()
 const mockUseMemories = jest.fn()
 const mockCreateMemory = jest.fn()
+const mockUpdateMemory = jest.fn()
 const mockUploadMutateAsync = jest.fn()
 
 jest.mock('@passe/hooks', () => ({
   useUser: () => mockUseUser(),
   useMemories: () => mockUseMemories(),
   useCreateMemory: () => ({ mutateAsync: mockCreateMemory, isPending: false }),
+  useUpdateMemory: () => ({ mutateAsync: mockUpdateMemory, isPending: false }),
   useUploadImage: () => ({ mutateAsync: mockUploadMutateAsync }),
 }))
 
-jest.mock('./DateField', () => {
+const existingMemory: Memory = {
+  id: 'memory-1',
+  tripId: 'trip-1',
+  userId: 'user-1',
+  note: 'Great day',
+  media: [],
+  location: null,
+  city: 'Paris',
+  country: 'France',
+  capturedAt: new Date('2026-01-01'),
+  isPublic: false,
+  layoutVariant: 'auto',
+  sortOrder: null,
+  createdAt: new Date('2026-01-01'),
+  updatedAt: new Date('2026-01-01'),
+}
+
+jest.mock('@/features/trips/components/trip/date-field/DateField', () => {
   const { Text } = require('react-native')
   return { DateField: ({ label }: { label: string }) => <Text>{label}</Text> }
 })
@@ -90,7 +110,9 @@ describe('AddMemoryForm', () => {
     render(<AddMemoryForm tripId="trip-1" />)
     fireEvent.press(screen.getByText('use_current_location'))
 
-    await waitFor(() => expect(screen.getByPlaceholderText('city_placeholder')).toHaveProp('value', 'Paris'))
+    await waitFor(() =>
+      expect(screen.getByPlaceholderText('city_placeholder')).toHaveProp('value', 'Paris'),
+    )
     expect(screen.getByPlaceholderText('country_placeholder')).toHaveProp('value', 'France')
   })
 
@@ -100,5 +122,34 @@ describe('AddMemoryForm', () => {
     render(<AddMemoryForm tripId="trip-1" />)
     fireEvent.press(screen.getByText('upgrade_cta'))
     expect(mockPush).toHaveBeenCalledWith('/(app)/account')
+  })
+
+  it('pre-fills fields and shows "save" when editing an existing memory', () => {
+    render(<AddMemoryForm tripId="trip-1" memory={existingMemory} />)
+    expect(screen.getByPlaceholderText('note_placeholder')).toHaveProp('value', 'Great day')
+    expect(screen.getByPlaceholderText('city_placeholder')).toHaveProp('value', 'Paris')
+    expect(screen.getByPlaceholderText('country_placeholder')).toHaveProp('value', 'France')
+    expect(screen.getByText('save')).toBeTruthy()
+  })
+
+  it('does not show the plan-limit banner when editing, even at the memory limit', () => {
+    mockUseUser.mockReturnValue({ data: { plan: 'free' } })
+    mockUseMemories.mockReturnValue({ data: Array.from({ length: 10 }) })
+    render(<AddMemoryForm tripId="trip-1" memory={existingMemory} />)
+    expect(screen.queryByText('limit_reached')).toBeNull()
+  })
+
+  it('updates a memory and navigates back on success', async () => {
+    mockUpdateMemory.mockResolvedValue({ id: 'memory-1' })
+    render(<AddMemoryForm tripId="trip-1" memory={existingMemory} />)
+
+    fireEvent.changeText(screen.getByPlaceholderText('note_placeholder'), 'Updated note')
+    fireEvent.press(screen.getByText('save'))
+
+    await waitFor(() => expect(mockUpdateMemory).toHaveBeenCalled())
+    expect(mockUpdateMemory).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 'memory-1', tripId: 'trip-1', note: 'Updated note' }),
+    )
+    expect(mockCreateMemory).not.toHaveBeenCalled()
   })
 })

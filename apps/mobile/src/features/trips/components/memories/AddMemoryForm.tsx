@@ -2,10 +2,12 @@ import { canAddMemory } from '@passe/auth/plan-gates'
 import {
   useCreateMemory,
   useMemories,
+  useUpdateMemory,
   useUploadImage,
   useUser,
   type UploadedImage,
 } from '@passe/hooks'
+import type { Memory } from '@passe/types/memory'
 import { createLogger } from '@passe/logger'
 import { Image } from 'expo-image'
 import * as ImagePicker from 'expo-image-picker'
@@ -18,41 +20,60 @@ import { Button } from '@/components/ui/button'
 import { FormField } from '@/components/ui/form-field'
 import { Icon } from '@/components/ui/icon'
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
-import { DateField } from '@/features/trips/components/DateField'
+import { DateField } from '@/features/trips/components/trip/date-field/DateField'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
 const log = createLogger({ context: { module: 'features/trips/AddMemoryForm' } })
 
-interface AddMemoryFormProps {
-  tripId: string
+function mediaToPhotos(media: Memory['media']): UploadedImage[] {
+  return media.map((item) => ({
+    url: item.url,
+    width: item.width ?? null,
+    height: item.height ?? null,
+  }))
 }
 
-export function AddMemoryForm({ tripId }: AddMemoryFormProps) {
+interface AddMemoryFormProps {
+  tripId: string
+  // When provided, the form edits this memory; otherwise it creates a new one.
+  memory?: Memory
+}
+
+export function AddMemoryForm({ tripId, memory }: AddMemoryFormProps) {
   const t = useTranslations('trips.new_memory')
   const tNew = useTranslations('trips.new')
+  const tEdit = useTranslations('trips.edit_memory')
   const tUpload = useTranslations('trips.image_upload')
   const router = useRouter()
   const { colors, spacing, fontSizes, borderRadius } = useTheme()
   const { data: user } = useUser()
   const { data: memories = [] } = useMemories(tripId)
   const upload = useUploadImage()
-  const { mutateAsync: createMemory, isPending } = useCreateMemory()
+  const { mutateAsync: createMemory, isPending: isCreating } = useCreateMemory()
+  const { mutateAsync: updateMemory, isPending: isUpdating } = useUpdateMemory()
 
-  const [photos, setPhotos] = useState<UploadedImage[]>([])
+  const isEditing = Boolean(memory)
+  const isPending = isCreating || isUpdating
+
+  const [photos, setPhotos] = useState<UploadedImage[]>(() =>
+    memory ? mediaToPhotos(memory.media) : [],
+  )
   const [pendingUploads, setPendingUploads] = useState(0)
-  const [note, setNote] = useState('')
-  const [capturedAt, setCapturedAt] = useState<Date>(new Date())
-  const [city, setCity] = useState('')
-  const [country, setCountry] = useState('')
-  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null)
+  const [note, setNote] = useState(() => memory?.note ?? '')
+  const [capturedAt, setCapturedAt] = useState<Date>(() => memory?.capturedAt ?? new Date())
+  const [city, setCity] = useState(() => memory?.city ?? '')
+  const [country, setCountry] = useState(() => memory?.country ?? '')
+  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(
+    () => memory?.location ?? null,
+  )
   const [isLocating, setIsLocating] = useState(false)
   const [locationError, setLocationError] = useState<string | null>(null)
   const [contentError, setContentError] = useState<string | null>(null)
   const [globalError, setGlobalError] = useState<string | null>(null)
 
   const plan = user?.plan ?? 'free'
-  const atMemoryLimit = !canAddMemory(plan, memories.length)
+  const atMemoryLimit = !isEditing && !canAddMemory(plan, memories.length)
   const isUploading = pendingUploads > 0
   const isBusy = isPending || isUploading || atMemoryLimit
 
@@ -191,25 +212,40 @@ export function AddMemoryForm({ tripId }: AddMemoryFormProps) {
     }
     setContentError(null)
 
+    const commonFields = {
+      note: trimmedNote || undefined,
+      capturedAt,
+      city: city.trim() || undefined,
+      country: country.trim() || undefined,
+      location: coords ?? undefined,
+      media: photos.map((photo) => ({
+        url: photo.url,
+        mediaType: 'photo' as const,
+        width: photo.width,
+        height: photo.height,
+      })),
+    }
+
+    // A memory explicitly locked to "Text only" never renders photos (see
+    // resolveVariant in @passe/utils/editorial) — adding a photo here is an
+    // affirmative action that should make it visible, so reset the layout.
+    const shouldResetLayout = memory?.layoutVariant === 'text' && photos.length > 0
+
     try {
-      await createMemory({
-        tripId,
-        note: trimmedNote || undefined,
-        capturedAt,
-        city: city.trim() || undefined,
-        country: country.trim() || undefined,
-        location: coords ?? undefined,
-        isPublic: false,
-        media: photos.map((photo) => ({
-          url: photo.url,
-          mediaType: 'photo' as const,
-          width: photo.width,
-          height: photo.height,
-        })),
-      })
+      if (memory) {
+        await updateMemory({
+          id: memory.id,
+          tripId,
+          ...commonFields,
+          ...(shouldResetLayout ? { layoutVariant: 'auto' as const } : {}),
+        })
+      } else {
+        await createMemory({ tripId, ...commonFields, isPublic: false })
+      }
       router.back()
     } catch (err) {
-      setGlobalError(err instanceof Error ? err.message : t('errors.create_failed'))
+      const fallback = isEditing ? tEdit('update_failed') : t('errors.create_failed')
+      setGlobalError(err instanceof Error ? err.message : fallback)
     }
   }
 
@@ -318,7 +354,13 @@ export function AddMemoryForm({ tripId }: AddMemoryFormProps) {
       />
 
       <Button onPress={handleSubmit} loading={isPending} disabled={isBusy} fullWidth>
-        {isPending ? t('creating') : t('create')}
+        {isEditing
+          ? isPending
+            ? tEdit('saving')
+            : tEdit('save')
+          : isPending
+            ? t('creating')
+            : t('create')}
       </Button>
     </View>
   )

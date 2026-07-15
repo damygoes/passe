@@ -14,12 +14,12 @@ jest.mock('@passe/hooks', () => ({
   useUpdateTrip: () => ({ mutateAsync: mockUpdateTrip, isPending: false }),
 }))
 
-jest.mock('./CoverImagePicker', () => {
+jest.mock('@/features/trips/components/trip/image-upload/CoverImagePicker', () => {
   const { Text } = require('react-native')
   return { CoverImagePicker: () => <Text>cover-image-picker</Text> }
 })
 
-jest.mock('./CountryTagsInput', () => {
+jest.mock('@/features/trips/components/trip/country-tags/CountryTagsInput', () => {
   const { Text, TouchableOpacity } = require('react-native')
   return {
     CountryTagsInput: ({ onChange }: { onChange: (v: string[]) => void }) => (
@@ -30,7 +30,7 @@ jest.mock('./CountryTagsInput', () => {
   }
 })
 
-jest.mock('./DateField', () => {
+jest.mock('@/features/trips/components/trip/date-field/DateField', () => {
   const { Text, TouchableOpacity } = require('react-native')
   return {
     DateField: ({ label, onChange }: { label: string; onChange: (d: Date) => void }) => (

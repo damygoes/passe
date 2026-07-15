@@ -4,8 +4,8 @@ import { ScrollView, StyleSheet } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-import { MemoriesList } from '@/features/trips/components/MemoriesList'
-import { TripDetailHeader } from '@/features/trips/components/TripDetailHeader'
+import { MemoriesList } from '@/features/trips/components/memories/MemoriesList'
+import { TripDetailHeader } from '@/features/trips/components/trip/trip-detail/TripDetailHeader'
 import { useTheme } from '@/hooks/useTheme'
 import { enterUp } from '@/lib/motion'
 
