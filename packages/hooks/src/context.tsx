@@ -5,6 +5,7 @@ interface FetchOptions {
   method?: string
   body?: unknown
   headers?: Record<string, string>
+  signal?: AbortSignal
 }
 
 export interface PasseApiContextValue {

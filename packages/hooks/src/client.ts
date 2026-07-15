@@ -8,6 +8,7 @@ interface FetchOptions {
   method?: string
   body?: unknown
   headers?: Record<string, string>
+  signal?: AbortSignal
 }
 
 export async function fetchApi<T>(
@@ -28,6 +29,7 @@ export async function fetchApi<T>(
       ...options.headers,
     },
     body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
+    signal: options.signal,
   })
 
   if (!res.ok) {

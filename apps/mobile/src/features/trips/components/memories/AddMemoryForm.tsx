@@ -61,7 +61,9 @@ export function AddMemoryForm({ tripId, memory }: AddMemoryFormProps) {
   )
   const [pendingUploads, setPendingUploads] = useState(0)
   const [note, setNote] = useState(() => memory?.note ?? '')
-  const [capturedAt, setCapturedAt] = useState<Date>(() => memory?.capturedAt ?? new Date())
+  const [capturedAt, setCapturedAt] = useState<Date>(() =>
+    memory ? new Date(memory.capturedAt) : new Date(),
+  )
   const [city, setCity] = useState(() => memory?.city ?? '')
   const [country, setCountry] = useState(() => memory?.country ?? '')
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(

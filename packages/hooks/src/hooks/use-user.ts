@@ -7,7 +7,7 @@ export function useUser() {
   const { fetchApi } = usePasseApi()
   return useQuery({
     queryKey: queryKeys.user(),
-    queryFn: () => fetchApi<AuthUser>('/api/user'),
+    queryFn: ({ signal }) => fetchApi<AuthUser>('/api/user', { signal }),
   })
 }
 

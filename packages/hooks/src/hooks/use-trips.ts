@@ -7,7 +7,7 @@ export function useTrips() {
   const { fetchApi } = usePasseApi()
   return useQuery({
     queryKey: queryKeys.trips(),
-    queryFn: () => fetchApi<Trip[]>('/api/trips'),
+    queryFn: ({ signal }) => fetchApi<Trip[]>('/api/trips', { signal }),
   })
 }
 
@@ -15,7 +15,7 @@ export function useTrip(id: string) {
   const { fetchApi } = usePasseApi()
   return useQuery({
     queryKey: queryKeys.trip(id),
-    queryFn: () => fetchApi<Trip>(`/api/trips/${id}`),
+    queryFn: ({ signal }) => fetchApi<Trip>(`/api/trips/${id}`, { signal }),
     enabled: Boolean(id),
   })
 }
@@ -52,8 +52,12 @@ export function useDeleteTrip() {
     mutationFn: (id: string) =>
       fetchApi<{ id: string }>(`/api/trips/${id}`, { method: 'DELETE' }),
     onSuccess: (_, id) => {
+      queryClient.cancelQueries({ queryKey: queryKeys.trip(id) })
+      queryClient.cancelQueries({ queryKey: queryKeys.memories(id) })
       queryClient.invalidateQueries({ queryKey: queryKeys.trips() })
+      queryClient.invalidateQueries({ queryKey: queryKeys.allMemories() })
       queryClient.removeQueries({ queryKey: queryKeys.trip(id) })
+      queryClient.removeQueries({ queryKey: queryKeys.memories(id) })
     },
   })
 }

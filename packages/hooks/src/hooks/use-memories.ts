@@ -12,7 +12,7 @@ export function useMemories(tripId: string) {
   const { fetchApi } = usePasseApi()
   return useQuery({
     queryKey: queryKeys.memories(tripId),
-    queryFn: () => fetchApi<Memory[]>(`/api/trips/${tripId}/memories`),
+    queryFn: ({ signal }) => fetchApi<Memory[]>(`/api/trips/${tripId}/memories`, { signal }),
     enabled: Boolean(tripId),
   })
 }
@@ -21,7 +21,7 @@ export function useAllMemories() {
   const { fetchApi } = usePasseApi()
   return useQuery({
     queryKey: queryKeys.allMemories(),
-    queryFn: () => fetchApi<Memory[]>('/api/memories'),
+    queryFn: ({ signal }) => fetchApi<Memory[]>('/api/memories', { signal }),
   })
 }
 
@@ -30,7 +30,7 @@ export function useMapPoints() {
   const { fetchApi } = usePasseApi()
   return useQuery({
     queryKey: queryKeys.mapPoints(),
-    queryFn: () => fetchApi<MapPoint[]>('/api/memories/map'),
+    queryFn: ({ signal }) => fetchApi<MapPoint[]>('/api/memories/map', { signal }),
   })
 }
 
@@ -42,6 +42,7 @@ export function useCreateMemory() {
       fetchApi<Memory>(`/api/trips/${data.tripId}/memories`, { method: 'POST', body: data }),
     onSuccess: (_, { tripId }) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.memories(tripId) })
+      queryClient.invalidateQueries({ queryKey: queryKeys.allMemories() })
     },
   })
 }
@@ -54,6 +55,7 @@ export function useUpdateMemory() {
       fetchApi<Memory>(`/api/trips/${tripId}/memories/${id}`, { method: 'PATCH', body: data }),
     onSuccess: (_, { tripId }) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.memories(tripId) })
+      queryClient.invalidateQueries({ queryKey: queryKeys.allMemories() })
     },
   })
 }
@@ -100,6 +102,7 @@ export function useDeleteMemory() {
       fetchApi<{ id: string }>(`/api/trips/${tripId}/memories/${id}`, { method: 'DELETE' }),
     onSuccess: (_, { tripId }) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.memories(tripId) })
+      queryClient.invalidateQueries({ queryKey: queryKeys.allMemories() })
     },
   })
 }

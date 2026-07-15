@@ -13,5 +13,5 @@ export function formatTripDateFull(date: Date | string): string {
 }
 
 export function formatDateRange(start: Date | string, end: Date | string): string {
-  return `${formatTripDate(start)} – ${formatTripDate(end)}`
+  return `${formatTripDateFull(start)} – ${formatTripDateFull(end)}`
 }

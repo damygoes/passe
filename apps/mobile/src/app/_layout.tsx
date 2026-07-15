@@ -15,7 +15,7 @@ import { I18nProvider } from '@/i18n/I18nProvider'
 WebBrowser.maybeCompleteAuthSession()
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { refetchOnWindowFocus: 'always' } },
+  defaultOptions: { queries: { staleTime: 1000 * 60, refetchOnWindowFocus: 'always' } },
 })
 
 function getRequiredEnvVar(name: string, value: string | undefined): string {
