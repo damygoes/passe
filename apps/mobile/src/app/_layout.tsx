@@ -4,6 +4,7 @@ import { ClerkProvider, useAuth } from '@clerk/expo'
 import { tokenCache } from '@clerk/expo/token-cache'
 import { PasseApiProvider } from '@passe/hooks'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { StatusBar } from 'expo-status-bar'
 import { Stack } from 'expo-router'
 import { Platform } from 'react-native'
 import * as WebBrowser from 'expo-web-browser'
@@ -43,12 +44,15 @@ function ApiConnectedApp() {
 
 export default function RootLayout() {
   return (
-    <I18nProvider>
-      <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-        <QueryClientProvider client={queryClient}>
-          <ApiConnectedApp />
-        </QueryClientProvider>
-      </ClerkProvider>
-    </I18nProvider>
+    <>
+      <StatusBar style="auto" />
+      <I18nProvider>
+        <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+          <QueryClientProvider client={queryClient}>
+            <ApiConnectedApp />
+          </QueryClientProvider>
+        </ClerkProvider>
+      </I18nProvider>
+    </>
   )
 }
