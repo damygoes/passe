@@ -33,6 +33,29 @@ interface CloudinaryUploadResponse {
   height?: number
 }
 
+function isNativeUploadFile(file: UploadFile): file is NativeUploadFile {
+  return !(file instanceof Blob)
+}
+
+// Expo's fetch/FormData implementation only accepts a real Blob or an object
+// exposing `.bytes()` — React Native's classic { uri, name, type } file
+// descriptor throws "Unsupported FormDataPart implementation". Response.blob()
+// can't be used to build one either: Expo's own blob() constructs a
+// React Native Blob from raw ArrayBuffer data, which RN's Blob explicitly
+// rejects ("Creating blobs from 'ArrayBuffer' ... are not supported"). Reading
+// the bytes directly and wrapping them in a `.bytes()`-shaped part sidesteps
+// both native-only failure modes.
+interface BytesFormDataPart {
+  bytes(): Promise<Uint8Array>
+  name: string
+  type: string
+}
+
+async function toBytesPart(file: NativeUploadFile): Promise<BytesFormDataPart> {
+  const response = await fetch(file.uri)
+  return { bytes: () => response.bytes(), name: file.name, type: file.type }
+}
+
 // Uploads an image directly from the client to Cloudinary using a
 // short-lived signature issued by POST /api/uploads/sign. Image bytes never
 // pass through the Passé API. Works on web (File/Blob) and React Native
@@ -45,8 +68,11 @@ export function useUploadImage() {
       const sig = await fetchApi<UploadSignature>('/api/uploads/sign', { method: 'POST' })
 
       const form = new FormData()
-      // RN's FormData accepts { uri, name, type } but its types only declare Blob
-      form.append('file', file as Blob)
+      if (isNativeUploadFile(file)) {
+        form.append('file', (await toBytesPart(file)) as unknown as Blob)
+      } else {
+        form.append('file', file)
+      }
       form.append('api_key', sig.apiKey)
       form.append('timestamp', String(sig.timestamp))
       form.append('signature', sig.signature)

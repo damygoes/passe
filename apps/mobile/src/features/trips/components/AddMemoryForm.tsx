@@ -6,6 +6,7 @@ import {
   useUser,
   type UploadedImage,
 } from '@passe/hooks'
+import { createLogger } from '@passe/logger'
 import { Image } from 'expo-image'
 import * as ImagePicker from 'expo-image-picker'
 import * as Location from 'expo-location'
@@ -20,6 +21,8 @@ import { ErrorBanner } from '@/features/account/components/ErrorBanner'
 import { DateField } from '@/features/trips/components/DateField'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
+
+const log = createLogger({ context: { module: 'features/trips/AddMemoryForm' } })
 
 interface AddMemoryFormProps {
   tripId: string
@@ -122,7 +125,10 @@ export function AddMemoryForm({ tripId }: AddMemoryFormProps) {
           type: asset.mimeType ?? 'image/jpeg',
         })
         setPhotos((current) => [...current, uploaded])
-      } catch {
+      } catch (err) {
+        log.error('Photo upload failed', {
+          error: err instanceof Error ? err.message : String(err),
+        })
         setGlobalError(tUpload('upload_failed'))
       } finally {
         setPendingUploads((count) => count - 1)

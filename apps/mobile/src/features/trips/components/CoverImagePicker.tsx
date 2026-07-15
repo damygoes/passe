@@ -1,4 +1,5 @@
 import { useUploadImage } from '@passe/hooks'
+import { createLogger } from '@passe/logger'
 import { Image } from 'expo-image'
 import * as ImagePicker from 'expo-image-picker'
 import { useMemo, useState } from 'react'
@@ -8,6 +9,8 @@ import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
+
+const log = createLogger({ context: { module: 'features/trips/CoverImagePicker' } })
 
 interface CoverImagePickerProps {
   value?: string | null
@@ -69,7 +72,10 @@ export function CoverImagePicker({ value, onChange, disabled }: CoverImagePicker
         type: asset.mimeType ?? 'image/jpeg',
       })
       onChange(uploaded.url)
-    } catch {
+    } catch (err) {
+      log.error('Cover image upload failed', {
+        error: err instanceof Error ? err.message : String(err),
+      })
       setUploadError(t('upload_failed'))
     }
   }
