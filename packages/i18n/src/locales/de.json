@@ -175,6 +175,12 @@
     "detail": {
       "back": "← Zurück",
       "edit": "Bearbeiten",
+      "delete": "Löschen",
+      "delete_title": "Diese Reise löschen?",
+      "delete_description": "Dadurch werden die Reise und alle ihre Erinnerungen dauerhaft entfernt.",
+      "delete_cancel": "Abbrechen",
+      "delete_confirm": "Löschen",
+      "delete_failed": "Reise konnte nicht gelöscht werden. Bitte versuche es erneut.",
       "memories_heading": "Erinnerungen",
       "trip_error": "Reise konnte nicht geladen werden. Versuche, die Seite neu zu laden.",
       "memories_error": "Erinnerungen konnten nicht geladen werden. Versuche, die Seite neu zu laden.",

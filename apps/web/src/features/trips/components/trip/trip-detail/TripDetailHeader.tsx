@@ -1,10 +1,22 @@
 'use client'
 
-import { Link } from '@/i18n/navigation'
+import { Link, useRouter } from '@/i18n/navigation'
 import { routes, tripEditRoute } from '@/lib/routes'
-import { useTrip } from '@passe/hooks'
+import { useDeleteTrip, useTrip } from '@passe/hooks'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@passe/ui/alert-dialog'
 import { Badge } from '@passe/ui/badge'
-import { buttonVariants } from '@passe/ui/button'
+import { Button, buttonVariants } from '@passe/ui/button'
+import { Icon } from '@passe/ui/icon'
 import {
   PageHeader,
   PageHeaderAction,
@@ -23,8 +35,12 @@ interface Props {
 
 export function TripDetailHeader({ id }: Props) {
   const t = useTranslations('trips.detail')
+  const router = useRouter()
   const { data: trip, isLoading, isError } = useTrip(id)
+  const deleteTrip = useDeleteTrip()
   const [aspectRatio, setAspectRatio] = useState<number | null>(null)
+  const [deleteOpen, setDeleteOpen] = useState(false)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
   const imgRef = useRef<HTMLImageElement>(null)
 
   useEffect(() => {
@@ -33,6 +49,17 @@ export function TripDetailHeader({ id }: Props) {
       setAspectRatio(img.naturalWidth / img.naturalHeight)
     }
   }, [trip?.coverImageUrl])
+
+  async function handleDelete() {
+    if (!trip) return
+    setDeleteError(null)
+    try {
+      await deleteTrip.mutateAsync(trip.id)
+      router.push(routes.dashboard)
+    } catch {
+      setDeleteError(t('delete_failed'))
+    }
+  }
 
   if (isLoading) return <TripDetailHeaderSkeleton />
 
@@ -60,6 +87,33 @@ export function TripDetailHeader({ id }: Props) {
           >
             {t('edit')}
           </Link>
+          <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+            <AlertDialogTrigger
+              render={<Button variant="destructive" size="icon-sm" aria-label={t('delete')} />}
+            >
+              <Icon name="delete" size="sm" />
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>{t('delete_title')}</AlertDialogTitle>
+                <AlertDialogDescription>{t('delete_description')}</AlertDialogDescription>
+              </AlertDialogHeader>
+              {deleteError && <p className="px-1 text-sm text-destructive">{deleteError}</p>}
+              <AlertDialogFooter>
+                <AlertDialogCancel onClick={() => setDeleteOpen(false)}>
+                  {t('delete_cancel')}
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  variant="destructive"
+                  disabled={deleteTrip.isPending}
+                  isLoading={deleteTrip.isPending}
+                  onClick={handleDelete}
+                >
+                  {t('delete_confirm')}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </PageHeaderAction>
       </PageHeader>
 

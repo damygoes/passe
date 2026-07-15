@@ -175,6 +175,12 @@
     "detail": {
       "back": "← Back",
       "edit": "Edit",
+      "delete": "Delete",
+      "delete_title": "Delete this trip?",
+      "delete_description": "This will permanently remove the trip and all its memories.",
+      "delete_cancel": "Cancel",
+      "delete_confirm": "Delete",
+      "delete_failed": "Failed to delete trip. Please try again.",
       "memories_heading": "Memories",
       "trip_error": "Could not load trip. Try refreshing the page.",
       "memories_error": "Could not load memories. Try refreshing the page.",
