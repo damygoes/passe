@@ -1,5 +1,6 @@
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
-import { db, trips } from '@passe/db'
+import { deleteCloudinaryAssets } from '@/lib/cloudinary'
+import { db, memories, memoryMedia, trips } from '@passe/db'
 import { createLogger } from '@passe/logger'
 import { TripSchema, UpdateTripSchema } from '@passe/types/trip'
 import { and, eq } from 'drizzle-orm'
@@ -77,6 +78,15 @@ export async function DELETE(_req: Request, ctx: RouteContext<'/api/trips/[id]'>
 
   const { id } = await ctx.params
 
+  // Gather what will cascade away before deleting — the FK cascade removes
+  // these rows from the DB, but the actual files still live on Cloudinary
+  // and need an explicit cleanup call.
+  const mediaRows = await db
+    .select({ url: memoryMedia.url, mediaType: memoryMedia.mediaType })
+    .from(memoryMedia)
+    .innerJoin(memories, eq(memoryMedia.memoryId, memories.id))
+    .where(eq(memories.tripId, id))
+
   let deleted
   try {
     ;[deleted] = await db
@@ -92,6 +102,16 @@ export async function DELETE(_req: Request, ctx: RouteContext<'/api/trips/[id]'>
   }
 
   if (!deleted) return apiError('Trip not found', 404)
+
+  await deleteCloudinaryAssets([
+    ...mediaRows.map((row) => ({
+      url: row.url,
+      resourceType: row.mediaType === 'video' ? ('video' as const) : ('image' as const),
+    })),
+    ...(deleted.coverImageUrl
+      ? [{ url: deleted.coverImageUrl, resourceType: 'image' as const }]
+      : []),
+  ])
 
   return apiSuccess({ id: deleted.id })
 }

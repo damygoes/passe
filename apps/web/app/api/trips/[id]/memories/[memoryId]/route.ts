@@ -1,4 +1,5 @@
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
+import { deleteCloudinaryAssets } from '@/lib/cloudinary'
 import { geocodeCityCountry } from '@/lib/geocode'
 import { fromDbMemory, toDbMemoryValues } from '@/lib/memory'
 import { db, memories, memoryMedia, users } from '@passe/db'
@@ -52,7 +53,10 @@ export async function PATCH(
   // touch location and toDbMemoryValues leaves any existing coordinates alone.
   const dataForDb =
     'location' in parsed.data && parsed.data.location == null
-      ? { ...parsed.data, location: await geocodeCityCountry(parsed.data.city, parsed.data.country) }
+      ? {
+          ...parsed.data,
+          location: await geocodeCityCountry(parsed.data.city, parsed.data.country),
+        }
       : parsed.data
 
   let updated
@@ -77,6 +81,14 @@ export async function PATCH(
   // When the request includes media, replace the memory's media set wholesale
   // (delete + reinsert; array position = sortOrder).
   if (parsed.data.media !== undefined) {
+    const incomingUrls = new Set(parsed.data.media.map((item) => item.url))
+    const existingMedia = await db.query.memoryMedia.findMany({
+      where: eq(memoryMedia.memoryId, memoryId),
+    })
+    // Only photos dropped from the list get cleaned up — ones the client
+    // re-sent unchanged must not be deleted from Cloudinary.
+    const removedMedia = existingMedia.filter((media) => !incomingUrls.has(media.url))
+
     try {
       await db.delete(memoryMedia).where(eq(memoryMedia.memoryId, memoryId))
       if (parsed.data.media.length > 0) {
@@ -98,6 +110,13 @@ export async function PATCH(
       })
       return apiError('Internal server error', 500)
     }
+
+    await deleteCloudinaryAssets(
+      removedMedia.map((media) => ({
+        url: media.url,
+        resourceType: media.mediaType === 'video' ? ('video' as const) : ('image' as const),
+      })),
+    )
   }
 
   const mediaRows = await db.query.memoryMedia.findMany({
@@ -127,6 +146,12 @@ export async function DELETE(
 
   const { id: tripId, memoryId } = await ctx.params
 
+  // The FK cascade removes these memory_media rows from the DB, but the
+  // actual files still live on Cloudinary and need an explicit cleanup call.
+  const mediaRows = await db.query.memoryMedia.findMany({
+    where: eq(memoryMedia.memoryId, memoryId),
+  })
+
   let deleted
   try {
     ;[deleted] = await db
@@ -144,6 +169,13 @@ export async function DELETE(
   }
 
   if (!deleted) return apiError('Memory not found', 404)
+
+  await deleteCloudinaryAssets(
+    mediaRows.map((media) => ({
+      url: media.url,
+      resourceType: media.mediaType === 'video' ? ('video' as const) : ('image' as const),
+    })),
+  )
 
   return apiSuccess({ id: deleted.id })
 }
