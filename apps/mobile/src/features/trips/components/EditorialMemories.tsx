@@ -11,6 +11,7 @@ import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated'
 
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
+import { MemoryLayoutMenu } from './MemoryLayoutMenu'
 
 interface EditorialMemoriesProps {
   memories: Memory[]
@@ -28,6 +29,10 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
   const { width: windowWidth } = useWindowDimensions()
 
   const chapters = useMemo(() => buildEditorialChapters(memories), [memories])
+  const orderedIds = useMemo(
+    () => chapters.flatMap((chapter) => chapter.sections.map((section) => section.memory.id)),
+    [chapters],
+  )
 
   // Carousel slides are ~78% of the screen so the next photo peeks in
   const slideWidth = Math.round(windowWidth * 0.78)
@@ -96,7 +101,7 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
     [colors, spacing, fontSizes, fontWeights, borderRadius],
   )
 
-  function renderSection(memory: Memory, variant: EditorialSectionVariant) {
+  function renderSection(memory: Memory, variant: EditorialSectionVariant, orderedIndex: number) {
     const meta = metaLabel(memory)
     const date = formatTripDateFull(memory.capturedAt)
     const cover = memory.media[0]
@@ -106,6 +111,12 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
         <View style={styles.textSection}>
           {memory.note && <Text style={styles.quote}>{memory.note}</Text>}
           <Text style={styles.meta}>{[meta, date].filter(Boolean).join(' · ')}</Text>
+          <MemoryLayoutMenu
+            memory={memory}
+            resolvedVariant={variant}
+            orderedIds={orderedIds}
+            index={orderedIndex}
+          />
         </View>
       )
     }
@@ -134,6 +145,12 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
             {memory.note ? <Text style={styles.note}>{memory.note}</Text> : <View />}
             <Text style={styles.meta}>{date}</Text>
           </View>
+          <MemoryLayoutMenu
+            memory={memory}
+            resolvedVariant={variant}
+            orderedIds={orderedIds}
+            index={orderedIndex}
+          />
         </View>
       )
     }
@@ -155,6 +172,12 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
             )}
             <Text style={styles.meta}>{date}</Text>
           </View>
+          <MemoryLayoutMenu
+            memory={memory}
+            resolvedVariant={variant}
+            orderedIds={orderedIds}
+            index={orderedIndex}
+          />
         </View>
       )
     }
@@ -177,6 +200,12 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
         </View>
         <Text style={styles.meta}>{[meta, date].filter(Boolean).join(' · ')}</Text>
         {memory.note && <Text style={styles.stackedNote}>{memory.note}</Text>}
+        <MemoryLayoutMenu
+          memory={memory}
+          resolvedVariant={variant}
+          orderedIds={orderedIds}
+          index={orderedIndex}
+        />
       </View>
     )
   }
@@ -195,7 +224,7 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
               key={memory.id}
               entering={FadeInDown.delay(Math.min(index * 50, 300)).duration(220)}
             >
-              {renderSection(memory, variant)}
+              {renderSection(memory, variant, orderedIds.indexOf(memory.id))}
             </Animated.View>
           ))}
         </View>

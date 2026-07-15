@@ -22,6 +22,15 @@ jest.mock('@clerk/expo', () => require('./src/test/clerk-expo-mock'))
 jest.mock('@clerk/expo/legacy', () => require('./src/test/clerk-expo-mock'))
 jest.mock('expo-router', () => require('./src/test/expo-router-mock'))
 
+// useSafeAreaInsets() throws without a <SafeAreaProvider> ancestor (unlike SafeAreaView, which
+// degrades gracefully) — components like DropdownMenuContent that need raw inset values would
+// otherwise require every consuming test to wrap in a provider. Other exports (SafeAreaView,
+// SafeAreaProvider, etc.) keep their real implementation.
+jest.mock('react-native-safe-area-context', () => ({
+  ...jest.requireActual('react-native-safe-area-context'),
+  useSafeAreaInsets: () => ({ top: 0, right: 0, bottom: 0, left: 0 }),
+}))
+
 afterEach(() => {
   jest.clearAllMocks()
 })

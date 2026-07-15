@@ -201,6 +201,7 @@
       "delete_description": "This will permanently remove the memory and its photos.",
       "delete_confirm": "Delete",
       "delete_cancel": "Cancel",
+      "delete_failed": "Failed to delete memory. Please try again.",
       "photo_count": "{count, plural, one {# photo} other {# photos}}"
     },
     "empty": {

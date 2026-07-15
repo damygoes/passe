@@ -201,6 +201,7 @@
       "delete_description": "Die Erinnerung und ihre Fotos werden dauerhaft entfernt.",
       "delete_confirm": "Löschen",
       "delete_cancel": "Abbrechen",
+      "delete_failed": "Erinnerung konnte nicht gelöscht werden. Bitte versuche es erneut.",
       "photo_count": "{count, plural, one {# Foto} other {# Fotos}}"
     },
     "empty": {
