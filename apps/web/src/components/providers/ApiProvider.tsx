@@ -7,7 +7,10 @@ import { useState, type ReactNode } from 'react'
 
 export function ApiProvider({ children }: { children: ReactNode }) {
   const [queryClient] = useState(
-    () => new QueryClient({ defaultOptions: { queries: { staleTime: 1000 * 60 } } }),
+    () =>
+      new QueryClient({
+        defaultOptions: { queries: { staleTime: 1000 * 60, refetchOnWindowFocus: 'always' } },
+      }),
   )
   const { getToken } = useAuth()
 

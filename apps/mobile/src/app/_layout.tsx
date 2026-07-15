@@ -9,11 +9,14 @@ import { Stack } from 'expo-router'
 import { Platform } from 'react-native'
 import * as WebBrowser from 'expo-web-browser'
 
+import { useAppStateFocusManager } from '@/hooks/useAppStateFocusManager'
 import { I18nProvider } from '@/i18n/I18nProvider'
 
 WebBrowser.maybeCompleteAuthSession()
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { refetchOnWindowFocus: 'always' } },
+})
 
 function getRequiredEnvVar(name: string, value: string | undefined): string {
   if (!value) {
@@ -43,6 +46,8 @@ function ApiConnectedApp() {
 }
 
 export default function RootLayout() {
+  useAppStateFocusManager()
+
   return (
     <>
       <StatusBar style="auto" />
