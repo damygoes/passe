@@ -88,25 +88,25 @@ src/
 
 This is the mobile equivalent of `@passe/ui` (which cannot run in React Native). Before writing raw `TouchableOpacity` / `Text` wrappers inside a feature, check here first.
 
-| Component | Import path | Variants / Sizes | Notes |
-|-----------|-------------|-----------------|-------|
-| `Button` | `@/components/ui/button` | variants: `primary`, `secondary`, `ghost`, `danger` · sizes: `sm`, `md`, `lg` | |
-| `Icon` | `@/components/ui/icon` | sizes: `xs`, `sm`, `md`, `lg`, `xl`, `2xl`–`5xl` | Same icon names as `@passe/ui`; icon data from `@passe/ui/icon-map` |
-| `Separator` | `@/components/ui/separator` | orientations: `horizontal`, `vertical` | |
-| `Badge` | `@/components/ui/badge` | variants: `default`, `secondary`, `destructive`, `outline`, `ghost` | |
-| `Skeleton` | `@/components/ui/skeleton` | — | Reanimated shimmer; size via `style` prop |
-| `AnimatedNumber` | `@/components/ui/animated-number` | — | UI-thread count-up from 0 to `value`; props: `value`, `delayMs?`, `style?` (TextStyle); respects reduce-motion |
-| `LinearGradient` | `@/components/ui/linear-gradient` | — | Drop-in for expo-linear-gradient drawn with react-native-svg (no extra native module); props: `colors`, `locations?`, `start?`, `end?`, `style?` |
-| `PressableScale` | `@/components/ui/pressable-scale` | — | Pressable with springy scale-down feedback; optional `restRotation` tilt that straightens while pressed; wrapper styles via `containerStyle` |
-| `Input` | `@/components/ui/input` | — | Supports `icon`, `iconPosition`, `isLoading`, `onIconPress`, `inputStyle` |
-| `FormField` | `@/components/ui/form-field` | — | Wraps `Input` with a label, optional `labelRight` slot, and error text |
-| `Textarea` | `@/components/ui/textarea` | — | Multiline `TextInput`, auto-grows |
-| `Avatar` | `@/components/ui/avatar` | sizes: `sm`, `default`, `lg` | Sub-components: `Avatar`, `AvatarImage`, `AvatarFallback` |
-| `Card` | `@/components/ui/card` | sizes: `default`, `sm` | Sub-components: `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter` |
-| `Empty` | `@/components/ui/empty` | — | Sub-components: `Empty`, `EmptyHeader`, `EmptyMedia`, `EmptyTitle`, `EmptyDescription`, `EmptyContent` |
-| `PageHeader` | `@/components/ui/page-header` | — | Sub-components: `PageHeader`, `PageHeaderTitle`, `PageHeaderDescription`, `PageHeaderAction` |
-| `AlertDialog` | `@/components/ui/alert-dialog` | — | Controlled via `open`/`onOpenChange`; sub-components: `AlertDialog`, `AlertDialogTrigger`, `AlertDialogContent`, `AlertDialogHeader`, `AlertDialogTitle`, `AlertDialogDescription`, `AlertDialogFooter`, `AlertDialogAction`, `AlertDialogCancel` |
-| `DropdownMenu` | `@/components/ui/dropdown-menu` | item variants: `default`, `destructive` | Sub-components: `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuGroup`, `DropdownMenuLabel`, `DropdownMenuItem`, `DropdownMenuSeparator` |
+| Component        | Import path                       | Variants / Sizes                                                              | Notes                                                                                                                                                                                                                                             |
+| ---------------- | --------------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Button`         | `@/components/ui/button`          | variants: `primary`, `secondary`, `ghost`, `danger` · sizes: `sm`, `md`, `lg` |                                                                                                                                                                                                                                                   |
+| `Icon`           | `@/components/ui/icon`            | sizes: `xs`, `sm`, `md`, `lg`, `xl`, `2xl`–`5xl`                              | Same icon names as `@passe/ui`; icon data from `@passe/ui/icon-map`                                                                                                                                                                               |
+| `Separator`      | `@/components/ui/separator`       | orientations: `horizontal`, `vertical`                                        |                                                                                                                                                                                                                                                   |
+| `Badge`          | `@/components/ui/badge`           | variants: `default`, `secondary`, `destructive`, `outline`, `ghost`           |                                                                                                                                                                                                                                                   |
+| `Skeleton`       | `@/components/ui/skeleton`        | —                                                                             | Reanimated shimmer; size via `style` prop                                                                                                                                                                                                         |
+| `AnimatedNumber` | `@/components/ui/animated-number` | —                                                                             | UI-thread count-up from 0 to `value`; props: `value`, `delayMs?`, `style?` (TextStyle); respects reduce-motion                                                                                                                                    |
+| `LinearGradient` | `@/components/ui/linear-gradient` | —                                                                             | Drop-in for expo-linear-gradient drawn with react-native-svg (no extra native module); props: `colors`, `locations?`, `start?`, `end?`, `style?`                                                                                                  |
+| `PressableScale` | `@/components/ui/pressable-scale` | —                                                                             | Pressable with springy scale-down feedback; optional `restRotation` tilt that straightens while pressed; wrapper styles via `containerStyle`                                                                                                      |
+| `Input`          | `@/components/ui/input`           | —                                                                             | Supports `icon`, `iconPosition`, `isLoading`, `onIconPress`, `inputStyle`                                                                                                                                                                         |
+| `FormField`      | `@/components/ui/form-field`      | —                                                                             | Wraps `Input` with a label, optional `labelRight` slot, and error text                                                                                                                                                                            |
+| `Textarea`       | `@/components/ui/textarea`        | —                                                                             | Multiline `TextInput`, auto-grows                                                                                                                                                                                                                 |
+| `Avatar`         | `@/components/ui/avatar`          | sizes: `sm`, `default`, `lg`                                                  | Sub-components: `Avatar`, `AvatarImage`, `AvatarFallback`                                                                                                                                                                                         |
+| `Card`           | `@/components/ui/card`            | sizes: `default`, `sm`                                                        | Sub-components: `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`                                                                                                                                                 |
+| `Empty`          | `@/components/ui/empty`           | —                                                                             | Sub-components: `Empty`, `EmptyHeader`, `EmptyMedia`, `EmptyTitle`, `EmptyDescription`, `EmptyContent`                                                                                                                                            |
+| `PageHeader`     | `@/components/ui/page-header`     | —                                                                             | Sub-components: `PageHeader`, `PageHeaderTitle`, `PageHeaderDescription`, `PageHeaderAction`                                                                                                                                                      |
+| `AlertDialog`    | `@/components/ui/alert-dialog`    | —                                                                             | Controlled via `open`/`onOpenChange`; sub-components: `AlertDialog`, `AlertDialogTrigger`, `AlertDialogContent`, `AlertDialogHeader`, `AlertDialogTitle`, `AlertDialogDescription`, `AlertDialogFooter`, `AlertDialogAction`, `AlertDialogCancel` |
+| `DropdownMenu`   | `@/components/ui/dropdown-menu`   | item variants: `default`, `destructive`                                       | Sub-components: `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuGroup`, `DropdownMenuLabel`, `DropdownMenuItem`, `DropdownMenuSeparator`                                                                               |
 
 > **Icon data sharing:** `@passe/ui` is a dependency of `apps/mobile` solely to import `@passe/ui/icon-map`. No other `@passe/ui` subpath may be used in mobile — all other exports are DOM-based and incompatible with React Native.
 
@@ -145,6 +145,7 @@ const recipe = createButtonRecipe(useTheme())
 ```
 
 Rules:
+
 - One recipe file per component — `src/recipes/<name>.ts` maps 1:1 to `src/components/ui/<name>/`
 - Never define `StyleSheet.create()` calls with conditional variant logic inside a component file
 - Each slot value must be a frozen `StyleSheet` entry (call `StyleSheet.create({ style: ... }).style`)
@@ -204,7 +205,7 @@ model carries across both apps:
 import { useTranslations } from '@/i18n/useTranslations'
 
 const t = useTranslations('auth.form')
-t('email_label')                 // "Email"
+t('email_label') // "Email"
 t('check_email_body', { email }) // "We sent a 6-digit code to {email}" → interpolated
 ```
 
@@ -243,6 +244,24 @@ export default function RootLayout() {
 
 ---
 
+## Error Tracking (Sentry)
+
+`Sentry.init()` is called at module scope in `src/app/_layout.tsx`, and the default export is
+wrapped with `Sentry.wrap(RootLayout)` for automatic crash capture and navigation tracing (via
+`Sentry.reactNavigationIntegration()` — Expo Router sits on React Navigation under the hood).
+
+- `EXPO_PUBLIC_SENTRY_DSN` must be set in `.env.local` for local dev, and in each `eas.json`
+  build profile's `env` block for EAS builds
+- Source-map/debug-symbol upload during EAS builds needs `SENTRY_AUTH_TOKEN` registered as an
+  EAS secret (`eas env:create`) — not committed anywhere in this repo
+- The `@sentry/react-native/expo` config plugin is registered in `app.json` → `plugins` —
+  changing its config requires a clean prebuild (`rm -rf ios android && expo prebuild --clean`)
+- `apps/mobile/metro.config.js` wraps the final Metro config with `withSentryConfig` from
+  `@sentry/react-native/metro` — applied last, after the singleton `resolveRequest` override, so
+  it doesn't disturb the react/react-query pinning
+
+---
+
 ## Styling
 
 - All styles via `StyleSheet.create()` + theme tokens from `useTheme()` — never recurring raw inline objects
@@ -269,28 +288,28 @@ Or define static styles at the bottom of the file when theme tokens are not need
 
 Never import directly from `src/theme/` in components — always go through `useTheme()`.
 
-| File | Exports |
-|---|---|
-| `colors.ts` | `lightColors`, `darkColors` (`SemanticColors`) — Passé brand palette: `primary` (terracotta), `primaryForeground` (agedCream), `secondary` (sandyBeige), `secondaryForeground` (darkEspresso), `muted`, `mutedForeground`, `destructive`, etc. |
-| `spacing.ts` | `spacing` (numeric scale), `borderRadius` — re-exported from `@passe/theme` |
-| `typography.ts` | `fonts` (platform-aware font families), `fontSizes`, `fontWeights`, `lineHeights`, `resolveLineHeight(fontSize, multiplier)` |
-| `index.ts` | Assembles the full `theme` const; exports `ThemeDefinition` type |
+| File            | Exports                                                                                                                                                                                                                                        |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `colors.ts`     | `lightColors`, `darkColors` (`SemanticColors`) — Passé brand palette: `primary` (terracotta), `primaryForeground` (agedCream), `secondary` (sandyBeige), `secondaryForeground` (darkEspresso), `muted`, `mutedForeground`, `destructive`, etc. |
+| `spacing.ts`    | `spacing` (numeric scale), `borderRadius` — re-exported from `@passe/theme`                                                                                                                                                                    |
+| `typography.ts` | `fonts` (platform-aware font families), `fontSizes`, `fontWeights`, `lineHeights`, `resolveLineHeight(fontSize, multiplier)`                                                                                                                   |
+| `index.ts`      | Assembles the full `theme` const; exports `ThemeDefinition` type                                                                                                                                                                               |
 
 ---
 
 ## Shared Packages — What to Use and How
 
-| Package | Import path | Notes |
-|---|---|---|
-| `@passe/types` | `@passe/types/trip`, `@passe/types/memory`, `@passe/types/user` | Zod schemas + inferred TS types; always validate API responses |
-| `@passe/hooks` | `@passe/hooks` | `PasseApiProvider` + all data hooks |
-| `@passe/auth/plan-gates` | `@passe/auth/plan-gates` | `canCreateTrip()`, `canAddMemory()`, `PLAN_LIMITS` for plan-gating UI |
-| `@passe/auth/types` | `@passe/auth/types` | Shared auth TypeScript types |
-| `@passe/auth/constants` | `@passe/auth/constants` | `PUBLIC_ROUTES` and other constants |
-| `@passe/i18n` | `@passe/i18n` | `LOCALES`, `DEFAULT_LOCALE`, `messages` (raw JSON for i18n setup) |
-| `@passe/logger` | `@passe/logger` | File-scoped logger instances; `debug` for lifecycle, `error` for failures |
-| `@passe/theme` | `@passe/theme` | JS token objects only — `colors`, `spacing`, `typography` |
-| `@passe/utils` | `@passe/utils` | `formatTripDate`, `formatDateRange`, other pure date utilities |
+| Package                  | Import path                                                     | Notes                                                                     |
+| ------------------------ | --------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `@passe/types`           | `@passe/types/trip`, `@passe/types/memory`, `@passe/types/user` | Zod schemas + inferred TS types; always validate API responses            |
+| `@passe/hooks`           | `@passe/hooks`                                                  | `PasseApiProvider` + all data hooks                                       |
+| `@passe/auth/plan-gates` | `@passe/auth/plan-gates`                                        | `canCreateTrip()`, `canAddMemory()`, `PLAN_LIMITS` for plan-gating UI     |
+| `@passe/auth/types`      | `@passe/auth/types`                                             | Shared auth TypeScript types                                              |
+| `@passe/auth/constants`  | `@passe/auth/constants`                                         | `PUBLIC_ROUTES` and other constants                                       |
+| `@passe/i18n`            | `@passe/i18n`                                                   | `LOCALES`, `DEFAULT_LOCALE`, `messages` (raw JSON for i18n setup)         |
+| `@passe/logger`          | `@passe/logger`                                                 | File-scoped logger instances; `debug` for lifecycle, `error` for failures |
+| `@passe/theme`           | `@passe/theme`                                                  | JS token objects only — `colors`, `spacing`, `typography`                 |
+| `@passe/utils`           | `@passe/utils`                                                  | `formatTripDate`, `formatDateRange`, other pure date utilities            |
 
 ---
 
