@@ -13,22 +13,26 @@ env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
   TURBO_UI: stream
-  # Placeholders so `next build` passes in CI (real values live in Vercel).
-  # pk_test_Y2xlcmsuZXhhbXBsZS5jb20k = base64("clerk.example.com$") — Clerk validates key format.
-  NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_Y2xlcmsuZXhhbXBsZS5jb20k
-  CLERK_SECRET_KEY: sk_test_placeholder
-  CLERK_WEBHOOK_SECRET: whsec_placeholder
-  NEXT_PUBLIC_CLERK_SIGN_IN_URL: /sign-in
-  NEXT_PUBLIC_CLERK_SIGN_UP_URL: /sign-up
-  DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
-  EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_Y2xlcmsuZXhhbXBsZS5jb20k
-  EXPO_PUBLIC_API_URL: http://localhost:3000
 
 jobs:
   quality:
     name: Lint, types, tests, build
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    # Placeholders so `next build` passes in this job (real values live in Vercel).
+    # Scoped to this job only — the `deploy` job must NOT see these, since GitHub Actions
+    # env vars take precedence over the real values `vercel pull` fetches into
+    # .env.production.local, which would bake the placeholder Clerk key into prod.
+    # pk_test_Y2xlcmsuZXhhbXBsZS5jb20k = base64("clerk.example.com$") — Clerk validates key format.
+    env:
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_Y2xlcmsuZXhhbXBsZS5jb20k
+      CLERK_SECRET_KEY: sk_test_placeholder
+      CLERK_WEBHOOK_SECRET: whsec_placeholder
+      NEXT_PUBLIC_CLERK_SIGN_IN_URL: /sign-in
+      NEXT_PUBLIC_CLERK_SIGN_UP_URL: /sign-up
+      DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
+      EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_Y2xlcmsuZXhhbXBsZS5jb20k
+      EXPO_PUBLIC_API_URL: http://localhost:3000
     steps:
       - uses: actions/checkout@v5
 
