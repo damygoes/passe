@@ -8,6 +8,7 @@ const mockDb = vi.hoisted(() => ({
   query: { trips: { findFirst: vi.fn() } },
   update: vi.fn(),
   delete: vi.fn(),
+  select: vi.fn(),
 }))
 
 vi.mock('@passe/db', async (importOriginal) => {
@@ -45,6 +46,7 @@ function req(body: unknown) {
 
 beforeEach(() => {
   vi.mocked(auth).mockResolvedValue({ userId: 'user-1' } as Awaited<ReturnType<typeof auth>>)
+  mockDb.select.mockReturnValue(dbChain([]))
 })
 
 describe('GET /api/trips/[id]', () => {
