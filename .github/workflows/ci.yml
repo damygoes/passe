@@ -129,15 +129,12 @@ jobs:
       # production, gated on e2e passing. PR preview deploys still go through
       # Vercel's Git integration untouched.
       - name: Pull Vercel environment
-        working-directory: apps/web
         run: pnpm dlx vercel pull --yes --environment=production --token=$VERCEL_TOKEN
 
       - name: Build for Vercel
-        working-directory: apps/web
         run: pnpm dlx vercel build --prod --token=$VERCEL_TOKEN
 
       - name: Deploy to Vercel
-        working-directory: apps/web
         run: pnpm dlx vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
 
   eas-ota:
