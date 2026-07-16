@@ -1,5 +1,6 @@
 // @ts-check
 const { getDefaultConfig } = require('expo/metro-config')
+const { withSentryConfig } = require('@sentry/react-native/metro')
 const path = require('path')
 
 const projectRoot = __dirname
@@ -42,4 +43,4 @@ config.resolver.resolveRequest = (context, moduleName, platform) => {
   return resolve(context, moduleName, platform)
 }
 
-module.exports = config
+module.exports = withSentryConfig(config)

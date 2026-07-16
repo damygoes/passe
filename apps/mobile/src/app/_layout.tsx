@@ -8,11 +8,18 @@ import { StatusBar } from 'expo-status-bar'
 import { Stack } from 'expo-router'
 import { Platform } from 'react-native'
 import * as WebBrowser from 'expo-web-browser'
+import * as Sentry from '@sentry/react-native'
 
 import { useAppStateFocusManager } from '@/hooks/useAppStateFocusManager'
 import { I18nProvider } from '@/i18n/I18nProvider'
 
 WebBrowser.maybeCompleteAuthSession()
+
+Sentry.init({
+  dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
+  tracesSampleRate: 0.2,
+  integrations: [Sentry.reactNavigationIntegration()],
+})
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 1000 * 60, refetchOnWindowFocus: 'always' } },
@@ -32,8 +39,7 @@ const publishableKey = getRequiredEnvVar(
 const rawApiUrl = getRequiredEnvVar('EXPO_PUBLIC_API_URL', process.env.EXPO_PUBLIC_API_URL)
 // Android emulator can't resolve the host machine's `localhost` — it needs the 10.0.2.2 alias.
 // iOS Simulator shares the host's network namespace, so `localhost` works there unchanged.
-const apiUrl =
-  Platform.OS === 'android' ? rawApiUrl.replace('localhost', '10.0.2.2') : rawApiUrl
+const apiUrl = Platform.OS === 'android' ? rawApiUrl.replace('localhost', '10.0.2.2') : rawApiUrl
 
 function ApiConnectedApp() {
   const { getToken } = useAuth()
@@ -45,7 +51,7 @@ function ApiConnectedApp() {
   )
 }
 
-export default function RootLayout() {
+function RootLayout() {
   useAppStateFocusManager()
 
   return (
@@ -61,3 +67,5 @@ export default function RootLayout() {
     </>
   )
 }
+
+export default Sentry.wrap(RootLayout)

@@ -55,14 +55,18 @@ const user = await currentUser()
 
 Copy `.env.local.example` → `.env.local` and fill in:
 
-| Variable                            | Source                                      |
-| ----------------------------------- | ------------------------------------------- |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk Dashboard → API Keys                  |
-| `CLERK_SECRET_KEY`                  | Clerk Dashboard → API Keys                  |
-| `CLERK_WEBHOOK_SECRET`              | Clerk Dashboard → Webhooks → Signing secret |
-| `NEXT_PUBLIC_CLERK_SIGN_IN_URL`     | `/sign-in`                                  |
-| `NEXT_PUBLIC_CLERK_SIGN_UP_URL`     | `/sign-up`                                  |
-| `DATABASE_URL`                      | Neon Dashboard → Pooled connection string   |
+| Variable                            | Source                                                            |
+| ----------------------------------- | ----------------------------------------------------------------- |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk Dashboard → API Keys                                        |
+| `CLERK_SECRET_KEY`                  | Clerk Dashboard → API Keys                                        |
+| `CLERK_WEBHOOK_SECRET`              | Clerk Dashboard → Webhooks → Signing secret                       |
+| `NEXT_PUBLIC_CLERK_SIGN_IN_URL`     | `/sign-in`                                                        |
+| `NEXT_PUBLIC_CLERK_SIGN_UP_URL`     | `/sign-up`                                                        |
+| `DATABASE_URL`                      | Neon Dashboard → Pooled connection string                         |
+| `NEXT_PUBLIC_SENTRY_DSN`            | Sentry → `passe-web` project → Client Keys (DSN)                  |
+| `SENTRY_AUTH_TOKEN`                 | Sentry → Settings → Auth Tokens (source map upload at build time) |
+| `SENTRY_ORG`                        | Sentry org slug                                                   |
+| `SENTRY_PROJECT`                    | `passe-web`                                                       |
 
 ---
 
@@ -235,11 +239,11 @@ Trips and memories default to `isPublic: false`. The public portfolio (`/u/[slug
 
 ### Route helper reference
 
-| Helper | Returns |
-|---|---|
-| `publicPortfolioRoute(username)` | `/u/${username}` |
+| Helper                              | Returns                          |
+| ----------------------------------- | -------------------------------- |
+| `publicPortfolioRoute(username)`    | `/u/${username}`                 |
 | `publicTripRoute(username, tripId)` | `/u/${username}/trips/${tripId}` |
-| `tripRoute(id)` | `/trips/${id}` |
+| `tripRoute(id)`                     | `/trips/${id}`                   |
 
 ### Route structure
 
@@ -402,20 +406,20 @@ export function TripList() {
 
 ### Available hooks
 
-| Hook                  | Wraps                                 |
-| --------------------- | ------------------------------------- |
-| `useUser()`           | GET /api/user                         |
-| `useUpdateUser()`     | PATCH /api/user                       |
-| `useTrips()`          | GET /api/trips                        |
-| `useTrip(id)`         | GET /api/trips/[id]                   |
-| `useCreateTrip()`     | POST /api/trips                       |
-| `useUpdateTrip()`     | PATCH /api/trips/[id]                 |
-| `useDeleteTrip()`     | DELETE /api/trips/[id]                |
-| `useMemories(tripId)` | GET /api/trips/[id]/memories          |
-| `useAllMemories()`    | GET /api/memories (all user memories) |
-| `useCreateMemory()`   | POST /api/trips/[id]/memories         |
-| `useUpdateMemory()`   | PATCH /api/trips/[id]/memories/[id]   |
-| `useDeleteMemory()`   | DELETE /api/trips/[id]/memories/[id]  |
+| Hook                         | Wraps                                                          |
+| ---------------------------- | -------------------------------------------------------------- |
+| `useUser()`                  | GET /api/user                                                  |
+| `useUpdateUser()`            | PATCH /api/user                                                |
+| `useTrips()`                 | GET /api/trips                                                 |
+| `useTrip(id)`                | GET /api/trips/[id]                                            |
+| `useCreateTrip()`            | POST /api/trips                                                |
+| `useUpdateTrip()`            | PATCH /api/trips/[id]                                          |
+| `useDeleteTrip()`            | DELETE /api/trips/[id]                                         |
+| `useMemories(tripId)`        | GET /api/trips/[id]/memories                                   |
+| `useAllMemories()`           | GET /api/memories (all user memories)                          |
+| `useCreateMemory()`          | POST /api/trips/[id]/memories                                  |
+| `useUpdateMemory()`          | PATCH /api/trips/[id]/memories/[id]                            |
+| `useDeleteMemory()`          | DELETE /api/trips/[id]/memories/[id]                           |
 | `useCreateCheckoutSession()` | POST /api/billing/checkout — resolves `{ url }` to redirect to |
 | `useCreatePortalSession()`   | POST /api/billing/portal — resolves `{ url }` to redirect to   |
 

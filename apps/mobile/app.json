@@ -66,6 +66,13 @@
             "deploymentTarget": "17.0"
           }
         }
+      ],
+      [
+        "@sentry/react-native/expo",
+        {
+          "organization": "damilola-bada",
+          "project": "passe-mobile"
+        }
       ]
     ],
     "experiments": {
