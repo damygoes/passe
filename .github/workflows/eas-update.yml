@@ -1,23 +1,11 @@
 name: EAS Update (OTA)
 
-# Publishes an over-the-air JS update to the production channel whenever
-# mobile-relevant code lands on main. Gated on the EAS_READY repo variable —
+# Manual escape hatch to (re-)publish an over-the-air JS update to the production
+# channel. The automatic publish-on-push-to-main flow lives in ci.yml's `eas-ota`
+# job (gated on e2e passing), not here. Gated on the EAS_READY repo variable —
 # jobs are skipped (not failed) until the EAS project exists.
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'apps/mobile/**'
-      - 'packages/auth/**'
-      - 'packages/hooks/**'
-      - 'packages/i18n/**'
-      - 'packages/logger/**'
-      - 'packages/theme/**'
-      - 'packages/types/**'
-      - 'packages/utils/**'
-      # Mobile only consumes the icon map from @passe/ui — the rest is DOM-based
-      - 'packages/ui/src/icon/**'
   workflow_dispatch:
 
 concurrency:

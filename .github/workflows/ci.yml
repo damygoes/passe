@@ -43,11 +43,23 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Lint, type-check, test, build
-        run: pnpm turbo run lint check-types test build
+      # Sequential (not one combined `turbo run lint check-types test build`) so a
+      # broken lint fails fast without also burning time on type-check/test/build.
+      - name: Lint
+        run: pnpm turbo run lint
+
+      - name: Type-check
+        run: pnpm turbo run check-types
+
+      - name: Unit tests
+        run: pnpm turbo run test
+
+      - name: Build
+        run: pnpm turbo run build
 
   e2e:
     name: Playwright e2e
+    needs: quality
     runs-on: ubuntu-latest
     timeout-minutes: 20
     # Uses real dev-instance secrets (see apps/web/.env.local.example): E2E_CLERK_PUBLISHABLE_KEY,
@@ -91,3 +103,101 @@ jobs:
           name: playwright-report
           path: apps/web/playwright-report/
           retention-days: 7
+
+  deploy:
+    name: Deploy (Vercel)
+    needs: e2e
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      # Vercel's Git integration auto-deploy is disabled for the `main` branch
+      # (see the project's Ignored Build Step) so this job is the sole path to
+      # production, gated on e2e passing. PR preview deploys still go through
+      # Vercel's Git integration untouched.
+      - name: Pull Vercel environment
+        working-directory: apps/web
+        run: pnpm dlx vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+
+      - name: Build for Vercel
+        working-directory: apps/web
+        run: pnpm dlx vercel build --prod --token=$VERCEL_TOKEN
+
+      - name: Deploy to Vercel
+        working-directory: apps/web
+        run: pnpm dlx vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
+
+  eas-ota:
+    name: EAS Update (OTA)
+    needs: e2e
+    if: vars.EAS_READY == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    concurrency:
+      group: eas-update
+      cancel-in-progress: false # serialize so quick merges can't publish out of order
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # paths-filter needs history to diff against github.event.before
+
+      # Replaces eas-update.yml's `on.push.paths` filter — that workflow no longer
+      # triggers on push, since this job now lives in the same pipeline as e2e/deploy.
+      - name: Check for mobile-relevant changes
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            mobile:
+              - 'apps/mobile/**'
+              - 'packages/auth/**'
+              - 'packages/hooks/**'
+              - 'packages/i18n/**'
+              - 'packages/logger/**'
+              - 'packages/theme/**'
+              - 'packages/types/**'
+              - 'packages/utils/**'
+              - 'packages/ui/src/icon/**'
+
+      - uses: pnpm/action-setup@v4
+        if: steps.filter.outputs.mobile == 'true'
+
+      - uses: actions/setup-node@v5
+        if: steps.filter.outputs.mobile == 'true'
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        if: steps.filter.outputs.mobile == 'true'
+        run: pnpm install --frozen-lockfile
+
+      - uses: expo/expo-github-action@v8
+        if: steps.filter.outputs.mobile == 'true'
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Publish OTA update
+        if: steps.filter.outputs.mobile == 'true'
+        working-directory: apps/mobile
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message || 'Manual OTA update' }}
+          # eas update bundles locally, so EXPO_PUBLIC_* must be in the process env.
+          # Production Clerk key — must stay in sync with eas.json build profiles.
+          EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_live_Y2xlcmsucGFzc2UuY2Mk
+          EXPO_PUBLIC_API_URL: https://passe.cc
+        run: eas update --channel production --message "$COMMIT_MESSAGE" --non-interactive

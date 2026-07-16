@@ -12,9 +12,12 @@
     "db:migrate": "turbo run db:migrate --filter=@passe/db",
     "db:push": "turbo run db:push --filter=@passe/db",
     "db:studio": "turbo run db:studio --filter=@passe/db",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.8",
     "prettier": "^3.7.4",
     "turbo": "^2.10.0",
     "typescript": "5.9.2",
@@ -23,5 +26,11 @@
   "packageManager": "pnpm@9.0.0",
   "engines": {
     "node": ">=20.9"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,md}": "prettier --write",
+    "apps/web/**/*.{ts,tsx}": "pnpm --filter passe-web exec eslint --fix --max-warnings 0",
+    "apps/mobile/**/*.{js,jsx,ts,tsx}": "pnpm --filter passe-mobile exec eslint --fix",
+    "packages/ui/**/*.{ts,tsx}": "pnpm --filter @passe/ui exec eslint --fix --max-warnings 0"
   }
 }
