@@ -256,9 +256,10 @@ wrapped with `Sentry.wrap(RootLayout)` for automatic crash capture and navigatio
   EAS secret (`eas env:create`) — not committed anywhere in this repo
 - The `@sentry/react-native/expo` config plugin is registered in `app.json` → `plugins` —
   changing its config requires a clean prebuild (`rm -rf ios android && expo prebuild --clean`)
-- `apps/mobile/metro.config.js` wraps the final Metro config with `withSentryConfig` from
-  `@sentry/react-native/metro` — applied last, after the singleton `resolveRequest` override, so
-  it doesn't disturb the react/react-query pinning
+- `apps/mobile/metro.config.js` builds the base Metro config via `getSentryExpoConfig` from
+  `@sentry/react-native/metro` (not `getDefaultConfig` + `withSentryConfig` — that legacy wrapper
+  crashes bundling on Expo SDK 57, see [getsentry/sentry-react-native#5315](https://github.com/getsentry/sentry-react-native/issues/5315)).
+  The singleton `resolveRequest` override is applied afterward, on top of that config.
 
 ---
 

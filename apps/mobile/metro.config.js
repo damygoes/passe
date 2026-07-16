@@ -1,13 +1,18 @@
 // @ts-check
-const { getDefaultConfig } = require('expo/metro-config')
-const { withSentryConfig } = require('@sentry/react-native/metro')
+const { getSentryExpoConfig } = require('@sentry/react-native/metro')
 const path = require('path')
 
 const projectRoot = __dirname
 const monorepoRoot = path.resolve(projectRoot, '../..')
 
+// getSentryExpoConfig (not getDefaultConfig + withSentryConfig) — the legacy
+// withSentryConfig wrapper hooks debug-ID injection onto config.serializer.customSerializer,
+// which on Expo SDK 57's metro collides with the unstable_beforeAssetSerializationPlugins
+// pipeline and crashes bundling with "Cannot read properties of undefined (reading 'match')"
+// (https://github.com/getsentry/sentry-react-native/issues/5315). getSentryExpoConfig hooks
+// through that modern plugin slot instead.
 /** @type {import('expo/metro-config').MetroConfig} */
-const config = getDefaultConfig(projectRoot)
+const config = getSentryExpoConfig(projectRoot)
 
 // Watch only what mobile actually imports (workspace packages + hoisted deps).
 // Watching the monorepo root would include apps/web/.next, whose constant dev-server
@@ -43,4 +48,4 @@ config.resolver.resolveRequest = (context, moduleName, platform) => {
   return resolve(context, moduleName, platform)
 }
 
-module.exports = withSentryConfig(config)
+module.exports = config

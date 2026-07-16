@@ -40,7 +40,9 @@ jobs:
         env:
           COMMIT_MESSAGE: ${{ github.event.head_commit.message || 'Manual OTA update' }}
           # eas update bundles locally, so EXPO_PUBLIC_* must be in the process env.
-          # Production Clerk key — must stay in sync with eas.json build profiles.
+          # Values must stay in sync with eas.json's production build profile.
           EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_live_Y2xlcmsucGFzc2UuY2Mk
           EXPO_PUBLIC_API_URL: https://passe.cc
+          EXPO_PUBLIC_MAPTILER_KEY: lvMcOthm8AmoVykoj6rm
+          EXPO_PUBLIC_SENTRY_DSN: https://e9aa535fb26e708d4b3509f717d08c52@o4510782202445824.ingest.de.sentry.io/4511744193265744
         run: eas update --channel production --message "$COMMIT_MESSAGE" --non-interactive
