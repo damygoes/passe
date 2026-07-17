@@ -378,6 +378,20 @@
       "cta_secondary": "Sign in",
       "note": "Free plan included. No credit card required."
     },
+    "stats": {
+      "privacy": {
+        "title": "Private by default",
+        "description": "Nothing you add is public until you say so."
+      },
+      "unlimited": {
+        "title": "Room for every trip",
+        "description": "Organise as many trips and memories as your travels need."
+      },
+      "portfolio": {
+        "title": "A portfolio worth sharing",
+        "description": "Turn your favourite trips into a page you're proud to share."
+      }
+    },
     "features": {
       "heading": "Everything you need to preserve your travels",
       "subheading": "Purpose-built for the way you actually remember trips.",

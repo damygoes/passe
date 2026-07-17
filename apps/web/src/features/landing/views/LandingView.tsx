@@ -7,6 +7,7 @@ import { LandingHeader } from '../components/LandingHeader'
 import { MobileAppSection } from '../components/MobileAppSection'
 import { PricingSection } from '../components/PricingSection'
 import { PrivacySection } from '../components/PrivacySection'
+import { StatsBar } from '../components/StatsBar'
 
 export function LandingView() {
   return (
@@ -20,6 +21,7 @@ export function LandingView() {
       <LandingHeader />
       <main>
         <HeroSection />
+        <StatsBar />
         <FeaturesSection />
         <HowItWorksSection />
         <PrivacySection />

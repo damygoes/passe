@@ -1,13 +1,15 @@
-import { Card, CardDescription, CardHeader, CardTitle } from '@passe/ui/card'
-import { Icon, type IconName } from '@passe/ui/icon'
+import type { IconName } from '@passe/ui/icon'
+import type { StaticImageData } from 'next/image'
 import { getTranslations } from 'next-intl/server'
 import { Reveal } from '@/components/shared/Reveal'
+import { FEATURES_PHOTOS } from '../constants'
+import { PhotoTextRow } from './PhotoTextRow'
 
 const FEATURES = [
-  { key: 'trips', icon: 'map' },
-  { key: 'memories', icon: 'location' },
-  { key: 'portfolio', icon: 'globe' },
-] as const satisfies ReadonlyArray<{ key: string; icon: IconName }>
+  { key: 'trips', icon: 'map', image: FEATURES_PHOTOS[0] },
+  { key: 'memories', icon: 'location', image: FEATURES_PHOTOS[1] },
+  { key: 'portfolio', icon: 'globe', image: FEATURES_PHOTOS[2] },
+] as const satisfies ReadonlyArray<{ key: string; icon: IconName; image: StaticImageData }>
 
 export async function FeaturesSection() {
   const t = await getTranslations('landing.features')
@@ -22,19 +24,18 @@ export async function FeaturesSection() {
           <p className="mt-4 text-muted-foreground">{t('subheading')}</p>
         </Reveal>
 
-        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-3">
-          {FEATURES.map(({ key, icon }, i) => (
-            <Reveal key={key} delay={i * 120}>
-              <Card className="h-full transition-all duration-300 hover:-translate-y-1 hover:ring-primary/30">
-                <CardHeader>
-                  <div className="mb-3 flex size-11 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <Icon name={icon} size="lg" aria-hidden />
-                  </div>
-                  <CardTitle>{t(`${key}.title`)}</CardTitle>
-                  <CardDescription>{t(`${key}.description`)}</CardDescription>
-                </CardHeader>
-              </Card>
-            </Reveal>
+        <div className="mt-16 flex flex-col gap-20">
+          {FEATURES.map(({ key, icon, image }, i) => (
+            <PhotoTextRow
+              key={key}
+              delay={i * 120}
+              reversed={i % 2 === 1}
+              imageSrc={image}
+              imageAlt=""
+              icon={icon}
+              title={t(`${key}.title`)}
+              description={t(`${key}.description`)}
+            />
           ))}
         </div>
       </div>

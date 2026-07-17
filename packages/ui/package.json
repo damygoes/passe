@@ -5,6 +5,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./alert-dialog": "./src/alert-dialog/AlertDialog.tsx",
+    "./assets/*": "./src/assets/*",
     "./avatar": "./src/avatar/Avatar.tsx",
     "./badge": "./src/badge/Badge.tsx",
     "./button": "./src/button/Button.tsx",

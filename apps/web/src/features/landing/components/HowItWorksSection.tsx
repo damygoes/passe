@@ -1,12 +1,15 @@
-import { Icon, type IconName } from '@passe/ui/icon'
+import type { IconName } from '@passe/ui/icon'
+import type { StaticImageData } from 'next/image'
 import { getTranslations } from 'next-intl/server'
 import { Reveal } from '@/components/shared/Reveal'
+import { HOW_PHOTOS } from '../constants'
+import { PhotoTextRow } from './PhotoTextRow'
 
 const STEPS = [
-  { key: 'step1', icon: 'map' },
-  { key: 'step2', icon: 'camera' },
-  { key: 'step3', icon: 'share' },
-] as const satisfies ReadonlyArray<{ key: string; icon: IconName }>
+  { key: 'step1', icon: 'map', image: HOW_PHOTOS[0] },
+  { key: 'step2', icon: 'camera', image: HOW_PHOTOS[1] },
+  { key: 'step3', icon: 'share', image: HOW_PHOTOS[2] },
+] as const satisfies ReadonlyArray<{ key: string; icon: IconName; image: StaticImageData }>
 
 export async function HowItWorksSection() {
   const t = await getTranslations('landing.how')
@@ -21,22 +24,19 @@ export async function HowItWorksSection() {
           <p className="mt-4 text-muted-foreground">{t('subheading')}</p>
         </Reveal>
 
-        <div className="relative mt-16 grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-8">
-          <div
-            aria-hidden
-            className="absolute top-24 right-0 left-0 hidden border-t border-dashed border-border md:block"
-          />
-          {STEPS.map(({ key, icon }, i) => (
-            <Reveal key={key} delay={i * 150} className="relative">
-              <span aria-hidden className="font-display block text-7xl font-bold text-primary/15">
-                {i + 1}
-              </span>
-              <div className="relative -mt-4 mb-4 flex size-11 items-center justify-center rounded-full bg-background text-primary ring-1 ring-border">
-                <Icon name={icon} size="md" aria-hidden />
-              </div>
-              <h3 className="font-heading text-lg font-semibold">{t(`${key}.title`)}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{t(`${key}.description`)}</p>
-            </Reveal>
+        <div className="mt-16 flex flex-col gap-20">
+          {STEPS.map(({ key, icon, image }, i) => (
+            <PhotoTextRow
+              key={key}
+              delay={i * 150}
+              reversed={i % 2 === 1}
+              stepNumber={i + 1}
+              imageSrc={image}
+              imageAlt=""
+              icon={icon}
+              title={t(`${key}.title`)}
+              description={t(`${key}.description`)}
+            />
           ))}
         </div>
       </div>
