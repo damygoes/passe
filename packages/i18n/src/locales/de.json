@@ -378,6 +378,20 @@
       "cta_secondary": "Anmelden",
       "note": "Kostenloser Plan inklusive. Keine Kreditkarte erforderlich."
     },
+    "stats": {
+      "privacy": {
+        "title": "Standardmäßig privat",
+        "description": "Nichts, was du hinzufügst, ist öffentlich, bis du es entscheidest."
+      },
+      "unlimited": {
+        "title": "Platz für jede Reise",
+        "description": "Organisiere so viele Reisen und Erinnerungen, wie deine Reisen brauchen."
+      },
+      "portfolio": {
+        "title": "Ein Portfolio, das sich zu teilen lohnt",
+        "description": "Verwandle deine liebsten Reisen in eine Seite, auf die du stolz bist."
+      }
+    },
     "features": {
       "heading": "Alles, was du brauchst, um deine Reisen zu bewahren",
       "subheading": "Gemacht für die Art, wie du dich wirklich an Reisen erinnerst.",

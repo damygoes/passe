@@ -4,6 +4,8 @@ import { Badge } from '@passe/ui/badge'
 import { buttonVariants } from '@passe/ui/button'
 import { Icon } from '@passe/ui/icon'
 import { getTranslations } from 'next-intl/server'
+import Image from 'next/image'
+import { HERO_PHOTO } from '../constants'
 
 const MARQUEE_PLACES = [
   'Kyoto',
@@ -29,39 +31,57 @@ export async function HeroSection() {
         className="animate-drift absolute -right-32 -bottom-16 size-[36rem] rounded-full bg-deep-olive/10 blur-3xl [animation-delay:-10s]"
       />
 
-      <div className="relative flex flex-1 flex-col items-center justify-center px-6 py-24 text-center">
-        <Badge variant="secondary" className="animate-fade-up mb-6 [animation-delay:100ms]">
-          <Icon name="sparkles" size="xs" aria-hidden />
-          {t('eyebrow')}
-        </Badge>
+      <div className="relative flex flex-1 items-center px-6 py-24">
+        <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-12 md:grid-cols-[1fr_1.4fr] md:gap-16">
+          <div className="flex flex-col items-center text-center md:items-start md:text-left">
+            <Badge variant="secondary" className="animate-fade-up mb-6 [animation-delay:100ms]">
+              <Icon name="sparkles" size="xs" aria-hidden />
+              {t('eyebrow')}
+            </Badge>
 
-        <h1 className="animate-fade-up font-display max-w-3xl text-5xl font-bold tracking-tight text-balance [animation-delay:200ms] md:text-7xl">
-          {t('title_leading')} <em className="text-primary italic">{t('title_accent')}</em>
-        </h1>
+            <h1 className="animate-fade-up font-display max-w-xl text-5xl font-bold tracking-tight text-balance [animation-delay:200ms] md:text-6xl">
+              {t('title_leading')} <em className="text-primary italic">{t('title_accent')}</em>
+            </h1>
 
-        <p className="animate-fade-up mt-6 max-w-xl text-lg text-muted-foreground [animation-delay:300ms]">
-          {t('subtitle')}
-        </p>
+            <p className="animate-fade-up mt-6 max-w-xl text-lg text-muted-foreground [animation-delay:300ms]">
+              {t('subtitle')}
+            </p>
 
-        <div className="animate-fade-up mt-10 flex flex-wrap items-center justify-center gap-3 [animation-delay:400ms]">
-          <Link
-            href={routes.signUp}
-            className={buttonVariants({
-              size: 'lg',
-              className: 'transition-shadow hover:shadow-lg',
-            })}
-          >
-            {t('cta_primary')}
-            <Icon name="arrow-right" size="sm" aria-hidden />
-          </Link>
-          <Link href={routes.signIn} className={buttonVariants({ variant: 'outline', size: 'lg' })}>
-            {t('cta_secondary')}
-          </Link>
+            <div className="animate-fade-up mt-10 flex flex-wrap items-center justify-center gap-3 [animation-delay:400ms] md:justify-start">
+              <Link
+                href={routes.signUp}
+                className={buttonVariants({
+                  size: 'lg',
+                  className: 'transition-shadow hover:shadow-lg',
+                })}
+              >
+                {t('cta_primary')}
+                <Icon name="arrow-right" size="sm" aria-hidden />
+              </Link>
+              <Link
+                href={routes.signIn}
+                className={buttonVariants({ variant: 'outline', size: 'lg' })}
+              >
+                {t('cta_secondary')}
+              </Link>
+            </div>
+
+            <p className="animate-fade-up mt-6 text-xs text-muted-foreground [animation-delay:400ms]">
+              {t('note')}
+            </p>
+          </div>
+
+          <div className="animate-fade-up relative aspect-[4/3] w-full overflow-hidden rounded-xl shadow-xl [animation-delay:250ms]">
+            <Image
+              src={HERO_PHOTO}
+              alt=""
+              fill
+              priority
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 58vw"
+            />
+          </div>
         </div>
-
-        <p className="animate-fade-up mt-6 text-xs text-muted-foreground [animation-delay:400ms]">
-          {t('note')}
-        </p>
       </div>
 
       {/* Place-name marquee — decorative */}

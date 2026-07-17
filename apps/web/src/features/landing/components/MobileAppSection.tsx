@@ -2,6 +2,7 @@ import { Reveal } from '@/components/shared/Reveal'
 import { Icon } from '@passe/ui/icon'
 import { getTranslations } from 'next-intl/server'
 import Image from 'next/image'
+import { MOBILE_SCREENSHOT_PRIMARY, MOBILE_SCREENSHOT_SECONDARY } from '../constants'
 
 // Real App Store badge not available yet — set once the user supplies it.
 const IOS_HREF: string | null = 'https://www.damilolabada.com'
@@ -46,14 +47,24 @@ export async function MobileAppSection() {
           </div>
         </Reveal>
 
-        <Reveal delay={150} className="mx-auto w-full max-w-xs">
-          <div className="relative aspect-[9/19] w-full overflow-hidden rounded-[2.5rem] border-8 border-dark-espresso bg-gradient-to-b from-sandy-beige to-sandy-beige-dark shadow-xl shadow-dark-espresso/20">
+        <Reveal delay={150} className="relative mx-auto w-full max-w-sm py-4">
+          <div className="absolute top-2 left-0 aspect-[9/19] w-[62%] -rotate-6 overflow-hidden rounded-[2.5rem] border-8 border-dark-espresso bg-gradient-to-b from-sandy-beige to-sandy-beige-dark opacity-90 shadow-lg shadow-dark-espresso/15">
             <Image
-              src="/mobile-app-preview.png"
+              src={MOBILE_SCREENSHOT_SECONDARY}
+              alt=""
+              aria-hidden
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 50vw, 220px"
+            />
+          </div>
+          <div className="relative ml-[32%] aspect-[9/19] w-[62%] rotate-3 overflow-hidden rounded-[2.5rem] border-8 border-dark-espresso bg-gradient-to-b from-sandy-beige to-sandy-beige-dark shadow-xl shadow-dark-espresso/20">
+            <Image
+              src={MOBILE_SCREENSHOT_PRIMARY}
               alt={t('screenshotAlt')}
               fill
               className="object-cover"
-              sizes="(max-width: 768px) 80vw, 320px"
+              sizes="(max-width: 768px) 50vw, 220px"
             />
           </div>
         </Reveal>
