@@ -14,7 +14,11 @@
         "DATABASE_URL",
         "EXPO_PUBLIC_*",
         "VERCEL_ENV",
-        "SENTRY_*"
+        "SENTRY_*",
+        "APP_URL",
+        "AWS_*",
+        "S3_BUCKET_NAME",
+        "MEDIA_URL_SIGNING_SECRET"
       ],
       "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**", "dist/**"]
     },

@@ -14,6 +14,6 @@ export {
 export { useIsMobile } from './hooks/use-mobile'
 export { useCreateTrip, useDeleteTrip, useTrip, useTrips, useUpdateTrip } from './hooks/use-trips'
 export { useUploadImage } from './hooks/use-upload'
-export type { NativeUploadFile, UploadedImage, UploadFile } from './hooks/use-upload'
+export type { UploadedKey, UploadInput } from './hooks/use-upload'
 export { useDeleteAccount, useUpdateUser, useUser } from './hooks/use-user'
 export { queryKeys } from './query-keys'

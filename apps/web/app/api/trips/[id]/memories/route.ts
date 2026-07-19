@@ -1,5 +1,6 @@
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
 import { geocodeCityCountry } from '@/lib/geocode'
+import { MediaOwnershipError, normalizeMediaRef } from '@/lib/media'
 import { fromDbMemory, toDbMemoryValues } from '@/lib/memory'
 import { db, memories, memoryMedia, trips, users } from '@passe/db'
 import { canAddMemory } from '@passe/auth/plan-gates'
@@ -81,7 +82,10 @@ export async function POST(req: Request, ctx: RouteContext<'/api/trips/[id]/memo
   // geocoding the city/country the user typed.
   const dataForDb =
     parsed.data.location == null
-      ? { ...parsed.data, location: await geocodeCityCountry(parsed.data.city, parsed.data.country) }
+      ? {
+          ...parsed.data,
+          location: await geocodeCityCountry(parsed.data.city, parsed.data.country),
+        }
       : parsed.data
 
   let memory
@@ -104,11 +108,26 @@ export async function POST(req: Request, ctx: RouteContext<'/api/trips/[id]/memo
   // row and roll the memory back manually if the media insert fails.
   let mediaRows: (typeof memoryMedia.$inferSelect)[] = []
   if (parsed.data.media.length > 0) {
+    let normalizedMedia: typeof parsed.data.media
+    try {
+      normalizedMedia = parsed.data.media.map((item) => ({
+        ...item,
+        url: normalizeMediaRef(item.url, userId)!,
+      }))
+    } catch (err) {
+      await db
+        .delete(memories)
+        .where(eq(memories.id, memory.id))
+        .catch(() => undefined)
+      if (err instanceof MediaOwnershipError) return apiError(err.message, 400)
+      throw err
+    }
+
     try {
       mediaRows = await db
         .insert(memoryMedia)
         .values(
-          parsed.data.media.map((item, index) => ({
+          normalizedMedia.map((item, index) => ({
             memoryId: memory.id,
             url: item.url,
             mediaType: item.mediaType,

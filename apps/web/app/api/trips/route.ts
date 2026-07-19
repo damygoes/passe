@@ -1,4 +1,5 @@
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
+import { MediaOwnershipError, normalizeMediaRef, resolveTripMedia } from '@/lib/media'
 import { canCreateTrip, canMakePortfolioPublic } from '@passe/auth/plan-gates'
 import { db, trips, users } from '@passe/db'
 import { createLogger } from '@passe/logger'
@@ -21,7 +22,7 @@ export async function GET() {
 
   log.debug('DB returned trips', { userId, count: userTrips.length })
 
-  const parsed = TripSchema.array().safeParse(userTrips)
+  const parsed = TripSchema.array().safeParse(userTrips.map(resolveTripMedia))
   if (!parsed.success) {
     log.error('DB output failed schema validation', { userId, issues: parsed.error.issues })
     return apiError('Invalid trip data', 500)
@@ -61,20 +62,36 @@ export async function POST(req: Request) {
     return apiError('Upgrade to share trips publicly', 403)
   }
 
+  let coverImageUrl: string | null
+  try {
+    coverImageUrl = normalizeMediaRef(parsed.data.coverImageUrl, userId)
+  } catch (err) {
+    if (err instanceof MediaOwnershipError) return apiError(err.message, 400)
+    throw err
+  }
+
   let trip
   try {
     ;[trip] = await db
       .insert(trips)
-      .values({ ...parsed.data, userId })
+      .values({ ...parsed.data, coverImageUrl, userId })
       .returning()
   } catch (err) {
-    log.error('DB write failed', { userId, error: err instanceof Error ? err.message : String(err) })
+    log.error('DB write failed', {
+      userId,
+      error: err instanceof Error ? err.message : String(err),
+    })
     return apiError('Internal server error', 500)
   }
 
-  const validatedResponse = TripSchema.safeParse(trip)
+  if (!trip) return apiError('Failed to create trip', 500)
+
+  const validatedResponse = TripSchema.safeParse(resolveTripMedia(trip))
   if (!validatedResponse.success) {
-    log.error('DB output failed schema validation', { userId, issues: validatedResponse.error.issues })
+    log.error('DB output failed schema validation', {
+      userId,
+      issues: validatedResponse.error.issues,
+    })
     return apiError('Invalid response data', 500)
   }
 

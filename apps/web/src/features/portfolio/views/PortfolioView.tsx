@@ -1,3 +1,4 @@
+import { resolveTripMedia } from '@/lib/media'
 import { db } from '@passe/db/client'
 import { trips, users } from '@passe/db/schema'
 import { and, desc, eq } from 'drizzle-orm'
@@ -15,11 +16,13 @@ export async function PortfolioView({ slug }: Props) {
 
   if (!user) notFound()
 
-  const publicTrips = await db
-    .select()
-    .from(trips)
-    .where(and(eq(trips.userId, user.id), eq(trips.isPublic, true)))
-    .orderBy(desc(trips.startDate))
+  const publicTrips = (
+    await db
+      .select()
+      .from(trips)
+      .where(and(eq(trips.userId, user.id), eq(trips.isPublic, true)))
+      .orderBy(desc(trips.startDate))
+  ).map(resolveTripMedia)
 
   return (
     <div className="min-h-screen bg-background">

@@ -1,12 +1,16 @@
 import type { DbMemory, DbMemoryMedia } from '@passe/db/schema'
+import { resolveMemoryMedia } from './media'
 
+// The single place every memory read goes through — resolving media.url
+// into a signed delivery URL here (rather than at each call site) means
+// every route that uses fromDbMemory gets the fix for free.
 export function fromDbMemory(row: DbMemory & { media?: DbMemoryMedia[] }) {
   const { lat, lng, media, ...rest } = row
-  return {
+  return resolveMemoryMedia({
     ...rest,
     location: lat != null && lng != null ? { lat, lng } : null,
     media: media ?? [],
-  }
+  })
 }
 
 // Maps API input to memories-table values. Media rows live in memory_media

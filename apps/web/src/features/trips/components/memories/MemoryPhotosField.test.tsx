@@ -8,8 +8,22 @@ vi.mock('@passe/hooks', () => ({
   useUploadImage: () => ({ mutateAsync: mockMutateAsync, isPending: false }),
 }))
 
+vi.mock('@/lib/image-compression', () => ({
+  compressImage: vi.fn().mockResolvedValue({
+    blob: new Blob(['compressed'], { type: 'image/jpeg' }),
+    contentType: 'image/jpeg',
+    width: 2,
+    height: 2,
+  }),
+}))
+
 beforeEach(() => {
   mockMutateAsync.mockReset()
+  vi.stubGlobal('URL', {
+    ...URL,
+    createObjectURL: vi.fn(() => 'blob:mock-preview-url'),
+    revokeObjectURL: vi.fn(),
+  })
 })
 
 describe('MemoryPhotosField', () => {
@@ -17,7 +31,14 @@ describe('MemoryPhotosField', () => {
     render(
       <MemoryPhotosField
         id="photos"
-        photos={[{ url: 'https://example.com/a.jpg', width: 1, height: 1 }]}
+        photos={[
+          {
+            url: 'https://example.com/a.jpg',
+            previewUri: 'https://example.com/a.jpg',
+            width: 1,
+            height: 1,
+          },
+        ]}
         onAdd={vi.fn()}
         onRemove={vi.fn()}
       />,
@@ -32,7 +53,14 @@ describe('MemoryPhotosField', () => {
     render(
       <MemoryPhotosField
         id="photos"
-        photos={[{ url: 'https://example.com/a.jpg', width: 1, height: 1 }]}
+        photos={[
+          {
+            url: 'https://example.com/a.jpg',
+            previewUri: 'https://example.com/a.jpg',
+            width: 1,
+            height: 1,
+          },
+        ]}
         onAdd={vi.fn()}
         onRemove={onRemove}
       />,
@@ -41,8 +69,8 @@ describe('MemoryPhotosField', () => {
     expect(onRemove).toHaveBeenCalledWith(0)
   })
 
-  it('uploads each selected file and calls onAdd per result', async () => {
-    mockMutateAsync.mockResolvedValue({ url: 'https://example.com/new.jpg', width: 2, height: 2 })
+  it('compresses, uploads each selected file, and calls onAdd with the key + local preview', async () => {
+    mockMutateAsync.mockResolvedValue({ key: 'passe/user-1/new.jpg' })
     const onAdd = vi.fn()
     const user = userEvent.setup()
     render(<MemoryPhotosField id="photos" photos={[]} onAdd={onAdd} onRemove={vi.fn()} />)
@@ -52,7 +80,12 @@ describe('MemoryPhotosField', () => {
     await user.upload(input, file)
 
     await waitFor(() =>
-      expect(onAdd).toHaveBeenCalledWith({ url: 'https://example.com/new.jpg', width: 2, height: 2 }),
+      expect(onAdd).toHaveBeenCalledWith({
+        url: 'passe/user-1/new.jpg',
+        previewUri: 'blob:mock-preview-url',
+        width: 2,
+        height: 2,
+      }),
     )
   })
 

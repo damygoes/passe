@@ -8,8 +8,22 @@ vi.mock('@passe/hooks', () => ({
   useUploadImage: () => ({ mutateAsync: mockMutateAsync, isPending: false }),
 }))
 
+vi.mock('@/lib/image-compression', () => ({
+  compressImage: vi.fn().mockResolvedValue({
+    blob: new Blob(['compressed'], { type: 'image/jpeg' }),
+    contentType: 'image/jpeg',
+    width: 100,
+    height: 100,
+  }),
+}))
+
 beforeEach(() => {
   mockMutateAsync.mockReset()
+  vi.stubGlobal('URL', {
+    ...URL,
+    createObjectURL: vi.fn(() => 'blob:mock-preview-url'),
+    revokeObjectURL: vi.fn(),
+  })
 })
 
 describe('ImageUploadField', () => {
@@ -32,8 +46,8 @@ describe('ImageUploadField', () => {
     expect(onChange).toHaveBeenCalledWith(null)
   })
 
-  it('uploads the selected file and calls onChange with the resulting url', async () => {
-    mockMutateAsync.mockResolvedValue({ url: 'https://example.com/uploaded.jpg' })
+  it('compresses the selected file, uploads it, and calls onChange with the resulting key', async () => {
+    mockMutateAsync.mockResolvedValue({ key: 'passe/user-1/uploaded.jpg' })
     const onChange = vi.fn()
     const user = userEvent.setup()
     render(<ImageUploadField id="cover" value={null} onChange={onChange} />)
@@ -42,7 +56,27 @@ describe('ImageUploadField', () => {
     const input = document.getElementById('cover') as HTMLInputElement
     await user.upload(input, file)
 
-    await waitFor(() => expect(onChange).toHaveBeenCalledWith('https://example.com/uploaded.jpg'))
+    await waitFor(() => expect(onChange).toHaveBeenCalledWith('passe/user-1/uploaded.jpg'))
+    expect(mockMutateAsync).toHaveBeenCalledWith(
+      expect.objectContaining({ contentType: 'image/jpeg', put: expect.any(Function) }),
+    )
+  })
+
+  it('previews the freshly uploaded file locally without waiting on a re-fetch', async () => {
+    mockMutateAsync.mockResolvedValue({ key: 'passe/user-1/uploaded.jpg' })
+    const user = userEvent.setup()
+    render(<ImageUploadField id="cover" value={null} onChange={vi.fn()} />)
+
+    const file = new File(['data'], 'photo.jpg', { type: 'image/jpeg' })
+    const input = document.getElementById('cover') as HTMLInputElement
+    await user.upload(input, file)
+
+    await waitFor(() =>
+      expect(screen.getByAltText('preview_alt')).toHaveAttribute(
+        'src',
+        expect.stringContaining('blob'),
+      ),
+    )
   })
 
   it('shows an error message when the upload fails', async () => {

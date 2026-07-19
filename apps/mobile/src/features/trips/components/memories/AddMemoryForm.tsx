@@ -5,7 +5,6 @@ import {
   useUpdateMemory,
   useUploadImage,
   useUser,
-  type UploadedImage,
 } from '@passe/hooks'
 import type { Memory } from '@passe/types/memory'
 import { createLogger } from '@passe/logger'
@@ -23,12 +22,27 @@ import { ErrorBanner } from '@/features/account/components/ErrorBanner'
 import { DateField } from '@/features/trips/components/trip/date-field/DateField'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
+import { compressImage } from '@/lib/image-compression'
+import { uploadFileToUrl } from '@/lib/upload-put'
 
 const log = createLogger({ context: { module: 'features/trips/AddMemoryForm' } })
 
-function mediaToPhotos(media: Memory['media']): UploadedImage[] {
+// `url` is what gets submitted (a bare S3 key for a fresh upload, or the
+// existing resolved URL when editing unchanged photos). `previewUri` is
+// what gets rendered — a local file uri for a fresh upload (the bare key
+// isn't renderable on its own until the next read-resolve round-trip), or
+// the same resolved URL as `url` for existing photos.
+interface MemoryPhoto {
+  url: string
+  previewUri: string
+  width: number | null
+  height: number | null
+}
+
+function mediaToPhotos(media: Memory['media']): MemoryPhoto[] {
   return media.map((item) => ({
     url: item.url,
+    previewUri: item.url,
     width: item.width ?? null,
     height: item.height ?? null,
   }))
@@ -56,7 +70,7 @@ export function AddMemoryForm({ tripId, memory }: AddMemoryFormProps) {
   const isEditing = Boolean(memory)
   const isPending = isCreating || isUpdating
 
-  const [photos, setPhotos] = useState<UploadedImage[]>(() =>
+  const [photos, setPhotos] = useState<MemoryPhoto[]>(() =>
     memory ? mediaToPhotos(memory.media) : [],
   )
   const [pendingUploads, setPendingUploads] = useState(0)
@@ -142,12 +156,20 @@ export function AddMemoryForm({ tripId, memory }: AddMemoryFormProps) {
     setPendingUploads(assets.length)
     for (const asset of assets) {
       try {
+        const compressed = await compressImage(asset)
         const uploaded = await upload.mutateAsync({
-          uri: asset.uri,
-          name: asset.fileName ?? 'photo.jpg',
-          type: asset.mimeType ?? 'image/jpeg',
+          contentType: compressed.contentType,
+          put: (uploadUrl) => uploadFileToUrl(uploadUrl, compressed.uri, compressed.contentType),
         })
-        setPhotos((current) => [...current, uploaded])
+        setPhotos((current) => [
+          ...current,
+          {
+            url: uploaded.key,
+            previewUri: compressed.uri,
+            width: compressed.width,
+            height: compressed.height,
+          },
+        ])
       } catch (err) {
         log.error('Photo upload failed', {
           error: err instanceof Error ? err.message : String(err),
@@ -269,8 +291,12 @@ export function AddMemoryForm({ tripId, memory }: AddMemoryFormProps) {
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View style={styles.photosRow}>
               {photos.map((photo, index) => (
-                <View key={photo.url} style={styles.photoWrapper}>
-                  <Image source={{ uri: photo.url }} style={styles.photo} contentFit="cover" />
+                <View key={photo.previewUri} style={styles.photoWrapper}>
+                  <Image
+                    source={{ uri: photo.previewUri }}
+                    style={styles.photo}
+                    contentFit="cover"
+                  />
                   <Pressable
                     onPress={() => handleRemovePhoto(index)}
                     style={styles.photoRemove}

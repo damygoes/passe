@@ -1,35 +1,32 @@
-import { createHash } from 'node:crypto'
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
+import { isAllowedContentType, mintUploadKeyAndUrl } from '@/lib/s3'
 import { createLogger } from '@passe/logger'
 
 const log = createLogger({ context: { module: 'api/uploads/sign' } })
 
 // POST /api/uploads/sign
-// Returns a short-lived signature for a direct client → Cloudinary upload.
-// Clients upload straight to Cloudinary with these params so image bytes
-// never pass through our server.
-export async function POST() {
+// Mints a presigned S3 PUT URL for a direct client → S3 upload. Clients PUT
+// straight to S3 with this URL so image bytes never pass through our server.
+export async function POST(req: Request) {
   const { userId, error } = await requireAuth()
   if (error) return error
 
-  const cloudName = process.env.CLOUDINARY_CLOUD_NAME
-  const apiKey = process.env.CLOUDINARY_API_KEY
-  const apiSecret = process.env.CLOUDINARY_API_SECRET
+  const body = await req.json().catch(() => null)
+  const contentType = (body as { contentType?: unknown } | null)?.contentType
 
-  if (!cloudName || !apiKey || !apiSecret) {
-    log.error('Cloudinary env vars missing')
-    return apiError('Uploads are not configured', 500)
+  if (typeof contentType !== 'string' || !isAllowedContentType(contentType)) {
+    return apiError('Unsupported content type', 400)
   }
 
-  const timestamp = Math.floor(Date.now() / 1000)
-  const folder = `passe/${userId}`
-
-  // Cloudinary signature: SHA-1 of the signed params sorted alphabetically,
-  // concatenated as a query string, with the API secret appended.
-  const toSign = `folder=${folder}&timestamp=${timestamp}${apiSecret}`
-  const signature = createHash('sha1').update(toSign).digest('hex')
-
-  log.debug('Issued upload signature', { userId })
-
-  return apiSuccess({ cloudName, apiKey, timestamp, signature, folder })
+  try {
+    const { key, uploadUrl } = await mintUploadKeyAndUrl({ userId, contentType })
+    log.debug('Issued upload URL', { userId, key })
+    return apiSuccess({ key, uploadUrl })
+  } catch (err) {
+    log.error('Failed to mint upload URL', {
+      userId,
+      error: err instanceof Error ? err.message : String(err),
+    })
+    return apiError('Uploads are not configured', 500)
+  }
 }
