@@ -314,6 +314,30 @@ expose a raw S3 URL — everything goes through app-controlled signing.
   media (`isPublic: true`) gets a long-TTL URL. This route runs on the Node runtime (`sharp` is a
   native binary, incompatible with Edge)
 
+**CORS configuration (required, manual)**: `POST /api/uploads/sign` returns a presigned URL that the
+browser `PUT`s the file bytes to directly — so the bucket itself, not just the app, must allow that
+cross-origin request. This isn't defined anywhere in code/IaC (no Terraform/CDK in this repo); it has
+to be set manually on every bucket/environment via AWS Console → S3 → bucket → Permissions →
+Cross-origin resource sharing (CORS). Missing this produces a `403` on the browser's `OPTIONS`
+preflight before the `PUT` is even attempted. Current policy:
+
+```json
+[
+  {
+    "AllowedHeaders": ["Content-Type"],
+    "AllowedMethods": ["PUT"],
+    "AllowedOrigins": [
+      "http://localhost:3000",
+      "https://passe.cc",
+      "https://www.passe.cc",
+      "https://*.vercel.app"
+    ],
+    "ExposeHeaders": ["ETag"],
+    "MaxAgeSeconds": 3000
+  }
+]
+```
+
 **DB storage format**: `trips.cover_image_url` / `memory_media.url` store a bare S3 object key
 (`passe/<userId>/<uuid>.<ext>`) for new uploads. Rows created before this migration still hold full
 `https://res.cloudinary.com/...` URLs — both formats coexist in the same `text` column, discriminated
