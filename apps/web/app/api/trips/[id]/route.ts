@@ -7,6 +7,8 @@ import { createLogger } from '@passe/logger'
 import { TripSchema, UpdateTripSchema } from '@passe/types/trip'
 import { and, eq } from 'drizzle-orm'
 
+const log = createLogger({ context: { module: 'api/trips/id' } })
+
 // Distinguishes a legacy Cloudinary asset (a full https:// URL, left
 // untouched by the migration) from a current S3-backed value (a bare
 // object key) — used to route reads/deletes to the right provider.
@@ -14,7 +16,23 @@ function isLegacyCloudinaryUrl(value: string): boolean {
   return value.startsWith('http')
 }
 
-const log = createLogger({ context: { module: 'api/trips/id' } })
+async function cleanupMediaAssets(
+  assets: { url: string; mediaType: 'photo' | 'video' }[],
+): Promise<void> {
+  const legacy = assets.filter((asset) => isLegacyCloudinaryUrl(asset.url))
+  const s3Keys = assets
+    .filter((asset) => !isLegacyCloudinaryUrl(asset.url))
+    .map((asset) => asset.url)
+  await Promise.allSettled([
+    deleteCloudinaryAssets(
+      legacy.map((asset) => ({
+        url: asset.url,
+        resourceType: asset.mediaType === 'video' ? ('video' as const) : ('image' as const),
+      })),
+    ),
+    deleteS3Objects(s3Keys),
+  ])
+}
 
 // GET /api/trips/[id]
 export async function GET(_req: Request, ctx: RouteContext<'/api/trips/[id]'>) {
@@ -62,6 +80,18 @@ export async function PATCH(req: Request, ctx: RouteContext<'/api/trips/[id]'>) 
     throw err
   }
 
+  // Capture the outgoing cover image before it's overwritten so the old S3
+  // object can be cleaned up after a successful write — only needed when
+  // this request actually touches coverImageUrl.
+  let previousCoverImageUrl: string | null | undefined
+  if ('coverImageUrl' in parsed.data) {
+    const existing = await db.query.trips.findFirst({
+      where: and(eq(trips.id, id), eq(trips.userId, userId)),
+      columns: { coverImageUrl: true },
+    })
+    previousCoverImageUrl = existing?.coverImageUrl
+  }
+
   let updated
   try {
     ;[updated] = await db
@@ -82,6 +112,10 @@ export async function PATCH(req: Request, ctx: RouteContext<'/api/trips/[id]'>) 
   }
 
   if (!updated) return apiError('Trip not found', 404)
+
+  if (previousCoverImageUrl && previousCoverImageUrl !== coverImageUrl) {
+    await cleanupMediaAssets([{ url: previousCoverImageUrl, mediaType: 'photo' }])
+  }
 
   const validatedResponse = TripSchema.safeParse(resolveTripMedia(updated))
   if (!validatedResponse.success) {
@@ -131,18 +165,8 @@ export async function DELETE(_req: Request, ctx: RouteContext<'/api/trips/[id]'>
     ...mediaRows.map((row) => ({ url: row.url, mediaType: row.mediaType })),
     ...(deleted.coverImageUrl ? [{ url: deleted.coverImageUrl, mediaType: 'photo' as const }] : []),
   ]
-  const legacy = allUrls.filter((row) => isLegacyCloudinaryUrl(row.url))
-  const s3Keys = allUrls.filter((row) => !isLegacyCloudinaryUrl(row.url)).map((row) => row.url)
 
-  await Promise.allSettled([
-    deleteCloudinaryAssets(
-      legacy.map((row) => ({
-        url: row.url,
-        resourceType: row.mediaType === 'video' ? ('video' as const) : ('image' as const),
-      })),
-    ),
-    deleteS3Objects(s3Keys),
-  ])
+  await cleanupMediaAssets(allUrls)
 
   return apiSuccess({ id: deleted.id })
 }
