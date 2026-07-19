@@ -8,7 +8,11 @@ export const TripSchema = z.object({
   // for unset values, so accept null as well as undefined. `.nullish()` keeps
   // these optional on the create side while letting DB rows round-trip.
   description: z.string().max(500).nullish(),
-  coverImageUrl: z.string().url().nullish(),
+  // Not `.url()`: a fresh upload is submitted as a bare S3 object key
+  // (e.g. "passe/<userId>/<uuid>.jpg"), not a URL — it's only resolved into
+  // a signed, absolute delivery URL at read time (see apps/web/src/lib/media.ts).
+  // Legacy rows may still hold a full Cloudinary URL, which this also accepts.
+  coverImageUrl: z.string().min(1).nullish(),
   countries: z.array(z.string()).min(1),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),

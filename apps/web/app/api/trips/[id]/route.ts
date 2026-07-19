@@ -1,9 +1,18 @@
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
 import { deleteCloudinaryAssets } from '@/lib/cloudinary'
+import { MediaOwnershipError, normalizeMediaRef, resolveTripMedia } from '@/lib/media'
+import { deleteS3Objects } from '@/lib/s3'
 import { db, memories, memoryMedia, trips } from '@passe/db'
 import { createLogger } from '@passe/logger'
 import { TripSchema, UpdateTripSchema } from '@passe/types/trip'
 import { and, eq } from 'drizzle-orm'
+
+// Distinguishes a legacy Cloudinary asset (a full https:// URL, left
+// untouched by the migration) from a current S3-backed value (a bare
+// object key) — used to route reads/deletes to the right provider.
+function isLegacyCloudinaryUrl(value: string): boolean {
+  return value.startsWith('http')
+}
 
 const log = createLogger({ context: { module: 'api/trips/id' } })
 
@@ -20,7 +29,7 @@ export async function GET(_req: Request, ctx: RouteContext<'/api/trips/[id]'>) {
 
   if (!trip) return apiError('Trip not found', 404)
 
-  const parsed = TripSchema.safeParse(trip)
+  const parsed = TripSchema.safeParse(resolveTripMedia(trip))
   if (!parsed.success) {
     log.error('DB output failed schema validation', { tripId: id, issues: parsed.error.issues })
     return apiError('Invalid trip data', 500)
@@ -42,11 +51,26 @@ export async function PATCH(req: Request, ctx: RouteContext<'/api/trips/[id]'>) 
     return apiError(JSON.stringify(parsed.error.flatten().fieldErrors), 400)
   }
 
+  let coverImageUrl: string | null | undefined
+  try {
+    coverImageUrl =
+      'coverImageUrl' in parsed.data
+        ? normalizeMediaRef(parsed.data.coverImageUrl, userId)
+        : undefined
+  } catch (err) {
+    if (err instanceof MediaOwnershipError) return apiError(err.message, 400)
+    throw err
+  }
+
   let updated
   try {
     ;[updated] = await db
       .update(trips)
-      .set({ ...parsed.data, updatedAt: new Date() })
+      .set({
+        ...parsed.data,
+        ...(coverImageUrl !== undefined ? { coverImageUrl } : {}),
+        updatedAt: new Date(),
+      })
       .where(and(eq(trips.id, id), eq(trips.userId, userId)))
       .returning()
   } catch (err) {
@@ -59,7 +83,7 @@ export async function PATCH(req: Request, ctx: RouteContext<'/api/trips/[id]'>) 
 
   if (!updated) return apiError('Trip not found', 404)
 
-  const validatedResponse = TripSchema.safeParse(updated)
+  const validatedResponse = TripSchema.safeParse(resolveTripMedia(updated))
   if (!validatedResponse.success) {
     log.error('DB output failed schema validation', {
       tripId: id,
@@ -103,14 +127,21 @@ export async function DELETE(_req: Request, ctx: RouteContext<'/api/trips/[id]'>
 
   if (!deleted) return apiError('Trip not found', 404)
 
-  await deleteCloudinaryAssets([
-    ...mediaRows.map((row) => ({
-      url: row.url,
-      resourceType: row.mediaType === 'video' ? ('video' as const) : ('image' as const),
-    })),
-    ...(deleted.coverImageUrl
-      ? [{ url: deleted.coverImageUrl, resourceType: 'image' as const }]
-      : []),
+  const allUrls = [
+    ...mediaRows.map((row) => ({ url: row.url, mediaType: row.mediaType })),
+    ...(deleted.coverImageUrl ? [{ url: deleted.coverImageUrl, mediaType: 'photo' as const }] : []),
+  ]
+  const legacy = allUrls.filter((row) => isLegacyCloudinaryUrl(row.url))
+  const s3Keys = allUrls.filter((row) => !isLegacyCloudinaryUrl(row.url)).map((row) => row.url)
+
+  await Promise.allSettled([
+    deleteCloudinaryAssets(
+      legacy.map((row) => ({
+        url: row.url,
+        resourceType: row.mediaType === 'video' ? ('video' as const) : ('image' as const),
+      })),
+    ),
+    deleteS3Objects(s3Keys),
   ])
 
   return apiSuccess({ id: deleted.id })

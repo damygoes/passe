@@ -1,7 +1,27 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { fromDbMemory, toDbMemoryValues } from './memory'
 
+beforeEach(() => {
+  vi.stubEnv('MEDIA_URL_SIGNING_SECRET', 'test-secret')
+  vi.stubEnv('APP_URL', 'http://localhost:3000')
+})
+
+afterEach(() => {
+  vi.unstubAllEnvs()
+})
+
 describe('fromDbMemory', () => {
+  it('resolves media urls into signed delivery URLs', () => {
+    const result = fromDbMemory({
+      id: '1',
+      lat: null,
+      lng: null,
+      isPublic: false,
+      media: [{ url: 'passe/user-1/a.jpg' }],
+    } as never)
+    expect(result.media[0]?.url).toMatch(/^http:\/\/localhost:3000\/api\/media\//)
+  })
+
   it('builds a location object when lat/lng are present', () => {
     const result = fromDbMemory({
       id: '1',

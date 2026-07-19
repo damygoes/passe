@@ -8,7 +8,6 @@ import {
   useReverseGeocode,
   useUpdateMemory,
   useUser,
-  type UploadedImage,
 } from '@passe/hooks'
 import { CreateMemorySchema, type Coordinates, type Memory } from '@passe/types/memory'
 import { Button } from '@passe/ui/button'
@@ -22,7 +21,7 @@ import { Controller, useForm, type Resolver } from 'react-hook-form'
 import { z } from 'zod'
 import { Link, useRouter } from '@/i18n/navigation'
 import { routes, tripRoute } from '@/lib/routes'
-import { MemoryPhotosField } from './MemoryPhotosField'
+import { MemoryPhotosField, type MemoryPhoto } from './MemoryPhotosField'
 
 const MemoryFormFieldsSchema = CreateMemorySchema.pick({
   note: true,
@@ -48,10 +47,14 @@ export function MemoryForm({ tripId, memory }: Props) {
   const { mutateAsync: createMemory, isPending: isCreating } = useCreateMemory()
   const { mutateAsync: updateMemory, isPending: isUpdating } = useUpdateMemory()
   const reverseGeocode = useReverseGeocode()
-  const [photos, setPhotos] = useState<UploadedImage[]>(
+  const [photos, setPhotos] = useState<MemoryPhoto[]>(
     () =>
+      // Existing photos are already resolved, renderable URLs from the GET
+      // response — url and previewUri are the same value here; only a fresh
+      // upload in this session needs a distinct local object-URL preview.
       memory?.media.map((item) => ({
         url: item.url,
+        previewUri: item.url,
         width: item.width ?? null,
         height: item.height ?? null,
       })) ?? [],

@@ -40,8 +40,12 @@ export type MemoryMedia = z.infer<typeof MemoryMediaSchema>
 
 // Media item as supplied by clients when creating/updating a memory —
 // ids and ordering are assigned server-side (array position = sortOrder).
+// `url` is not `.url()`-validated: a fresh upload submits a bare S3 object
+// key, only resolved into a signed absolute URL at read time (see
+// apps/web/src/lib/media.ts). MemoryMediaSchema.url below stays a strict
+// `.url()` since it's the read/output shape, always post-resolution.
 export const CreateMemoryMediaSchema = z.object({
-  url: z.string().url(),
+  url: z.string().min(1),
   mediaType: MediaTypeSchema.default('photo'),
   width: z.number().int().positive().nullish(),
   height: z.number().int().positive().nullish(),

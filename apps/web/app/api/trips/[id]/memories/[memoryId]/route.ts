@@ -1,7 +1,9 @@
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
 import { deleteCloudinaryAssets } from '@/lib/cloudinary'
 import { geocodeCityCountry } from '@/lib/geocode'
+import { MediaOwnershipError, normalizeMediaRef } from '@/lib/media'
 import { fromDbMemory, toDbMemoryValues } from '@/lib/memory'
+import { deleteS3Objects } from '@/lib/s3'
 import { db, memories, memoryMedia, users } from '@passe/db'
 import { canMakeMemoryPublic } from '@passe/auth/plan-gates'
 import { createLogger } from '@passe/logger'
@@ -9,6 +11,31 @@ import { MemorySchema, UpdateMemorySchema } from '@passe/types/memory'
 import { and, asc, count, eq, ne } from 'drizzle-orm'
 
 const log = createLogger({ context: { module: 'api/trips/id/memories/id' } })
+
+// Distinguishes a legacy Cloudinary asset (a full https:// URL, left
+// untouched by the migration) from a current S3-backed value (a bare
+// object key) — used to route reads/deletes to the right provider.
+function isLegacyCloudinaryUrl(value: string): boolean {
+  return value.startsWith('http')
+}
+
+async function cleanupMediaAssets(
+  assets: { url: string; mediaType: 'photo' | 'video' }[],
+): Promise<void> {
+  const legacy = assets.filter((asset) => isLegacyCloudinaryUrl(asset.url))
+  const s3Keys = assets
+    .filter((asset) => !isLegacyCloudinaryUrl(asset.url))
+    .map((asset) => asset.url)
+  await Promise.allSettled([
+    deleteCloudinaryAssets(
+      legacy.map((asset) => ({
+        url: asset.url,
+        resourceType: asset.mediaType === 'video' ? ('video' as const) : ('image' as const),
+      })),
+    ),
+    deleteS3Objects(s3Keys),
+  ])
+}
 
 // PATCH /api/trips/[id]/memories/[memoryId]
 export async function PATCH(
@@ -81,19 +108,30 @@ export async function PATCH(
   // When the request includes media, replace the memory's media set wholesale
   // (delete + reinsert; array position = sortOrder).
   if (parsed.data.media !== undefined) {
-    const incomingUrls = new Set(parsed.data.media.map((item) => item.url))
+    let normalizedMedia: typeof parsed.data.media
+    try {
+      normalizedMedia = parsed.data.media.map((item) => ({
+        ...item,
+        url: normalizeMediaRef(item.url, userId)!,
+      }))
+    } catch (err) {
+      if (err instanceof MediaOwnershipError) return apiError(err.message, 400)
+      throw err
+    }
+
+    const incomingUrls = new Set(normalizedMedia.map((item) => item.url))
     const existingMedia = await db.query.memoryMedia.findMany({
       where: eq(memoryMedia.memoryId, memoryId),
     })
     // Only photos dropped from the list get cleaned up — ones the client
-    // re-sent unchanged must not be deleted from Cloudinary.
+    // re-sent unchanged must not be deleted from storage.
     const removedMedia = existingMedia.filter((media) => !incomingUrls.has(media.url))
 
     try {
       await db.delete(memoryMedia).where(eq(memoryMedia.memoryId, memoryId))
-      if (parsed.data.media.length > 0) {
+      if (normalizedMedia.length > 0) {
         await db.insert(memoryMedia).values(
-          parsed.data.media.map((item, index) => ({
+          normalizedMedia.map((item, index) => ({
             memoryId,
             url: item.url,
             mediaType: item.mediaType,
@@ -111,12 +149,7 @@ export async function PATCH(
       return apiError('Internal server error', 500)
     }
 
-    await deleteCloudinaryAssets(
-      removedMedia.map((media) => ({
-        url: media.url,
-        resourceType: media.mediaType === 'video' ? ('video' as const) : ('image' as const),
-      })),
-    )
+    await cleanupMediaAssets(removedMedia)
   }
 
   const mediaRows = await db.query.memoryMedia.findMany({
@@ -170,12 +203,7 @@ export async function DELETE(
 
   if (!deleted) return apiError('Memory not found', 404)
 
-  await deleteCloudinaryAssets(
-    mediaRows.map((media) => ({
-      url: media.url,
-      resourceType: media.mediaType === 'video' ? ('video' as const) : ('image' as const),
-    })),
-  )
+  await cleanupMediaAssets(mediaRows)
 
   return apiSuccess({ id: deleted.id })
 }

@@ -55,18 +55,27 @@ const user = await currentUser()
 
 Copy `.env.local.example` → `.env.local` and fill in:
 
-| Variable                            | Source                                                            |
-| ----------------------------------- | ----------------------------------------------------------------- |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk Dashboard → API Keys                                        |
-| `CLERK_SECRET_KEY`                  | Clerk Dashboard → API Keys                                        |
-| `CLERK_WEBHOOK_SECRET`              | Clerk Dashboard → Webhooks → Signing secret                       |
-| `NEXT_PUBLIC_CLERK_SIGN_IN_URL`     | `/sign-in`                                                        |
-| `NEXT_PUBLIC_CLERK_SIGN_UP_URL`     | `/sign-up`                                                        |
-| `DATABASE_URL`                      | Neon Dashboard → Pooled connection string                         |
-| `NEXT_PUBLIC_SENTRY_DSN`            | Sentry → `passe-web` project → Client Keys (DSN)                  |
-| `SENTRY_AUTH_TOKEN`                 | Sentry → Settings → Auth Tokens (source map upload at build time) |
-| `SENTRY_ORG`                        | Sentry org slug                                                   |
-| `SENTRY_PROJECT`                    | `passe-web`                                                       |
+| Variable                            | Source                                                              |
+| ----------------------------------- | ------------------------------------------------------------------- |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk Dashboard → API Keys                                          |
+| `CLERK_SECRET_KEY`                  | Clerk Dashboard → API Keys                                          |
+| `CLERK_WEBHOOK_SECRET`              | Clerk Dashboard → Webhooks → Signing secret                         |
+| `NEXT_PUBLIC_CLERK_SIGN_IN_URL`     | `/sign-in`                                                          |
+| `NEXT_PUBLIC_CLERK_SIGN_UP_URL`     | `/sign-up`                                                          |
+| `DATABASE_URL`                      | Neon Dashboard → Pooled connection string                           |
+| `NEXT_PUBLIC_SENTRY_DSN`            | Sentry → `passe-web` project → Client Keys (DSN)                    |
+| `SENTRY_AUTH_TOKEN`                 | Sentry → Settings → Auth Tokens (source map upload at build time)   |
+| `SENTRY_ORG`                        | Sentry org slug                                                     |
+| `SENTRY_PROJECT`                    | `passe-web`                                                         |
+| `AWS_ACCESS_KEY_ID`                 | IAM user scoped to the media bucket (see "Media storage" below)     |
+| `AWS_SECRET_ACCESS_KEY`             | IAM user scoped to the media bucket                                 |
+| `AWS_REGION`                        | Region the S3 bucket was created in                                 |
+| `S3_BUCKET_NAME`                    | The S3 bucket used for media uploads                                |
+| `MEDIA_URL_SIGNING_SECRET`          | Generate locally: `openssl rand -hex 32` — do not reuse across envs |
+| `APP_URL`                           | This app's own public origin (used to build absolute media URLs)    |
+| `CLOUDINARY_CLOUD_NAME`             | Legacy — Cloudinary Dashboard → Settings → API Keys (cleanup only)  |
+| `CLOUDINARY_API_KEY`                | Legacy — Cloudinary Dashboard → Settings → API Keys (cleanup only)  |
+| `CLOUDINARY_API_SECRET`             | Legacy — Cloudinary Dashboard → Settings → API Keys (cleanup only)  |
 
 ---
 
@@ -195,7 +204,15 @@ convention (e.g. `TripStatsDataWrapper`, `AccountTabViewDataWrapper`).
 
 Always use `<Image>` from `next/image` — never raw `<img>` tags.
 
-External images (e.g. user-uploaded photos, trip cover images) require `remotePatterns` in `next.config.js`. The current config allows all HTTPS hosts (`hostname: '**'`). Tighten to the specific storage domain once the provider is fixed.
+User-uploaded media (trip cover images, memory photos) is served through `/api/media/[...key]` (see
+"Media storage (S3)" below). These URLs are always **absolute**, even though the route lives on this
+same app — React Native's Image component has no page origin to resolve a relative URL against the
+way a browser does, so `resolveMediaUrl` always builds a full `APP_URL`-based URL. `next.config.js`
+adds that origin to `remotePatterns` automatically (see `ownOriginRemotePattern()`), so normal
+`next/image` rendering works without per-component changes. A freshly uploaded file's local preview
+(before the first read-resolve round-trip) is a `blob:` object URL — render that with `unoptimized`,
+since it's a local browser preview, not a fetchable remote host. Legacy Cloudinary rows
+(pre-migration) still resolve to `res.cloudinary.com`, also in `remotePatterns`.
 
 For images with unknown intrinsic dimensions (remote URLs), use the `fill` prop with a positioned parent:
 
@@ -257,6 +274,8 @@ app/api/
   memories/route.ts                      — GET /api/memories (all user memories)
   billing/checkout/route.ts              — POST /api/billing/checkout (Stripe Checkout session)
   billing/portal/route.ts                — POST /api/billing/portal (Stripe Customer Portal session)
+  uploads/sign/route.ts                  — POST /api/uploads/sign (presigned S3 upload URL)
+  media/[...key]/route.ts                — GET /api/media/[...key] (signed media delivery + transform)
   webhooks/clerk/route.ts                — POST /api/webhooks/clerk
   webhooks/stripe/route.ts               — POST /api/webhooks/stripe (updates users.plan)
 ```
@@ -276,6 +295,30 @@ Purchases happen on the web only — mobile displays the plan but sells nothing 
 - The Clerk webhook deletes the Stripe customer on `user.deleted` so cancelled accounts
   stop being charged
 - Local testing: `stripe listen --forward-to localhost:3000/api/webhooks/stripe`
+
+### Media storage (S3)
+
+Media (trip cover images, memory photos) is stored in a private S3 bucket. Uploads and reads never
+expose a raw S3 URL — everything goes through app-controlled signing.
+
+- `src/lib/s3.ts` — S3 client + low-level ops: `mintUploadKeyAndUrl` (presigned PUT for uploads),
+  `deleteS3Objects`, `getS3ObjectStream`
+- `src/lib/media.ts` — `resolveMediaUrl`/`resolveTripMedia`/`resolveMemoryMedia` (read side: DB value
+  → signed `/api/media/...` URL) and `normalizeMediaRef` (write side: incoming value → canonical
+  stored key, with an ownership check against the authenticated user)
+- `POST /api/uploads/sign` — mints a presigned S3 PUT URL for a new upload; the client PUTs the file
+  bytes directly to S3, bytes never touch the Passé server
+- `GET /api/media/[...key]` — the only way media is ever served. Always requires a valid, non-expired
+  HMAC signature (`MEDIA_URL_SIGNING_SECRET`) — there is no unsigned fallback. Resizes/transcodes via
+  `sharp` on request. Private media gets a 1-hour-TTL signed URL minted fresh on every read; public
+  media (`isPublic: true`) gets a long-TTL URL. This route runs on the Node runtime (`sharp` is a
+  native binary, incompatible with Edge)
+
+**DB storage format**: `trips.cover_image_url` / `memory_media.url` store a bare S3 object key
+(`passe/<userId>/<uuid>.<ext>`) for new uploads. Rows created before this migration still hold full
+`https://res.cloudinary.com/...` URLs — both formats coexist in the same `text` column, discriminated
+by whether the value starts with `http`. Legacy Cloudinary cleanup (`src/lib/cloudinary.ts`) is kept
+for deleting those older rows; new deletes go through `deleteS3Objects`.
 
 ### Shared helpers — `src/lib/api.ts`
 

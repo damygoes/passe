@@ -6,7 +6,8 @@ import { Icon } from '@passe/ui/icon'
 import { cn } from '@passe/utils'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { compressImage } from '@/lib/image-compression'
 
 interface Props {
   id: string
@@ -20,8 +21,25 @@ export function ImageUploadField({ id, value, onChange, disabled }: Props) {
   const inputRef = useRef<HTMLInputElement>(null)
   const upload = useUploadImage()
   const [uploadError, setUploadError] = useState<string | null>(null)
+  // A freshly uploaded file's key isn't renderable on its own (it's only
+  // resolved into a signed delivery URL on the next read) — this local
+  // object URL previews it immediately without waiting on that round-trip.
+  const [previewUri, setPreviewUri] = useState<string | null>(null)
+  const previewUriRef = useRef<string | null>(null)
 
   const isBusy = upload.isPending || disabled
+
+  useEffect(() => {
+    return () => {
+      if (previewUriRef.current) URL.revokeObjectURL(previewUriRef.current)
+    }
+  }, [])
+
+  function setPreview(uri: string | null) {
+    if (previewUriRef.current) URL.revokeObjectURL(previewUriRef.current)
+    previewUriRef.current = uri
+    setPreviewUri(uri)
+  }
 
   async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0]
@@ -31,8 +49,21 @@ export function ImageUploadField({ id, value, onChange, disabled }: Props) {
 
     setUploadError(null)
     try {
-      const uploaded = await upload.mutateAsync(file)
-      onChange(uploaded.url)
+      const compressed = await compressImage(file)
+      const objectUrl = URL.createObjectURL(compressed.blob)
+      const uploaded = await upload.mutateAsync({
+        contentType: compressed.contentType,
+        put: async (uploadUrl) => {
+          const res = await fetch(uploadUrl, {
+            method: 'PUT',
+            headers: { 'Content-Type': compressed.contentType },
+            body: compressed.blob,
+          })
+          if (!res.ok) throw new Error(`Upload failed (HTTP ${res.status})`)
+        },
+      })
+      setPreview(objectUrl)
+      onChange(uploaded.key)
     } catch {
       setUploadError(t('upload_failed'))
     }
@@ -40,8 +71,11 @@ export function ImageUploadField({ id, value, onChange, disabled }: Props) {
 
   function handleRemove() {
     setUploadError(null)
+    setPreview(null)
     onChange(null)
   }
+
+  const displayUrl = previewUri ?? value
 
   return (
     <div className="space-y-2">
@@ -55,14 +89,15 @@ export function ImageUploadField({ id, value, onChange, disabled }: Props) {
         onChange={handleFileChange}
       />
 
-      {value ? (
+      {displayUrl ? (
         <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-border">
           <Image
-            src={value}
+            src={displayUrl}
             alt={t('preview_alt')}
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 640px"
+            unoptimized={Boolean(previewUri)}
           />
           <div className="absolute right-2 top-2">
             <Button

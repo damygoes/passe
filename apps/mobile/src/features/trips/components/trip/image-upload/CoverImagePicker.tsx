@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
+import { compressImage } from '@/lib/image-compression'
+import { uploadFileToUrl } from '@/lib/upload-put'
 
 const log = createLogger({ context: { module: 'features/trips/CoverImagePicker' } })
 
@@ -23,8 +25,13 @@ export function CoverImagePicker({ value, onChange, disabled }: CoverImagePicker
   const { colors, spacing, fontSizes, borderRadius } = useTheme()
   const upload = useUploadImage()
   const [uploadError, setUploadError] = useState<string | null>(null)
+  // A freshly uploaded file's key isn't renderable on its own (it's only
+  // resolved into a signed delivery URL on the next read) — this local file
+  // uri previews it immediately without waiting on that round-trip.
+  const [previewUri, setPreviewUri] = useState<string | null>(null)
 
   const isBusy = upload.isPending || disabled
+  const displayUri = previewUri ?? value
 
   const styles = useMemo(
     () =>
@@ -66,12 +73,13 @@ export function CoverImagePicker({ value, onChange, disabled }: CoverImagePicker
     if (result.canceled || !asset) return
 
     try {
+      const compressed = await compressImage(asset)
       const uploaded = await upload.mutateAsync({
-        uri: asset.uri,
-        name: asset.fileName ?? 'photo.jpg',
-        type: asset.mimeType ?? 'image/jpeg',
+        contentType: compressed.contentType,
+        put: (uploadUrl) => uploadFileToUrl(uploadUrl, compressed.uri, compressed.contentType),
       })
-      onChange(uploaded.url)
+      setPreviewUri(compressed.uri)
+      onChange(uploaded.key)
     } catch (err) {
       log.error('Cover image upload failed', {
         error: err instanceof Error ? err.message : String(err),
@@ -82,14 +90,15 @@ export function CoverImagePicker({ value, onChange, disabled }: CoverImagePicker
 
   function handleRemove() {
     setUploadError(null)
+    setPreviewUri(null)
     onChange(null)
   }
 
   return (
     <View style={styles.container}>
-      {value ? (
+      {displayUri ? (
         <View style={styles.previewWrapper}>
-          <Image source={{ uri: value }} style={styles.preview} contentFit="cover" />
+          <Image source={{ uri: displayUri }} style={styles.preview} contentFit="cover" />
           <View style={styles.removeButtonWrapper}>
             <Button variant="secondary" size="sm" onPress={handleRemove} disabled={isBusy}>
               {t('remove')}

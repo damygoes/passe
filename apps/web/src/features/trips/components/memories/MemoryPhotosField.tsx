@@ -1,17 +1,30 @@
 'use client'
 
-import { useUploadImage, type UploadedImage } from '@passe/hooks'
+import { useUploadImage } from '@passe/hooks'
 import { Button } from '@passe/ui/button'
 import { Icon } from '@passe/ui/icon'
 import { cn } from '@passe/utils'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useState } from 'react'
+import { compressImage } from '@/lib/image-compression'
+
+// `url` is what gets submitted (a bare S3 key for a fresh upload, or the
+// existing resolved URL when editing unchanged photos). `previewUri` is
+// what gets rendered — a local object URL for a fresh upload (the bare key
+// isn't renderable on its own until the next read-resolve round-trip), or
+// the same resolved URL as `url` for existing photos.
+export interface MemoryPhoto {
+  url: string
+  previewUri: string
+  width: number | null
+  height: number | null
+}
 
 interface Props {
   id: string
-  photos: UploadedImage[]
-  onAdd: (photo: UploadedImage) => void
+  photos: MemoryPhoto[]
+  onAdd: (photo: MemoryPhoto) => void
   onRemove: (index: number) => void
   disabled?: boolean
 }
@@ -36,8 +49,20 @@ export function MemoryPhotosField({ id, photos, onAdd, onRemove, disabled }: Pro
     setPendingCount(files.length)
     for (const file of files) {
       try {
-        const uploaded = await upload.mutateAsync(file)
-        onAdd(uploaded)
+        const compressed = await compressImage(file)
+        const previewUri = URL.createObjectURL(compressed.blob)
+        const uploaded = await upload.mutateAsync({
+          contentType: compressed.contentType,
+          put: async (uploadUrl) => {
+            const res = await fetch(uploadUrl, {
+              method: 'PUT',
+              headers: { 'Content-Type': compressed.contentType },
+              body: compressed.blob,
+            })
+            if (!res.ok) throw new Error(`Upload failed (HTTP ${res.status})`)
+          },
+        })
+        onAdd({ url: uploaded.key, previewUri, width: compressed.width, height: compressed.height })
       } catch {
         setUploadError(t('upload_failed'))
       } finally {
@@ -61,15 +86,16 @@ export function MemoryPhotosField({ id, photos, onAdd, onRemove, disabled }: Pro
       <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
         {photos.map((photo, index) => (
           <div
-            key={photo.url}
+            key={photo.previewUri}
             className="group relative aspect-square overflow-hidden rounded-lg border border-border"
           >
             <Image
-              src={photo.url}
+              src={photo.previewUri}
               alt={t('preview_alt')}
               fill
               className="object-cover"
               sizes="(max-width: 640px) 33vw, 160px"
+              unoptimized={photo.previewUri.startsWith('blob:')}
             />
             <div className="absolute right-1 top-1">
               <Button

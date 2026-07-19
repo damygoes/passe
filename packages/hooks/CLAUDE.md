@@ -44,9 +44,22 @@ export { useUser, useUpdateUser, useDeleteAccount }
 export { useTrips, useTrip, useCreateTrip, useUpdateTrip, useDeleteTrip }
 
 // Memories
-export { useMemories, useAllMemories, useCreateMemory, useUpdateMemory, useDeleteMemory, useReorderMemories }
+export {
+  useMemories,
+  useAllMemories,
+  useCreateMemory,
+  useUpdateMemory,
+  useDeleteMemory,
+  useReorderMemories,
+}
 
-// Uploads
+// Uploads — mutateAsync({ contentType, put }) => { key }. `put` is a
+// platform-specific callback that PUTs the file bytes to the presigned S3
+// URL (fetch() on web, expo-file-system's uploadAsync() on mobile) — the
+// hook itself never imports a DOM or React Native transport API. The
+// resolved value is the S3 object key, not a renderable URL; rendering a
+// freshly uploaded file needs a locally-held preview (e.g. an object URL),
+// since reads of stored media always go through a server-signed URL.
 export { useUploadImage }
 
 // Billing (web-only in practice — mobile never sells; both resolve { url } to redirect to)
