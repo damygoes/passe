@@ -84,7 +84,7 @@ export async function GET(req: Request, ctx: RouteContext<'/api/media/[...key]'>
     )
     const output = await pipeline.toBuffer()
 
-    return new Response(output, {
+    return new Response(new Uint8Array(output), {
       status: 200,
       headers: {
         'Content-Type': contentTypeForFormat(params.fm),
