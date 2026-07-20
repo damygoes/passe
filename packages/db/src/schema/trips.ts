@@ -14,6 +14,10 @@ export const trips = pgTable(
     title: text('title').notNull(),
     description: text('description'),
     coverImageUrl: text('cover_image_url'),
+    // Tiny base64 JPEG data URI (blur-up placeholder), generated server-side
+    // from the uploaded original. Null for legacy Cloudinary rows and trips
+    // created before this column existed — no backfill.
+    coverImagePlaceholder: text('cover_image_placeholder'),
     countries: text('countries')
       .array()
       .notNull()
@@ -22,7 +26,10 @@ export const trips = pgTable(
     endDate: timestamp('end_date').notNull(),
     isPublic: boolean('is_public').notNull().default(false),
     createdAt: timestamp('created_at').notNull().defaultNow(),
-    updatedAt: timestamp('updated_at').notNull().defaultNow().$onUpdate(() => new Date()),
+    updatedAt: timestamp('updated_at')
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
   },
   (t) => [index('trips_user_id_idx').on(t.userId)],
 )

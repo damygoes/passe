@@ -33,6 +33,11 @@ export const MemoryMediaSchema = z.object({
   sortOrder: z.number().int().nonnegative(),
   width: z.number().int().positive().nullish(),
   height: z.number().int().positive().nullish(),
+  // Server-generated blur-up placeholder and width-bucketed pre-signed URL
+  // set — read-only/derived, never accepted from clients (not present on
+  // CreateMemoryMediaSchema below).
+  placeholder: z.string().nullish(),
+  srcset: z.record(z.string(), z.string()).nullish(),
   createdAt: z.coerce.date(),
 })
 
@@ -85,6 +90,7 @@ export const MapPointSchema = z.object({
   country: z.string().nullish(),
   note: z.string().nullish(),
   thumbnailUrl: z.string().url().nullish(),
+  thumbnailPlaceholder: z.string().nullish(),
 })
 
 export type MapPoint = z.infer<typeof MapPointSchema>

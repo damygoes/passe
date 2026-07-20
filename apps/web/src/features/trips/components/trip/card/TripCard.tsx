@@ -1,6 +1,8 @@
 'use client'
 
 import { Link } from '@/i18n/navigation'
+import { getBlurProps } from '@/lib/image-blur'
+import { createMediaLoader } from '@/lib/media-image-loader'
 import { Badge } from '@passe/ui/badge'
 import {
   MediaCard,
@@ -20,6 +22,8 @@ interface TripCardData {
   endDate: Date | string
   countries: string[]
   coverImageUrl?: string | null
+  coverImagePlaceholder?: string | null
+  coverImageSrcset?: Record<string, string> | null
 }
 
 interface Props {
@@ -33,6 +37,9 @@ export function TripCard({ trip, href, tilt = 'none' }: Props) {
   const resolvedCoverImageUrl =
     trip.coverImageUrl ??
     'https://images.unsplash.com/photo-1656066848895-30feffe87ed6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dHJpcCUyMHBsYWNlaG9sZGVyfGVufDB8fDB8fHwy'
+  // Blur placeholder + bucketed loader only apply to the user's own cover
+  // image — never to the hardcoded Unsplash fallback used when there isn't one.
+  const hasOwnCover = Boolean(trip.coverImageUrl)
 
   const card = (
     <MediaCard tilt={tilt}>
@@ -43,6 +50,10 @@ export function TripCard({ trip, href, tilt = 'none' }: Props) {
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           loading="eager"
+          {...(hasOwnCover ? getBlurProps(trip.coverImagePlaceholder) : {})}
+          {...(hasOwnCover && trip.coverImageSrcset
+            ? { loader: createMediaLoader(trip.coverImageSrcset) }
+            : {})}
         />
       </MediaCardMedia>
       <MediaCardScrim>

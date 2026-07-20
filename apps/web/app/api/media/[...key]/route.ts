@@ -2,7 +2,7 @@ import { createLogger } from '@passe/logger'
 import sharp from 'sharp'
 import type { MediaSignatureParams } from '@/lib/media'
 import { verifyMediaSignature } from '@/lib/media'
-import { getS3ObjectStream } from '@/lib/s3'
+import { getS3ObjectBuffer } from '@/lib/s3'
 
 // sharp is a native binary — incompatible with the Edge runtime.
 export const runtime = 'nodejs'
@@ -28,17 +28,6 @@ function parseParams(searchParams: URLSearchParams): MediaSignatureParams | null
   if (!fm || (pubRaw !== '0' && pubRaw !== '1')) return null
 
   return { w, q, fm, exp, pub: pubRaw === '1' ? 1 : 0 }
-}
-
-async function streamToBuffer(stream: ReadableStream): Promise<Buffer> {
-  const reader = stream.getReader()
-  const chunks: Uint8Array[] = []
-  for (;;) {
-    const { done, value } = await reader.read()
-    if (done) break
-    if (value) chunks.push(value)
-  }
-  return Buffer.concat(chunks)
 }
 
 function contentTypeForFormat(fm: string): string {
@@ -67,8 +56,8 @@ export async function GET(req: Request, ctx: RouteContext<'/api/media/[...key]'>
     return new Response('Forbidden', { status: 403 })
   }
 
-  const object = await getS3ObjectStream(key)
-  if (!object) {
+  const input = await getS3ObjectBuffer(key)
+  if (!input) {
     return new Response('Not found', { status: 404 })
   }
 
@@ -76,7 +65,6 @@ export async function GET(req: Request, ctx: RouteContext<'/api/media/[...key]'>
     params.pub === 1 ? 'public, max-age=31536000, immutable' : 'private, max-age=3600'
 
   try {
-    const input = await streamToBuffer(object.body)
     const pipeline = applyFormat(
       sharp(input).resize({ width: params.w, withoutEnlargement: true }),
       params.fm,

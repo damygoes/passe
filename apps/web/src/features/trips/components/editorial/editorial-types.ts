@@ -7,7 +7,14 @@ export interface EditorialMemoryData {
   city?: string | null
   country?: string | null
   capturedAt: Date | string
-  media: { id: string; url: string; width?: number | null; height?: number | null }[]
+  media: {
+    id: string
+    url: string
+    width?: number | null
+    height?: number | null
+    placeholder?: string | null
+    srcset?: Record<string, string> | null
+  }[]
 }
 
 export function memoryMetaLabel(memory: EditorialMemoryData): string {

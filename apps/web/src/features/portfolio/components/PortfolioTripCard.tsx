@@ -1,3 +1,11 @@
+'use client'
+// Rendered from public server-component views (no providers) — 'use client'
+// here isn't for interactivity, it's required because next/image's `loader`
+// prop is a function, and functions can't cross the server→client
+// serialization boundary when passed down from a Server Component.
+
+import { getBlurProps } from '@/lib/image-blur'
+import { createMediaLoader } from '@/lib/media-image-loader'
 import { Badge } from '@passe/ui/badge'
 import {
   MediaCard,
@@ -16,6 +24,8 @@ interface TripData {
   endDate: Date | string
   countries: string[]
   coverImageUrl?: string | null
+  coverImagePlaceholder?: string | null
+  coverImageSrcset?: Record<string, string> | null
 }
 
 interface Props {
@@ -41,6 +51,8 @@ export function PortfolioTripCard({ trip, href, tilt = 'none' }: Props) {
             alt={trip.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            {...getBlurProps(trip.coverImagePlaceholder)}
+            {...(trip.coverImageSrcset ? { loader: createMediaLoader(trip.coverImageSrcset) } : {})}
           />
         </MediaCardMedia>
       )}

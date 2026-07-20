@@ -2,6 +2,7 @@ import { apiError, apiSuccess, requireAuth } from '@/lib/api'
 import { deleteCloudinaryAssets } from '@/lib/cloudinary'
 import { geocodeCityCountry } from '@/lib/geocode'
 import { MediaOwnershipError, normalizeMediaRef } from '@/lib/media'
+import { generateMediaPlaceholder } from '@/lib/media-placeholder'
 import { fromDbMemory, toDbMemoryValues } from '@/lib/memory'
 import { deleteS3Objects } from '@/lib/s3'
 import { db, memories, memoryMedia, users } from '@passe/db'
@@ -127,6 +128,18 @@ export async function PATCH(
     // re-sent unchanged must not be deleted from storage.
     const removedMedia = existingMedia.filter((media) => !incomingUrls.has(media.url))
 
+    // Reuse the existing placeholder for media the client resent unchanged —
+    // only genuinely new URLs need a fresh S3 fetch + sharp resize.
+    const existingPlaceholders = new Map(
+      existingMedia.map((media) => [media.url, media.placeholder]),
+    )
+    const placeholders = await Promise.all(
+      normalizedMedia.map((item) => {
+        if (existingPlaceholders.has(item.url)) return existingPlaceholders.get(item.url) ?? null
+        return item.mediaType === 'photo' ? generateMediaPlaceholder(item.url) : null
+      }),
+    )
+
     try {
       await db.delete(memoryMedia).where(eq(memoryMedia.memoryId, memoryId))
       if (normalizedMedia.length > 0) {
@@ -138,6 +151,7 @@ export async function PATCH(
             sortOrder: index,
             width: item.width ?? null,
             height: item.height ?? null,
+            placeholder: placeholders[index] ?? null,
           })),
         )
       }

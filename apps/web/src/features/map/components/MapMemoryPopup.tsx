@@ -6,6 +6,7 @@ import { Icon } from '@passe/ui/icon'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useRouter } from '@/i18n/navigation'
+import { getBlurProps } from '@/lib/image-blur'
 import { tripRoute } from '@/lib/routes'
 
 interface MapMemoryPopupProps {
@@ -24,7 +25,14 @@ export function MapMemoryPopup({ point, onClose }: MapMemoryPopupProps) {
       <div className="relative">
         {point.thumbnailUrl && (
           <div className="relative aspect-video w-full">
-            <Image src={point.thumbnailUrl} alt="" fill className="object-cover" sizes="224px" />
+            <Image
+              src={point.thumbnailUrl}
+              alt=""
+              fill
+              className="object-cover"
+              sizes="224px"
+              {...getBlurProps(point.thumbnailPlaceholder)}
+            />
           </div>
         )}
         <Button
@@ -38,7 +46,9 @@ export function MapMemoryPopup({ point, onClose }: MapMemoryPopupProps) {
         </Button>
       </div>
       <div className="flex flex-col gap-1 p-3">
-        {location.length > 0 && <p className="text-xs font-medium text-muted-foreground">{location}</p>}
+        {location.length > 0 && (
+          <p className="text-xs font-medium text-muted-foreground">{location}</p>
+        )}
         {point.note && <p className="line-clamp-3 text-sm">{point.note}</p>}
       </div>
       <div className="flex justify-end border-t p-3 pt-2">

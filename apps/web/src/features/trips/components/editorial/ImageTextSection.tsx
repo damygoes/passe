@@ -1,3 +1,11 @@
+'use client'
+// Rendered from public server-component views (no providers) — 'use client'
+// here isn't for interactivity, it's required because next/image's `loader`
+// prop is a function, and functions can't cross the server→client
+// serialization boundary when passed down from a Server Component.
+
+import { getBlurProps } from '@/lib/image-blur'
+import { createMediaLoader } from '@/lib/media-image-loader'
 import { cn, formatTripDateFull } from '@passe/utils'
 import Image from 'next/image'
 import { memoryMetaLabel, type EditorialMemoryData } from './editorial-types'
@@ -29,6 +37,8 @@ export function ImageTextSection({ memory, side, photoAlt }: Props) {
           fill
           className="object-cover"
           sizes="(max-width: 768px) 100vw, 448px"
+          {...getBlurProps(cover.placeholder)}
+          {...(cover.srcset ? { loader: createMediaLoader(cover.srcset) } : {})}
         />
         {extraCount > 0 && (
           <span className="absolute bottom-2 right-2 rounded-full bg-background/90 px-2 py-0.5 font-mono text-xs text-foreground">

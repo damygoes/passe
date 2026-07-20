@@ -3,6 +3,7 @@ import { vi } from 'vitest'
 import {
   MediaOwnershipError,
   normalizeMediaRef,
+  resolveMediaSrcset,
   resolveMediaUrl,
   resolveMemoryMedia,
   resolveTripMedia,
@@ -71,6 +72,18 @@ describe('resolveTripMedia / resolveMemoryMedia', () => {
     expect(resolveTripMedia(trip).coverImageUrl).toBeNull()
   })
 
+  it('attaches a coverImageSrcset alongside the resolved cover URL', () => {
+    const trip = { id: 't1', coverImageUrl: 'passe/user-1/cover.jpg', isPublic: true }
+    const resolved = resolveTripMedia(trip)
+    expect(resolved.coverImageSrcset).not.toBeNull()
+    expect(Object.keys(resolved.coverImageSrcset!).length).toBeGreaterThan(1)
+  })
+
+  it('has a null coverImageSrcset when there is no cover image', () => {
+    const trip = { id: 't1', coverImageUrl: null, isPublic: false }
+    expect(resolveTripMedia(trip).coverImageSrcset).toBeNull()
+  })
+
   it('resolves every media item using the memory isPublic flag', () => {
     const memory = {
       id: 'm1',
@@ -84,6 +97,43 @@ describe('resolveTripMedia / resolveMemoryMedia', () => {
     expect(resolved.media).toHaveLength(2)
     for (const item of resolved.media) {
       expect(item.url).toMatch(/^http:\/\/localhost:3000\/api\/media\/.*pub=0/)
+      expect(item.srcset).not.toBeNull()
+    }
+  })
+})
+
+describe('resolveMediaSrcset', () => {
+  it('returns null for a null ref', () => {
+    expect(resolveMediaSrcset(null, { isPublic: false })).toBeNull()
+  })
+
+  it('returns null for a legacy Cloudinary URL', () => {
+    const url = 'https://res.cloudinary.com/demo/image/upload/v1/passe/user-1/abc.jpg'
+    expect(resolveMediaSrcset(url, { isPublic: false })).toBeNull()
+  })
+
+  it('mints one signed URL per responsive width bucket', () => {
+    const srcset = resolveMediaSrcset('passe/user-1/abc.jpg', { isPublic: false })
+    expect(srcset).not.toBeNull()
+    const widths = Object.keys(srcset!).map(Number)
+    expect(widths).toEqual([480, 750, 1080, 1600, 2048])
+    for (const [width, url] of Object.entries(srcset!)) {
+      expect(url).toMatch(new RegExp(`[?&]w=${width}(&|$)`))
+    }
+  })
+
+  it('every bucket URL carries its own valid signature', () => {
+    const srcset = resolveMediaSrcset('passe/user-1/abc.jpg', { isPublic: true })!
+    for (const url of Object.values(srcset)) {
+      const query = new URLSearchParams(url.split('?')[1])
+      const params = {
+        w: Number(query.get('w')),
+        q: Number(query.get('q')),
+        fm: query.get('fm')!,
+        exp: Number(query.get('exp')),
+        pub: query.get('pub') === '1' ? (1 as const) : (0 as const),
+      }
+      expect(verifyMediaSignature('passe/user-1/abc.jpg', params, query.get('sig')!)).toBe(true)
     }
   })
 })
