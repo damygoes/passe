@@ -1,4 +1,5 @@
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
+import { resolveMediaUrl } from '@/lib/media'
 import { db, memories, memoryMedia } from '@passe/db'
 import { createLogger } from '@passe/logger'
 import { MapPointSchema } from '@passe/types/memory'
@@ -23,15 +24,25 @@ export async function GET() {
       city: true,
       country: true,
       note: true,
+      isPublic: true,
     },
     with: {
-      media: { limit: 1, orderBy: asc(memoryMedia.sortOrder), columns: { url: true } },
+      media: {
+        limit: 1,
+        orderBy: asc(memoryMedia.sortOrder),
+        columns: { url: true, placeholder: true },
+      },
     },
   })
 
-  const points = rows.map(({ media, ...rest }) => ({
+  // thumbnailUrl must go through resolveMediaUrl like every other media
+  // read — a bare S3 key returned as-is here would fail MapPointSchema's
+  // .url() validation and 500 the whole map view for any geotagged memory
+  // uploaded since the S3 migration.
+  const points = rows.map(({ media, isPublic, ...rest }) => ({
     ...rest,
-    thumbnailUrl: media[0]?.url ?? null,
+    thumbnailUrl: resolveMediaUrl(media[0]?.url ?? null, { isPublic }),
+    thumbnailPlaceholder: media[0]?.placeholder ?? null,
   }))
 
   const parsed = MapPointSchema.array().safeParse(points)

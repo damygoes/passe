@@ -9,6 +9,8 @@ interface TripData {
   endDate: Date | string
   countries: string[]
   coverImageUrl?: string | null
+  coverImagePlaceholder?: string | null
+  coverImageSrcset?: Record<string, string> | null
 }
 
 interface Props {

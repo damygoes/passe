@@ -46,6 +46,15 @@ export default withSentryConfig(
     serverExternalPackages: ['sharp'],
     images: {
       dangerouslyAllowLocalIP: isOwnOriginLocalhost(),
+      // Matches the RESPONSIVE_WIDTHS bucket list in apps/web/src/lib/media.ts
+      // (the pre-minted signed-URL set for our own media) — keeps Next's own
+      // responsive-image algorithm requesting widths close to what's actually
+      // been pre-signed, and caps at 2048 since client-side upload compression
+      // already limits stored originals to ~2000px (nothing wider has more
+      // real detail to serve, for our media or the Unsplash/Cloudinary/picsum
+      // fallbacks alike).
+      deviceSizes: [480, 750, 1080, 1600, 2048],
+      imageSizes: [160, 224, 448],
       remotePatterns: [
         ...(ownOriginRemotePattern() ? [ownOriginRemotePattern()] : []),
         {

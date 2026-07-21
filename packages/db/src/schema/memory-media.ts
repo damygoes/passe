@@ -20,6 +20,10 @@ export const memoryMedia = pgTable(
     // aspect-ratio-aware layout. Nullable because older uploads may lack them.
     width: integer('width'),
     height: integer('height'),
+    // Tiny base64 JPEG data URI (blur-up placeholder), generated server-side
+    // from the uploaded original. Null for legacy Cloudinary rows and media
+    // created before this column existed — no backfill.
+    placeholder: text('placeholder'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
   },
   (t) => [index('memory_media_memory_id_idx').on(t.memoryId)],

@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { GET } from './route'
 
 vi.mock('@/lib/media', () => ({ verifyMediaSignature: vi.fn() }))
-vi.mock('@/lib/s3', () => ({ getS3ObjectStream: vi.fn() }))
+vi.mock('@/lib/s3', () => ({ getS3ObjectBuffer: vi.fn() }))
 
 const mockToBuffer = vi.fn()
 const mockWebp = vi.fn()
@@ -34,7 +34,7 @@ vi.mock('sharp', () => {
 })
 
 import { verifyMediaSignature } from '@/lib/media'
-import { getS3ObjectStream } from '@/lib/s3'
+import { getS3ObjectBuffer } from '@/lib/s3'
 
 function ctx(key: string[]) {
   return { params: Promise.resolve({ key }) } as never
@@ -48,15 +48,7 @@ const validQuery = 'w=1600&q=75&fm=webp&exp=9999999999&pub=0&sig=validsig'
 
 beforeEach(() => {
   vi.mocked(verifyMediaSignature).mockReturnValue(true)
-  vi.mocked(getS3ObjectStream).mockResolvedValue({
-    body: new ReadableStream({
-      start(controller) {
-        controller.enqueue(new Uint8Array([1, 2, 3]))
-        controller.close()
-      },
-    }),
-    contentType: 'image/jpeg',
-  })
+  vi.mocked(getS3ObjectBuffer).mockResolvedValue(Buffer.from([1, 2, 3]))
   mockToBuffer.mockResolvedValue(Buffer.from('transformed-bytes'))
 })
 
@@ -102,7 +94,7 @@ describe('GET /api/media/[...key]', () => {
   })
 
   it('returns 404 when the object does not exist in S3', async () => {
-    vi.mocked(getS3ObjectStream).mockResolvedValue(null)
+    vi.mocked(getS3ObjectBuffer).mockResolvedValue(null)
     const res = await GET(req(validQuery), ctx(['passe', 'user-1', 'abc.jpg']))
     expect(res.status).toBe(404)
   })

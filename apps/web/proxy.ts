@@ -1,10 +1,10 @@
+import { routing } from '@/i18n/routing'
+import { routes } from '@/lib/routes'
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import { PUBLIC_ROUTES } from '@passe/auth/constants'
+import { DEFAULT_LOCALE, LOCALES } from '@passe/i18n'
 import createIntlMiddleware from 'next-intl/middleware'
 import { NextResponse } from 'next/server'
-import { routing } from '@/i18n/routing'
-import { PUBLIC_ROUTES } from '@passe/auth/constants'
-import { LOCALES, DEFAULT_LOCALE } from '@passe/i18n'
-import { routes } from '@/lib/routes'
 
 const handleI18nRouting = createIntlMiddleware(routing)
 const isPublicRoute = createRouteMatcher([...PUBLIC_ROUTES])
@@ -38,7 +38,9 @@ export default clerkMiddleware(async (auth, req) => {
   }
 
   if (!isPublicRoute(req)) {
-    await auth.protect({ unauthenticatedUrl: new URL(`/${locale}${routes.signIn}`, req.nextUrl.origin).toString() })
+    await auth.protect({
+      unauthenticatedUrl: new URL(`/${locale}${routes.signIn}`, req.nextUrl.origin).toString(),
+    })
   }
 
   return handleI18nRouting(req)

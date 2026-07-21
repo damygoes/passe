@@ -1,6 +1,7 @@
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
 import { geocodeCityCountry } from '@/lib/geocode'
 import { MediaOwnershipError, normalizeMediaRef } from '@/lib/media'
+import { generateMediaPlaceholder } from '@/lib/media-placeholder'
 import { fromDbMemory, toDbMemoryValues } from '@/lib/memory'
 import { db, memories, memoryMedia, trips, users } from '@passe/db'
 import { canAddMemory } from '@passe/auth/plan-gates'
@@ -123,6 +124,12 @@ export async function POST(req: Request, ctx: RouteContext<'/api/trips/[id]/memo
       throw err
     }
 
+    const placeholders = await Promise.all(
+      normalizedMedia.map((item) =>
+        item.mediaType === 'photo' ? generateMediaPlaceholder(item.url) : null,
+      ),
+    )
+
     try {
       mediaRows = await db
         .insert(memoryMedia)
@@ -134,6 +141,7 @@ export async function POST(req: Request, ctx: RouteContext<'/api/trips/[id]/memo
             sortOrder: index,
             width: item.width ?? null,
             height: item.height ?? null,
+            placeholder: placeholders[index] ?? null,
           })),
         )
         .returning()

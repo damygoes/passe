@@ -5,7 +5,19 @@ const MEDIA_ROUTE_PREFIX = '/api/media/'
 const PRIVATE_TTL_SECONDS = 60 * 60 // 1 hour — re-minted on every read
 const PUBLIC_TTL_SECONDS = 60 * 60 * 24 * 365 // 1 year — owner opted in, safe to cache long
 
-const DEFAULT_WIDTH = 1600
+// Width buckets used to pre-mint a small set of signed URLs per image, so
+// next/image's responsive srcset can request a size close to what it
+// actually needs instead of always scaling down one fixed-width asset.
+// 2048 is the ceiling because client-side upload compression already caps
+// stored originals at ~2000px (see src/lib/image-compression.ts) — nothing
+// wider ever contains more real detail, and `withoutEnlargement: true` in
+// the read route already no-ops requests past the source size.
+const RESPONSIVE_WIDTHS = [480, 750, 1080, 1600, 2048] as const
+
+// Must equal the largest entry in RESPONSIVE_WIDTHS — the single resolved
+// coverImageUrl/media url continues to serve the largest bucket, so any
+// code path that hasn't adopted the srcset yet keeps working unchanged.
+const DEFAULT_WIDTH: number = 2048
 const DEFAULT_QUALITY = 75
 const DEFAULT_FORMAT = 'webp'
 
@@ -65,10 +77,14 @@ function isLegacyCloudinaryUrl(ref: string): boolean {
   return ref.startsWith('http')
 }
 
-function buildSignedMediaUrl(key: string, isPublic: boolean): string {
+function buildSignedMediaUrl(
+  key: string,
+  isPublic: boolean,
+  width: number = DEFAULT_WIDTH,
+): string {
   const ttl = isPublic ? PUBLIC_TTL_SECONDS : PRIVATE_TTL_SECONDS
   const params: MediaSignatureParams = {
-    w: DEFAULT_WIDTH,
+    w: width,
     q: DEFAULT_QUALITY,
     fm: DEFAULT_FORMAT,
     exp: Math.floor(Date.now() / 1000) + ttl,
@@ -86,6 +102,24 @@ function buildSignedMediaUrl(key: string, isPublic: boolean): string {
   return `${getAppOrigin()}${MEDIA_ROUTE_PREFIX}${key}?${query.toString()}`
 }
 
+// Mints one signed URL per responsive width bucket for a single media ref —
+// the "pre-minted signed set" approach to responsive breakpoints: every URL
+// stays fully HMAC-signed exactly like the single-URL case (no relaxation
+// of what's bound into the signature), and a custom next/image loader
+// (src/lib/media-image-loader.ts) picks the closest bucket at render time.
+// Returns null for legacy Cloudinary rows — there's nothing to bucket, the
+// URL is used as-is.
+export function resolveMediaSrcset(
+  ref: string | null,
+  opts: { isPublic: boolean },
+): Record<string, string> | null {
+  if (!ref || isLegacyCloudinaryUrl(ref)) return null
+  const entries = RESPONSIVE_WIDTHS.map(
+    (width) => [width, buildSignedMediaUrl(ref, opts.isPublic, width)] as const,
+  )
+  return Object.fromEntries(entries)
+}
+
 // Resolves a stored DB value (bare S3 key, or a legacy Cloudinary URL left
 // untouched by the migration) into a URL safe to hand to the client. Legacy
 // Cloudinary URLs pass through unchanged. S3 keys are turned into a signed,
@@ -101,21 +135,23 @@ export function resolveMediaUrl(ref: string | null, opts: { isPublic: boolean })
 
 export function resolveTripMedia<T extends { coverImageUrl: string | null; isPublic: boolean }>(
   trip: T,
-): T {
+): T & { coverImageSrcset: Record<string, string> | null } {
   return {
     ...trip,
     coverImageUrl: resolveMediaUrl(trip.coverImageUrl, { isPublic: trip.isPublic }),
+    coverImageSrcset: resolveMediaSrcset(trip.coverImageUrl, { isPublic: trip.isPublic }),
   }
 }
 
 export function resolveMemoryMedia<T extends { isPublic: boolean; media: { url: string }[] }>(
   memory: T,
-): T {
+): T & { media: (T['media'][number] & { srcset: Record<string, string> | null })[] } {
   return {
     ...memory,
     media: memory.media.map((item) => ({
       ...item,
       url: resolveMediaUrl(item.url, { isPublic: memory.isPublic }),
+      srcset: resolveMediaSrcset(item.url, { isPublic: memory.isPublic }),
     })),
   }
 }

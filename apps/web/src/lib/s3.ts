@@ -128,3 +128,23 @@ export async function getS3ObjectStream(key: string): Promise<S3ObjectStream | n
     return null
   }
 }
+
+async function streamToBuffer(stream: ReadableStream): Promise<Buffer> {
+  const reader = stream.getReader()
+  const chunks: Uint8Array[] = []
+  for (;;) {
+    const { done, value } = await reader.read()
+    if (done) break
+    if (value) chunks.push(value)
+  }
+  return Buffer.concat(chunks)
+}
+
+// Fetches an object's full bytes as a Buffer — shared by the media transform
+// route and server-side placeholder generation. Returns null when the key
+// doesn't exist or the fetch fails, matching getS3ObjectStream's semantics.
+export async function getS3ObjectBuffer(key: string): Promise<Buffer | null> {
+  const object = await getS3ObjectStream(key)
+  if (!object) return null
+  return streamToBuffer(object.body)
+}

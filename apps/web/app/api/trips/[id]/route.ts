@@ -1,5 +1,6 @@
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
 import { deleteCloudinaryAssets } from '@/lib/cloudinary'
+import { generateMediaPlaceholder } from '@/lib/media-placeholder'
 import { MediaOwnershipError, normalizeMediaRef, resolveTripMedia } from '@/lib/media'
 import { deleteS3Objects } from '@/lib/s3'
 import { db, memories, memoryMedia, trips } from '@passe/db'
@@ -82,14 +83,29 @@ export async function PATCH(req: Request, ctx: RouteContext<'/api/trips/[id]'>) 
 
   // Capture the outgoing cover image before it's overwritten so the old S3
   // object can be cleaned up after a successful write — only needed when
-  // this request actually touches coverImageUrl.
+  // this request actually touches coverImageUrl. Also fetch the existing
+  // placeholder so an unchanged cover image can carry it forward instead of
+  // paying for a redundant S3 fetch + sharp resize.
   let previousCoverImageUrl: string | null | undefined
+  let previousCoverImagePlaceholder: string | null | undefined
   if ('coverImageUrl' in parsed.data) {
     const existing = await db.query.trips.findFirst({
       where: and(eq(trips.id, id), eq(trips.userId, userId)),
-      columns: { coverImageUrl: true },
+      columns: { coverImageUrl: true, coverImagePlaceholder: true },
     })
     previousCoverImageUrl = existing?.coverImageUrl
+    previousCoverImagePlaceholder = existing?.coverImagePlaceholder
+  }
+
+  let coverImagePlaceholder: string | null | undefined
+  if (coverImageUrl !== undefined) {
+    if (coverImageUrl === previousCoverImageUrl) {
+      coverImagePlaceholder = previousCoverImagePlaceholder ?? null
+    } else if (coverImageUrl === null) {
+      coverImagePlaceholder = null
+    } else {
+      coverImagePlaceholder = await generateMediaPlaceholder(coverImageUrl)
+    }
   }
 
   let updated
@@ -98,7 +114,7 @@ export async function PATCH(req: Request, ctx: RouteContext<'/api/trips/[id]'>) 
       .update(trips)
       .set({
         ...parsed.data,
-        ...(coverImageUrl !== undefined ? { coverImageUrl } : {}),
+        ...(coverImageUrl !== undefined ? { coverImageUrl, coverImagePlaceholder } : {}),
         updatedAt: new Date(),
       })
       .where(and(eq(trips.id, id), eq(trips.userId, userId)))

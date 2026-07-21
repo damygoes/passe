@@ -1,6 +1,8 @@
 'use client'
 
 import { Link, useRouter } from '@/i18n/navigation'
+import { getBlurProps } from '@/lib/image-blur'
+import { createMediaLoader } from '@/lib/media-image-loader'
 import { routes, tripEditRoute } from '@/lib/routes'
 import { useDeleteTrip, useTrip } from '@passe/hooks'
 import {
@@ -144,6 +146,8 @@ export function TripDetailHeader({ id }: Props) {
             priority
             className="object-contain"
             sizes="100vw"
+            {...getBlurProps(trip.coverImagePlaceholder)}
+            {...(trip.coverImageSrcset ? { loader: createMediaLoader(trip.coverImageSrcset) } : {})}
             onLoad={(event) => {
               const img = event.currentTarget
               if (img.naturalWidth && img.naturalHeight) {

@@ -13,6 +13,12 @@ export const TripSchema = z.object({
   // a signed, absolute delivery URL at read time (see apps/web/src/lib/media.ts).
   // Legacy rows may still hold a full Cloudinary URL, which this also accepts.
   coverImageUrl: z.string().min(1).nullish(),
+  // Server-generated blur-up placeholder (tiny base64 JPEG data URI) and a
+  // set of pre-signed URLs keyed by width bucket for responsive rendering.
+  // Both are read-only/derived — never accepted from clients, see
+  // CreateTripSchema's omit list below.
+  coverImagePlaceholder: z.string().nullish(),
+  coverImageSrcset: z.record(z.string(), z.string()).nullish(),
   countries: z.array(z.string()).min(1),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
@@ -28,6 +34,8 @@ export const CreateTripSchema = TripSchema.omit({
   userId: true,
   createdAt: true,
   updatedAt: true,
+  coverImagePlaceholder: true,
+  coverImageSrcset: true,
 })
 
 export type CreateTrip = z.infer<typeof CreateTripSchema>

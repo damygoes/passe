@@ -1,4 +1,5 @@
 import { apiError, apiSuccess, requireAuth } from '@/lib/api'
+import { generateMediaPlaceholder } from '@/lib/media-placeholder'
 import { MediaOwnershipError, normalizeMediaRef, resolveTripMedia } from '@/lib/media'
 import { canCreateTrip, canMakePortfolioPublic } from '@passe/auth/plan-gates'
 import { db, trips, users } from '@passe/db'
@@ -70,11 +71,13 @@ export async function POST(req: Request) {
     throw err
   }
 
+  const coverImagePlaceholder = coverImageUrl ? await generateMediaPlaceholder(coverImageUrl) : null
+
   let trip
   try {
     ;[trip] = await db
       .insert(trips)
-      .values({ ...parsed.data, coverImageUrl, userId })
+      .values({ ...parsed.data, coverImageUrl, coverImagePlaceholder, userId })
       .returning()
   } catch (err) {
     log.error('DB write failed', {
