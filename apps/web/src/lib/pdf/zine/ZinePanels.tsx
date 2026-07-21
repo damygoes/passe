@@ -11,14 +11,15 @@ const styles = StyleSheet.create({
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
   imagePanel: {
     width: '100%',
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 6,
+    padding: 11,
   },
   coverImage: {
     width: '100%',
