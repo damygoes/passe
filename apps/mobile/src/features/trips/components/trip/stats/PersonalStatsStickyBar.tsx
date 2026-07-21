@@ -1,16 +1,12 @@
 import { useMemo } from 'react'
 import { StyleSheet, Text } from 'react-native'
-import Animated, {
-  Extrapolation,
-  interpolate,
-  useAnimatedStyle,
-} from 'react-native-reanimated'
+import Animated, { Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated'
 import type { SharedValue } from 'react-native-reanimated'
 
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
-interface TripStatsStickyBarProps {
+interface PersonalStatsStickyBarProps {
   countriesCount: number
   citiesCount: number
   yearsCount: number
@@ -21,17 +17,17 @@ interface TripStatsStickyBarProps {
 }
 
 /**
- * Compact recap of the trip stats that fades in at the top of the screen once
- * the stat cards scroll out of view. Purely informational — never intercepts
- * touches.
+ * Compact recap of the account-wide stats that fades in at the top of the
+ * screen once the stat cards scroll out of view. Purely informational — never
+ * intercepts touches.
  */
-export function TripStatsStickyBar({
+export function PersonalStatsStickyBar({
   countriesCount,
   citiesCount,
   yearsCount,
   scrollY,
   threshold,
-}: TripStatsStickyBarProps) {
+}: PersonalStatsStickyBarProps) {
   const t = useTranslations('trips.stats')
   const { colors, spacing, fontSizes, fontWeights } = useTheme()
 

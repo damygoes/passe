@@ -57,6 +57,7 @@ import { UserSchema, type User } from '@passe/types'
 ## Data Fetching
 
 **Protected views** (under `app/[locale]/(protected)/`) must fetch all data via `@passe/hooks`:
+
 - Route pages are pure shells: `export default function Page() { return <SomeView /> }`
 - Views are `'use client'` components that call hooks from `@passe/hooks`
 - Hooks call API routes under `app/api/` which contain all Drizzle + Clerk SDK logic
@@ -83,7 +84,7 @@ src/features/
                     SocialAuthButtons, LogoutButton, PasswordStrengthMeter, PasswordMatchIndicator
     schemas/      — auth.ts (Zod form schemas)
   trips/
-    components/   — TripCard, TripStats, MemoryCard, NoTripsEmpty, NoMemoriesEmpty
+    components/   — TripCard, PersonalStats, MemoryCard, NoTripsEmpty, NoMemoriesEmpty
     views/        — DashboardView, TripDetailView
     utils/        — getUniqueCities, getUniqueStatsFromTrips
   portfolio/
@@ -109,8 +110,9 @@ FeatureView.tsx              — static chrome only (heading, separator); render
 ```
 
 Rules:
+
 - `*DataWrapper` components own all data fetching and loading/error guards — nothing else. Examples:
-  `TripStatsDataWrapper`, `AccountTabViewDataWrapper`
+  `PersonalStatsDataWrapper`, `AccountTabViewDataWrapper`
 - Static presentational components (skeletons, error states, empty states) must **NOT** have
   `'use client'` — they use no hooks, no browser APIs, no event handlers
 - Never use raw `<button>` in feature components — always `<Button variant="ghost">` or

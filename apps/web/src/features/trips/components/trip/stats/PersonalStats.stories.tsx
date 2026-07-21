@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
-import { TripStats } from './TripStats'
+import { PersonalStats } from './PersonalStats'
 
-const meta: Meta<typeof TripStats> = {
-  title: 'Trips/TripStats',
-  component: TripStats,
+const meta: Meta<typeof PersonalStats> = {
+  title: 'Trips/PersonalStats',
+  component: PersonalStats,
   tags: ['autodocs'],
 }
 
 export default meta
-type Story = StoryObj<typeof TripStats>
+type Story = StoryObj<typeof PersonalStats>
 
 export const Default: Story = {
   args: {

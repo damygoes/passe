@@ -4,7 +4,11 @@ type UniqueCities = {
   uniqueCities: Set<string>
 }
 
-export function getUniqueCities({ allMemories }: { allMemories: Memory[] }): UniqueCities {
+export function getUniqueCities({
+  allMemories,
+}: {
+  allMemories: Pick<Memory, 'city'>[]
+}): UniqueCities {
   const uniqueCities = new Set(allMemories.flatMap((memory) => (memory.city ? [memory.city] : [])))
   return {
     uniqueCities,

@@ -10,8 +10,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { PageHeader, PageHeaderDescription, PageHeaderTitle } from '@/components/ui/page-header'
 import { Skeleton } from '@/components/ui/skeleton'
 import { TripsList } from '@/features/trips/components/trip/lists/TripsList'
-import { TripStatsDataWrapper } from '@/features/trips/components/trip/stats/TripStatsDataWrapper'
-import { TripStatsStickyBarDataWrapper } from '@/features/trips/components/trip/stats/TripStatsStickyBarDataWrapper'
+import { PersonalStatsDataWrapper } from '@/features/trips/components/trip/stats/PersonalStatsDataWrapper'
+import { PersonalStatsStickyBarDataWrapper } from '@/features/trips/components/trip/stats/PersonalStatsStickyBarDataWrapper'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 import { enterUp } from '@/lib/motion'
@@ -88,11 +88,11 @@ export function TripsScreen() {
           </PageHeader>
         </Animated.View>
         <Animated.View entering={enterUp(80)} onLayout={onStatsLayout}>
-          <TripStatsDataWrapper />
+          <PersonalStatsDataWrapper />
         </Animated.View>
         <TripsList />
       </Animated.ScrollView>
-      <TripStatsStickyBarDataWrapper scrollY={scrollY} threshold={statsBottom} />
+      <PersonalStatsStickyBarDataWrapper scrollY={scrollY} threshold={statsBottom} />
     </SafeAreaView>
   )
 }

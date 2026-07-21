@@ -134,7 +134,7 @@ src/features/
                     SocialAuthButtons, LogoutButton, PasswordStrengthMeter, PasswordMatchIndicator
     schemas/      — auth.ts (Zod form schemas)
   trips/
-    components/   — TripCard, TripStats, MemoryCard, NoTripsEmpty, NoMemoriesEmpty
+    components/   — TripCard, PersonalStats, MemoryCard, NoTripsEmpty, NoMemoriesEmpty
     views/        — DashboardView, TripDetailView
     utils/        — getUniqueCities, getUniqueStatsFromTrips
   portfolio/
@@ -168,7 +168,7 @@ The app uses a **static shell + isolated loading states** pattern. Never block s
 DashboardView ('use client') — no hooks, renders immediately
   ├── PageHeader — static shell, never blocked
   ├── DashboardViewDescription — useTrips() → skeleton | null on error
-  ├── TripStatsDataWrapper — useTrips() + useAllMemories() → skeleton | null on error/empty
+  ├── PersonalStatsDataWrapper — useTrips() + useAllMemories() → skeleton | null on error/empty
   └── TripsList — useTrips() → skeleton | error message | <NoTripsEmpty />
 ```
 
@@ -189,7 +189,7 @@ export function ExampleDataComponent() {
 ```
 
 Components whose sole job is data fetching + loading/error gate follow the `*DataWrapper` naming
-convention (e.g. `TripStatsDataWrapper`, `AccountTabViewDataWrapper`).
+convention (e.g. `PersonalStatsDataWrapper`, `AccountTabViewDataWrapper`).
 
 **Rules:**
 

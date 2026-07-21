@@ -493,6 +493,9 @@
   "portfolio": {
     "title": "Portfolio",
     "trip_count": "{count, plural, one {# trip} other {# trips}}",
+    "country_count": "{count, plural, one {# country} other {# countries}}",
+    "city_count": "{count, plural, one {# city} other {# cities}}",
+    "year_count": "{count, plural, one {# year} other {# years}}",
     "empty_title": "Nothing to see here yet",
     "empty_description": "{displayName} hasn't shared any public trips yet.",
     "error": "Could not load your portfolio. Try again later."

@@ -1,4 +1,5 @@
-import { useTrips, useUser } from '@passe/hooks'
+import { useAllMemories, useTrips, useUser } from '@passe/hooks'
+import { getUniqueCities, getUniqueStatsFromTrips } from '@passe/utils'
 import { useRouter } from 'expo-router'
 import { useMemo } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
@@ -21,6 +22,11 @@ export function PortfolioScreen() {
   const router = useRouter()
   const { data: user, isLoading: userLoading, isError: userError } = useUser()
   const { data: trips = [], isLoading: tripsLoading, isError: tripsError } = useTrips()
+  const {
+    data: allMemories = [],
+    isLoading: memoriesLoading,
+    isError: memoriesError,
+  } = useAllMemories()
 
   const styles = useMemo(
     () =>
@@ -34,9 +40,12 @@ export function PortfolioScreen() {
   )
 
   const publicTrips = trips.filter((trip) => trip.isPublic)
+  const publicMemories = allMemories.filter((memory) => memory.isPublic)
+  const { uniqueCountries, uniqueYears } = getUniqueStatsFromTrips({ trips: publicTrips })
+  const { uniqueCities } = getUniqueCities({ allMemories: publicMemories })
 
-  const isLoading = userLoading || tripsLoading
-  const isError = userError || tripsError || (!isLoading && !user)
+  const isLoading = userLoading || tripsLoading || memoriesLoading
+  const isError = userError || tripsError || memoriesError || (!isLoading && !user)
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['bottom']}>
@@ -51,7 +60,13 @@ export function PortfolioScreen() {
         ) : (
           <>
             <Animated.View entering={enterUp(0)}>
-              <PortfolioHeader user={user} tripCount={publicTrips.length} />
+              <PortfolioHeader
+                user={user}
+                tripCount={publicTrips.length}
+                countriesCount={uniqueCountries.size}
+                citiesCount={uniqueCities.size}
+                yearsCount={uniqueYears.size}
+              />
             </Animated.View>
             {publicTrips.length === 0 ? (
               <NoPublicTripsEmpty displayName={user.displayName} />

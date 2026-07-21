@@ -10,9 +10,18 @@ interface UserData {
 interface Props {
   user: UserData
   tripCount: number
+  countriesCount: number
+  citiesCount: number
+  yearsCount: number
 }
 
-export function PortfolioHeader({ user, tripCount }: Props) {
+export function PortfolioHeader({
+  user,
+  tripCount,
+  countriesCount,
+  citiesCount,
+  yearsCount,
+}: Props) {
   const initials = user.displayName
     .split(' ')
     .map((n) => n[0])
@@ -29,13 +38,28 @@ export function PortfolioHeader({ user, tripCount }: Props) {
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-1">
-            <p className="mb-1 text-xs uppercase tracking-widest text-muted-foreground">Portfolio</p>
+            <p className="mb-1 text-xs uppercase tracking-widest text-muted-foreground">
+              Portfolio
+            </p>
             <h1 className="font-heading text-3xl font-semibold">{user.displayName}</h1>
             {user.bio && <p className="mt-2 text-muted-foreground">{user.bio}</p>}
-            <div className="mt-3">
+            <div className="mt-3 flex flex-wrap gap-2">
               <Badge variant="outline">
                 {tripCount} {tripCount === 1 ? 'trip' : 'trips'}
               </Badge>
+              {tripCount > 0 && (
+                <>
+                  <Badge variant="outline">
+                    {countriesCount} {countriesCount === 1 ? 'country' : 'countries'}
+                  </Badge>
+                  <Badge variant="outline">
+                    {citiesCount} {citiesCount === 1 ? 'city' : 'cities'}
+                  </Badge>
+                  <Badge variant="outline">
+                    {yearsCount} {yearsCount === 1 ? 'year' : 'years'}
+                  </Badge>
+                </>
+              )}
             </div>
           </div>
         </div>
