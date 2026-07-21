@@ -9,13 +9,13 @@ import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 import { LIST_STAGGER_MS } from '@/lib/motion'
 
-interface TripStatsProps {
+interface PersonalStatsProps {
   countriesCount: number
   citiesCount: number
   yearsCount: number
 }
 
-export function TripStats({ countriesCount, citiesCount, yearsCount }: TripStatsProps) {
+export function PersonalStats({ countriesCount, citiesCount, yearsCount }: PersonalStatsProps) {
   const t = useTranslations('trips.stats')
   const { colors, spacing, fontSizes, fontWeights } = useTheme()
 

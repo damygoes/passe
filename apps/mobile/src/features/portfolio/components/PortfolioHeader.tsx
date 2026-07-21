@@ -15,9 +15,18 @@ interface PortfolioHeaderUser {
 interface PortfolioHeaderProps {
   user: PortfolioHeaderUser
   tripCount: number
+  countriesCount: number
+  citiesCount: number
+  yearsCount: number
 }
 
-export function PortfolioHeader({ user, tripCount }: PortfolioHeaderProps) {
+export function PortfolioHeader({
+  user,
+  tripCount,
+  countriesCount,
+  citiesCount,
+  yearsCount,
+}: PortfolioHeaderProps) {
   const t = useTranslations('portfolio')
   const { colors, spacing, fontSizes, fontWeights } = useTheme()
 
@@ -45,7 +54,12 @@ export function PortfolioHeader({ user, tripCount }: PortfolioHeaderProps) {
           color: colors.foreground,
         },
         bio: { fontSize: fontSizes.sm, color: colors.mutedForeground },
-        badgeRow: { flexDirection: 'row', marginTop: spacing[2] },
+        badgeRow: {
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          gap: spacing[2],
+          marginTop: spacing[2],
+        },
       }),
     [colors, spacing, fontSizes, fontWeights],
   )
@@ -69,6 +83,13 @@ export function PortfolioHeader({ user, tripCount }: PortfolioHeaderProps) {
         {user.bio && <Text style={styles.bio}>{user.bio}</Text>}
         <View style={styles.badgeRow}>
           <Badge variant="outline">{t('trip_count', { count: tripCount })}</Badge>
+          {tripCount > 0 && (
+            <>
+              <Badge variant="outline">{t('country_count', { count: countriesCount })}</Badge>
+              <Badge variant="outline">{t('city_count', { count: citiesCount })}</Badge>
+              <Badge variant="outline">{t('year_count', { count: yearsCount })}</Badge>
+            </>
+          )}
         </View>
       </View>
     </View>

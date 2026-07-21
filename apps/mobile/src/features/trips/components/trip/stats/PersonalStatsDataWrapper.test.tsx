@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react-native'
-import { TripStatsDataWrapper } from './TripStatsDataWrapper'
+import { PersonalStatsDataWrapper } from './PersonalStatsDataWrapper'
 
 const mockUseTrips = jest.fn()
 const mockUseAllMemories = jest.fn()
@@ -8,10 +8,10 @@ jest.mock('@passe/hooks', () => ({
   useAllMemories: () => mockUseAllMemories(),
 }))
 
-jest.mock('./TripStats', () => {
+jest.mock('./PersonalStats', () => {
   const { Text } = require('react-native')
   return {
-    TripStats: ({ countriesCount, citiesCount, yearsCount }: Record<string, number>) => (
+    PersonalStats: ({ countriesCount, citiesCount, yearsCount }: Record<string, number>) => (
       <Text>
         stats:{countriesCount}:{citiesCount}:{yearsCount}
       </Text>
@@ -23,23 +23,23 @@ beforeEach(() => {
   mockUseAllMemories.mockReturnValue({ data: [], isLoading: false, isError: false })
 })
 
-describe('TripStatsDataWrapper', () => {
+describe('PersonalStatsDataWrapper', () => {
   it('shows a skeleton while either query is loading', () => {
     mockUseTrips.mockReturnValue({ data: [], isLoading: true, isError: false })
-    const { UNSAFE_root } = render(<TripStatsDataWrapper />)
+    const { UNSAFE_root } = render(<PersonalStatsDataWrapper />)
     expect(UNSAFE_root).toBeTruthy()
     expect(screen.queryByText(/stats:/)).toBeNull()
   })
 
   it('renders nothing on error', () => {
     mockUseTrips.mockReturnValue({ data: [], isLoading: false, isError: true })
-    const { toJSON } = render(<TripStatsDataWrapper />)
+    const { toJSON } = render(<PersonalStatsDataWrapper />)
     expect(toJSON()).toBeNull()
   })
 
   it('renders nothing when there are no trips', () => {
     mockUseTrips.mockReturnValue({ data: [], isLoading: false, isError: false })
-    const { toJSON } = render(<TripStatsDataWrapper />)
+    const { toJSON } = render(<PersonalStatsDataWrapper />)
     expect(toJSON()).toBeNull()
   })
 
@@ -54,7 +54,7 @@ describe('TripStatsDataWrapper', () => {
       isLoading: false,
       isError: false,
     })
-    render(<TripStatsDataWrapper />)
+    render(<PersonalStatsDataWrapper />)
     expect(screen.getByText('stats:1:1:1')).toBeTruthy()
   })
 })

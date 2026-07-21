@@ -15,12 +15,12 @@ interface Props {
 }
 
 /**
- * Compact sticky recap of the trip stats for small viewports. Slides in under
- * the navbar once the stat cards scroll out of view. Rendered through a portal
- * because ancestors animated by FadeIn keep a `filter` style, which creates a
- * containing block that would trap `position: fixed`.
+ * Compact sticky recap of the account-wide stats for small viewports. Slides
+ * in under the navbar once the stat cards scroll out of view. Rendered
+ * through a portal because ancestors animated by FadeIn keep a `filter`
+ * style, which creates a containing block that would trap `position: fixed`.
  */
-export function TripStatsStickyBar({
+export function PersonalStatsStickyBar({
   sentinelRef,
   countriesCount,
   citiesCount,

@@ -2,9 +2,9 @@ import { useAllMemories, useTrips } from '@passe/hooks'
 import { getUniqueCities, getUniqueStatsFromTrips } from '@passe/utils'
 
 import { Skeleton } from '@/components/ui/skeleton'
-import { TripStats } from './TripStats'
+import { PersonalStats } from './PersonalStats'
 
-export function TripStatsDataWrapper() {
+export function PersonalStatsDataWrapper() {
   const { data: trips = [], isLoading: tripsLoading, isError: tripsError } = useTrips()
   const {
     data: allMemories = [],
@@ -27,7 +27,7 @@ export function TripStatsDataWrapper() {
   }
 
   return (
-    <TripStats
+    <PersonalStats
       countriesCount={uniqueCountries.size}
       citiesCount={uniqueCities.size}
       yearsCount={uniqueYears.size}

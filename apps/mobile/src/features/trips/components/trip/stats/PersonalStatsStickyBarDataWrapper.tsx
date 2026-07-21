@@ -1,11 +1,18 @@
-'use client'
-
 import { useAllMemories, useTrips } from '@passe/hooks'
-import { Skeleton } from '@passe/ui'
 import { getUniqueCities, getUniqueStatsFromTrips } from '@passe/utils'
-import { TripStats } from './TripStats'
+import type { SharedValue } from 'react-native-reanimated'
 
-export function TripStatsDataWrapper() {
+import { PersonalStatsStickyBar } from './PersonalStatsStickyBar'
+
+interface PersonalStatsStickyBarDataWrapperProps {
+  scrollY: SharedValue<number>
+  threshold: SharedValue<number>
+}
+
+export function PersonalStatsStickyBarDataWrapper({
+  scrollY,
+  threshold,
+}: PersonalStatsStickyBarDataWrapperProps) {
   const { data: trips = [], isLoading: tripsLoading, isError: tripsError } = useTrips()
   const {
     data: allMemories = [],
@@ -16,13 +23,7 @@ export function TripStatsDataWrapper() {
   const { uniqueCities } = getUniqueCities({ allMemories })
 
   if (tripsLoading || memoriesLoading) {
-    return (
-      <div className="grid w-full grid-cols-3 gap-3 sm:gap-4">
-        <Skeleton className="h-28 rounded-xl" />
-        <Skeleton className="h-28 rounded-xl" />
-        <Skeleton className="h-28 rounded-xl" />
-      </div>
-    )
+    return null
   }
 
   if (tripsError || memoriesError) {
@@ -34,10 +35,12 @@ export function TripStatsDataWrapper() {
   }
 
   return (
-    <TripStats
+    <PersonalStatsStickyBar
       countriesCount={uniqueCountries.size}
       citiesCount={uniqueCities.size}
       yearsCount={uniqueYears.size}
+      scrollY={scrollY}
+      threshold={threshold}
     />
   )
 }

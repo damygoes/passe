@@ -6,7 +6,7 @@ import { Card, CardContent } from '@passe/ui/card'
 import { Icon, type IconName } from '@passe/ui/icon'
 import { useTranslations } from 'next-intl'
 import { useRef } from 'react'
-import { TripStatsStickyBar } from '../stats/TripStatsStickyBar'
+import { PersonalStatsStickyBar } from '../stats/PersonalStatsStickyBar'
 
 interface Props {
   countriesCount: number
@@ -14,7 +14,7 @@ interface Props {
   yearsCount: number
 }
 
-export function TripStats({ countriesCount, citiesCount, yearsCount }: Props) {
+export function PersonalStats({ countriesCount, citiesCount, yearsCount }: Props) {
   const t = useTranslations('trips.stats')
   const gridRef = useRef<HTMLDivElement>(null)
 
@@ -41,7 +41,7 @@ export function TripStats({ countriesCount, citiesCount, yearsCount }: Props) {
           </Card>
         ))}
       </div>
-      <TripStatsStickyBar
+      <PersonalStatsStickyBar
         sentinelRef={gridRef}
         countriesCount={countriesCount}
         citiesCount={citiesCount}

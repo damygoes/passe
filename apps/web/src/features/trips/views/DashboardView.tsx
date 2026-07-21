@@ -16,7 +16,7 @@ import { Skeleton } from '@passe/ui/skeleton'
 import { getUniqueStatsFromTrips } from '@passe/utils'
 import { useTranslations } from 'next-intl'
 import { TripsList } from '../components/trip/lists/TripsList'
-import { TripStatsDataWrapper } from '../components/trip/stats/TripStatsDataWrapper'
+import { PersonalStatsDataWrapper } from '../components/trip/stats/PersonalStatsDataWrapper'
 
 export function DashboardView() {
   const t = useTranslations('trips.dashboard')
@@ -43,7 +43,7 @@ export function DashboardView() {
         </PageHeader>
       </FadeIn>
       <FadeIn delay={SECTION_STEP}>
-        <TripStatsDataWrapper />
+        <PersonalStatsDataWrapper />
       </FadeIn>
       <FadeIn delay={SECTION_STEP * 2}>
         <TripsList />
