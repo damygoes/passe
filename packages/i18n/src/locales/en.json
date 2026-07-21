@@ -184,7 +184,9 @@
       "memories_heading": "Memories",
       "trip_error": "Could not load trip. Try refreshing the page.",
       "memories_error": "Could not load memories. Try refreshing the page.",
-      "add_memory": "Add memory"
+      "add_memory": "Add memory",
+      "download_pdf": "Download PDF",
+      "pdf_gated_hint": "Upgrade to Collector to export this trip as a PDF."
     },
     "stats": {
       "countries": "{count, plural, one {Country} other {Countries}}",

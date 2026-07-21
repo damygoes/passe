@@ -4,7 +4,8 @@ import { Link, useRouter } from '@/i18n/navigation'
 import { getBlurProps } from '@/lib/image-blur'
 import { createMediaLoader } from '@/lib/media-image-loader'
 import { routes, tripEditRoute } from '@/lib/routes'
-import { useDeleteTrip, useTrip } from '@passe/hooks'
+import { canExportPdf } from '@passe/auth/plan-gates'
+import { useDeleteTrip, useTrip, useUser } from '@passe/hooks'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,6 +26,7 @@ import {
   PageHeaderDescription,
   PageHeaderTitle,
 } from '@passe/ui/page-header'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@passe/ui/tooltip'
 import { formatTripDateFull } from '@passe/utils'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
@@ -39,7 +41,9 @@ export function TripDetailHeader({ id }: Props) {
   const t = useTranslations('trips.detail')
   const router = useRouter()
   const { data: trip, isLoading, isError } = useTrip(id)
+  const { data: user } = useUser()
   const deleteTrip = useDeleteTrip()
+  const canDownloadPdf = canExportPdf(user?.plan ?? 'free')
   const [aspectRatio, setAspectRatio] = useState<number | null>(null)
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [deleteError, setDeleteError] = useState<string | null>(null)
@@ -89,6 +93,28 @@ export function TripDetailHeader({ id }: Props) {
           >
             {t('edit')}
           </Link>
+          {canDownloadPdf ? (
+            <a
+              href={`/api/trips/${trip.id}/pdf`}
+              className={buttonVariants({ variant: 'outline', size: 'sm' })}
+            >
+              <span data-icon="start">
+                <Icon name="download" size="xs" aria-hidden="true" />
+              </span>
+              {t('download_pdf')}
+            </a>
+          ) : (
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button variant="outline" size="sm" icon="download" disabled>
+                    {t('download_pdf')}
+                  </Button>
+                }
+              />
+              <TooltipContent>{t('pdf_gated_hint')}</TooltipContent>
+            </Tooltip>
+          )}
           <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
             <AlertDialogTrigger
               render={<Button variant="destructive" size="icon-sm" aria-label={t('delete')} />}

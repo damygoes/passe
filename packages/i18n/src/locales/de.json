@@ -184,7 +184,9 @@
       "memories_heading": "Erinnerungen",
       "trip_error": "Reise konnte nicht geladen werden. Versuche, die Seite neu zu laden.",
       "memories_error": "Erinnerungen konnten nicht geladen werden. Versuche, die Seite neu zu laden.",
-      "add_memory": "Erinnerung hinzufügen"
+      "add_memory": "Erinnerung hinzufügen",
+      "download_pdf": "PDF herunterladen",
+      "pdf_gated_hint": "Upgrade auf Collector, um diese Reise als PDF zu exportieren."
     },
     "stats": {
       "countries": "{count, plural, one {Land} other {Länder}}",

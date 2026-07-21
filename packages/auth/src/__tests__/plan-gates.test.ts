@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest'
-import { canCreateTrip, canAddMemory, canMakePortfolioPublic, PLAN_LIMITS } from '../plan-gates'
+import {
+  canCreateTrip,
+  canAddMemory,
+  canMakePortfolioPublic,
+  canExportPdf,
+  PLAN_LIMITS,
+} from '../plan-gates'
 
 describe('canCreateTrip', () => {
   it('allows free plan under the limit', () => {
@@ -65,16 +71,33 @@ describe('canMakePortfolioPublic', () => {
   })
 })
 
+describe('canExportPdf', () => {
+  it('blocks free plan', () => {
+    expect(canExportPdf('free')).toBe(false)
+  })
+
+  it('blocks explorer plan', () => {
+    expect(canExportPdf('explorer')).toBe(false)
+  })
+
+  it('allows collector plan', () => {
+    expect(canExportPdf('collector')).toBe(true)
+  })
+})
+
 describe('PLAN_LIMITS', () => {
   it('exposes the documented limits', () => {
     expect(PLAN_LIMITS.free.maxTrips).toBe(3)
     expect(PLAN_LIMITS.free.maxMemoriesPerTrip).toBe(10)
     expect(PLAN_LIMITS.free.publicPortfolio).toBe(false)
+    expect(PLAN_LIMITS.free.pdfExport).toBe(false)
     expect(PLAN_LIMITS.explorer.maxTrips).toBe(20)
     expect(PLAN_LIMITS.explorer.maxMemoriesPerTrip).toBe(50)
     expect(PLAN_LIMITS.explorer.publicPortfolio).toBe(true)
+    expect(PLAN_LIMITS.explorer.pdfExport).toBe(false)
     expect(PLAN_LIMITS.collector.maxTrips).toBe(Infinity)
     expect(PLAN_LIMITS.collector.maxMemoriesPerTrip).toBe(Infinity)
     expect(PLAN_LIMITS.collector.publicPortfolio).toBe(true)
+    expect(PLAN_LIMITS.collector.pdfExport).toBe(true)
   })
 })
