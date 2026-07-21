@@ -32,6 +32,7 @@ import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { TripDetailHeaderSkeleton } from './TripDetailHeaderSkeleton'
+import { ZineExportSheet } from './ZineExportSheet'
 
 interface Props {
   id: string
@@ -113,6 +114,20 @@ export function TripDetailHeader({ id }: Props) {
                 }
               />
               <TooltipContent>{t('pdf_gated_hint')}</TooltipContent>
+            </Tooltip>
+          )}
+          {canDownloadPdf ? (
+            <ZineExportSheet tripId={trip.id} />
+          ) : (
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button variant="outline" size="sm" icon="camera" disabled>
+                    {t('create_zine')}
+                  </Button>
+                }
+              />
+              <TooltipContent>{t('zine_gated_hint')}</TooltipContent>
             </Tooltip>
           )}
           <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>

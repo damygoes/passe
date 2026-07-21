@@ -4,6 +4,7 @@ import { pdfFontFamilies } from '../fonts'
 import type { PdfMemoryData } from '../pdf-types'
 import { pdfMemoryMetaLabel } from '../pdf-types'
 import { pdfColors } from '../pdf-theme'
+import { PDF_NOTE_CHAR_LIMITS, truncatePdfNote } from '../pdf-text'
 
 const styles = StyleSheet.create({
   row: {
@@ -62,7 +63,11 @@ export function PdfImageTextSection({ memory, side }: Props) {
   const textBlock = (
     <View style={styles.textColumn}>
       <Text style={styles.meta}>{metaLine}</Text>
-      {memory.note && <Text style={styles.note}>{memory.note}</Text>}
+      {memory.note && (
+        <Text style={styles.note}>
+          {truncatePdfNote(memory.note, PDF_NOTE_CHAR_LIMITS.imageText)}
+        </Text>
+      )}
     </View>
   )
 

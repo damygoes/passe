@@ -50,6 +50,7 @@ export default withSentryConfig(
     // serverless function — force-include them explicitly.
     outputFileTracingIncludes: {
       '/api/trips/[id]/pdf': ['./src/lib/pdf/fonts/*.ttf'],
+      '/api/trips/[id]/zine': ['./src/lib/pdf/fonts/*.ttf'],
     },
     images: {
       dangerouslyAllowLocalIP: isOwnOriginLocalhost(),

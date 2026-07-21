@@ -61,15 +61,28 @@ interface Props {
 }
 
 export function PdfChapterSection({ chapter }: Props) {
+  const [firstSection, ...restSections] = chapter.sections
+
   return (
     <View style={styles.chapter}>
-      <View style={styles.header}>
-        {chapter.subtitle && <Text style={styles.subtitle}>{chapter.subtitle}</Text>}
-        <Text style={styles.title}>{chapter.title}</Text>
-        <View style={styles.divider} />
+      {/* Header + first section share one non-wrapping block so the chapter
+          title can never render alone at the bottom of a page while its first
+          memory gets pushed to the next one. */}
+      <View wrap={false}>
+        <View style={styles.header}>
+          {chapter.subtitle && <Text style={styles.subtitle}>{chapter.subtitle}</Text>}
+          <Text style={styles.title}>{chapter.title}</Text>
+          <View style={styles.divider} />
+        </View>
+
+        {firstSection && (
+          <View style={styles.section}>
+            <Section memory={firstSection.memory} variant={firstSection.variant} />
+          </View>
+        )}
       </View>
 
-      {chapter.sections.map(({ memory, variant }) => (
+      {restSections.map(({ memory, variant }) => (
         <View key={memory.id} style={styles.section}>
           <Section memory={memory} variant={variant} />
         </View>
