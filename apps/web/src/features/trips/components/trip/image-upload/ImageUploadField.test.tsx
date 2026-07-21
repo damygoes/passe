@@ -8,7 +8,7 @@ vi.mock('@passe/hooks', () => ({
   useUploadImage: () => ({ mutateAsync: mockMutateAsync, isPending: false }),
 }))
 
-vi.mock('@/lib/image-compression', () => ({
+vi.mock('@/lib/media/image-compression', () => ({
   compressImage: vi.fn().mockResolvedValue({
     blob: new Blob(['compressed'], { type: 'image/jpeg' }),
     contentType: 'image/jpeg',

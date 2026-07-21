@@ -1,6 +1,6 @@
 import { createLogger } from '@passe/logger'
 import sharp from 'sharp'
-import { getS3ObjectBuffer } from '@/lib/s3'
+import { getS3ObjectBuffer } from './s3'
 
 const log = createLogger({ context: { module: 'lib/media-placeholder' } })
 

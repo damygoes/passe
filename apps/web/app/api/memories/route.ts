@@ -1,5 +1,5 @@
-import { apiError, apiSuccess, requireAuth } from '@/lib/api'
-import { fromDbMemory } from '@/lib/memory'
+import { apiError, apiSuccess, requireAuth } from '@/lib/api/api'
+import { fromDbMemory } from '@/lib/memory/memory'
 import { db, memories, memoryMedia } from '@passe/db'
 import { createLogger } from '@passe/logger'
 import { MemorySchema } from '@passe/types/memory'

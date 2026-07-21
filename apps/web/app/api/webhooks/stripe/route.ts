@@ -1,4 +1,4 @@
-import { getStripe, priceIdToPlan } from '@/lib/stripe'
+import { getStripe, priceIdToPlan } from '@/lib/billing/stripe'
 import { db, users } from '@passe/db'
 import { createLogger } from '@passe/logger'
 import type { Plan } from '@passe/types'

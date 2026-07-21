@@ -1,7 +1,7 @@
 'use client'
 
-import { getBlurProps } from '@/lib/image-blur'
-import { createMediaLoader } from '@/lib/media-image-loader'
+import { getBlurProps } from '@/lib/media/image-blur'
+import { createMediaLoader } from '@/lib/media/media-image-loader'
 import { cn, formatTripDateFull } from '@passe/utils'
 import { Button } from '@passe/ui/button'
 import { Icon } from '@passe/ui/icon'

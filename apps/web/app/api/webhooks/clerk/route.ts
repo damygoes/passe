@@ -1,5 +1,5 @@
 import { verifyWebhook } from '@clerk/nextjs/webhooks'
-import { cancelStripeBilling } from '@/lib/stripe'
+import { cancelStripeBilling } from '@/lib/billing/stripe'
 import type { ClerkWebhookEvent } from '@passe/auth/types'
 import { syncClerkUser } from '@passe/auth/webhook'
 import { createLogger } from '@passe/logger'

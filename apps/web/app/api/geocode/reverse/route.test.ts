@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { GET } from './route'
 
 vi.mock('@clerk/nextjs/server', () => ({ auth: vi.fn() }))
-vi.mock('@/lib/geocode', () => ({
+vi.mock('@/lib/geocode/geocode', () => ({
   reverseGeocode: vi.fn().mockResolvedValue({ city: 'Kyoto', country: 'Japan' }),
 }))
 

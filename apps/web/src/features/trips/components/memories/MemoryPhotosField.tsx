@@ -7,7 +7,7 @@ import { cn } from '@passe/utils'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useState } from 'react'
-import { compressImage } from '@/lib/image-compression'
+import { compressImage } from '@/lib/media/image-compression'
 
 // `url` is what gets submitted (a bare S3 key for a fresh upload, or the
 // existing resolved URL when editing unchanged photos). `previewUri` is

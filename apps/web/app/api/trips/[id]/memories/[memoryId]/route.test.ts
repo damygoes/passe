@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { DELETE, PATCH } from './route'
 
 vi.mock('@clerk/nextjs/server', () => ({ auth: vi.fn() }))
-vi.mock('@/lib/geocode', () => ({ geocodeCityCountry: vi.fn().mockResolvedValue(null) }))
+vi.mock('@/lib/geocode/geocode', () => ({ geocodeCityCountry: vi.fn().mockResolvedValue(null) }))
 
 const mockDb = vi.hoisted(() => ({
   query: { memoryMedia: { findMany: vi.fn().mockResolvedValue([]) } },

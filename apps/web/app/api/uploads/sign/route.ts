@@ -1,5 +1,5 @@
-import { apiError, apiSuccess, requireAuth } from '@/lib/api'
-import { isAllowedContentType, mintUploadKeyAndUrl } from '@/lib/s3'
+import { apiError, apiSuccess, requireAuth } from '@/lib/api/api'
+import { isAllowedContentType, mintUploadKeyAndUrl } from '@/lib/media/s3'
 import { createLogger } from '@passe/logger'
 
 const log = createLogger({ context: { module: 'api/uploads/sign' } })

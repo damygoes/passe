@@ -1,4 +1,4 @@
-import { apiError, apiSuccess, requireAuth } from '@/lib/api'
+import { apiError, apiSuccess, requireAuth } from '@/lib/api/api'
 import { db, memories, trips } from '@passe/db'
 import { createLogger } from '@passe/logger'
 import { ReorderMemoriesSchema } from '@passe/types/memory'

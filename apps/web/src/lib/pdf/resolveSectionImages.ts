@@ -1,6 +1,6 @@
 import type { EditorialChapter, EditorialMemoryInput, EditorialSectionVariant } from '@passe/utils'
 import sharp from 'sharp'
-import { getS3ObjectBuffer } from '@/lib/s3'
+import { getS3ObjectBuffer } from '@/lib/media/s3'
 import type { PdfMemoryData } from './pdf-types'
 
 // Keeps the generated PDF a reasonable size — print/screen viewing doesn't

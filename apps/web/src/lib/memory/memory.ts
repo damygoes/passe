@@ -1,5 +1,5 @@
 import type { DbMemory, DbMemoryMedia } from '@passe/db/schema'
-import { resolveMemoryMedia } from './media'
+import { resolveMemoryMedia } from '@/lib/media/media'
 
 // The single place every memory read goes through — resolving media.url
 // into a signed delivery URL here (rather than at each call site) means

@@ -2,17 +2,27 @@ import type { ReactNode } from 'react'
 import { Document, Page, StyleSheet, View } from '@react-pdf/renderer'
 import { type ZinePanelRole, zinePanels } from './zineTemplate'
 
+// react-pdf's A4 landscape resolution (@react-pdf/layout PAGE_SIZES.A4, flipped for
+// landscape). Rows/panels are sized off these directly, rather than flexGrow against
+// the Page's own height, because react-pdf's Yoga height for a Page node only ever
+// comes from its box (not its style) — and that box is only patched to the true page
+// size by its normal pagination pass. A flexGrow row therefore isn't guaranteed to fill
+// the physical page; a hard pt value always sums to exactly the full sheet regardless.
+const PAGE_WIDTH_PT = 841.89
+const PAGE_HEIGHT_PT = 595.28
+const ROW_HEIGHT_PT = PAGE_HEIGHT_PT / 2
+const PANEL_WIDTH_PT = PAGE_WIDTH_PT / 4
+
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
   },
   row: {
     flexDirection: 'row',
-    flexGrow: 1,
+    height: ROW_HEIGHT_PT,
   },
   panel: {
-    flexGrow: 1,
-    flexBasis: 0,
+    width: PANEL_WIDTH_PT,
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',

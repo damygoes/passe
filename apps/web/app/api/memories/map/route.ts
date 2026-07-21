@@ -1,5 +1,5 @@
-import { apiError, apiSuccess, requireAuth } from '@/lib/api'
-import { resolveMediaUrl } from '@/lib/media'
+import { apiError, apiSuccess, requireAuth } from '@/lib/api/api'
+import { resolveMediaUrl } from '@/lib/media/media'
 import { db, memories, memoryMedia } from '@passe/db'
 import { createLogger } from '@passe/logger'
 import { MapPointSchema } from '@passe/types/memory'

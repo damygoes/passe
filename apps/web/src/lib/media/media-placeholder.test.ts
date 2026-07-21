@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-vi.mock('@/lib/s3', () => ({ getS3ObjectBuffer: vi.fn() }))
+vi.mock('./s3', () => ({ getS3ObjectBuffer: vi.fn() }))
 
 const mockToBuffer = vi.fn()
 const mockJpeg = vi.fn()
@@ -21,7 +21,7 @@ vi.mock('sharp', () => {
   return { default: vi.fn(() => chain) }
 })
 
-import { getS3ObjectBuffer } from '@/lib/s3'
+import { getS3ObjectBuffer } from './s3'
 import { generateMediaPlaceholder } from './media-placeholder'
 
 beforeEach(() => {

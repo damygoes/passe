@@ -1,8 +1,8 @@
 'use client'
 
 import { Link, useRouter } from '@/i18n/navigation'
-import { getBlurProps } from '@/lib/image-blur'
-import { createMediaLoader } from '@/lib/media-image-loader'
+import { getBlurProps } from '@/lib/media/image-blur'
+import { createMediaLoader } from '@/lib/media/media-image-loader'
 import { routes, tripEditRoute } from '@/lib/routes'
 import { canExportPdf } from '@passe/auth/plan-gates'
 import { useDeleteTrip, useTrip, useUser } from '@passe/hooks'

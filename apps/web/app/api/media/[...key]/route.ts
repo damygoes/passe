@@ -1,8 +1,8 @@
 import { createLogger } from '@passe/logger'
 import sharp from 'sharp'
-import type { MediaSignatureParams } from '@/lib/media'
-import { verifyMediaSignature } from '@/lib/media'
-import { getS3ObjectBuffer } from '@/lib/s3'
+import type { MediaSignatureParams } from '@/lib/media/media'
+import { verifyMediaSignature } from '@/lib/media/media'
+import { getS3ObjectBuffer } from '@/lib/media/s3'
 
 // sharp is a native binary — incompatible with the Edge runtime.
 export const runtime = 'nodejs'

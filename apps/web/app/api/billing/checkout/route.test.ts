@@ -6,7 +6,7 @@ vi.mock('@clerk/nextjs/server', () => ({ auth: vi.fn() }))
 
 const mockGetOrCreateStripeCustomer = vi.fn()
 const mockSessionsCreate = vi.fn()
-vi.mock('@/lib/stripe', () => ({
+vi.mock('@/lib/billing/stripe', () => ({
   getOrCreateStripeCustomer: (...args: unknown[]) => mockGetOrCreateStripeCustomer(...args),
   getStripe: () => ({ checkout: { sessions: { create: mockSessionsCreate } } }),
   planToPriceId: (plan: string) => `price_${plan}`,

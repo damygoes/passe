@@ -1,5 +1,5 @@
 import { EditorialChapters } from '@/features/trips/components/editorial/EditorialChapters'
-import { resolveMemoryMedia, resolveTripMedia } from '@/lib/media'
+import { resolveMemoryMedia, resolveTripMedia } from '@/lib/media/media'
 import { db } from '@passe/db/client'
 import { memories, memoryMedia, trips, users } from '@passe/db/schema'
 import { buildEditorialChapters } from '@passe/utils'

@@ -1,6 +1,11 @@
 import { db } from '@passe/db/client'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { cancelStripeBilling, getOrCreateStripeCustomer, planToPriceId, priceIdToPlan } from './stripe'
+import {
+  cancelStripeBilling,
+  getOrCreateStripeCustomer,
+  planToPriceId,
+  priceIdToPlan,
+} from './stripe'
 
 vi.mock('@passe/db/client', () => ({
   db: {

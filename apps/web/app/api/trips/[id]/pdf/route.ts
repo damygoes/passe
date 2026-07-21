@@ -1,4 +1,4 @@
-import { apiError, requireAuth } from '@/lib/api'
+import { apiError, requireAuth } from '@/lib/api/api'
 import { generateTripPdf } from '@/lib/pdf/generateTripPdf'
 import { canExportPdf } from '@passe/auth/plan-gates'
 import { db, memories, memoryMedia, trips, users } from '@passe/db'

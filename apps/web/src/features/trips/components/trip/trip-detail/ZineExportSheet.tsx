@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
-import { getBlurProps } from '@/lib/image-blur'
-import { createMediaLoader } from '@/lib/media-image-loader'
+import { getBlurProps } from '@/lib/media/image-blur'
+import { createMediaLoader } from '@/lib/media/media-image-loader'
 import { useMemories } from '@passe/hooks'
 import { Button } from '@passe/ui/button'
 import {

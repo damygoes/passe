@@ -4,8 +4,8 @@
 // prop is a function, and functions can't cross the server→client
 // serialization boundary when passed down from a Server Component.
 
-import { getBlurProps } from '@/lib/image-blur'
-import { createMediaLoader } from '@/lib/media-image-loader'
+import { getBlurProps } from '@/lib/media/image-blur'
+import { createMediaLoader } from '@/lib/media/media-image-loader'
 import { Badge } from '@passe/ui/badge'
 import {
   MediaCard,

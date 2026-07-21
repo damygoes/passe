@@ -23,7 +23,7 @@ vi.mock('@passe/db', async (importOriginal) => {
 })
 
 const mockCancelStripeBilling = vi.fn()
-vi.mock('@/lib/stripe', () => ({
+vi.mock('@/lib/billing/stripe', () => ({
   cancelStripeBilling: (...args: unknown[]) => mockCancelStripeBilling(...args),
 }))
 

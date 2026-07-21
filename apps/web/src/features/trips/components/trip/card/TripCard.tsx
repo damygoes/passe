@@ -1,8 +1,8 @@
 'use client'
 
 import { Link } from '@/i18n/navigation'
-import { getBlurProps } from '@/lib/image-blur'
-import { createMediaLoader } from '@/lib/media-image-loader'
+import { getBlurProps } from '@/lib/media/image-blur'
+import { createMediaLoader } from '@/lib/media/media-image-loader'
 import { Badge } from '@passe/ui/badge'
 import {
   MediaCard,

@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { POST } from './route'
 
 const mockConstructEvent = vi.fn()
-vi.mock('@/lib/stripe', () => ({
+vi.mock('@/lib/billing/stripe', () => ({
   getStripe: () => ({ webhooks: { constructEvent: mockConstructEvent } }),
   priceIdToPlan: (priceId: string) => (priceId === 'price_explorer' ? 'explorer' : null),
 }))
