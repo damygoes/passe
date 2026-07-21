@@ -198,7 +198,15 @@
       "zine_selection_count": "{count} von {max} ausgewählt",
       "zine_cancel": "Abbrechen",
       "zine_generate": "Zine erstellen",
-      "zine_generate_failed": "Dein Zine konnte nicht erstellt werden. Bitte versuche es erneut."
+      "zine_generate_failed": "Dein Zine konnte nicht erstellt werden. Bitte versuche es erneut.",
+      "postcard_picker_title": "Wähle ein Foto für deine Postkarte",
+      "postcard_picker_description": "Wähle ein Foto für die Vorderseite und schreibe optional eine Nachricht für die Rückseite.",
+      "postcard_message_placeholder": "Schreibe eine Nachricht…",
+      "postcard_memories_error": "Erinnerungen konnten nicht geladen werden. Versuche, die Seite neu zu laden.",
+      "postcard_no_photos": "Füge einer Erinnerung ein Foto hinzu, bevor du eine Postkarte erstellst.",
+      "postcard_cancel": "Abbrechen",
+      "postcard_generate": "Postkarte erstellen",
+      "postcard_generate_failed": "Deine Postkarte konnte nicht erstellt werden. Bitte versuche es erneut."
     },
     "stats": {
       "countries": "{count, plural, one {Land} other {Länder}}",

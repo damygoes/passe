@@ -198,7 +198,15 @@
       "zine_selection_count": "{count} of {max} selected",
       "zine_cancel": "Cancel",
       "zine_generate": "Create zine",
-      "zine_generate_failed": "Could not generate your zine. Please try again."
+      "zine_generate_failed": "Could not generate your zine. Please try again.",
+      "postcard_picker_title": "Choose a photo for your postcard",
+      "postcard_picker_description": "Pick one photo for the front, and optionally write a message for the back.",
+      "postcard_message_placeholder": "Write a message…",
+      "postcard_memories_error": "Could not load memories. Try refreshing the page.",
+      "postcard_no_photos": "Add a photo to a memory before creating a postcard.",
+      "postcard_cancel": "Cancel",
+      "postcard_generate": "Create postcard",
+      "postcard_generate_failed": "Could not generate your postcard. Please try again."
     },
     "stats": {
       "countries": "{count, plural, one {Country} other {Countries}}",

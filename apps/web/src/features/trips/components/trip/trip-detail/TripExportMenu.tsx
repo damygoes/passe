@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@passe/ui/dropdown-menu'
 import { Icon } from '@passe/ui/icon'
+import { PostcardExportSheet } from './PostcardExportSheet'
 import { ZineExportSheet } from './ZineExportSheet'
 
 interface Props {
@@ -21,6 +22,7 @@ interface Props {
 export function TripExportMenu({ tripId, canExport }: Props) {
   const t = useTranslations('trips.detail')
   const [zineSheetOpen, setZineSheetOpen] = useState(false)
+  const [postcardSheetOpen, setPostcardSheetOpen] = useState(false)
 
   return (
     <>
@@ -55,13 +57,25 @@ export function TripExportMenu({ tripId, canExport }: Props) {
               <DropdownMenuShortcut>{t('collector_badge')}</DropdownMenuShortcut>
             </DropdownMenuItem>
           )}
-          <DropdownMenuItem disabled>
-            {t('create_postcard')}
-            <DropdownMenuShortcut>{t('coming_soon_badge')}</DropdownMenuShortcut>
-          </DropdownMenuItem>
+          {canExport ? (
+            <DropdownMenuItem onClick={() => setPostcardSheetOpen(true)}>
+              <Icon name="mail" size="xs" aria-hidden="true" />
+              {t('create_postcard')}
+            </DropdownMenuItem>
+          ) : (
+            <DropdownMenuItem disabled>
+              {t('create_postcard')}
+              <DropdownMenuShortcut>{t('collector_badge')}</DropdownMenuShortcut>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
       <ZineExportSheet tripId={tripId} open={zineSheetOpen} onOpenChange={setZineSheetOpen} />
+      <PostcardExportSheet
+        tripId={tripId}
+        open={postcardSheetOpen}
+        onOpenChange={setPostcardSheetOpen}
+      />
     </>
   )
 }

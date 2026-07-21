@@ -112,6 +112,18 @@ export const ZineSelectionSchema = z.object({
 })
 export type ZineSelection = z.infer<typeof ZineSelectionSchema>
 
+// Body of POST /api/trips/[id]/postcard — the memory whose first photo
+// becomes the postcard's front, plus an optional message written for the
+// back at export time (kept separate from the memory's own `note`, which is
+// never persisted onto the export). 280 chars keeps the back panel's message
+// column atomic under @react-pdf's `wrap={false}` — see PDF_NOTE_CHAR_LIMITS
+// in apps/web/src/lib/pdf/pdf-text.ts for the same reasoning.
+export const PostcardSelectionSchema = z.object({
+  memoryId: z.string().uuid(),
+  message: z.string().max(280).optional(),
+})
+export type PostcardSelection = z.infer<typeof PostcardSelectionSchema>
+
 export const CreateMemorySchema = MemorySchema.omit({
   id: true,
   userId: true,
