@@ -26,13 +26,12 @@ import {
   PageHeaderDescription,
   PageHeaderTitle,
 } from '@passe/ui/page-header'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@passe/ui/tooltip'
 import { formatTripDateFull } from '@passe/utils'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { TripDetailHeaderSkeleton } from './TripDetailHeaderSkeleton'
-import { ZineExportSheet } from './ZineExportSheet'
+import { TripExportMenu } from './TripExportMenu'
 
 interface Props {
   id: string
@@ -94,42 +93,7 @@ export function TripDetailHeader({ id }: Props) {
           >
             {t('edit')}
           </Link>
-          {canDownloadPdf ? (
-            <a
-              href={`/api/trips/${trip.id}/pdf`}
-              className={buttonVariants({ variant: 'outline', size: 'sm' })}
-            >
-              <span data-icon="start">
-                <Icon name="download" size="xs" aria-hidden="true" />
-              </span>
-              {t('download_pdf')}
-            </a>
-          ) : (
-            <Tooltip>
-              <TooltipTrigger
-                render={
-                  <Button variant="outline" size="sm" icon="download" disabled>
-                    {t('download_pdf')}
-                  </Button>
-                }
-              />
-              <TooltipContent>{t('pdf_gated_hint')}</TooltipContent>
-            </Tooltip>
-          )}
-          {canDownloadPdf ? (
-            <ZineExportSheet tripId={trip.id} />
-          ) : (
-            <Tooltip>
-              <TooltipTrigger
-                render={
-                  <Button variant="outline" size="sm" icon="camera" disabled>
-                    {t('create_zine')}
-                  </Button>
-                }
-              />
-              <TooltipContent>{t('zine_gated_hint')}</TooltipContent>
-            </Tooltip>
-          )}
+          <TripExportMenu tripId={trip.id} canExport={canDownloadPdf} />
           <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
             <AlertDialogTrigger
               render={<Button variant="destructive" size="icon-sm" aria-label={t('delete')} />}

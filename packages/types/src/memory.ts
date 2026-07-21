@@ -102,12 +102,13 @@ export const ReorderMemoriesSchema = z.object({
 })
 export type ReorderMemories = z.infer<typeof ReorderMemoriesSchema>
 
-// Body of POST /api/trips/[id]/zine — the memories chosen for the zine's
-// (up to) 6 content panels, in the order they'll read. The classic
-// single-sheet zine fold hard-caps at 6 content panels; fewer than 6 is
-// allowed (remaining panels fall back to a placeholder design), more is not.
+// Body of POST /api/trips/[id]/zine — the memories chosen for the zine's 6
+// content panels, in the order they'll read. The classic single-sheet zine
+// fold has exactly 6 content panels (plus 2 fixed cover panels) — a
+// geometric constraint of the paper fold, not an arbitrary limit — so
+// selection must be exactly 6, no fewer and no more.
 export const ZineSelectionSchema = z.object({
-  memoryIds: z.array(z.string().uuid()).min(1).max(6),
+  memoryIds: z.array(z.string().uuid()).length(6),
 })
 export type ZineSelection = z.infer<typeof ZineSelectionSchema>
 

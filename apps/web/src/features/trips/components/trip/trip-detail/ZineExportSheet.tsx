@@ -15,15 +15,16 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from '@passe/ui/sheet'
 import { Skeleton } from '@passe/ui/skeleton'
 import { cn } from '@passe/utils'
 
-const MAX_ZINE_SELECTION = 6
+const ZINE_SELECTION_COUNT = 6
 
 interface Props {
   tripId: string
+  open: boolean
+  onOpenChange: (open: boolean) => void
 }
 
 function extractFilename(contentDisposition: string | null): string {
@@ -31,10 +32,9 @@ function extractFilename(contentDisposition: string | null): string {
   return match?.[1] ?? 'zine.pdf'
 }
 
-export function ZineExportSheet({ tripId }: Props) {
+export function ZineExportSheet({ tripId, open, onOpenChange }: Props) {
   const t = useTranslations('trips.detail')
   const { data: memories = [], isLoading, isError } = useMemories(tripId)
-  const [open, setOpen] = useState(false)
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
   const [generateError, setGenerateError] = useState<string | null>(null)
@@ -44,7 +44,7 @@ export function ZineExportSheet({ tripId }: Props) {
   function toggleSelection(memoryId: string) {
     setSelectedIds((current) => {
       if (current.includes(memoryId)) return current.filter((selected) => selected !== memoryId)
-      if (current.length >= MAX_ZINE_SELECTION) return current
+      if (current.length >= ZINE_SELECTION_COUNT) return current
       return [...current, memoryId]
     })
   }
@@ -68,7 +68,7 @@ export function ZineExportSheet({ tripId }: Props) {
       link.click()
       URL.revokeObjectURL(url)
 
-      setOpen(false)
+      onOpenChange(false)
       setSelectedIds([])
     } catch {
       setGenerateError(t('zine_generate_failed'))
@@ -81,18 +81,24 @@ export function ZineExportSheet({ tripId }: Props) {
     <Sheet
       open={open}
       onOpenChange={(nextOpen) => {
-        setOpen(nextOpen)
-        if (!nextOpen) setGenerateError(null)
+        onOpenChange(nextOpen)
+        if (!nextOpen) {
+          setGenerateError(null)
+          setSelectedIds([])
+        }
       }}
     >
-      <SheetTrigger render={<Button variant="outline" size="sm" icon="camera" />}>
-        {t('create_zine')}
-      </SheetTrigger>
       <SheetContent side="bottom" className="max-h-[85vh]">
+        {isGenerating && (
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 z-10 cursor-wait overflow-hidden rounded-[inherit] before:absolute before:inset-0 before:animate-shimmer before:bg-gradient-to-r before:from-transparent before:via-foreground/10 before:to-transparent motion-reduce:hidden"
+          />
+        )}
         <SheetHeader>
           <SheetTitle>{t('zine_picker_title')}</SheetTitle>
           <SheetDescription>
-            {t('zine_picker_description', { max: MAX_ZINE_SELECTION })}
+            {t('zine_picker_description', { count: ZINE_SELECTION_COUNT })}
           </SheetDescription>
         </SheetHeader>
 
@@ -119,7 +125,7 @@ export function ZineExportSheet({ tripId }: Props) {
                 const cover = memory.media[0]
                 const selectedPosition = selectedIds.indexOf(memory.id)
                 const isSelected = selectedPosition !== -1
-                const isDisabled = !isSelected && selectedIds.length >= MAX_ZINE_SELECTION
+                const isDisabled = !isSelected && selectedIds.length >= ZINE_SELECTION_COUNT
 
                 return (
                   <Button
@@ -161,12 +167,12 @@ export function ZineExportSheet({ tripId }: Props) {
 
         <SheetFooter className="flex-row items-center justify-between">
           <span className="text-sm text-muted-foreground">
-            {t('zine_selection_count', { count: selectedIds.length, max: MAX_ZINE_SELECTION })}
+            {t('zine_selection_count', { count: selectedIds.length, max: ZINE_SELECTION_COUNT })}
           </span>
           <div className="flex gap-2">
             <SheetClose render={<Button variant="outline">{t('zine_cancel')}</Button>} />
             <Button
-              disabled={selectedIds.length === 0 || isGenerating}
+              disabled={selectedIds.length !== ZINE_SELECTION_COUNT || isGenerating}
               isLoading={isGenerating}
               onClick={handleGenerate}
             >

@@ -22,8 +22,8 @@ function slugifyTitle(title: string): string {
 }
 
 // POST /api/trips/[id]/zine — Collector-only single-sheet zine export.
-// Body: { memoryIds: string[] } — 1-6 memories, in the order they should
-// read (see ZineSelectionSchema).
+// Body: { memoryIds: string[] } — exactly 6 memories, in the order they
+// should read (see ZineSelectionSchema).
 export async function POST(req: Request, ctx: RouteContext<'/api/trips/[id]/zine'>) {
   const { userId, error } = await requireAuth()
   if (error) return error

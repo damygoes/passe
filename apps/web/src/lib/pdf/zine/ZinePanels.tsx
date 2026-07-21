@@ -20,6 +20,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 10,
   },
+  coverImage: {
+    width: '100%',
+    height: '42%',
+    objectFit: 'cover',
+    borderRadius: 3,
+    marginBottom: 10,
+  },
   coverTitle: {
     fontFamily: pdfFontFamilies.display,
     fontWeight: 700,
@@ -99,11 +106,19 @@ interface CoverPanelProps {
   startDate: Date | string
   endDate: Date | string
   countries: string[]
+  coverImage?: { data: Buffer; format: 'jpg' } | null
 }
 
-export function ZineFrontCoverPanel({ title, startDate, endDate, countries }: CoverPanelProps) {
+export function ZineFrontCoverPanel({
+  title,
+  startDate,
+  endDate,
+  countries,
+  coverImage,
+}: CoverPanelProps) {
   return (
     <View style={styles.panel}>
+      {coverImage && <Image src={coverImage} style={styles.coverImage} />}
       <Text style={styles.coverTitle}>{title}</Text>
       <View style={styles.divider} />
       <Text style={styles.coverMeta}>{formatDateRange(startDate, endDate)}</Text>
@@ -118,22 +133,6 @@ export function ZineBackCoverPanel({ title }: { title: string }) {
       <Text style={styles.backCoverTitle}>{title}</Text>
       <View style={styles.divider} />
       <Text style={styles.tagline}>The past, beautifully kept.</Text>
-    </View>
-  )
-}
-
-interface PlaceholderPanelProps {
-  startDate: Date | string
-  endDate: Date | string
-}
-
-// Used for any of the 6 content panels left unselected (the picker allows
-// 1-6, not exactly 6) — keeps the zine feeling designed rather than blank.
-export function ZinePlaceholderPanel({ startDate, endDate }: PlaceholderPanelProps) {
-  return (
-    <View style={styles.panel}>
-      <View style={styles.divider} />
-      <Text style={styles.coverMeta}>{formatDateRange(startDate, endDate)}</Text>
     </View>
   )
 }

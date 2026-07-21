@@ -25,6 +25,11 @@ vi.mock('@passe/db', async (importOriginal) => {
 const tripId = '11111111-1111-1111-1111-111111111111'
 const memoryId1 = '22222222-2222-2222-2222-222222222222'
 const memoryId2 = '33333333-3333-3333-3333-333333333333'
+const memoryId3 = '44444444-4444-4444-4444-444444444444'
+const memoryId4 = '55555555-5555-5555-5555-555555555555'
+const memoryId5 = '66666666-6666-6666-6666-666666666666'
+const memoryId6 = '77777777-7777-7777-7777-777777777777'
+const sixMemoryIds = [memoryId1, memoryId2, memoryId3, memoryId4, memoryId5, memoryId6]
 const mockTrip = {
   id: tripId,
   userId: 'user-1',
@@ -80,10 +85,20 @@ describe('POST /api/trips/[id]/zine', () => {
     expect(res.status).toBe(403)
   })
 
-  it('returns 400 for an empty or oversized memoryIds selection', async () => {
+  it('returns 400 for an undersized memoryIds selection', async () => {
     mockDb.query.trips.findFirst.mockResolvedValue(mockTrip)
     mockDb.query.users.findFirst.mockResolvedValue({ id: 'user-1', plan: 'collector' })
-    const res = await POST(req({ memoryIds: Array.from({ length: 7 }, () => memoryId1) }), ctx())
+    const res = await POST(req({ memoryIds: [memoryId1, memoryId2] }), ctx())
+    expect(res.status).toBe(400)
+  })
+
+  it('returns 400 for an oversized memoryIds selection', async () => {
+    mockDb.query.trips.findFirst.mockResolvedValue(mockTrip)
+    mockDb.query.users.findFirst.mockResolvedValue({ id: 'user-1', plan: 'collector' })
+    const res = await POST(
+      req({ memoryIds: [...sixMemoryIds, '88888888-8888-8888-8888-888888888888'] }),
+      ctx(),
+    )
     expect(res.status).toBe(400)
   })
 
@@ -92,20 +107,17 @@ describe('POST /api/trips/[id]/zine', () => {
     mockDb.query.users.findFirst.mockResolvedValue({ id: 'user-1', plan: 'collector' })
     mockDb.query.memories.findMany.mockResolvedValue([{ id: memoryId1, media: [] }])
 
-    const res = await POST(req({ memoryIds: [memoryId1, memoryId2] }), ctx())
+    const res = await POST(req({ memoryIds: sixMemoryIds }), ctx())
     expect(res.status).toBe(400)
   })
 
   it('returns a PDF for a collector-plan user with a valid selection', async () => {
     mockDb.query.trips.findFirst.mockResolvedValue(mockTrip)
     mockDb.query.users.findFirst.mockResolvedValue({ id: 'user-1', plan: 'collector' })
-    mockDb.query.memories.findMany.mockResolvedValue([
-      { id: memoryId1, media: [] },
-      { id: memoryId2, media: [] },
-    ])
+    mockDb.query.memories.findMany.mockResolvedValue(sixMemoryIds.map((id) => ({ id, media: [] })))
     mockGenerateTripZine.mockResolvedValue(Buffer.from('%PDF-1.7'))
 
-    const res = await POST(req({ memoryIds: [memoryId1, memoryId2] }), ctx())
+    const res = await POST(req({ memoryIds: sixMemoryIds }), ctx())
     expect(res.status).toBe(200)
     expect(res.headers.get('Content-Type')).toBe('application/pdf')
     expect(res.headers.get('Content-Disposition')).toBe('attachment; filename="japan-zine.pdf"')
@@ -114,10 +126,10 @@ describe('POST /api/trips/[id]/zine', () => {
   it('returns 500 when zine generation throws', async () => {
     mockDb.query.trips.findFirst.mockResolvedValue(mockTrip)
     mockDb.query.users.findFirst.mockResolvedValue({ id: 'user-1', plan: 'collector' })
-    mockDb.query.memories.findMany.mockResolvedValue([{ id: memoryId1, media: [] }])
+    mockDb.query.memories.findMany.mockResolvedValue(sixMemoryIds.map((id) => ({ id, media: [] })))
     mockGenerateTripZine.mockRejectedValue(new Error('render failed'))
 
-    const res = await POST(req({ memoryIds: [memoryId1] }), ctx())
+    const res = await POST(req({ memoryIds: sixMemoryIds }), ctx())
     expect(res.status).toBe(500)
   })
 })

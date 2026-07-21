@@ -71,6 +71,7 @@ Every public-facing page should feel like a beautifully designed travel book, no
 5. **Public Trip Pages** — individual trip pages at `/u/[username]/trips/[tripId]` with curated public memories (Explorer+ only)
 6. **Personal Stats** — countries, cities, trips, years — typographic callouts, not charts
 7. **PDF Memory Book Export** — export any trip as a designed PDF keepsake (Collector only)
+8. **Zine Export** — export a trip as a foldable single-sheet zine keepsake (Collector only)
 
 ---
 
@@ -100,6 +101,7 @@ Every public-facing page should feel like a beautifully designed travel book, no
 - **Unlimited memories**
 - Everything in Explorer
 - **PDF memory book export**
+- **Zine export**
 - Priority support
 
 > Planned (post-MVP): annual billing at €90/year (~2 months free)

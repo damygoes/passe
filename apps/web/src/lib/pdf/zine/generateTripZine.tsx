@@ -4,12 +4,7 @@ import { registerPdfFonts } from '../fonts'
 import type { PdfMemoryData } from '../pdf-types'
 import { loadPdfImage } from '../resolveSectionImages'
 import { ZineDocument } from './ZineDocument'
-import {
-  ZineBackCoverPanel,
-  ZineContentPanel,
-  ZineFrontCoverPanel,
-  ZinePlaceholderPanel,
-} from './ZinePanels'
+import { ZineBackCoverPanel, ZineContentPanel, ZineFrontCoverPanel } from './ZinePanels'
 import type { ZinePanelRole } from './zineTemplate'
 
 const CONTENT_ROLES: ZinePanelRole[] = [
@@ -26,6 +21,7 @@ export interface TripZineInput {
   startDate: Date | string
   endDate: Date | string
   countries: string[]
+  coverImageUrl: string | null
 }
 
 export interface ZineMemoryInput {
@@ -51,18 +47,21 @@ async function resolveZineMemory(memory: ZineMemoryInput): Promise<PdfMemoryData
 }
 
 // Renders a trip's Collector-tier zine export: a single-sheet, fold-and-cut
-// 8-panel booklet (front cover, up to 6 selected memories in the order
-// given, back cover). `memories` is 1-6 items (ZineSelectionSchema) — fewer
-// than 6 pads the remaining content panels with ZinePlaceholderPanel rather
-// than blocking the export. Panel positions/rotations come entirely from
-// zineTemplate.ts; this module only decides what each panel *role* shows.
+// 8-panel booklet (front cover, exactly 6 selected memories in the order
+// given, back cover). `memories` is always exactly 6 items
+// (ZineSelectionSchema enforces this). Panel positions/rotations come
+// entirely from zineTemplate.ts; this module only decides what each panel
+// *role* shows.
 export async function generateTripZine(
   trip: TripZineInput,
   memories: ZineMemoryInput[],
 ): Promise<Buffer> {
   registerPdfFonts()
 
-  const resolved = await Promise.all(memories.map(resolveZineMemory))
+  const [resolved, coverImage] = await Promise.all([
+    Promise.all(memories.map(resolveZineMemory)),
+    trip.coverImageUrl ? loadPdfImage(trip.coverImageUrl) : Promise.resolve(null),
+  ])
 
   function renderPanel(role: ZinePanelRole): ReactNode {
     if (role === 'front-cover') {
@@ -72,6 +71,7 @@ export async function generateTripZine(
           startDate={trip.startDate}
           endDate={trip.endDate}
           countries={trip.countries}
+          coverImage={coverImage}
         />
       )
     }
@@ -79,11 +79,7 @@ export async function generateTripZine(
       return <ZineBackCoverPanel title={trip.title} />
     }
 
-    const memory = resolved[CONTENT_ROLES.indexOf(role)]
-    if (!memory) {
-      return <ZinePlaceholderPanel startDate={trip.startDate} endDate={trip.endDate} />
-    }
-    return <ZineContentPanel memory={memory} />
+    return <ZineContentPanel memory={resolved[CONTENT_ROLES.indexOf(role)]!} />
   }
 
   return renderToBuffer(<ZineDocument renderPanel={renderPanel} />)
