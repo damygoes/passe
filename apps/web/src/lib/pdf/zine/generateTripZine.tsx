@@ -58,6 +58,8 @@ export async function generateTripZine(
 ): Promise<Buffer> {
   registerPdfFonts()
 
+  const copyrightYear = new Date().getFullYear()
+
   const [resolved, coverImage] = await Promise.all([
     Promise.all(memories.map(resolveZineMemory)),
     trip.coverImageUrl ? loadPdfImage(trip.coverImageUrl) : Promise.resolve(null),
@@ -76,7 +78,7 @@ export async function generateTripZine(
       )
     }
     if (role === 'back-cover') {
-      return <ZineBackCoverPanel title={trip.title} />
+      return <ZineBackCoverPanel title={trip.title} copyrightYear={copyrightYear} />
     }
 
     return <ZineContentPanel memory={resolved[CONTENT_ROLES.indexOf(role)]!} />

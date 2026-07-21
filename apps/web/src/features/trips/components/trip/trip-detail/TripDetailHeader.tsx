@@ -150,7 +150,7 @@ export function TripDetailHeader({ id }: Props) {
             fill
             priority
             className="object-contain"
-            sizes="100vw"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1200px"
             {...getBlurProps(trip.coverImagePlaceholder)}
             {...(trip.coverImageSrcset ? { loader: createMediaLoader(trip.coverImageSrcset) } : {})}
             onLoad={(event) => {

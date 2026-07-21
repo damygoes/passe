@@ -4,6 +4,7 @@ import { pdfFontFamilies } from '../fonts'
 import { pdfColors } from '../pdf-theme'
 import type { PdfMemoryData } from '../pdf-types'
 import { pdfMemoryMetaLabel } from '../pdf-types'
+import { ZineWordmark } from './ZineWordmark'
 
 const styles = StyleSheet.create({
   panel: {
@@ -72,6 +73,36 @@ const styles = StyleSheet.create({
     marginTop: 8,
     textAlign: 'center',
   },
+  backCoverPanel: {
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  backCoverMain: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  copyrightStrip: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+    paddingTop: 6,
+    borderTopWidth: 0.5,
+    borderTopColor: pdfColors.mutedTaupe,
+  },
+  copyrightText: {
+    fontFamily: pdfFontFamilies.mono,
+    fontSize: 6,
+    color: pdfColors.mutedTaupe,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
   contentImage: {
     width: '100%',
     height: '78%',
@@ -128,12 +159,23 @@ export function ZineFrontCoverPanel({
   )
 }
 
-export function ZineBackCoverPanel({ title }: { title: string }) {
+interface BackCoverPanelProps {
+  title: string
+  copyrightYear: number
+}
+
+export function ZineBackCoverPanel({ title, copyrightYear }: BackCoverPanelProps) {
   return (
-    <View style={styles.panel}>
-      <Text style={styles.backCoverTitle}>{title}</Text>
-      <View style={styles.divider} />
-      <Text style={styles.tagline}>The past, beautifully kept.</Text>
+    <View style={styles.backCoverPanel}>
+      <View style={styles.backCoverMain}>
+        <Text style={styles.backCoverTitle}>{title}</Text>
+        <View style={styles.divider} />
+        <Text style={styles.tagline}>The past, beautifully kept.</Text>
+      </View>
+      <View style={styles.copyrightStrip}>
+        <Text style={styles.copyrightText}>© {copyrightYear}</Text>
+        <ZineWordmark />
+      </View>
     </View>
   )
 }
