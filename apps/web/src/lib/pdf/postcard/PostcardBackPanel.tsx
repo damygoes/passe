@@ -4,9 +4,9 @@ import { pdfColors } from '../pdf-theme'
 import { PostcardStamp } from './PostcardStamp'
 import { PostcardWordmark } from './PostcardWordmark'
 
-// Standard US postcard, landscape, in points (1in = 72pt).
-export const POSTCARD_PAGE_WIDTH_PT = 432 // 6in
-export const POSTCARD_PAGE_HEIGHT_PT = 288 // 4in
+// A6 postcard, landscape, in points (1mm = 2.83465pt).
+export const POSTCARD_PAGE_WIDTH_PT = 419.53 // 148mm
+export const POSTCARD_PAGE_HEIGHT_PT = 297.64 // 105mm
 
 const COPYRIGHT_HEIGHT_PT = 28
 const CONTENT_HEIGHT_PT = POSTCARD_PAGE_HEIGHT_PT - COPYRIGHT_HEIGHT_PT

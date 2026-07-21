@@ -1,45 +1,36 @@
-import { Path, StyleSheet, Svg, View } from '@react-pdf/renderer'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { Image, StyleSheet, View } from '@react-pdf/renderer'
 import { pdfColors } from '../pdf-theme'
-import {
-  POSTCARD_STAMP_ACCENT_PATH,
-  POSTCARD_STAMP_MARK_PATH,
-  POSTCARD_STAMP_MARK_TRANSFORM,
-  POSTCARD_STAMP_MARK_VIEWBOX,
-} from './postcardStampMark'
 
-const STAMP_WIDTH_PT = 48
-const STAMP_HEIGHT_PT = 56
+const STAMP_SIZE_PT = 44
+const ICON_SIZE_PT = 36
+
+const iconBuffer = readFileSync(join(process.cwd(), 'src/lib/pdf/postcard/assets/passe-icon.png'))
 
 const styles = StyleSheet.create({
   frame: {
-    width: STAMP_WIDTH_PT,
-    height: STAMP_HEIGHT_PT,
+    width: STAMP_SIZE_PT,
+    height: STAMP_SIZE_PT,
     borderWidth: 1,
     borderColor: pdfColors.darkEspresso,
     borderRadius: 2,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  icon: {
+    width: ICON_SIZE_PT,
+    height: ICON_SIZE_PT,
+    objectFit: 'cover',
+  },
 })
 
-// A faux airmail-style Passé stamp for the postcard's back panel — the
-// brand mark standing in for a real postage stamp, not a photo.
+// A faux airmail-style Passé stamp for the postcard's back panel — the real
+// app icon standing in for a real postage stamp, not a photo.
 export function PostcardStamp() {
   return (
     <View style={styles.frame}>
-      <Svg viewBox={POSTCARD_STAMP_MARK_VIEWBOX} width={24} height={24}>
-        <Path
-          d={POSTCARD_STAMP_MARK_PATH}
-          fill={pdfColors.darkEspresso}
-          transform={POSTCARD_STAMP_MARK_TRANSFORM}
-        />
-        <Path
-          d={POSTCARD_STAMP_ACCENT_PATH}
-          stroke={pdfColors.terracotta}
-          strokeWidth={5}
-          strokeLinecap="round"
-        />
-      </Svg>
+      <Image src={{ data: iconBuffer, format: 'png' }} style={styles.icon} />
     </View>
   )
 }
