@@ -5,7 +5,7 @@ const expoConfig = require("eslint-config-expo/flat");
 module.exports = defineConfig([
   expoConfig,
   {
-    ignores: ["dist/*"],
+    ignores: ["dist/*", ".agents/**"],
   },
   {
     // jest.mock() factories are hoisted above imports, so referencing helpers like RN
