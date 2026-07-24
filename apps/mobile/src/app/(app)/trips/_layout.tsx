@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native'
 
 import { GlassSurface } from '@/components/ui/glass-surface'
 import { NewTripHeaderButton } from '@/features/trips/components/trip/lists/NewTripHeaderButton'
+import { TripActionsHeaderButton } from '@/features/trips/components/trip/trip-detail/TripActionsHeaderButton'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
@@ -14,6 +15,13 @@ const sheetOptions = {
   sheetGrabberVisible: true,
   sheetAllowedDetents: [0.98],
   sheetCornerRadius: 24,
+}
+
+// Short action sheets (trip actions, export options) size to their content
+// instead of the near-full-height form detent.
+const compactSheetOptions = {
+  ...sheetOptions,
+  sheetAllowedDetents: 'fitToContents' as const,
 }
 
 export default function TripsLayout() {
@@ -38,7 +46,20 @@ export default function TripsLayout() {
         name="index"
         options={{ title: '', headerRight: () => <NewTripHeaderButton /> }}
       />
-      <Stack.Screen name="[id]" options={{ title: '', headerBackButtonDisplayMode: 'minimal' }} />
+      <Stack.Screen
+        name="[id]"
+        options={{
+          title: '',
+          headerBackButtonDisplayMode: 'minimal',
+          headerRight: () => <TripActionsHeaderButton />,
+          // The detail screen renders a full-bleed hero under the nav bar — no
+          // glass band here; the hero's top fade keeps the buttons legible.
+          headerTransparent: true,
+          headerBackground: () => null,
+        }}
+      />
+      <Stack.Screen name="actions/[id]" options={compactSheetOptions} />
+      <Stack.Screen name="export/[id]" options={compactSheetOptions} />
       <Stack.Screen name="new" options={{ ...sheetOptions, title: tTrips('title') }} />
       <Stack.Screen name="edit/[id]" options={{ ...sheetOptions, title: tEdit('title') }} />
       <Stack.Screen name="new-memory/[id]" options={{ ...sheetOptions, title: tMemory('title') }} />

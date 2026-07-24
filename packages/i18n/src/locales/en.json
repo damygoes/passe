@@ -208,7 +208,11 @@
       "postcard_generate": "Create postcard",
       "postcard_generate_failed": "Could not generate your postcard. Please try again.",
       "export_download_failed": "Could not download your export. Please try again.",
-      "export_share_unavailable": "Sharing is not available on this device."
+      "export_share_unavailable": "Sharing is not available on this device.",
+      "actions_label": "Trip actions",
+      "export_pdf_description": "The whole trip as a printable memory book",
+      "export_zine_description": "A fold-and-cut mini zine from six photos",
+      "export_postcard_description": "One photo up front, your message on the back"
     },
     "stats": {
       "countries": "{count, plural, one {Country} other {Countries}}",

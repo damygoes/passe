@@ -1,34 +1,37 @@
 import { useMemo } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, useWindowDimensions } from 'react-native'
 
 import { Skeleton } from '@/components/ui/skeleton'
 import { useTheme } from '@/hooks/useTheme'
 
+// Mirrors the full-bleed hero layout: an edge-to-edge cover block occupying
+// y=0 under the transparent nav bar, then a padded description line.
 export function TripDetailHeaderSkeleton() {
   const { spacing } = useTheme()
+  const { height: windowHeight } = useWindowDimensions()
 
   const styles = useMemo(
     () =>
       StyleSheet.create({
-        container: { gap: spacing[4] },
-        title: { height: 28, width: '60%' },
-        dates: { height: 16, width: '40%' },
-        badges: { flexDirection: 'row', gap: spacing[1] },
-        badge: { height: 20, width: 56, borderRadius: 999 },
-        cover: { width: '100%', aspectRatio: 16 / 9 },
+        hero: {
+          width: '100%',
+          height: Math.round(windowHeight * 0.42),
+          borderRadius: 0,
+        },
+        band: { paddingHorizontal: spacing[4], paddingTop: spacing[4], gap: spacing[2] },
+        description: { height: 16, width: '80%' },
+        descriptionShort: { height: 16, width: '50%' },
       }),
-    [spacing],
+    [spacing, windowHeight],
   )
 
   return (
-    <View style={styles.container}>
-      <Skeleton style={styles.title} />
-      <Skeleton style={styles.dates} />
-      <View style={styles.badges}>
-        <Skeleton style={styles.badge} />
-        <Skeleton style={styles.badge} />
+    <View>
+      <Skeleton style={styles.hero} />
+      <View style={styles.band}>
+        <Skeleton style={styles.description} />
+        <Skeleton style={styles.descriptionShort} />
       </View>
-      <Skeleton style={styles.cover} />
     </View>
   )
 }

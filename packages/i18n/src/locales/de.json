@@ -208,7 +208,11 @@
       "postcard_generate": "Postkarte erstellen",
       "postcard_generate_failed": "Deine Postkarte konnte nicht erstellt werden. Bitte versuche es erneut.",
       "export_download_failed": "Dein Export konnte nicht heruntergeladen werden. Bitte versuche es erneut.",
-      "export_share_unavailable": "Teilen ist auf diesem Gerät nicht verfügbar."
+      "export_share_unavailable": "Teilen ist auf diesem Gerät nicht verfügbar.",
+      "actions_label": "Reise-Aktionen",
+      "export_pdf_description": "Die ganze Reise als druckbares Erinnerungsbuch",
+      "export_zine_description": "Ein Falt-Mini-Zine aus sechs Fotos",
+      "export_postcard_description": "Ein Foto vorn, deine Nachricht auf der Rückseite"
     },
     "stats": {
       "countries": "{count, plural, one {Land} other {Länder}}",

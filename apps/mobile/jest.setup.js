@@ -22,6 +22,10 @@ jest.mock('@clerk/expo', () => require('./src/test/clerk-expo-mock'))
 jest.mock('@clerk/expo/legacy', () => require('./src/test/clerk-expo-mock'))
 jest.mock('expo-router', () => require('./src/test/expo-router-mock'))
 
+// useHeaderHeight() throws outside a real navigator — components position
+// content below the transparent nav bar with it, so return a plausible height.
+jest.mock('expo-router/react-navigation', () => ({ useHeaderHeight: () => 64 }))
+
 // expo-haptics requires the `expo` package's side-effect entry (Expo.fx), which crashes under
 // Jest's Node environment — mock the whole module; Button/PressableScale fire haptics on press.
 jest.mock('expo-haptics', () => ({
