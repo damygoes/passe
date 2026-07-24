@@ -1,15 +1,16 @@
 import { colors as brandColors } from '@passe/theme'
 import { formatTripDateFull } from '@passe/utils'
 import { Image } from 'expo-image'
-import { useHeaderHeight } from 'expo-router/react-navigation'
 import { useMemo } from 'react'
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Animated, { interpolate, useAnimatedStyle, type SharedValue } from 'react-native-reanimated'
 
 import { Badge } from '@/components/ui/badge'
 import { LinearGradient } from '@/components/ui/linear-gradient'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
+import { TRIP_DETAIL_NAV_BAR_HEIGHT } from './TripDetailNavBar'
 
 interface TripDetailHeroTrip {
   title: string
@@ -39,7 +40,7 @@ export function TripDetailHero({ trip, scrollY }: TripDetailHeroProps) {
   const t = useTranslations('trips.card')
   const { spacing, fonts, fontSizes, fontWeights, borderRadius } = useTheme()
   const { height: windowHeight } = useWindowDimensions()
-  const headerHeight = useHeaderHeight()
+  const insets = useSafeAreaInsets()
 
   const heroHeight = Math.round(windowHeight * 0.42)
 
@@ -87,7 +88,7 @@ export function TripDetailHero({ trip, scrollY }: TripDetailHeroProps) {
           top: 0,
           left: 0,
           right: 0,
-          height: headerHeight + spacing[8],
+          height: insets.top + TRIP_DETAIL_NAV_BAR_HEIGHT + spacing[8],
         },
         scrim: { position: 'absolute', left: 0, right: 0, bottom: 0 },
         scrimFade: {
@@ -127,7 +128,7 @@ export function TripDetailHero({ trip, scrollY }: TripDetailHeroProps) {
         stampChip: { borderColor: `${cream}B3`, borderRadius: borderRadius.lg },
         stampLabel: { color: cream },
       }),
-    [heroHeight, headerHeight, spacing, fonts, fontSizes, fontWeights, borderRadius],
+    [heroHeight, insets.top, spacing, fonts, fontSizes, fontWeights, borderRadius],
   )
 
   return (

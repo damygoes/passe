@@ -8,8 +8,8 @@ import { useTranslations } from '@/i18n/useTranslations'
 
 const BUTTON_SIZE = 34
 
-// Rendered as headerRight of the trips/[id] screen (registered in the trips
-// _layout), so the trip id comes from the global search params, not props.
+// Rendered inside TripDetailNavBar on the trips/[id] screen, so the trip id
+// comes from the global search params, not props.
 // The glass circle matches the system back button and keeps the icon legible
 // both over the hero photo and over content once the hero scrolls away.
 export function TripActionsHeaderButton() {

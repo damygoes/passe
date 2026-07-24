@@ -5,7 +5,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useTheme } from '@/hooks/useTheme'
 
 // Mirrors the full-bleed hero layout: an edge-to-edge cover block occupying
-// y=0 under the transparent nav bar, then a padded description line.
+// y=0 under the floating nav bar, then a padded description line.
 export function TripDetailHeaderSkeleton() {
   const { spacing } = useTheme()
   const { height: windowHeight } = useWindowDimensions()

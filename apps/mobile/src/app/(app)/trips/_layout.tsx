@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native'
 
 import { GlassSurface } from '@/components/ui/glass-surface'
 import { NewTripHeaderButton } from '@/features/trips/components/trip/lists/NewTripHeaderButton'
-import { TripActionsHeaderButton } from '@/features/trips/components/trip/trip-detail/TripActionsHeaderButton'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
@@ -49,13 +48,11 @@ export default function TripsLayout() {
       <Stack.Screen
         name="[id]"
         options={{
-          title: '',
-          headerBackButtonDisplayMode: 'minimal',
-          headerRight: () => <TripActionsHeaderButton />,
-          // The detail screen renders a full-bleed hero under the nav bar — no
-          // glass band here; the hero's top fade keeps the buttons legible.
-          headerTransparent: true,
-          headerBackground: () => null,
+          // No native header: on iOS 26 devices react-native-screens clips
+          // content bleeding under a transparent header (the content frame is
+          // shifted below it). The screen renders TripDetailNavBar — floating
+          // back/actions buttons over the hero — instead.
+          headerShown: false,
         }}
       />
       <Stack.Screen name="actions/[id]" options={compactSheetOptions} />

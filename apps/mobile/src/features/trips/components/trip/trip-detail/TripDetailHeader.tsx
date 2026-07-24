@@ -1,7 +1,7 @@
 import { useTrip } from '@passe/hooks'
-import { useHeaderHeight } from 'expo-router/react-navigation'
 import { useMemo } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import type { SharedValue } from 'react-native-reanimated'
 
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
@@ -9,6 +9,7 @@ import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 import { TripDetailHeaderSkeleton } from './TripDetailHeaderSkeleton'
 import { TripDetailHero } from './TripDetailHero'
+import { TRIP_DETAIL_NAV_BAR_HEIGHT } from './TripDetailNavBar'
 
 interface TripDetailHeaderProps {
   id: string
@@ -22,14 +23,14 @@ export function TripDetailHeader({ id, scrollY }: TripDetailHeaderProps) {
   const t = useTranslations('trips.detail')
   const { data: trip, isLoading, isError } = useTrip(id)
   const { colors, spacing, fontSizes } = useTheme()
-  const headerHeight = useHeaderHeight()
+  const insets = useSafeAreaInsets()
 
   const styles = useMemo(
     () =>
       StyleSheet.create({
-        // No hero exists in the error state, so clear the transparent nav bar manually
+        // No hero exists in the error state, so clear the floating nav bar manually
         errorWrapper: {
-          paddingTop: headerHeight + spacing[4],
+          paddingTop: insets.top + TRIP_DETAIL_NAV_BAR_HEIGHT + spacing[4],
           paddingHorizontal: spacing[4],
         },
         description: {
@@ -39,7 +40,7 @@ export function TripDetailHeader({ id, scrollY }: TripDetailHeaderProps) {
           color: colors.mutedForeground,
         },
       }),
-    [colors, spacing, fontSizes, headerHeight],
+    [colors, spacing, fontSizes, insets.top],
   )
 
   if (isLoading) return <TripDetailHeaderSkeleton />
