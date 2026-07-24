@@ -206,7 +206,9 @@
       "postcard_no_photos": "Add a photo to a memory before creating a postcard.",
       "postcard_cancel": "Cancel",
       "postcard_generate": "Create postcard",
-      "postcard_generate_failed": "Could not generate your postcard. Please try again."
+      "postcard_generate_failed": "Could not generate your postcard. Please try again.",
+      "export_download_failed": "Could not download your export. Please try again.",
+      "export_share_unavailable": "Sharing is not available on this device."
     },
     "stats": {
       "countries": "{count, plural, one {Country} other {Countries}}",

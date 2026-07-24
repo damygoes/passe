@@ -1,5 +1,6 @@
 'use client'
 
+import { TripCardCoverFallback } from '@/features/trips/components/trip/card/TripCardCoverFallback'
 import { Link } from '@/i18n/navigation'
 import { getBlurProps } from '@/lib/media/image-blur'
 import { createMediaLoader } from '@/lib/media/media-image-loader'
@@ -34,27 +35,23 @@ interface Props {
 
 export function TripCard({ trip, href, tilt = 'none' }: Props) {
   const t = useTranslations('trips.card')
-  const resolvedCoverImageUrl =
-    trip.coverImageUrl ??
-    'https://images.unsplash.com/photo-1656066848895-30feffe87ed6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dHJpcCUyMHBsYWNlaG9sZGVyfGVufDB8fDB8fHwy'
-  // Blur placeholder + bucketed loader only apply to the user's own cover
-  // image — never to the hardcoded Unsplash fallback used when there isn't one.
-  const hasOwnCover = Boolean(trip.coverImageUrl)
 
   const card = (
     <MediaCard tilt={tilt}>
       <MediaCardMedia>
-        <Image
-          src={resolvedCoverImageUrl}
-          alt={t('cover_alt', { title: trip.title })}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          loading="eager"
-          {...(hasOwnCover ? getBlurProps(trip.coverImagePlaceholder) : {})}
-          {...(hasOwnCover && trip.coverImageSrcset
-            ? { loader: createMediaLoader(trip.coverImageSrcset) }
-            : {})}
-        />
+        {trip.coverImageUrl ? (
+          <Image
+            src={trip.coverImageUrl}
+            alt={t('cover_alt', { title: trip.title })}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            loading="eager"
+            {...getBlurProps(trip.coverImagePlaceholder)}
+            {...(trip.coverImageSrcset ? { loader: createMediaLoader(trip.coverImageSrcset) } : {})}
+          />
+        ) : (
+          <TripCardCoverFallback title={trip.title} />
+        )}
       </MediaCardMedia>
       <MediaCardScrim>
         <MediaCardTitle>{trip.title}</MediaCardTitle>

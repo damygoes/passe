@@ -1,9 +1,11 @@
 import { GlassSurface } from '@/components/ui/glass-surface'
+import { Spinner } from '@/components/ui/spinner'
 import { useTheme } from '@/hooks/useTheme'
+import { haptics } from '@/lib/haptics'
 import { pressSpring } from '@/lib/motion'
 import { createButtonRecipe } from '@/recipes/button'
 
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
 
 import type { ButtonProps } from './Button.types'
@@ -41,6 +43,7 @@ export function Button({
       disabled={isDisabled}
       onPressIn={(event) => {
         pressed.value = withSpring(1, pressSpring)
+        haptics.selection()
         onPressIn?.(event)
       }}
       onPressOut={(event) => {
@@ -60,7 +63,7 @@ export function Button({
     >
       {variant === 'ghost' && <GlassSurface shape="capsule" style={StyleSheet.absoluteFill} />}
       {loading ? (
-        <ActivityIndicator color={variantRecipe.spinnerColor} />
+        <Spinner color={variantRecipe.spinnerColor} />
       ) : typeof children === 'string' ? (
         <Text style={[recipe.base.label, variantRecipe.label, sizeRecipe.label]}>{children}</Text>
       ) : (

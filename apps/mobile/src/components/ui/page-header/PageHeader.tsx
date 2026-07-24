@@ -20,12 +20,17 @@ export function PageHeader({ style, children, ...props }: PageHeaderProps) {
 }
 
 export function PageHeaderTitle({ style, children, ...props }: PageHeaderTextSubProps) {
-  const { colors, fontSizes, fontWeights } = useTheme()
+  const { colors, fonts, fontSizes, fontWeights } = useTheme()
 
   return (
     <Text
       style={[
-        { fontSize: fontSizes['2xl'], fontWeight: fontWeights.semibold, color: colors.foreground },
+        {
+          fontFamily: fonts.heading,
+          fontSize: fontSizes['2xl'],
+          fontWeight: fontWeights.semibold,
+          color: colors.foreground,
+        },
         style,
       ]}
       {...props}
@@ -39,10 +44,7 @@ export function PageHeaderDescription({ style, children, ...props }: PageHeaderT
   const { colors, fontSizes } = useTheme()
 
   return (
-    <Text
-      style={[{ fontSize: fontSizes.sm, color: colors.mutedForeground }, style]}
-      {...props}
-    >
+    <Text style={[{ fontSize: fontSizes.sm, color: colors.mutedForeground }, style]} {...props}>
       {children}
     </Text>
   )

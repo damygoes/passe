@@ -28,6 +28,7 @@ import { ErrorBanner } from '@/features/account/components/ErrorBanner'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 import { TripDetailHeaderSkeleton } from './TripDetailHeaderSkeleton'
+import { TripExportMenu } from './TripExportMenu'
 
 interface TripDetailHeaderProps {
   id: string
@@ -41,6 +42,7 @@ export function TripDetailHeader({ id }: TripDetailHeaderProps) {
   const { colors, spacing, fontSizes, borderRadius } = useTheme()
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [deleteError, setDeleteError] = useState<string | null>(null)
+  const [exportError, setExportError] = useState<string | null>(null)
 
   const styles = useMemo(
     () =>
@@ -78,6 +80,7 @@ export function TripDetailHeader({ id }: TripDetailHeaderProps) {
           </PageHeaderDescription>
         </View>
         <PageHeaderAction style={styles.actions}>
+          <TripExportMenu tripId={id} onError={setExportError} />
           <Button
             variant="secondary"
             size="sm"
@@ -97,6 +100,7 @@ export function TripDetailHeader({ id }: TripDetailHeaderProps) {
       </PageHeader>
 
       {deleteError && <ErrorBanner message={deleteError} />}
+      {exportError && <ErrorBanner message={exportError} />}
 
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <AlertDialogContent>

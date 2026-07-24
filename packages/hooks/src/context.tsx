@@ -10,6 +10,9 @@ interface FetchOptions {
 
 export interface PasseApiContextValue {
   fetchApi: <T>(path: string, options?: FetchOptions) => Promise<T>
+  /** Raw transport details for callers that need non-JSON responses (e.g. PDF downloads) */
+  baseUrl: string
+  getToken: () => Promise<string | null>
 }
 
 const PasseApiContext = createContext<PasseApiContextValue | null>(null)
@@ -25,6 +28,8 @@ export function PasseApiProvider({ children, getToken, baseUrl }: PasseApiProvid
     () => ({
       fetchApi: <T,>(path: string, options: FetchOptions = {}) =>
         baseFetchApi<T>(path, options, getToken, baseUrl),
+      baseUrl,
+      getToken,
     }),
     [getToken, baseUrl],
   )

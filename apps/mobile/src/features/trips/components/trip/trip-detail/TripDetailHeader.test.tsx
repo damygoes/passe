@@ -14,6 +14,13 @@ jest.mock('./TripDetailHeaderSkeleton', () => {
   return { TripDetailHeaderSkeleton: () => <Text>loading-skeleton</Text> }
 })
 
+// Tested in its own suite; it pulls in useUser/usePasseApi which this file's
+// @passe/hooks mock deliberately doesn't provide.
+jest.mock('./TripExportMenu', () => {
+  const { Text } = require('react-native')
+  return { TripExportMenu: () => <Text>export-menu</Text> }
+})
+
 const mockTrip = {
   id: 'trip-1',
   title: 'Japan Adventure',
@@ -53,7 +60,11 @@ describe('TripDetailHeader', () => {
   })
 
   it('does not render a description when the trip has none', () => {
-    mockUseTrip.mockReturnValue({ data: { ...mockTrip, description: null }, isLoading: false, isError: false })
+    mockUseTrip.mockReturnValue({
+      data: { ...mockTrip, description: null },
+      isLoading: false,
+      isError: false,
+    })
     render(<TripDetailHeader id="trip-1" />)
     expect(screen.queryByText('A wonderful trip')).toBeNull()
   })

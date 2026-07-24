@@ -1,8 +1,9 @@
 import { Icon } from '@/components/ui/icon'
+import { Spinner } from '@/components/ui/spinner'
 import { useTheme } from '@/hooks/useTheme'
 import { createInputRecipe } from '@/recipes/input'
 import { useState } from 'react'
-import { ActivityIndicator, TextInput, TouchableOpacity, View } from 'react-native'
+import { TextInput, TouchableOpacity, View } from 'react-native'
 import type { InputProps } from './Input.types'
 
 const HIT_SLOP = { top: 8, right: 8, bottom: 8, left: 8 }
@@ -27,7 +28,7 @@ export function Input({
   const isDisabled = editable === false
 
   const iconNode = isLoading ? (
-    <ActivityIndicator color={theme.colors.mutedForeground} />
+    <Spinner />
   ) : icon ? (
     onIconPress ? (
       <TouchableOpacity onPress={onIconPress} hitSlop={HIT_SLOP}>
@@ -64,9 +65,7 @@ export function Input({
         }}
         {...rest}
       />
-      {iconNode && iconPosition === 'end' && (
-        <View style={recipe.iconWrapper.end}>{iconNode}</View>
-      )}
+      {iconNode && iconPosition === 'end' && <View style={recipe.iconWrapper.end}>{iconNode}</View>}
     </View>
   )
 }

@@ -21,6 +21,7 @@ export default function TripsLayout() {
   const tEdit = useTranslations('trips.edit')
   const tMemory = useTranslations('trips.new_memory')
   const tEditMemory = useTranslations('trips.edit_memory')
+  const tDetail = useTranslations('trips.detail')
   const { colors } = useTheme()
 
   return (
@@ -44,6 +45,14 @@ export default function TripsLayout() {
       <Stack.Screen
         name="edit-memory/[id]"
         options={{ ...sheetOptions, title: tEditMemory('title') }}
+      />
+      <Stack.Screen
+        name="export-zine/[id]"
+        options={{ ...sheetOptions, title: tDetail('zine_picker_title') }}
+      />
+      <Stack.Screen
+        name="export-postcard/[id]"
+        options={{ ...sheetOptions, title: tDetail('postcard_picker_title') }}
       />
     </Stack>
   )

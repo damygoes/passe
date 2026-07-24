@@ -13,14 +13,16 @@ import * as ImagePicker from 'expo-image-picker'
 import * as Location from 'expo-location'
 import { useRouter } from 'expo-router'
 import { useMemo, useState } from 'react'
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 
 import { Button } from '@/components/ui/button'
 import { FormField } from '@/components/ui/form-field'
 import { Icon } from '@/components/ui/icon'
+import { Skeleton } from '@/components/ui/skeleton'
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
 import { DateField } from '@/features/trips/components/trip/date-field/DateField'
 import { useTheme } from '@/hooks/useTheme'
+import { haptics } from '@/lib/haptics'
 import { useTranslations } from '@/i18n/useTranslations'
 import { compressImage } from '@/lib/image-compression'
 import { uploadFileToUrl } from '@/lib/upload-put'
@@ -125,12 +127,6 @@ export function AddMemoryForm({ tripId, memory }: AddMemoryFormProps) {
           width: 96,
           height: 96,
           borderRadius: borderRadius.lg,
-          borderWidth: 1,
-          borderStyle: 'dashed',
-          borderColor: colors.border,
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: colors.muted,
         },
         pickerButtons: { flexDirection: 'row', gap: spacing[2] },
         pickerButton: { flex: 1 },
@@ -266,6 +262,7 @@ export function AddMemoryForm({ tripId, memory }: AddMemoryFormProps) {
       } else {
         await createMemory({ tripId, ...commonFields, isPublic: false })
       }
+      haptics.success()
       router.back()
     } catch (err) {
       const fallback = isEditing ? tEdit('update_failed') : t('errors.create_failed')
@@ -307,11 +304,7 @@ export function AddMemoryForm({ tripId, memory }: AddMemoryFormProps) {
                   </Pressable>
                 </View>
               ))}
-              {isUploading && (
-                <View style={styles.uploadingTile}>
-                  <ActivityIndicator color={colors.mutedForeground} />
-                </View>
-              )}
+              {isUploading && <Skeleton style={styles.uploadingTile} />}
             </View>
           </ScrollView>
         )}

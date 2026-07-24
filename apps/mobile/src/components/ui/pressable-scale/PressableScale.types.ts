@@ -5,6 +5,8 @@ export interface PressableScaleProps extends PressableProps {
   pressedScale?: number
   /** Rotation (degrees) at rest — springs to 0 while pressed (scrapbook tilt) */
   restRotation?: number
+  /** Light impact haptic on press-in; disable for dense grids/lists */
+  haptic?: boolean
   /** Style for the animated wrapper (shadows, margins) — not the Pressable itself */
   containerStyle?: StyleProp<ViewStyle>
 }

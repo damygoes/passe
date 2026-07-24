@@ -22,6 +22,16 @@ jest.mock('@clerk/expo', () => require('./src/test/clerk-expo-mock'))
 jest.mock('@clerk/expo/legacy', () => require('./src/test/clerk-expo-mock'))
 jest.mock('expo-router', () => require('./src/test/expo-router-mock'))
 
+// expo-haptics requires the `expo` package's side-effect entry (Expo.fx), which crashes under
+// Jest's Node environment — mock the whole module; Button/PressableScale fire haptics on press.
+jest.mock('expo-haptics', () => ({
+  selectionAsync: jest.fn().mockResolvedValue(undefined),
+  impactAsync: jest.fn().mockResolvedValue(undefined),
+  notificationAsync: jest.fn().mockResolvedValue(undefined),
+  ImpactFeedbackStyle: { Light: 'light', Medium: 'medium', Heavy: 'heavy' },
+  NotificationFeedbackType: { Success: 'success', Warning: 'warning', Error: 'error' },
+}))
+
 // useSafeAreaInsets() throws without a <SafeAreaProvider> ancestor (unlike SafeAreaView, which
 // degrades gracefully) — components like DropdownMenuContent that need raw inset values would
 // otherwise require every consuming test to wrap in a provider. Other exports (SafeAreaView,

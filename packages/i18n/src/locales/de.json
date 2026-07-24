@@ -206,7 +206,9 @@
       "postcard_no_photos": "Füge einer Erinnerung ein Foto hinzu, bevor du eine Postkarte erstellst.",
       "postcard_cancel": "Abbrechen",
       "postcard_generate": "Postkarte erstellen",
-      "postcard_generate_failed": "Deine Postkarte konnte nicht erstellt werden. Bitte versuche es erneut."
+      "postcard_generate_failed": "Deine Postkarte konnte nicht erstellt werden. Bitte versuche es erneut.",
+      "export_download_failed": "Dein Export konnte nicht heruntergeladen werden. Bitte versuche es erneut.",
+      "export_share_unavailable": "Teilen ist auf diesem Gerät nicht verfügbar."
     },
     "stats": {
       "countries": "{count, plural, one {Land} other {Länder}}",

@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { GlassSurface } from '@/components/ui/glass-surface'
 import { useTheme } from '@/hooks/useTheme'
+import { haptics } from '@/lib/haptics'
 import { createContext, useContext, useEffect } from 'react'
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
@@ -158,13 +159,19 @@ export function AlertDialogFooter({ style, children, ...props }: AlertDialogFoot
   )
 }
 
-export function AlertDialogAction({ children, onPress, ...props }: AlertDialogActionProps) {
+export function AlertDialogAction({
+  children,
+  onPress,
+  variant = 'primary',
+  ...props
+}: AlertDialogActionProps) {
   const { setOpen } = useContext(AlertDialogContext)
   return (
     <Button
-      variant="primary"
+      variant={variant}
       size="sm"
       onPress={(e) => {
+        if (variant === 'danger') haptics.warning()
         onPress?.(e)
         setOpen(false)
       }}

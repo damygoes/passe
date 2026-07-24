@@ -33,14 +33,12 @@ interface TripCardProps {
 // mode-dependent semantic colors (light text over a dark fade in both modes).
 const espresso = brandColors.darkEspresso.DEFAULT
 const cream = brandColors.agedCream.DEFAULT
+const sandyBeige = brandColors.sandyBeige.DEFAULT
+const terracotta = brandColors.terracotta.DEFAULT
 
 export function TripCard({ trip, onPress, entranceDelay = 0, tilt = 0 }: TripCardProps) {
   const t = useTranslations('trips.card')
-  const { colors, spacing, fontSizes, fontWeights, borderRadius } = useTheme()
-
-  const resolvedCoverImageUrl =
-    trip.coverImageUrl ??
-    'https://images.unsplash.com/photo-1656066848895-30feffe87ed6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dHJpcCUyMHBsYWNlaG9sZGVyfGVufDB8fDB8fHwy'
+  const { colors, fonts, spacing, fontSizes, fontWeights, borderRadius } = useTheme()
 
   const styles = useMemo(
     () =>
@@ -63,6 +61,21 @@ export function TripCard({ trip, onPress, entranceDelay = 0, tilt = 0 }: TripCar
           backgroundColor: colors.muted,
         },
         cover: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
+        coverFallback: {
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+        coverFallbackInitial: {
+          fontFamily: fonts.display,
+          fontSize: fontSizes['5xl'],
+          fontWeight: fontWeights.bold,
+          color: `${espresso}59`,
+        },
         scrim: { position: 'absolute', left: 0, right: 0, bottom: 0 },
         // Extends above the text band so the darkening fades in gradually
         scrimFade: {
@@ -74,6 +87,7 @@ export function TripCard({ trip, onPress, entranceDelay = 0, tilt = 0 }: TripCar
         },
         content: { padding: spacing[4], gap: spacing[1] },
         title: {
+          fontFamily: fonts.heading,
           fontSize: fontSizes.lg,
           fontWeight: fontWeights.semibold,
           color: cream,
@@ -92,17 +106,29 @@ export function TripCard({ trip, onPress, entranceDelay = 0, tilt = 0 }: TripCar
         stampChip: { borderColor: `${cream}B3` },
         stampLabel: { color: cream },
       }),
-    [colors, spacing, fontSizes, fontWeights, borderRadius],
+    [colors, fonts, spacing, fontSizes, fontWeights, borderRadius],
   )
 
   const card = (
     <View style={styles.card}>
-      <Image
-        source={{ uri: resolvedCoverImageUrl }}
-        style={styles.cover}
-        contentFit="cover"
-        accessibilityLabel={t('cover_alt', { title: trip.title })}
-      />
+      {trip.coverImageUrl ? (
+        <Image
+          source={{ uri: trip.coverImageUrl }}
+          style={styles.cover}
+          contentFit="cover"
+          accessibilityLabel={t('cover_alt', { title: trip.title })}
+        />
+      ) : (
+        <View style={styles.coverFallback} pointerEvents="none">
+          <LinearGradient
+            colors={[sandyBeige, cream, `${terracotta}4D`]}
+            style={styles.cover}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+          />
+          <Text style={styles.coverFallbackInitial}>{trip.title.trim().charAt(0)}</Text>
+        </View>
+      )}
 
       <View style={styles.scrim} pointerEvents="none">
         <LinearGradient
