@@ -72,6 +72,7 @@ Every public-facing page should feel like a beautifully designed travel book, no
 6. **Personal Stats** — countries, cities, trips, years — typographic callouts, not charts
 7. **PDF Memory Book Export** — export any trip as a designed PDF keepsake (Collector only)
 8. **Zine Export** — export a trip as a foldable single-sheet zine keepsake (Collector only)
+9. **Postcard Export** — export a single memory as a printable postcard keepsake (Collector only)
 
 ---
 
@@ -102,6 +103,7 @@ Every public-facing page should feel like a beautifully designed travel book, no
 - Everything in Explorer
 - **PDF memory book export**
 - **Zine export**
+- **Postcard export**
 - Priority support
 
 > Planned (post-MVP): annual billing at €90/year (~2 months free)
