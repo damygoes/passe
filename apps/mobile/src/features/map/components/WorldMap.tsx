@@ -8,8 +8,9 @@ import {
 } from '@maplibre/maplibre-react-native'
 import { useRouter } from 'expo-router'
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Platform, StyleSheet, Text, View } from 'react-native'
 import Animated, { Easing, FadeInDown, FadeOutDown } from 'react-native-reanimated'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Svg, { Path } from 'react-native-svg'
 import Supercluster from 'supercluster'
 
@@ -27,6 +28,12 @@ interface WorldMapProps {
 const MAX_ZOOM = 19
 const PIN_SIZE = 26
 const CLUSTER_RADIUS = 60
+// NativeTabs doesn't expose a way to measure the floating liquid-glass tab bar
+// (expo-router docs: "tab bar height cannot be measured programmatically"). This is an
+// empirically-tuned estimate for the bar's height above the home indicator — re-check
+// visually on-device if Apple changes the bar's sizing. Android already gets the right
+// insets.bottom automatically (NativeTabs wraps content in a bottom-inset SafeAreaView there).
+const IOS_TAB_BAR_CLEARANCE = 60
 
 // Classic "map pin" glyph (same silhouette as Google Maps markers / Material's
 // `place` icon) — a slim teardrop with a punched-out circle, in a 24x24
@@ -45,8 +52,10 @@ function mapStyleUrl() {
 function computeCamera(points: MapPoint[]) {
   const avgLat = points.reduce((sum, point) => sum + point.lat, 0) / points.length
   const avgLng = points.reduce((sum, point) => sum + point.lng, 0) / points.length
-  const latSpread = Math.max(...points.map((point) => point.lat)) - Math.min(...points.map((point) => point.lat))
-  const lngSpread = Math.max(...points.map((point) => point.lng)) - Math.min(...points.map((point) => point.lng))
+  const latSpread =
+    Math.max(...points.map((point) => point.lat)) - Math.min(...points.map((point) => point.lat))
+  const lngSpread =
+    Math.max(...points.map((point) => point.lng)) - Math.min(...points.map((point) => point.lng))
   const maxSpread = Math.max(latSpread, lngSpread)
   const zoom = maxSpread < 0.5 ? 10 : maxSpread < 5 ? 6 : maxSpread < 20 ? 4 : 2
 
@@ -74,6 +83,7 @@ interface Viewport {
 export function WorldMap({ points }: WorldMapProps) {
   const router = useRouter()
   const { colors, spacing } = useTheme()
+  const insets = useSafeAreaInsets()
   const mapRef = useRef<MapRef>(null)
   const cameraRef = useRef<CameraRef>(null)
 
@@ -124,7 +134,10 @@ export function WorldMap({ points }: WorldMapProps) {
     (cluster: Supercluster.ClusterFeature<MapPoint>) => {
       suppressMapPressRef.current = true
       const [lng, lat] = toLngLat(cluster.geometry.coordinates)
-      const expansionZoom = Math.min(index.getClusterExpansionZoom(cluster.properties.cluster_id), MAX_ZOOM)
+      const expansionZoom = Math.min(
+        index.getClusterExpansionZoom(cluster.properties.cluster_id),
+        MAX_ZOOM,
+      )
       cameraRef.current?.easeTo({ center: [lng, lat], zoom: expansionZoom, duration: 300 })
     },
     [index],
@@ -177,7 +190,10 @@ export function WorldMap({ points }: WorldMapProps) {
           position: 'absolute',
           left: spacing[4],
           right: spacing[4],
-          bottom: spacing[4],
+          bottom:
+            insets.bottom +
+            spacing[4] +
+            Platform.select({ ios: IOS_TAB_BAR_CLEARANCE, default: 0 }),
           // MapLibre's native Android surface can otherwise win touch
           // dispatch over this RN sibling despite render order — elevation
           // is Android's actual z-ordering signal, not just tree position.
@@ -194,7 +210,7 @@ export function WorldMap({ points }: WorldMapProps) {
         },
         clusterText: { color: '#fff', fontWeight: '600', fontSize: 14 },
       }),
-    [spacing, colors.primary],
+    [spacing, colors.primary, insets.bottom],
   )
 
   return (
