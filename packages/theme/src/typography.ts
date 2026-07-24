@@ -3,6 +3,8 @@ export const fontFamilies = {
   heading: ['Lora', 'Georgia', 'serif'],
   body: ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
   mono: ['DM Mono', 'Menlo', 'monospace'],
+  // Handwriting accent used only under the opt-in scrapbook theme
+  annotation: ['Caveat', 'Segoe Script', 'cursive'],
 } as const
 
 export const fontSizes = {

@@ -37,6 +37,13 @@ export const fonts = {
     web: fontFamilies.mono.join(', '), // 'DM Mono, Menlo, monospace'
     default: 'monospace',
   }) as string,
+
+  annotation: Platform.select({
+    ios: fontFamilies.annotation[0], // 'Caveat'
+    android: fontFamilies.annotation[0],
+    web: fontFamilies.annotation.join(', '), // 'Caveat, Segoe Script, cursive'
+    default: 'cursive',
+  }) as string,
 }
 
 // lineHeights from @passe/theme are unitless multipliers (e.g. 1.5).

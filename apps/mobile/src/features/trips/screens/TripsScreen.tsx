@@ -9,6 +9,7 @@ import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { PageHeader, PageHeaderDescription, PageHeaderTitle } from '@/components/ui/page-header'
+import { ScrapbookTexture } from '@/components/ui/scrapbook-texture'
 import { Skeleton } from '@/components/ui/skeleton'
 import { TripsList } from '@/features/trips/components/trip/lists/TripsList'
 import { PersonalStatsDataWrapper } from '@/features/trips/components/trip/stats/PersonalStatsDataWrapper'
@@ -16,10 +17,21 @@ import { PersonalStatsStickyBarDataWrapper } from '@/features/trips/components/t
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 import { enterUp } from '@/lib/motion'
+import { ScrapbookThemeProvider } from '@/theme/ScrapbookThemeContext'
 
+// Wraps the themed content in the user's opt-in scrapbook preference, scoped
+// to just this screen — mirrors web's `UserThemeScope` around DashboardView.
 export function TripsScreen() {
+  return (
+    <ScrapbookThemeProvider>
+      <TripsScreenContent />
+    </ScrapbookThemeProvider>
+  )
+}
+
+function TripsScreenContent() {
   const t = useTranslations('trips.dashboard')
-  const { colors, spacing } = useTheme()
+  const { colors, spacing, isScrapbook } = useTheme()
   const headerHeight = useHeaderHeight()
   const { data: trips = [], isLoading, isError } = useTrips()
   const { uniqueCountries } = getUniqueStatsFromTrips({ trips })
@@ -82,6 +94,7 @@ export function TripsScreen() {
         scrollEventThrottle={16}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
+        {isScrapbook && <ScrapbookTexture />}
         <Animated.View entering={enterUp(0)}>
           <PageHeader style={styles.header}>
             <PageHeaderTitle>{t('title')}</PageHeaderTitle>

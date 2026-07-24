@@ -39,7 +39,7 @@ export function TripPolaroidCard({ trip }: Props) {
         // Fixed max-width + centering keeps the polaroid a restrained,
         // human-scale object instead of stretching to fill its grid column
         // (which on a 3-up desktop grid ballooned it to 400px+).
-        'relative mx-auto w-full max-w-[420px] bg-aged-cream p-3 pb-5 shadow-[0_10px_26px_rgba(44,26,14,0.22)] transition-transform duration-300 ease-out hover:rotate-0',
+        'relative mx-auto w-full max-w-[400px] bg-aged-cream p-3 pb-5 shadow-[0_10px_26px_rgba(44,26,14,0.22)] transition-transform duration-300 ease-out hover:rotate-0',
         polaroidTilt(trip.id) === 'left' ? '-rotate-2' : 'rotate-2',
       )}
     >

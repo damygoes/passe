@@ -4,19 +4,32 @@ import { Platform, StyleSheet } from 'react-native'
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
+import { ScrapbookTexture } from '@/components/ui/scrapbook-texture'
 import { MemoriesList } from '@/features/trips/components/memories/MemoriesList'
 import { TripDetailHeader } from '@/features/trips/components/trip/trip-detail/TripDetailHeader'
 import { TripDetailNavBar } from '@/features/trips/components/trip/trip-detail/TripDetailNavBar'
 import { useTheme } from '@/hooks/useTheme'
 import { enterFade, enterUp } from '@/lib/motion'
+import { ScrapbookThemeProvider } from '@/theme/ScrapbookThemeContext'
 
 // This screen hides the native stack header (see the trips _layout) and renders
 // TripDetailNavBar over the hero instead — react-native-screens on iOS 26
 // devices clips content that tries to bleed under a transparent native header.
 // With no header, the scroll content starts at the true top of the screen.
+//
+// Wraps the themed content in the user's opt-in scrapbook preference, scoped
+// to just this screen — mirrors web's `UserThemeScope` around TripDetailView.
 export function TripDetailScreen() {
+  return (
+    <ScrapbookThemeProvider>
+      <TripDetailScreenContent />
+    </ScrapbookThemeProvider>
+  )
+}
+
+function TripDetailScreenContent() {
   const { id } = useLocalSearchParams<{ id: string }>()
-  const { colors, spacing } = useTheme()
+  const { colors, spacing, isScrapbook } = useTheme()
 
   const scrollY = useSharedValue(0)
   const restOffset = useSharedValue<number | null>(null)
@@ -57,6 +70,7 @@ export function TripDetailScreen() {
         scrollEventThrottle={16}
         contentInsetAdjustmentBehavior={Platform.OS === 'ios' ? 'never' : undefined}
       >
+        {isScrapbook && <ScrapbookTexture />}
         <Animated.View entering={enterFade(0)}>
           <TripDetailHeader id={id} scrollY={scrollY} />
         </Animated.View>

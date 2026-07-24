@@ -32,6 +32,7 @@ export default function AccountLayout() {
       <Stack.Screen name="index" options={{ title: t('title') }} />
       <Stack.Screen name="portfolio" options={{ ...sheetOptions, title: t('tabs.portfolio') }} />
       <Stack.Screen name="profile" options={{ ...sheetOptions, title: t('tabs.profile') }} />
+      <Stack.Screen name="appearance" options={{ ...sheetOptions, title: t('tabs.appearance') }} />
       <Stack.Screen name="security" options={{ ...sheetOptions, title: t('tabs.security') }} />
       <Stack.Screen
         name="danger"

@@ -1,5 +1,7 @@
 'use client'
 
+import { Link } from '@/i18n/navigation'
+import { routes } from '@/lib/routes'
 import { canUseThemes } from '@passe/auth/plan-gates'
 import { useUpdateUser } from '@passe/hooks'
 import type { Plan } from '@passe/types'
@@ -11,8 +13,6 @@ import { Icon } from '@passe/ui/icon'
 import { cn } from '@passe/utils'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
-import { Link } from '@/i18n/navigation'
-import { routes } from '@/lib/routes'
 
 interface AppearanceFormProps {
   theme: UserTheme
@@ -64,7 +64,7 @@ export function AppearanceForm({ theme, plan }: AppearanceFormProps) {
                 >
                   <span
                     className={cn(
-                      'relative z-10 text-2xl text-dark-espresso',
+                      'relative z-10 text-2xl',
                       option === 'scrapbook' ? 'font-annotation' : 'font-display',
                     )}
                   >

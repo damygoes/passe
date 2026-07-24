@@ -93,6 +93,11 @@ export function AccountScreen() {
             onPress={() => router.push('/(app)/account/profile')}
           />
           <AccountMenuRow
+            icon="palette"
+            label={t('appearance')}
+            onPress={() => router.push('/(app)/account/appearance')}
+          />
+          <AccountMenuRow
             icon="lock"
             label={t('security')}
             onPress={() => router.push('/(app)/account/security')}

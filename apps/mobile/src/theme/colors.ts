@@ -58,3 +58,23 @@ export const darkColors: SemanticColors = {
   ring: colors.terracotta.DEFAULT,
   destructive: '#ef4444',
 }
+
+// Per-user opt-in scrapbook theme (warm paper surface) — only the tokens web's
+// `[data-theme='scrapbook']` CSS block overrides change here; everything else
+// is inherited from the base light/dark sets. Values mirror
+// apps/web/src/styles/globals.css exactly.
+export const scrapbookLightColors: SemanticColors = {
+  ...lightColors,
+  background: '#f1e0b5',
+  secondary: '#e2c48b',
+  muted: '#ead7a8',
+  border: '#c7a465',
+}
+
+export const scrapbookDarkColors: SemanticColors = {
+  ...darkColors,
+  background: '#241407',
+  secondary: '#4a2f18',
+  muted: '#3a2410',
+  border: '#5c3c22',
+}

@@ -59,18 +59,18 @@ export function PersonalStats({ countriesCount, citiesCount, yearsCount }: Props
             key={`${stat.icon}-stamp`}
             className={cn(
               'hidden scrapbook:flex h-24 w-24 sm:h-28 sm:w-28 flex-col items-center justify-center gap-0.5 shrink-0',
-              'rounded-full border-[1.5px] border-dashed border-terracotta-dark/50 bg-aged-cream',
+              'rounded-full border-[3.5px] border-dashed border-terracotta-dark/50 bg-aged-cream',
               'shadow-[0_6px_16px_rgba(44,26,14,0.14)]',
               index % 2 === 0 ? 'scrapbook:-rotate-2' : 'scrapbook:rotate-2',
             )}
           >
-            <Icon name={stat.icon} size="sm" className="text-primary" aria-hidden />
+            <Icon name={stat.icon} size="md" className="text-primary" aria-hidden />
             <CountUp
               value={stat.count}
               delay={SECTION_STEP + index * STAGGER_INTERVAL}
               className="font-display text-xl font-bold text-dark-espresso"
             />
-            <p className="font-annotation text-sm leading-none text-muted-taupe">{stat.label}</p>
+            <p className="font-annotation text-base leading-none text-muted-taupe">{stat.label}</p>
           </div>
         ))}
       </div>

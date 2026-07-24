@@ -1,5 +1,5 @@
-import type { Memory } from '@passe/types/memory'
 import { colors as brandColors } from '@passe/theme'
+import type { Memory } from '@passe/types/memory'
 import {
   buildEditorialChapters,
   formatTripDateFull,
@@ -11,10 +11,12 @@ import { useMemo } from 'react'
 import { ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native'
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated'
 
+import { Badge } from '@/components/ui/badge'
 import { GlassSurface } from '@/components/ui/glass-surface'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 import { MemoryLayoutMenu } from './MemoryLayoutMenu'
+import { ScrapbookPhotoFrame } from './ScrapbookPhotoFrame'
 
 interface EditorialMemoriesProps {
   memories: Memory[]
@@ -28,7 +30,7 @@ function metaLabel(memory: Memory): string {
 // counterpart of the web trip page. Arranging happens on web.
 export function EditorialMemories({ memories }: EditorialMemoriesProps) {
   const t = useTranslations('trips.memory_card')
-  const { colors, spacing, fontSizes, fontWeights, borderRadius } = useTheme()
+  const { colors, spacing, fonts, fontSizes, fontWeights, borderRadius, isScrapbook } = useTheme()
   const { width: windowWidth } = useWindowDimensions()
 
   const chapters = useMemo(() => buildEditorialChapters(memories), [memories])
@@ -45,7 +47,7 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
       StyleSheet.create({
         container: { gap: spacing[8] },
         chapter: { gap: spacing[6] },
-        chapterHeader: { gap: spacing[1] },
+        chapterHeader: { gap: spacing[1], marginBottom: spacing[2] },
         chapterSubtitle: {
           fontSize: fontSizes.xs,
           letterSpacing: 2,
@@ -57,10 +59,20 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
           fontWeight: fontWeights.semibold,
           color: colors.foreground,
         },
-        chapterRule: { height: 1, width: 56, backgroundColor: colors.primary },
-        section: { gap: spacing[2] },
+        chapterRule: isScrapbook
+          ? {
+              height: 0,
+              minWidth: 40,
+              maxWidth: 60,
+              borderColor: colors.primary,
+              borderWidth: 2,
+              borderStyle: 'dashed',
+            }
+          : { height: 1, width: 56, backgroundColor: colors.primary },
+        section: { gap: spacing[3], marginBottom: spacing[6] },
         photo: { width: '100%', aspectRatio: 16 / 9, borderRadius: borderRadius.xl },
         stackedPhoto: { width: '100%', aspectRatio: 4 / 3, borderRadius: borderRadius.xl },
+        carouselImage: { width: '100%', aspectRatio: 4 / 3, borderRadius: borderRadius.xl },
         photoWrapper: { position: 'relative' },
         countBadge: {
           position: 'absolute',
@@ -76,7 +88,12 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
           alignItems: 'baseline',
           gap: spacing[3],
         },
-        note: { flex: 1, fontSize: fontSizes.sm, color: colors.foreground },
+        note: {
+          flex: 1,
+          fontFamily: isScrapbook ? fonts.annotation : undefined,
+          fontSize: isScrapbook ? fontSizes.lg : fontSizes.sm,
+          color: colors.foreground,
+        },
         meta: {
           fontSize: fontSizes.xs,
           letterSpacing: 1,
@@ -84,12 +101,12 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
           color: colors.mutedForeground,
         },
         stackedNote: {
-          fontSize: fontSizes.lg,
-          lineHeight: fontSizes.lg * 1.5,
+          fontFamily: isScrapbook ? fonts.annotation : undefined,
+          fontSize: isScrapbook ? fontSizes.xl : fontSizes.lg,
+          lineHeight: (isScrapbook ? fontSizes.xl : fontSizes.lg) * 1.5,
           color: colors.foreground,
         },
         carouselContent: { gap: spacing[3] },
-        carouselSlide: { aspectRatio: 4 / 3, borderRadius: borderRadius.xl },
         textSection: { paddingVertical: spacing[4], gap: spacing[3], alignItems: 'center' },
         polaroidFrame: {
           alignSelf: 'center',
@@ -106,14 +123,15 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
         polaroidPhoto: { width: '100%', aspectRatio: 1 },
         polaroidCaption: { marginTop: spacing[3], gap: spacing[1], paddingHorizontal: spacing[1] },
         quote: {
-          fontSize: fontSizes.xl,
-          lineHeight: fontSizes.xl * 1.5,
-          fontStyle: 'italic',
+          fontFamily: isScrapbook ? fonts.annotation : undefined,
+          fontSize: isScrapbook ? fontSizes['2xl'] : fontSizes.xl,
+          lineHeight: (isScrapbook ? fontSizes['2xl'] : fontSizes.xl) * 1.5,
+          fontStyle: isScrapbook ? 'normal' : 'italic',
           textAlign: 'center',
           color: colors.foreground,
         },
       }),
-    [colors, spacing, fontSizes, fontWeights, borderRadius],
+    [colors, spacing, fonts, fontSizes, fontWeights, borderRadius, isScrapbook],
   )
 
   function renderSection(memory: Memory, variant: EditorialSectionVariant, orderedIndex: number) {
@@ -147,13 +165,19 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
             contentContainerStyle={styles.carouselContent}
           >
             {memory.media.map((item) => (
-              <Image
+              <ScrapbookPhotoFrame
                 key={item.id}
-                source={{ uri: item.url }}
-                style={[styles.carouselSlide, { width: slideWidth }]}
-                contentFit="cover"
-                accessibilityLabel={t('photo_alt')}
-              />
+                id={item.id}
+                size="md"
+                style={{ width: slideWidth }}
+              >
+                <Image
+                  source={{ uri: item.url }}
+                  style={styles.carouselImage}
+                  contentFit="cover"
+                  accessibilityLabel={t('photo_alt')}
+                />
+              </ScrapbookPhotoFrame>
             ))}
           </ScrollView>
           <View style={styles.captionRow}>
@@ -205,12 +229,14 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
     if (variant === 'hero') {
       return (
         <View style={styles.section}>
-          <Image
-            source={{ uri: cover.url }}
-            style={styles.photo}
-            contentFit="cover"
-            accessibilityLabel={t('photo_alt')}
-          />
+          <ScrapbookPhotoFrame id={memory.id} size="lg">
+            <Image
+              source={{ uri: cover.url }}
+              style={styles.photo}
+              contentFit="cover"
+              accessibilityLabel={t('photo_alt')}
+            />
+          </ScrapbookPhotoFrame>
           <View style={styles.captionRow}>
             {memory.note ? (
               <Text style={styles.note}>{memory.note}</Text>
@@ -232,19 +258,21 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
     // imageLeft / imageRight — stacked on a phone; side only matters on web
     return (
       <View style={styles.section}>
-        <View style={styles.photoWrapper}>
-          <Image
-            source={{ uri: cover.url }}
-            style={styles.stackedPhoto}
-            contentFit="cover"
-            accessibilityLabel={t('photo_alt')}
-          />
-          {memory.media.length > 1 && (
-            <GlassSurface shape="capsule" style={styles.countBadge}>
-              <Text style={styles.countBadgeText}>+{memory.media.length - 1}</Text>
-            </GlassSurface>
-          )}
-        </View>
+        <ScrapbookPhotoFrame id={memory.id} size="md">
+          <View style={styles.photoWrapper}>
+            <Image
+              source={{ uri: cover.url }}
+              style={styles.stackedPhoto}
+              contentFit="cover"
+              accessibilityLabel={t('photo_alt')}
+            />
+            {memory.media.length > 1 && (
+              <GlassSurface shape="capsule" style={styles.countBadge}>
+                <Text style={styles.countBadgeText}>+{memory.media.length - 1}</Text>
+              </GlassSurface>
+            )}
+          </View>
+        </ScrapbookPhotoFrame>
         <Text style={styles.meta}>{[meta, date].filter(Boolean).join(' · ')}</Text>
         {memory.note && <Text style={styles.stackedNote}>{memory.note}</Text>}
         <MemoryLayoutMenu
@@ -262,7 +290,12 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
       {chapters.map((chapter) => (
         <View key={chapter.key} style={styles.chapter}>
           <Animated.View entering={FadeIn.duration(220)} style={styles.chapterHeader}>
-            {chapter.subtitle && <Text style={styles.chapterSubtitle}>{chapter.subtitle}</Text>}
+            {chapter.subtitle &&
+              (isScrapbook ? (
+                <Badge variant="stamp">{chapter.subtitle}</Badge>
+              ) : (
+                <Text style={styles.chapterSubtitle}>{chapter.subtitle}</Text>
+              ))}
             <Text style={styles.chapterTitle}>{chapter.title}</Text>
             <View style={styles.chapterRule} />
           </Animated.View>
