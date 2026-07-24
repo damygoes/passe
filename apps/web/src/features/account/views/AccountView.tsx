@@ -10,7 +10,7 @@ export function AccountView() {
   const t = useTranslations('account')
 
   return (
-    <div className="container max-w-4xl mx-auto py-8 px-4 md:px-6">
+    <div className="container mx-auto py-8 px-4 md:px-12">
       <FadeIn>
         <h1 className="text-2xl font-semibold tracking-tight">{t('title')}</h1>
       </FadeIn>

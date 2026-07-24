@@ -32,7 +32,10 @@ export function AccountTabViewDataWrapper({ activeTab }: { activeTab: AccountTab
   }
 
   return (
-    <div key={activeTab} className="animate-in fade-in-0 slide-in-from-left-1 duration-200">
+    <div
+      key={activeTab}
+      className="animate-in fade-in-0 slide-in-from-left-1 duration-200 max-w-2xl"
+    >
       {content[activeTab]}
     </div>
   )

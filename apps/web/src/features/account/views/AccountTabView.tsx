@@ -8,7 +8,7 @@ export function AccountTabView() {
   const [activeTab, setActiveTab] = useState<AccountTab>('profile')
 
   return (
-    <div className="flex flex-col md:flex-row gap-8">
+    <div className="flex flex-col md:flex-row gap-12">
       <AccountSidebar activeTab={activeTab} onTabChange={setActiveTab} />
 
       <div className="flex-1 min-w-0">
