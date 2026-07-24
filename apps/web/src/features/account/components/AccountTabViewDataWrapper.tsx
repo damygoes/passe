@@ -5,6 +5,7 @@ import { useUser } from '@passe/hooks'
 import { type AccountTab } from '../components/AccountSidebar'
 import { AccountViewError } from '../components/AccountViewError'
 import { AccountViewSkeleton } from '../components/AccountViewSkeleton'
+import { AppearanceForm } from '../components/AppearanceForm'
 import { DangerZone } from '../components/DangerZone'
 import { PasswordForm } from '../components/PasswordForm'
 import { ProfileForm } from '../components/ProfileForm'
@@ -28,6 +29,7 @@ export function AccountTabViewDataWrapper({ activeTab }: { activeTab: AccountTab
       />
     ),
     security: <PasswordForm />,
+    appearance: <AppearanceForm theme={user.theme} plan={user.plan} />,
     danger: <DangerZone />,
   }
 

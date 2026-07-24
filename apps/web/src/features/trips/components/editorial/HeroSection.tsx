@@ -9,6 +9,7 @@ import { createMediaLoader } from '@/lib/media/media-image-loader'
 import { formatTripDateFull } from '@passe/utils'
 import Image from 'next/image'
 import { memoryMetaLabel, type EditorialMemoryData } from './editorial-types'
+import { ScrapbookPhotoFrame } from './ScrapbookPhotoFrame'
 
 interface Props {
   memory: EditorialMemoryData
@@ -23,24 +24,30 @@ export function HeroSection({ memory, photoAlt }: Props) {
 
   return (
     <figure className="space-y-3">
-      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl">
-        <Image
-          src={cover.url}
-          alt={memory.note ?? photoAlt}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, 896px"
-          {...getBlurProps(cover.placeholder)}
-          {...(cover.srcset ? { loader: createMediaLoader(cover.srcset) } : {})}
-        />
-      </div>
+      <ScrapbookPhotoFrame id={memory.id} size="lg">
+        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl">
+          <Image
+            src={cover.url}
+            alt={memory.note ?? photoAlt}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 896px"
+            {...getBlurProps(cover.placeholder)}
+            {...(cover.srcset ? { loader: createMediaLoader(cover.srcset) } : {})}
+          />
+        </div>
+      </ScrapbookPhotoFrame>
       <figcaption className="flex items-baseline justify-between gap-4">
         {memory.note ? (
-          <p className="text-sm text-foreground">{memory.note}</p>
+          <p className="text-sm text-foreground scrapbook:font-annotation scrapbook:text-lg">
+            {memory.note}
+          </p>
         ) : (
-          <p className="text-sm text-muted-foreground">{meta}</p>
+          <p className="text-sm text-muted-foreground scrapbook:font-annotation scrapbook:text-lg">
+            {meta}
+          </p>
         )}
-        <p className="shrink-0 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        <p className="shrink-0 font-mono text-xs uppercase tracking-widest text-muted-foreground scrapbook:font-annotation scrapbook:text-base scrapbook:normal-case scrapbook:tracking-normal">
           {formatTripDateFull(memory.capturedAt)}
         </p>
       </figcaption>

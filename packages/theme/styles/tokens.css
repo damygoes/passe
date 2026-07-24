@@ -58,6 +58,8 @@
   --font-heading: 'Lora', Georgia, serif;
   --font-body: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-mono: 'DM Mono', Menlo, monospace;
+  /* Handwriting accent used only under the opt-in scrapbook theme */
+  --font-annotation: 'Caveat', 'Segoe Script', cursive;
 
   /* Border radius */
   --radius-sm: 4px;

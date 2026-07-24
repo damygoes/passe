@@ -1,6 +1,7 @@
 'use client'
 
 import { FadeIn } from '@/components/motion/FadeIn'
+import { UserThemeScope } from '@/components/shared/UserThemeScope'
 import { Link } from '@/i18n/navigation'
 import { SECTION_STEP } from '@/lib/motion'
 import { routes } from '@/lib/routes'
@@ -24,7 +25,7 @@ export function DashboardView() {
   const { uniqueCountries } = getUniqueStatsFromTrips({ trips })
 
   return (
-    <div className="container mx-auto w-full px-4 py-8 flex flex-col gap-6">
+    <UserThemeScope className="container mx-auto w-full px-4 py-8 flex flex-col gap-8 sm:gap-10">
       <FadeIn>
         <PageHeader className="w-full">
           <PageHeaderTitle>{t('title')}</PageHeaderTitle>
@@ -48,6 +49,6 @@ export function DashboardView() {
       <FadeIn delay={SECTION_STEP * 2}>
         <TripsList />
       </FadeIn>
-    </div>
+    </UserThemeScope>
   )
 }

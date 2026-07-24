@@ -3,6 +3,10 @@ import { z } from 'zod'
 export const PlanSchema = z.enum(['free', 'explorer', 'collector'])
 export type Plan = z.infer<typeof PlanSchema>
 
+// Mirrors the Postgres user_theme enum exactly — no mapping layer needed
+export const UserThemeSchema = z.enum(['editorial', 'scrapbook'])
+export type UserTheme = z.infer<typeof UserThemeSchema>
+
 // DB representation — mirrors what the database actually stores; no UI-level constraints
 export const UserSchema = z.object({
   id: z.string(),
@@ -12,6 +16,7 @@ export const UserSchema = z.object({
   bio: z.string().nullish(),
   avatarUrl: z.string().nullish(),
   plan: PlanSchema.default('free'),
+  theme: UserThemeSchema.default('editorial'),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
 })
@@ -24,6 +29,8 @@ export const PublicUserSchema = UserSchema.pick({
   displayName: true,
   bio: true,
   avatarUrl: true,
+  // Drives the public portfolio's visual theme — not sensitive
+  theme: true,
 })
 export type PublicUser = z.infer<typeof PublicUserSchema>
 
@@ -41,6 +48,7 @@ export const UpdateUserSchema = z
     displayName: z.string().min(1).max(50),
     username: z.string().min(3).max(30),
     bio: z.string().max(160).nullish(),
+    theme: UserThemeSchema,
   })
   .partial()
 export type UpdateUser = z.infer<typeof UpdateUserSchema>

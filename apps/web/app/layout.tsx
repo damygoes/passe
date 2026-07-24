@@ -2,7 +2,7 @@ import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import '@/styles/globals.css'
 import { TooltipProvider } from '@passe/ui'
 import type { Metadata } from 'next'
-import { DM_Mono, Lora, Playfair_Display } from 'next/font/google'
+import { Caveat, DM_Mono, Lora, Playfair_Display } from 'next/font/google'
 import { getLocale } from 'next-intl/server'
 import type { ReactNode } from 'react'
 
@@ -26,6 +26,13 @@ const dmMono = DM_Mono({
   display: 'swap',
 })
 
+// Scrapbook theme's handwriting accent; latin-ext covers German
+const caveat = Caveat({
+  variable: '--font-caveat',
+  subsets: ['latin', 'latin-ext'],
+  display: 'swap',
+})
+
 export const metadata: Metadata = {
   title: 'Passé.',
   description: 'The past, beautifully kept.',
@@ -36,7 +43,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     <html
       lang={locale}
-      className={`${playfairDisplay.variable} ${lora.variable} ${dmMono.variable}`}
+      className={`${playfairDisplay.variable} ${lora.variable} ${dmMono.variable} ${caveat.variable}`}
       suppressHydrationWarning
     >
       <body className="no-scrollbar" suppressHydrationWarning>

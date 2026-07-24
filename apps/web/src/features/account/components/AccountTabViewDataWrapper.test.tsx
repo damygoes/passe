@@ -9,10 +9,15 @@ vi.mock('@clerk/nextjs', () => ({
 const mockUseUser = vi.fn()
 vi.mock('@passe/hooks', () => ({ useUser: () => mockUseUser() }))
 
-vi.mock('../components/AccountViewSkeleton', () => ({ AccountViewSkeleton: () => <div>loading</div> }))
+vi.mock('../components/AccountViewSkeleton', () => ({
+  AccountViewSkeleton: () => <div>loading</div>,
+}))
 vi.mock('../components/AccountViewError', () => ({ AccountViewError: () => <div>error</div> }))
 vi.mock('../components/ProfileForm', () => ({ ProfileForm: () => <div>profile-form</div> }))
 vi.mock('../components/PasswordForm', () => ({ PasswordForm: () => <div>password-form</div> }))
+vi.mock('../components/AppearanceForm', () => ({
+  AppearanceForm: () => <div>appearance-form</div>,
+}))
 vi.mock('../components/DangerZone', () => ({ DangerZone: () => <div>danger-zone</div> }))
 
 describe('AccountTabViewDataWrapper', () => {
@@ -46,6 +51,22 @@ describe('AccountTabViewDataWrapper', () => {
     })
     render(<AccountTabViewDataWrapper activeTab="security" />)
     expect(screen.getByText('password-form')).toBeInTheDocument()
+  })
+
+  it('renders the appearance tab', () => {
+    mockUseUser.mockReturnValue({
+      data: {
+        displayName: 'Traveler',
+        username: 'traveler',
+        bio: null,
+        plan: 'free',
+        theme: 'editorial',
+      },
+      isLoading: false,
+      isError: false,
+    })
+    render(<AccountTabViewDataWrapper activeTab="appearance" />)
+    expect(screen.getByText('appearance-form')).toBeInTheDocument()
   })
 
   it('renders the danger tab', () => {

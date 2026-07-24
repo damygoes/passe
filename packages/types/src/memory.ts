@@ -20,6 +20,7 @@ export const LayoutVariantSchema = z.enum([
   'image_right',
   'carousel',
   'text',
+  'polaroid',
 ])
 export type LayoutVariant = z.infer<typeof LayoutVariantSchema>
 

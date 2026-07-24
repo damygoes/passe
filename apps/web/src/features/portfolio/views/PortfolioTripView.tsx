@@ -1,5 +1,6 @@
 import { EditorialChapters } from '@/features/trips/components/editorial/EditorialChapters'
 import { resolveMemoryMedia, resolveTripMedia } from '@/lib/media/media'
+import { canUseThemes } from '@passe/auth/plan-gates'
 import { db } from '@passe/db/client'
 import { memories, memoryMedia, trips, users } from '@passe/db/schema'
 import { buildEditorialChapters } from '@passe/utils'
@@ -35,8 +36,10 @@ export async function PortfolioTripView({ slug, tripId }: Props) {
 
   const chapters = buildEditorialChapters(publicMemories)
 
+  const isScrapbook = user.theme === 'scrapbook' && canUseThemes(user.plan)
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" data-theme={isScrapbook ? 'scrapbook' : undefined}>
       <PortfolioTripHeader slug={slug} user={user} trip={trip} />
       <main className="mx-auto max-w-4xl px-6 py-10">
         {publicMemories.length === 0 ? (

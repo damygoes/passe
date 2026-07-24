@@ -37,6 +37,7 @@ const mockUser = {
   bio: null,
   avatarUrl: null,
   plan: 'free',
+  theme: 'editorial',
   createdAt: new Date(),
   updatedAt: new Date(),
 }
@@ -71,6 +72,7 @@ describe('GET /api/user', () => {
     expect(res.status).toBe(200)
     const body = await res.json()
     expect(body.data.username).toBe('traveler')
+    expect(body.data.theme).toBe('editorial')
   })
 })
 
@@ -102,6 +104,34 @@ describe('PATCH /api/user', () => {
     expect(res.status).toBe(200)
     const body = await res.json()
     expect(body.data.displayName).toBe('New Name')
+  })
+
+  it('returns 403 when a free-plan user tries to switch to a non-editorial theme', async () => {
+    mockDb.query.users.findFirst.mockResolvedValue({ ...mockUser, plan: 'free' })
+
+    const res = await PATCH(patchReq({ theme: 'scrapbook' }))
+    expect(res.status).toBe(403)
+    expect(mockDb.update).not.toHaveBeenCalled()
+  })
+
+  it('allows an explorer-plan user to switch to the scrapbook theme', async () => {
+    mockDb.query.users.findFirst.mockResolvedValue({ ...mockUser, plan: 'explorer' })
+    mockClerkClient.users.updateUser.mockResolvedValue({})
+    mockDb.update.mockReturnValue(dbChain([{ ...mockUser, plan: 'explorer', theme: 'scrapbook' }]))
+
+    const res = await PATCH(patchReq({ theme: 'scrapbook' }))
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(body.data.theme).toBe('scrapbook')
+  })
+
+  it('always allows reverting to the editorial theme, even on the free plan', async () => {
+    mockDb.query.users.findFirst.mockResolvedValue({ ...mockUser, plan: 'free' })
+    mockClerkClient.users.updateUser.mockResolvedValue({})
+    mockDb.update.mockReturnValue(dbChain([{ ...mockUser, theme: 'editorial' }]))
+
+    const res = await PATCH(patchReq({ theme: 'editorial' }))
+    expect(res.status).toBe(200)
   })
 })
 

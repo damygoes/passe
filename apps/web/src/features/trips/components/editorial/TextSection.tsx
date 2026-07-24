@@ -15,7 +15,7 @@ export function TextSection({ memory }: Props) {
           {memory.note}
         </p>
       )}
-      <p className="mt-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+      <p className="mt-3 font-mono text-xs uppercase tracking-widest text-muted-foreground scrapbook:font-annotation scrapbook:text-base scrapbook:normal-case scrapbook:tracking-normal">
         {[meta, formatTripDateFull(memory.capturedAt)].filter(Boolean).join(' · ')}
       </p>
     </div>

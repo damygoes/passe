@@ -7,6 +7,7 @@ export const PLAN_LIMITS = {
     publicPortfolio: false,
     maxPublicMemoriesPerTrip: 3,
     pdfExport: false,
+    customThemes: false,
   },
   explorer: {
     maxTrips: 20,
@@ -14,6 +15,7 @@ export const PLAN_LIMITS = {
     publicPortfolio: true,
     maxPublicMemoriesPerTrip: Infinity,
     pdfExport: false,
+    customThemes: true,
   },
   collector: {
     maxTrips: Infinity,
@@ -21,6 +23,7 @@ export const PLAN_LIMITS = {
     publicPortfolio: true,
     maxPublicMemoriesPerTrip: Infinity,
     pdfExport: true,
+    customThemes: true,
   },
 } as const satisfies Record<
   PlanType,
@@ -30,6 +33,7 @@ export const PLAN_LIMITS = {
     publicPortfolio: boolean
     maxPublicMemoriesPerTrip: number
     pdfExport: boolean
+    customThemes: boolean
   }
 >
 
@@ -51,4 +55,8 @@ export function canMakeMemoryPublic(plan: PlanType, currentPublicMemoryCount: nu
 
 export function canExportPdf(plan: PlanType): boolean {
   return PLAN_LIMITS[plan].pdfExport
+}
+
+export function canUseThemes(plan: PlanType): boolean {
+  return PLAN_LIMITS[plan].customThemes
 }

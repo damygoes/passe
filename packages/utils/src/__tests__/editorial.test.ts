@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { buildEditorialChapters, type EditorialMemoryInput } from '../editorial'
+import { buildEditorialChapters, polaroidTilt, type EditorialMemoryInput } from '../editorial'
 
 let counter = 0
 function memory(overrides: Partial<EditorialMemoryInput>): EditorialMemoryInput {
@@ -96,5 +96,30 @@ describe('buildEditorialChapters — manual overrides', () => {
       'text',
       'text',
     ])
+  })
+
+  it('resolves polaroid only with a photo, falling back to text', () => {
+    const chapters = buildEditorialChapters([
+      memory({ city: 'X', note: 'n', media: photo(1), layoutVariant: 'polaroid' }),
+      memory({ city: 'X', note: 'n', layoutVariant: 'polaroid' }), // no photo → text
+    ])
+    expect(chapters[0]?.sections.map((s) => s.variant)).toEqual(['polaroid', 'text'])
+  })
+
+  it('never picks polaroid from the auto heuristic', () => {
+    const chapters = buildEditorialChapters([
+      memory({ city: 'X', media: photo(1) }),
+      memory({ city: 'X', note: 'n', media: photo(1) }),
+      memory({ city: 'X', media: photo(2) }),
+    ])
+    expect(chapters[0]?.sections.map((s) => s.variant)).not.toContain('polaroid')
+  })
+})
+
+describe('polaroidTilt', () => {
+  it('is deterministic and alternates by leading character parity', () => {
+    expect(polaroidTilt('0abc')).toBe('left') // '0' = 48, even
+    expect(polaroidTilt('1abc')).toBe('right') // '1' = 49, odd
+    expect(polaroidTilt('0abc')).toBe(polaroidTilt('0abc'))
   })
 })

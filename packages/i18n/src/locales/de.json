@@ -301,6 +301,7 @@
       "variant_image_right": "Bild rechts",
       "variant_carousel": "Karussell",
       "variant_text": "Nur Text",
+      "variant_polaroid": "Polaroid",
       "flip": "Seite wechseln",
       "move_up": "Nach oben",
       "move_down": "Nach unten",
@@ -333,8 +334,22 @@
     "tabs": {
       "profile": "Profil",
       "security": "Sicherheit",
+      "appearance": "Erscheinungsbild",
       "danger": "Gefahrenbereich",
       "portfolio": "Mein Portfolio"
+    },
+    "appearance": {
+      "title": "Erscheinungsbild",
+      "description": "Wähle, wie deine Reiseseiten und dein öffentliches Portfolio aussehen.",
+      "editorial_label": "Editorial",
+      "editorial_description": "Der klassische Passé-Look — klar, ruhig und wie ein Buch.",
+      "scrapbook_label": "Scrapbook",
+      "scrapbook_description": "Papierstruktur, handgeschriebene Bildunterschriften und ein Hauch Klebeband.",
+      "locked_note": "Themes sind in den Explorer- und Collector-Tarifen verfügbar.",
+      "upgrade_cta": "Tarif upgraden",
+      "current_label": "Aktuell",
+      "select_cta": "{theme} verwenden",
+      "saved": "Theme aktualisiert"
     },
     "profile": {
       "title": "Profil",

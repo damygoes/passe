@@ -39,8 +39,7 @@ export const WithCoverImage: Story = {
       startDate: '2024-08-10',
       endDate: '2024-08-18',
       countries: ['Italy'],
-      coverImageUrl:
-        'https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?w=800&q=80',
+      coverImageUrl: 'https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?w=800&q=80',
     },
     href: '/u/amara/trips/trip_2',
   },
@@ -73,4 +72,15 @@ export const Tilted: Story = {
     href: '/u/amara/trips/trip_4',
     tilt: 'right',
   },
+}
+
+export const Scrapbook: Story = {
+  args: WithCoverImage.args,
+  decorators: [
+    (Story) => (
+      <div data-theme="scrapbook" className="w-80 bg-background p-6">
+        <Story />
+      </div>
+    ),
+  ],
 }

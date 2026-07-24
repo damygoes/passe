@@ -49,6 +49,8 @@ function imageCountForVariant(variant: EditorialSectionVariant): number {
       return MAX_GRID_IMAGES
     case 'text':
       return 0
+    case 'polaroid':
+      return 1
   }
 }
 

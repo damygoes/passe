@@ -1,7 +1,9 @@
 import type { Memory } from '@passe/types/memory'
+import { colors as brandColors } from '@passe/theme'
 import {
   buildEditorialChapters,
   formatTripDateFull,
+  polaroidTilt,
   type EditorialSectionVariant,
 } from '@passe/utils'
 import { Image } from 'expo-image'
@@ -89,6 +91,20 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
         carouselContent: { gap: spacing[3] },
         carouselSlide: { aspectRatio: 4 / 3, borderRadius: borderRadius.xl },
         textSection: { paddingVertical: spacing[4], gap: spacing[3], alignItems: 'center' },
+        polaroidFrame: {
+          alignSelf: 'center',
+          width: '80%',
+          backgroundColor: brandColors.warmWhite.DEFAULT,
+          padding: spacing[3],
+          paddingBottom: spacing[12],
+          shadowColor: brandColors.darkEspresso.DEFAULT,
+          shadowOpacity: 0.12,
+          shadowRadius: 8,
+          shadowOffset: { width: 0, height: 4 },
+          elevation: 4,
+        },
+        polaroidPhoto: { width: '100%', aspectRatio: 1 },
+        polaroidCaption: { marginTop: spacing[3], gap: spacing[1], paddingHorizontal: spacing[1] },
         quote: {
           fontSize: fontSizes.xl,
           lineHeight: fontSizes.xl * 1.5,
@@ -143,6 +159,38 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
           <View style={styles.captionRow}>
             {memory.note ? <Text style={styles.note}>{memory.note}</Text> : <View />}
             <Text style={styles.meta}>{date}</Text>
+          </View>
+          <MemoryLayoutMenu
+            memory={memory}
+            resolvedVariant={variant}
+            orderedIds={orderedIds}
+            index={orderedIndex}
+          />
+        </View>
+      )
+    }
+
+    if (variant === 'polaroid') {
+      const rotate = polaroidTilt(memory.id) === 'left' ? '-2deg' : '2deg'
+      return (
+        <View style={styles.section}>
+          <View style={[styles.polaroidFrame, { transform: [{ rotate }] }]}>
+            <Image
+              source={{ uri: cover.url }}
+              style={styles.polaroidPhoto}
+              contentFit="cover"
+              accessibilityLabel={t('photo_alt')}
+            />
+            <View style={styles.polaroidCaption}>
+              {memory.note ? (
+                <Text style={styles.note} numberOfLines={2}>
+                  {memory.note}
+                </Text>
+              ) : (
+                <Text style={styles.note}>{meta}</Text>
+              )}
+              <Text style={styles.meta}>{date}</Text>
+            </View>
           </View>
           <MemoryLayoutMenu
             memory={memory}

@@ -72,3 +72,14 @@ export const Tilted: Story = {
     tilt: 'left',
   },
 }
+
+export const Scrapbook: Story = {
+  args: WithCoverImage.args,
+  decorators: [
+    (Story) => (
+      <div data-theme="scrapbook" className="w-80 bg-background p-4">
+        <Story />
+      </div>
+    ),
+  ],
+}

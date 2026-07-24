@@ -6,6 +6,7 @@ import { pdfColors } from '../pdf-theme'
 import { PdfGridSection } from './PdfGridSection'
 import { PdfHeroSection } from './PdfHeroSection'
 import { PdfImageTextSection } from './PdfImageTextSection'
+import { PdfPolaroidSection } from './PdfPolaroidSection'
 import { PdfTextSection } from './PdfTextSection'
 import type { PdfMemoryData } from '../pdf-types'
 
@@ -53,6 +54,8 @@ function Section({ memory, variant }: { memory: PdfMemoryData; variant: Editoria
       return <PdfGridSection memory={memory} />
     case 'text':
       return <PdfTextSection memory={memory} />
+    case 'polaroid':
+      return <PdfPolaroidSection memory={memory} />
   }
 }
 

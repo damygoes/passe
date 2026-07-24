@@ -301,6 +301,7 @@
       "variant_image_right": "Image right",
       "variant_carousel": "Carousel",
       "variant_text": "Text only",
+      "variant_polaroid": "Polaroid",
       "flip": "Flip side",
       "move_up": "Move up",
       "move_down": "Move down",
@@ -333,8 +334,22 @@
     "tabs": {
       "profile": "Profile",
       "security": "Security",
+      "appearance": "Appearance",
       "danger": "Danger Zone",
       "portfolio": "My portfolio"
+    },
+    "appearance": {
+      "title": "Appearance",
+      "description": "Choose how your trip pages and public portfolio look.",
+      "editorial_label": "Editorial",
+      "editorial_description": "The classic Passé look — clean, calm, and bookish.",
+      "scrapbook_label": "Scrapbook",
+      "scrapbook_description": "Paper grain, handwritten captions, and a touch of tape.",
+      "locked_note": "Themes are available on the Explorer and Collector plans.",
+      "upgrade_cta": "Upgrade your plan",
+      "current_label": "Current",
+      "select_cta": "Use {theme}",
+      "saved": "Theme updated"
     },
     "profile": {
       "title": "Profile",

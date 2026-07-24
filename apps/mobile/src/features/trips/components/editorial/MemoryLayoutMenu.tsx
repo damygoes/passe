@@ -35,6 +35,7 @@ const VARIANT_OPTIONS: LayoutVariant[] = [
   'image_right',
   'carousel',
   'text',
+  'polaroid',
 ]
 
 interface MemoryLayoutMenuProps {

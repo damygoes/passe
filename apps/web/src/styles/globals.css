@@ -2,6 +2,9 @@
 @import 'tw-animate-css';
 @import '@passe/theme/styles';
 @custom-variant dark (&:where(.dark, .dark *));
+/* Per-user scrapbook theme — set via data-theme on a subtree wrapper
+   (owner trip detail + public portfolio), never globally. */
+@custom-variant scrapbook (&:where([data-theme='scrapbook'], [data-theme='scrapbook'] *));
 @source '../../node_modules/@passe/ui/src';
 @source '../../app';
 @source '../../src';
@@ -14,6 +17,88 @@
   --font-display: var(--font-playfair), Georgia, serif;
   --font-heading: var(--font-lora), Georgia, serif;
   --font-mono: var(--font-dm-mono), Menlo, monospace;
+  --font-annotation: var(--font-caveat), cursive;
+}
+
+/* Scrapbook theme — warm paper surface, grain + vignette texture, and a
+   page-corner curl on the themed subtree. Re-colors every existing
+   bg-background/bg-secondary/bg-muted/border-border usage for free, the
+   same mechanism `.dark` already uses to re-theme the whole app. */
+[data-theme='scrapbook'] {
+  position: relative;
+  /* Contains the decorative pseudo-elements' negative z-index below without
+     giving this element an explicit z-index that could jump ahead of
+     sibling stacking elsewhere on the page (modals, dropdowns, toasts). */
+  isolation: isolate;
+  --color-background: #f1e0b5;
+  --color-secondary: #e2c48b;
+  --color-muted: #ead7a8;
+  --color-border: #c7a465;
+}
+.dark [data-theme='scrapbook'] {
+  --color-background: #241407;
+  --color-secondary: #4a2f18;
+  --color-muted: #3a2410;
+  --color-border: #5c3c22;
+}
+
+/* Grain (SVG feTurbulence data URI) + edge vignette, layered in one
+   pseudo-element — no asset, CSP-safe. pointer-events: none keeps
+   everything beneath interactive. Negative z-index (inside the isolated
+   stacking context above) keeps this texture BEHIND real content — without
+   it, an absolutely-positioned pseudo-element paints above normal in-flow
+   children regardless of z-index:0, which would haze over every photo and
+   caption in the themed subtree. */
+[data-theme='scrapbook']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image:
+    radial-gradient(
+      ellipse at center,
+      transparent 65%,
+      rgba(44, 26, 14, 0.14) 100%
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.12' numOctaves='1' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='1.1' intercept='-0.15'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:
+    100% 100%,
+    500px 500px;
+}
+
+/* Grayscale noise reads far more visibly against a near-black surface than
+   a light one at the same opacity — the same texture that's a faint paper
+   warmth in light mode looks like static in dark mode unless cut down
+   separately here. */
+.dark [data-theme='scrapbook']::before {
+  opacity: 0.012;
+}
+
+/* Folded page-corner, bottom-right of the themed page — a single decorative
+   moment rather than one per card, to stay premium instead of busy.
+   Intentionally z-index: 0 (in front of content, unlike the grain above) —
+   it's meant to read as the page material folding over whatever's near that
+   corner; contained by the parent's `isolation: isolate` so it can't jump
+   above unrelated page chrome like modals or dropdowns. */
+[data-theme='scrapbook']::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(
+    135deg,
+    transparent 50%,
+    rgba(44, 26, 14, 0.06) 50%,
+    rgba(44, 26, 14, 0.14) 100%
+  );
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  box-shadow: -2px -2px 6px rgba(44, 26, 14, 0.08);
 }
 
 @theme {

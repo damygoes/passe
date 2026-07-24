@@ -1,4 +1,5 @@
 import { resolveTripMedia } from '@/lib/media/media'
+import { canUseThemes } from '@passe/auth/plan-gates'
 import { db } from '@passe/db/client'
 import { memories, trips, users } from '@passe/db/schema'
 import { getUniqueCities, getUniqueStatsFromTrips } from '@passe/utils'
@@ -32,8 +33,10 @@ export async function PortfolioView({ slug }: Props) {
   const { uniqueCountries, uniqueYears } = getUniqueStatsFromTrips({ trips: publicTrips })
   const { uniqueCities } = getUniqueCities({ allMemories: publicMemories })
 
+  const isScrapbook = user.theme === 'scrapbook' && canUseThemes(user.plan)
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" data-theme={isScrapbook ? 'scrapbook' : undefined}>
       <PortfolioHeader
         user={user}
         tripCount={publicTrips.length}

@@ -5,6 +5,7 @@ export const pdfColors = {
   terracotta: '#C4622D',
   terracottaDark: '#A34E22',
   agedCream: '#FAF6EE',
+  warmWhite: '#FFFDF8',
   darkEspresso: '#2C1A0E',
   mutedTaupe: '#8C7B6B',
   sandyBeige: '#E8D5B0',

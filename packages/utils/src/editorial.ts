@@ -15,7 +15,15 @@ export interface EditorialMemoryInput {
 }
 
 // Resolved per-section presentation (never 'auto' — the engine has decided)
-export type EditorialSectionVariant = 'hero' | 'imageLeft' | 'imageRight' | 'carousel' | 'text'
+export type EditorialSectionVariant =
+  'hero' | 'imageLeft' | 'imageRight' | 'carousel' | 'text' | 'polaroid'
+
+// Deterministic tilt direction for polaroid frames, shared by every renderer
+// (web CSS, mobile StyleSheet, PDF) so the same memory leans the same way
+// everywhere, with no state to thread through.
+export function polaroidTilt(id: string): 'left' | 'right' {
+  return id.charCodeAt(0) % 2 === 0 ? 'left' : 'right'
+}
 
 export interface EditorialSection<M extends EditorialMemoryInput> {
   memory: M
@@ -51,6 +59,8 @@ function resolveVariant(
     if (photos >= 2) return 'carousel'
     return photos === 1 ? 'hero' : 'text'
   }
+  // Polaroid is explicit-only — the auto heuristic below never picks it
+  if (override === 'polaroid') return photos >= 1 ? 'polaroid' : 'text'
 
   // Auto: pick from the content shape
   if (photos === 0) return 'text'

@@ -9,6 +9,7 @@ import { createMediaLoader } from '@/lib/media/media-image-loader'
 import { cn, formatTripDateFull } from '@passe/utils'
 import Image from 'next/image'
 import { memoryMetaLabel, type EditorialMemoryData } from './editorial-types'
+import { ScrapbookPhotoFrame } from './ScrapbookPhotoFrame'
 
 interface Props {
   memory: EditorialMemoryData
@@ -25,30 +26,31 @@ export function ImageTextSection({ memory, side, photoAlt }: Props) {
 
   return (
     <div className="grid items-center gap-6 md:grid-cols-2 md:gap-10">
-      <div
-        className={cn(
-          'relative aspect-[4/3] overflow-hidden rounded-xl',
-          side === 'right' && 'md:order-2',
-        )}
+      <ScrapbookPhotoFrame
+        id={memory.id}
+        size="md"
+        className={cn(side === 'right' && 'md:order-2')}
       >
-        <Image
-          src={cover.url}
-          alt={memory.note ?? photoAlt}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, 448px"
-          {...getBlurProps(cover.placeholder)}
-          {...(cover.srcset ? { loader: createMediaLoader(cover.srcset) } : {})}
-        />
-        {extraCount > 0 && (
-          <span className="absolute bottom-2 right-2 rounded-full bg-background/90 px-2 py-0.5 font-mono text-xs text-foreground">
-            +{extraCount}
-          </span>
-        )}
-      </div>
+        <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
+          <Image
+            src={cover.url}
+            alt={memory.note ?? photoAlt}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 448px"
+            {...getBlurProps(cover.placeholder)}
+            {...(cover.srcset ? { loader: createMediaLoader(cover.srcset) } : {})}
+          />
+          {extraCount > 0 && (
+            <span className="absolute bottom-2 right-2 rounded-full bg-background/90 px-2 py-0.5 font-mono text-xs text-foreground">
+              +{extraCount}
+            </span>
+          )}
+        </div>
+      </ScrapbookPhotoFrame>
 
       <div className="space-y-3">
-        <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground scrapbook:font-annotation scrapbook:text-base scrapbook:normal-case scrapbook:tracking-normal">
           {[meta, formatTripDateFull(memory.capturedAt)].filter(Boolean).join(' · ')}
         </p>
         {memory.note && (

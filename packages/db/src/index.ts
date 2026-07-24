@@ -9,6 +9,7 @@ export {
   memoriesRelations,
   trips,
   planEnum,
+  userThemeEnum,
   users,
 } from './schema'
 export type {

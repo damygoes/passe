@@ -12,6 +12,7 @@ export const PDF_NOTE_CHAR_LIMITS = {
   hero: 600,
   grid: 600,
   text: 400,
+  polaroid: 140,
 } as const
 
 export function truncatePdfNote(note: string, maxChars: number): string {

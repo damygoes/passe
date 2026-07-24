@@ -8,6 +8,7 @@ import { Icon } from '@passe/ui/icon'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { memoryMetaLabel, type EditorialMemoryData } from './editorial-types'
+import { ScrapbookPhotoFrame } from './ScrapbookPhotoFrame'
 
 interface Props {
   memory: EditorialMemoryData
@@ -59,21 +60,25 @@ export function CarouselSection({ memory, photoAlt, scrollLeftLabel, scrollRight
           className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2"
         >
           {memory.media.map((item) => (
-            <div
+            <ScrapbookPhotoFrame
               key={item.id}
+              id={item.id}
+              size="md"
               data-carousel-card
-              className="relative aspect-[4/3] w-4/5 shrink-0 snap-start overflow-hidden rounded-xl sm:w-3/5"
+              className="w-4/5 shrink-0 snap-start sm:w-3/5"
             >
-              <Image
-                src={item.url}
-                alt={memory.note ?? photoAlt}
-                fill
-                className="object-cover"
-                sizes="(max-width: 640px) 80vw, 60vw"
-                {...getBlurProps(item.placeholder)}
-                {...(item.srcset ? { loader: createMediaLoader(item.srcset) } : {})}
-              />
-            </div>
+              <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
+                <Image
+                  src={item.url}
+                  alt={memory.note ?? photoAlt}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 80vw, 60vw"
+                  {...getBlurProps(item.placeholder)}
+                  {...(item.srcset ? { loader: createMediaLoader(item.srcset) } : {})}
+                />
+              </div>
+            </ScrapbookPhotoFrame>
           ))}
         </div>
 
@@ -118,11 +123,15 @@ export function CarouselSection({ memory, photoAlt, scrollLeftLabel, scrollRight
 
       <figcaption className="flex items-baseline justify-between gap-4">
         {memory.note ? (
-          <p className="text-sm text-foreground">{memory.note}</p>
+          <p className="text-sm text-foreground scrapbook:font-annotation scrapbook:text-lg">
+            {memory.note}
+          </p>
         ) : (
-          <p className="text-sm text-muted-foreground">{meta}</p>
+          <p className="text-sm text-muted-foreground scrapbook:font-annotation scrapbook:text-lg">
+            {meta}
+          </p>
         )}
-        <p className="shrink-0 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        <p className="shrink-0 font-mono text-xs uppercase tracking-widest text-muted-foreground scrapbook:font-annotation scrapbook:text-base scrapbook:normal-case scrapbook:tracking-normal">
           {formatTripDateFull(memory.capturedAt)}
         </p>
       </figcaption>

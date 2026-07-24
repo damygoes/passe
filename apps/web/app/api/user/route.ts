@@ -1,6 +1,7 @@
 import { clerkClient } from '@clerk/nextjs/server'
 import { apiError, apiSuccess, requireAuth } from '@/lib/api/api'
 import { cancelStripeBilling } from '@/lib/billing/stripe'
+import { canUseThemes } from '@passe/auth/plan-gates'
 import { db, users } from '@passe/db'
 import { createLogger } from '@passe/logger'
 import { AuthUserSchema, PublicUserSchema, UpdateUserSchema } from '@passe/types/user'
@@ -47,6 +48,14 @@ export async function PATCH(req: Request) {
     })
     if (existing && existing.id !== userId) {
       return apiError('Username already taken', 409)
+    }
+  }
+
+  // Custom themes are an Explorer+ perk — reverting to 'editorial' is always allowed
+  if (parsed.data.theme && parsed.data.theme !== 'editorial') {
+    const me = await db.query.users.findFirst({ where: eq(users.id, userId) })
+    if (!me || !canUseThemes(me.plan)) {
+      return apiError('Upgrade your plan to use themes', 403)
     }
   }
 

@@ -5,7 +5,7 @@ import type { IconName } from '@passe/ui/icon'
 import { cn } from '@passe/utils'
 import { useTranslations } from 'next-intl'
 
-export type AccountTab = 'profile' | 'security' | 'danger'
+export type AccountTab = 'profile' | 'security' | 'appearance' | 'danger'
 
 interface SidebarItem {
   key: AccountTab
@@ -15,6 +15,7 @@ interface SidebarItem {
 const SIDEBAR_ITEMS: SidebarItem[] = [
   { key: 'profile', icon: 'user' },
   { key: 'security', icon: 'lock' },
+  { key: 'appearance', icon: 'palette' },
   { key: 'danger', icon: 'alert' },
 ]
 

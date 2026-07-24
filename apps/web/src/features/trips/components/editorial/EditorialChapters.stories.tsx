@@ -88,8 +88,35 @@ export const Default: Story = {
               ],
             }),
           },
+          {
+            variant: 'polaroid',
+            memory: memory({
+              id: 'mem_4',
+              note: 'One last look before we left the dunes.',
+              city: 'Merzouga',
+              country: 'Morocco',
+              capturedAt: '2024-03-10',
+              media: [
+                {
+                  id: 'media_3',
+                  url: 'https://images.unsplash.com/photo-1489493585363-d69421e0edd3?w=1200&q=80',
+                },
+              ],
+            }),
+          },
         ],
       },
     ],
   },
+}
+
+export const Scrapbook: Story = {
+  args: Default.args,
+  decorators: [
+    (Story) => (
+      <div data-theme="scrapbook" className="mx-auto w-[42rem] max-w-full bg-background p-4">
+        <Story />
+      </div>
+    ),
+  ],
 }

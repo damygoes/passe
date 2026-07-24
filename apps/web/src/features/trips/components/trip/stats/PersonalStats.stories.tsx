@@ -33,3 +33,14 @@ export const Empty: Story = {
     yearsCount: 0,
   },
 }
+
+export const Scrapbook: Story = {
+  args: Default.args,
+  decorators: [
+    (Story) => (
+      <div data-theme="scrapbook" className="bg-background p-6">
+        <Story />
+      </div>
+    ),
+  ],
+}

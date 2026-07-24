@@ -4,6 +4,7 @@ import {
   canAddMemory,
   canMakePortfolioPublic,
   canExportPdf,
+  canUseThemes,
   PLAN_LIMITS,
 } from '../plan-gates'
 
@@ -85,6 +86,20 @@ describe('canExportPdf', () => {
   })
 })
 
+describe('canUseThemes', () => {
+  it('blocks free plan', () => {
+    expect(canUseThemes('free')).toBe(false)
+  })
+
+  it('allows explorer plan', () => {
+    expect(canUseThemes('explorer')).toBe(true)
+  })
+
+  it('allows collector plan', () => {
+    expect(canUseThemes('collector')).toBe(true)
+  })
+})
+
 describe('PLAN_LIMITS', () => {
   it('exposes the documented limits', () => {
     expect(PLAN_LIMITS.free.maxTrips).toBe(3)
@@ -99,5 +114,8 @@ describe('PLAN_LIMITS', () => {
     expect(PLAN_LIMITS.collector.maxMemoriesPerTrip).toBe(Infinity)
     expect(PLAN_LIMITS.collector.publicPortfolio).toBe(true)
     expect(PLAN_LIMITS.collector.pdfExport).toBe(true)
+    expect(PLAN_LIMITS.free.customThemes).toBe(false)
+    expect(PLAN_LIMITS.explorer.customThemes).toBe(true)
+    expect(PLAN_LIMITS.collector.customThemes).toBe(true)
   })
 })

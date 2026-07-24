@@ -22,6 +22,7 @@ export const layoutVariantEnum = pgEnum('layout_variant', [
   'image_right',
   'carousel',
   'text',
+  'polaroid',
 ])
 
 export const memories = pgTable(

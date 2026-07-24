@@ -4,6 +4,7 @@
 // prop is a function, and functions can't cross the server→client
 // serialization boundary when passed down from a Server Component.
 
+import { TripPolaroidCard } from '@/components/shared/TripPolaroidCard'
 import { getBlurProps } from '@/lib/media/image-blur'
 import { createMediaLoader } from '@/lib/media/media-image-loader'
 import { Badge } from '@passe/ui/badge'
@@ -36,40 +37,56 @@ interface Props {
 
 export function PortfolioTripCard({ trip, href, tilt = 'none' }: Props) {
   const card = (
-    <MediaCard
-      tilt={tilt}
-      className={
-        trip.coverImageUrl
-          ? undefined
-          : 'bg-gradient-to-br from-sandy-beige via-sandy-beige-dark to-terracotta/40'
-      }
-    >
-      {trip.coverImageUrl && (
-        <MediaCardMedia>
-          <Image
-            src={trip.coverImageUrl}
-            alt={trip.title}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            {...getBlurProps(trip.coverImagePlaceholder)}
-            {...(trip.coverImageSrcset ? { loader: createMediaLoader(trip.coverImageSrcset) } : {})}
-          />
-        </MediaCardMedia>
-      )}
-      <MediaCardScrim>
-        <MediaCardTitle>{trip.title}</MediaCardTitle>
-        <MediaCardDescription>{formatDateRange(trip.startDate, trip.endDate)}</MediaCardDescription>
-        {trip.countries.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 pt-0.5">
-            {trip.countries.map((country) => (
-              <Badge key={country} variant="stamp" className="text-aged-cream">
-                {country}
-              </Badge>
-            ))}
-          </div>
-        )}
-      </MediaCardScrim>
-    </MediaCard>
+    <>
+      {/* Editorial rendering — hidden entirely under scrapbook rather than
+          left underneath, so no dead image fetch/paint competes with it. */}
+      <div className="scrapbook:hidden">
+        <MediaCard
+          tilt={tilt}
+          className={
+            trip.coverImageUrl
+              ? undefined
+              : 'bg-gradient-to-br from-sandy-beige via-sandy-beige-dark to-terracotta/40'
+          }
+        >
+          {trip.coverImageUrl && (
+            <MediaCardMedia>
+              <Image
+                src={trip.coverImageUrl}
+                alt={trip.title}
+                fill
+                loading="eager"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                {...getBlurProps(trip.coverImagePlaceholder)}
+                {...(trip.coverImageSrcset
+                  ? { loader: createMediaLoader(trip.coverImageSrcset) }
+                  : {})}
+              />
+            </MediaCardMedia>
+          )}
+          <MediaCardScrim>
+            <MediaCardTitle>{trip.title}</MediaCardTitle>
+            <MediaCardDescription>
+              {formatDateRange(trip.startDate, trip.endDate)}
+            </MediaCardDescription>
+            {trip.countries.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 pt-0.5">
+                {trip.countries.map((country) => (
+                  <Badge key={country} variant="stamp" className="text-aged-cream">
+                    {country}
+                  </Badge>
+                ))}
+              </div>
+            )}
+          </MediaCardScrim>
+        </MediaCard>
+      </div>
+      {/* Scrapbook theme's own card style — a tilted, taped polaroid instead
+          of the full-bleed editorial tile. */}
+      <div className="hidden scrapbook:block">
+        <TripPolaroidCard trip={trip} />
+      </div>
+    </>
   )
 
   if (href) {
