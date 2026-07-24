@@ -1,8 +1,9 @@
+import { GlassSurface } from '@/components/ui/glass-surface'
 import { useTheme } from '@/hooks/useTheme'
 import { pressSpring } from '@/lib/motion'
 import { createButtonRecipe } from '@/recipes/button'
 
-import { ActivityIndicator, Text, TouchableOpacity } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
 
 import type { ButtonProps } from './Button.types'
@@ -57,6 +58,7 @@ export function Button({
       ]}
       {...props}
     >
+      {variant === 'ghost' && <GlassSurface shape="capsule" style={StyleSheet.absoluteFill} />}
       {loading ? (
         <ActivityIndicator color={variantRecipe.spinnerColor} />
       ) : typeof children === 'string' ? (

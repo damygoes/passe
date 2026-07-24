@@ -86,6 +86,7 @@ export function createButtonRecipe(theme: AppTheme): ButtonRecipe {
       ghost: {
         container: {
           backgroundColor: 'transparent',
+          overflow: 'hidden',
         },
 
         label: {

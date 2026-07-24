@@ -6,6 +6,7 @@ import { useMemo, useState } from 'react'
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native'
 
 import { Button } from '@/components/ui/button'
+import { GlassSurface } from '@/components/ui/glass-surface'
 import { Icon } from '@/components/ui/icon'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
@@ -57,7 +58,14 @@ export function CoverImagePicker({ value, onChange, disabled }: CoverImagePicker
           borderColor: colors.border,
         },
         preview: { aspectRatio: 16 / 9, width: '100%' },
-        removeButtonWrapper: { position: 'absolute', top: spacing[2], right: spacing[2] },
+        removeButtonWrapper: {
+          position: 'absolute',
+          top: spacing[2],
+          right: spacing[2],
+          borderRadius: borderRadius.full,
+          overflow: 'hidden',
+        },
+        removeButton: { backgroundColor: 'transparent' },
         errorText: { fontSize: fontSizes.xs, color: colors.destructive },
       }),
     [colors, spacing, fontSizes, borderRadius],
@@ -100,7 +108,14 @@ export function CoverImagePicker({ value, onChange, disabled }: CoverImagePicker
         <View style={styles.previewWrapper}>
           <Image source={{ uri: displayUri }} style={styles.preview} contentFit="cover" />
           <View style={styles.removeButtonWrapper}>
-            <Button variant="secondary" size="sm" onPress={handleRemove} disabled={isBusy}>
+            <GlassSurface shape="none" style={StyleSheet.absoluteFill} />
+            <Button
+              variant="secondary"
+              size="sm"
+              onPress={handleRemove}
+              disabled={isBusy}
+              style={styles.removeButton}
+            >
               {t('remove')}
             </Button>
           </View>

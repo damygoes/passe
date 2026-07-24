@@ -5,6 +5,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter } from '@/components/ui/card'
+import { GlassSurface } from '@/components/ui/glass-surface'
 import { Icon } from '@/components/ui/icon'
 import { PressableScale } from '@/components/ui/pressable-scale'
 import { useTheme } from '@/hooks/useTheme'
@@ -35,24 +36,21 @@ export function MapMemoryCard({ point, onViewTrip, onClose, pager }: MapMemoryCa
       StyleSheet.create({
         cardShadow: {
           borderRadius: borderRadius.xl,
-          backgroundColor: colors.popover,
           shadowColor: '#000',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.16,
           shadowRadius: 12,
           elevation: 4,
         },
-        cardSurface: { borderWidth: 0, backgroundColor: colors.popover },
+        cardSurface: { borderWidth: 0, backgroundColor: 'transparent' },
         thumbnail: { width: '100%', aspectRatio: 16 / 9 },
-        closeButton: {
+        closeButtonWrapper: {
           position: 'absolute',
           top: spacing[2],
           right: spacing[2],
           zIndex: 1,
-          backgroundColor: colors.popover,
-          borderRadius: borderRadius.full,
-          padding: spacing[1],
         },
+        closeButton: { padding: spacing[1] },
         note: { fontSize: fontSizes.sm, color: colors.foreground },
         content: { gap: spacing[1] },
         footer: { justifyContent: pager ? 'space-between' : 'flex-end' },
@@ -66,17 +64,20 @@ export function MapMemoryCard({ point, onViewTrip, onClose, pager }: MapMemoryCa
   return (
     <View style={styles.cardShadow}>
       <Card style={styles.cardSurface}>
+        <GlassSurface shape="none" style={StyleSheet.absoluteFill} />
         {point.thumbnailUrl && (
           <Image source={{ uri: point.thumbnailUrl }} style={styles.thumbnail} contentFit="cover" />
         )}
         <PressableScale
           onPress={onClose}
           pressedScale={0.9}
-          containerStyle={styles.closeButton}
+          containerStyle={styles.closeButtonWrapper}
           accessibilityRole="button"
           accessibilityLabel={t('close')}
         >
-          <Icon name="close" size="sm" color={colors.foreground} />
+          <GlassSurface shape="circle" style={styles.closeButton}>
+            <Icon name="close" size="sm" color={colors.foreground} />
+          </GlassSurface>
         </PressableScale>
         <CardContent style={styles.content}>
           {location.length > 0 && <CardDescription>{location}</CardDescription>}
@@ -113,7 +114,9 @@ export function MapMemoryCard({ point, onViewTrip, onClose, pager }: MapMemoryCa
                 <Icon
                   name="chevron-right"
                   size="sm"
-                  color={pager.index === pager.total - 1 ? colors.mutedForeground : colors.foreground}
+                  color={
+                    pager.index === pager.total - 1 ? colors.mutedForeground : colors.foreground
+                  }
                 />
               </Pressable>
             </View>

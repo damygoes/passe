@@ -1,9 +1,10 @@
 import { queryKeys, useTrips } from '@passe/hooks'
 import { getUniqueStatsFromTrips } from '@passe/utils'
 import { useQueryClient } from '@tanstack/react-query'
+import { useHeaderHeight } from 'expo-router/react-navigation'
 import { useCallback, useMemo, useState } from 'react'
 import type { LayoutChangeEvent } from 'react-native'
-import { RefreshControl, StyleSheet } from 'react-native'
+import { Platform, RefreshControl, StyleSheet } from 'react-native'
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -19,6 +20,7 @@ import { enterUp } from '@/lib/motion'
 export function TripsScreen() {
   const t = useTranslations('trips.dashboard')
   const { colors, spacing } = useTheme()
+  const headerHeight = useHeaderHeight()
   const { data: trips = [], isLoading, isError } = useTrips()
   const { uniqueCountries } = getUniqueStatsFromTrips({ trips })
   const queryClient = useQueryClient()
@@ -27,7 +29,11 @@ export function TripsScreen() {
   const scrollY = useSharedValue(0)
   const statsBottom = useSharedValue(0)
   const scrollHandler = useAnimatedScrollHandler((event) => {
-    scrollY.value = event.contentOffset.y
+    // iOS's `contentInsetAdjustmentBehavior="automatic"` (used to inset content under the
+    // glass header) offsets contentOffset.y by -contentInset.top at rest. Add it back so
+    // scrollY stays 0-based, matching the layout-relative `threshold` from onStatsLayout.
+    // contentInset is always {0,0,0,0} on Android, so this is a no-op there.
+    scrollY.value = event.contentOffset.y + event.contentInset.top
   })
   const onStatsLayout = useCallback(
     (event: LayoutChangeEvent) => {
@@ -54,13 +60,16 @@ export function TripsScreen() {
         scrollContent: {
           backgroundColor: colors.background,
           padding: spacing[4],
+          // iOS gets the header inset from `contentInsetAdjustmentBehavior` below —
+          // adding headerHeight here too would double up the top space.
+          paddingTop: Platform.OS === 'android' ? headerHeight + spacing[4] : spacing[4],
           gap: spacing[6],
           flexGrow: 1,
         },
         header: { flexDirection: 'column', gap: spacing[1] },
         descriptionSkeleton: { height: 20, width: 96 },
       }),
-    [colors, spacing],
+    [colors, spacing, headerHeight],
   )
 
   return (
@@ -68,6 +77,7 @@ export function TripsScreen() {
       <Animated.ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
+        contentInsetAdjustmentBehavior={Platform.OS === 'ios' ? 'automatic' : undefined}
         onScroll={scrollHandler}
         scrollEventThrottle={16}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
