@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { GET, POST } from './route'
 
 vi.mock('@clerk/nextjs/server', () => ({ auth: vi.fn() }))
-vi.mock('@/lib/geocode', () => ({ geocodeCityCountry: vi.fn().mockResolvedValue(null) }))
+vi.mock('@/lib/geocode/geocode', () => ({ geocodeCityCountry: vi.fn().mockResolvedValue(null) }))
 
 const mockDb = vi.hoisted(() => ({
   query: { trips: { findFirst: vi.fn() }, memories: { findMany: vi.fn() } },
@@ -87,27 +87,27 @@ describe('POST /api/trips/[id]/memories', () => {
 
   it('returns 403 when the plan memory limit is reached', async () => {
     mockDb.query.trips.findFirst.mockResolvedValue(mockTrip)
-    mockDb.select.mockReturnValueOnce(dbChain([{ plan: 'free' }])).mockReturnValueOnce(
-      dbChain([{ memoryCount: 10 }]),
-    )
+    mockDb.select
+      .mockReturnValueOnce(dbChain([{ plan: 'free' }]))
+      .mockReturnValueOnce(dbChain([{ memoryCount: 10 }]))
     const res = await POST(req({ note: 'hi', capturedAt: '2024-03-02' }), ctx())
     expect(res.status).toBe(403)
   })
 
   it('returns 400 on an invalid body (no note and no media)', async () => {
     mockDb.query.trips.findFirst.mockResolvedValue(mockTrip)
-    mockDb.select.mockReturnValueOnce(dbChain([{ plan: 'collector' }])).mockReturnValueOnce(
-      dbChain([{ memoryCount: 0 }]),
-    )
+    mockDb.select
+      .mockReturnValueOnce(dbChain([{ plan: 'collector' }]))
+      .mockReturnValueOnce(dbChain([{ memoryCount: 0 }]))
     const res = await POST(req({ capturedAt: '2024-03-02' }), ctx())
     expect(res.status).toBe(400)
   })
 
   it('creates a memory on the happy path', async () => {
     mockDb.query.trips.findFirst.mockResolvedValue(mockTrip)
-    mockDb.select.mockReturnValueOnce(dbChain([{ plan: 'collector' }])).mockReturnValueOnce(
-      dbChain([{ memoryCount: 0 }]),
-    )
+    mockDb.select
+      .mockReturnValueOnce(dbChain([{ plan: 'collector' }]))
+      .mockReturnValueOnce(dbChain([{ memoryCount: 0 }]))
     mockDb.insert.mockReturnValue(dbChain([mockMemory]))
 
     const res = await POST(req({ note: 'Great day', capturedAt: '2024-03-02' }), ctx())
@@ -118,9 +118,9 @@ describe('POST /api/trips/[id]/memories', () => {
 
   it('returns 500 when the memory insert throws', async () => {
     mockDb.query.trips.findFirst.mockResolvedValue(mockTrip)
-    mockDb.select.mockReturnValueOnce(dbChain([{ plan: 'collector' }])).mockReturnValueOnce(
-      dbChain([{ memoryCount: 0 }]),
-    )
+    mockDb.select
+      .mockReturnValueOnce(dbChain([{ plan: 'collector' }]))
+      .mockReturnValueOnce(dbChain([{ memoryCount: 0 }]))
     mockDb.insert.mockImplementation(() => {
       throw new Error('db down')
     })

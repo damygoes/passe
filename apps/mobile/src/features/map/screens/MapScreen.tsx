@@ -4,10 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { MapDataWrapper } from '@/features/map/components/MapDataWrapper'
 import { useTheme } from '@/hooks/useTheme'
-import { useTranslations } from '@/i18n/useTranslations'
 
 export function MapScreen() {
-  const t = useTranslations('map')
   const { colors, spacing, borderRadius } = useTheme()
 
   const styles = useMemo(
@@ -17,7 +15,7 @@ export function MapScreen() {
         header: { paddingHorizontal: spacing[4], paddingVertical: spacing[3] },
         mapContainer: { flex: 1, borderRadius: borderRadius.xl },
       }),
-    [colors, spacing],
+    [colors, spacing, borderRadius],
   )
 
   return (

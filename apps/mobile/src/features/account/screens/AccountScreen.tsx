@@ -1,7 +1,8 @@
 import { useUser } from '@clerk/expo'
 import { useRouter } from 'expo-router'
+import { useHeaderHeight } from 'expo-router/react-navigation'
 import { useMemo } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Platform, ScrollView, StyleSheet, Text, View } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -20,6 +21,7 @@ export function AccountScreen() {
   const { user } = useUser()
   const router = useRouter()
   const t = useTranslations('account.tabs')
+  const headerHeight = useHeaderHeight()
 
   const styles = useMemo(
     () =>
@@ -28,6 +30,9 @@ export function AccountScreen() {
         scrollContent: {
           flexGrow: 1,
           padding: spacing[6],
+          // iOS gets the header inset from `contentInsetAdjustmentBehavior` below —
+          // adding headerHeight here too would double up the top space.
+          paddingTop: Platform.OS === 'android' ? headerHeight + spacing[6] : spacing[6],
           gap: spacing[6],
         },
         userHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing[4] },
@@ -41,7 +46,7 @@ export function AccountScreen() {
         menu: { gap: spacing[1] },
         footer: { marginTop: 'auto' },
       }),
-    [colors, spacing, fontSizes, fontWeights],
+    [colors, spacing, fontSizes, fontWeights, headerHeight],
   )
 
   const email = user?.primaryEmailAddress?.emailAddress ?? ''
@@ -55,7 +60,10 @@ export function AccountScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['bottom']}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        contentInsetAdjustmentBehavior={Platform.OS === 'ios' ? 'automatic' : undefined}
+      >
         <Animated.View entering={enterUp(0)} style={styles.userHeader}>
           <Avatar size="lg">
             <AvatarFallback>{initials}</AvatarFallback>

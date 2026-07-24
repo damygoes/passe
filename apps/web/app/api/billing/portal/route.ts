@@ -1,5 +1,5 @@
-import { apiError, apiSuccess, requireAuth } from '@/lib/api'
-import { getStripe } from '@/lib/stripe'
+import { apiError, apiSuccess, requireAuth } from '@/lib/api/api'
+import { getStripe } from '@/lib/billing/stripe'
 import { db, users } from '@passe/db'
 import { createLogger } from '@passe/logger'
 import { eq } from 'drizzle-orm'

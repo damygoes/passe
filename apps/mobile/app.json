@@ -16,7 +16,9 @@
       },
       "usesAppleSignIn": true,
       "entitlements": {
-        "com.apple.developer.applesignin": ["Default"]
+        "com.apple.developer.applesignin": [
+          "Default"
+        ]
       }
     },
     "android": {
@@ -35,6 +37,65 @@
     },
     "plugins": [
       "expo-router",
+      [
+        "expo-font",
+        {
+          "ios": {
+            "fonts": [
+              "./assets/fonts/PlayfairDisplay-Regular.ttf",
+              "./assets/fonts/PlayfairDisplay-Bold.ttf",
+              "./assets/fonts/Lora-Regular.ttf",
+              "./assets/fonts/Lora-Italic.ttf",
+              "./assets/fonts/Lora-SemiBold.ttf",
+              "./assets/fonts/DMMono-Regular.ttf"
+            ]
+          },
+          "android": {
+            "fonts": [
+              {
+                "fontFamily": "Playfair Display",
+                "fontDefinitions": [
+                  {
+                    "path": "./assets/fonts/PlayfairDisplay-Regular.ttf",
+                    "weight": 400
+                  },
+                  {
+                    "path": "./assets/fonts/PlayfairDisplay-Bold.ttf",
+                    "weight": 700
+                  }
+                ]
+              },
+              {
+                "fontFamily": "Lora",
+                "fontDefinitions": [
+                  {
+                    "path": "./assets/fonts/Lora-Regular.ttf",
+                    "weight": 400
+                  },
+                  {
+                    "path": "./assets/fonts/Lora-Italic.ttf",
+                    "weight": 400,
+                    "style": "italic"
+                  },
+                  {
+                    "path": "./assets/fonts/Lora-SemiBold.ttf",
+                    "weight": 600
+                  }
+                ]
+              },
+              {
+                "fontFamily": "DM Mono",
+                "fontDefinitions": [
+                  {
+                    "path": "./assets/fonts/DMMono-Regular.ttf",
+                    "weight": 400
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
       [
         "expo-splash-screen",
         {
@@ -74,7 +135,8 @@
           "organization": "damilola-bada",
           "project": "passe-mobile"
         }
-      ]
+      ],
+      "expo-sharing"
     ],
     "experiments": {
       "typedRoutes": true,

@@ -6,7 +6,7 @@ import { Icon } from '@passe/ui/icon'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useRouter } from '@/i18n/navigation'
-import { getBlurProps } from '@/lib/image-blur'
+import { getBlurProps } from '@/lib/media/image-blur'
 import { tripRoute } from '@/lib/routes'
 
 interface MapMemoryPopupProps {

@@ -1,12 +1,10 @@
 import { Button } from '@/components/ui/button'
+import { GlassSurface } from '@/components/ui/glass-surface'
 import { useTheme } from '@/hooks/useTheme'
+import { haptics } from '@/lib/haptics'
 import { createContext, useContext, useEffect } from 'react'
-import { Modal, Pressable, Text, View } from 'react-native'
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated'
+import { Modal, Pressable, StyleSheet, Text, View } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import type {
   AlertDialogActionProps,
   AlertDialogCancelProps,
@@ -43,7 +41,7 @@ export function AlertDialogTrigger({ children }: AlertDialogTriggerProps) {
 
 export function AlertDialogContent({ style, children, ...props }: AlertDialogContentProps) {
   const { open, setOpen } = useContext(AlertDialogContext)
-  const { colors, borderRadius, spacing } = useTheme()
+  const { borderRadius, spacing } = useTheme()
   const backdropOpacity = useSharedValue(0)
   const contentOpacity = useSharedValue(0)
   const contentScale = useSharedValue(0.95)
@@ -74,11 +72,13 @@ export function AlertDialogContent({ style, children, ...props }: AlertDialogCon
         onPress={() => setOpen(false)}
       />
       {/* Content — centered, absorbs its own touches */}
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} pointerEvents="box-none">
+      <View
+        style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+        pointerEvents="box-none"
+      >
         <Animated.View
           style={[
             {
-              backgroundColor: colors.popover,
               borderRadius: borderRadius.xl,
               padding: spacing[6],
               width: '90%',
@@ -94,6 +94,7 @@ export function AlertDialogContent({ style, children, ...props }: AlertDialogCon
           ]}
           {...props}
         >
+          <GlassSurface shape="rounded" style={StyleSheet.absoluteFill} />
           <Pressable onPress={() => {}}>{children}</Pressable>
         </Animated.View>
       </View>
@@ -114,7 +115,14 @@ export function AlertDialogTitle({ style, children, ...props }: AlertDialogTextS
   const { colors, fontSizes, fontWeights } = useTheme()
   return (
     <Text
-      style={[{ fontSize: fontSizes.lg, fontWeight: fontWeights.semibold, color: colors.popoverForeground }, style]}
+      style={[
+        {
+          fontSize: fontSizes.lg,
+          fontWeight: fontWeights.semibold,
+          color: colors.popoverForeground,
+        },
+        style,
+      ]}
       {...props}
     >
       {children}
@@ -135,7 +143,15 @@ export function AlertDialogFooter({ style, children, ...props }: AlertDialogFoot
   const { spacing } = useTheme()
   return (
     <View
-      style={[{ flexDirection: 'row', gap: spacing[2], justifyContent: 'flex-end', marginTop: spacing[4] }, style]}
+      style={[
+        {
+          flexDirection: 'row',
+          gap: spacing[2],
+          justifyContent: 'flex-end',
+          marginTop: spacing[4],
+        },
+        style,
+      ]}
       {...props}
     >
       {children}
@@ -143,13 +159,19 @@ export function AlertDialogFooter({ style, children, ...props }: AlertDialogFoot
   )
 }
 
-export function AlertDialogAction({ children, onPress, ...props }: AlertDialogActionProps) {
+export function AlertDialogAction({
+  children,
+  onPress,
+  variant = 'primary',
+  ...props
+}: AlertDialogActionProps) {
   const { setOpen } = useContext(AlertDialogContext)
   return (
     <Button
-      variant="primary"
+      variant={variant}
       size="sm"
       onPress={(e) => {
+        if (variant === 'danger') haptics.warning()
         onPress?.(e)
         setOpen(false)
       }}

@@ -1,7 +1,7 @@
 import { useAuth } from '@clerk/expo'
-import { Redirect, Tabs } from 'expo-router'
+import { Redirect } from 'expo-router'
+import { NativeTabs } from 'expo-router/unstable-native-tabs'
 
-import { Icon } from '@/components/ui/icon'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
@@ -14,50 +14,23 @@ export default function AppLayout() {
   if (!isSignedIn) return <Redirect href="/(auth)/sign-in" />
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.mutedForeground,
-        tabBarStyle: { backgroundColor: colors.background, borderTopColor: colors.border },
-        tabBarLabelStyle: { fontFamily: fonts.body, fontSize: fontSizes.xs },
-        headerShown: false,
-      }}
+    <NativeTabs
+      iconColor={{ default: colors.mutedForeground, selected: colors.primary }}
+      labelStyle={{ fontFamily: fonts.body, fontSize: fontSizes.xs, color: colors.mutedForeground }}
+      minimizeBehavior="onScrollDown"
     >
-      <Tabs.Screen
-        name="trips"
-        options={{
-          title: t('trips'),
-          headerShown: false,
-          tabBarIcon: ({ color, focused }) => (
-            <Icon
-              name="luggage"
-              size="lg"
-              color={color as string}
-              strokeWidth={focused ? 2 : 1.5}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="map/index"
-        options={{
-          title: t('map'),
-          headerShown: false,
-          tabBarIcon: ({ color, focused }) => (
-            <Icon name="map" size="lg" color={color as string} strokeWidth={focused ? 2 : 1.5} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="account"
-        options={{
-          title: t('account'),
-          headerShown: false,
-          tabBarIcon: ({ color, focused }) => (
-            <Icon name="user" size="lg" color={color as string} strokeWidth={focused ? 2 : 1.5} />
-          ),
-        }}
-      />
-    </Tabs>
+      <NativeTabs.Trigger name="trips">
+        <NativeTabs.Trigger.Label>{t('trips')}</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon sf="suitcase.fill" md="luggage" />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="map/index">
+        <NativeTabs.Trigger.Label>{t('map')}</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon sf="globe.americas.fill" md="public" />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="account">
+        <NativeTabs.Trigger.Label>{t('account')}</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon sf="person.fill" md="person" />
+      </NativeTabs.Trigger>
+    </NativeTabs>
   )
 }

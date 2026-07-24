@@ -3,14 +3,14 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { POST } from './route'
 
 vi.mock('@clerk/nextjs/server', () => ({ auth: vi.fn() }))
-vi.mock('@/lib/s3', () => ({
+vi.mock('@/lib/media/s3', () => ({
   isAllowedContentType: vi.fn((contentType: string) =>
     ['image/jpeg', 'image/png', 'image/webp'].includes(contentType),
   ),
   mintUploadKeyAndUrl: vi.fn(),
 }))
 
-import { mintUploadKeyAndUrl } from '@/lib/s3'
+import { mintUploadKeyAndUrl } from '@/lib/media/s3'
 
 function req(body: unknown) {
   return new Request('http://localhost/api/uploads/sign', {

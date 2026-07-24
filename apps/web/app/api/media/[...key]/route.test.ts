@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { GET } from './route'
 
-vi.mock('@/lib/media', () => ({ verifyMediaSignature: vi.fn() }))
-vi.mock('@/lib/s3', () => ({ getS3ObjectBuffer: vi.fn() }))
+vi.mock('@/lib/media/media', () => ({ verifyMediaSignature: vi.fn() }))
+vi.mock('@/lib/media/s3', () => ({ getS3ObjectBuffer: vi.fn() }))
 
 const mockToBuffer = vi.fn()
 const mockWebp = vi.fn()
@@ -33,8 +33,8 @@ vi.mock('sharp', () => {
   return { default: vi.fn(() => chain) }
 })
 
-import { verifyMediaSignature } from '@/lib/media'
-import { getS3ObjectBuffer } from '@/lib/s3'
+import { verifyMediaSignature } from '@/lib/media/media'
+import { getS3ObjectBuffer } from '@/lib/media/s3'
 
 function ctx(key: string[]) {
   return { params: Promise.resolve({ key }) } as never

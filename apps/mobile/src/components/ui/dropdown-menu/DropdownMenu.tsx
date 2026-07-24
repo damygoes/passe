@@ -12,11 +12,7 @@ import {
   type LayoutRectangle,
 } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import type {
   DropdownMenuContentProps,
   DropdownMenuGroupProps,
@@ -195,7 +191,13 @@ export function DropdownMenuLabel({ style, children, ...props }: DropdownMenuLab
       style={[{ paddingHorizontal: spacing[3], paddingVertical: spacing[1] }, style]}
       {...props}
     >
-      <Text style={{ fontSize: fontSizes.xs, fontWeight: fontWeights.medium, color: colors.mutedForeground }}>
+      <Text
+        style={{
+          fontSize: fontSizes.xs,
+          fontWeight: fontWeights.medium,
+          color: colors.mutedForeground,
+        }}
+      >
         {children}
       </Text>
     </View>
@@ -208,6 +210,8 @@ export function DropdownMenuItem({
   style,
   children,
   icon,
+  disabled = false,
+  trailing,
   ...props
 }: DropdownMenuItemProps) {
   const { setOpen } = useContext(DropdownMenuContext)
@@ -216,6 +220,7 @@ export function DropdownMenuItem({
 
   return (
     <Pressable
+      disabled={disabled}
       onPress={() => {
         onPress?.()
         setOpen(false)
@@ -223,12 +228,14 @@ export function DropdownMenuItem({
       style={({ pressed }) => [
         recipe.base.item,
         pressed && { backgroundColor: theme.colors.muted },
+        disabled && recipe.states.disabled.item,
         style,
       ]}
       {...props}
     >
       {icon}
       <Text style={[recipe.base.label, recipe.variants[variant].label]}>{children}</Text>
+      {trailing != null && <Text style={recipe.base.trailing}>{trailing}</Text>}
     </Pressable>
   )
 }

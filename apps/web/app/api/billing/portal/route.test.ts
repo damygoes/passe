@@ -5,7 +5,7 @@ import { POST } from './route'
 vi.mock('@clerk/nextjs/server', () => ({ auth: vi.fn() }))
 
 const mockSessionsCreate = vi.fn()
-vi.mock('@/lib/stripe', () => ({
+vi.mock('@/lib/billing/stripe', () => ({
   getStripe: () => ({ billingPortal: { sessions: { create: mockSessionsCreate } } }),
 }))
 

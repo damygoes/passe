@@ -52,6 +52,26 @@ describe('DropdownMenuItem', () => {
     fireEvent.press(screen.getByText('Delete'))
     expect(onPress).toHaveBeenCalled()
   })
+
+  it('does not call onPress when disabled', () => {
+    const onPress = jest.fn()
+    render(
+      <DropdownMenuItem onPress={onPress} disabled>
+        Export
+      </DropdownMenuItem>,
+    )
+    fireEvent.press(screen.getByText('Export'))
+    expect(onPress).not.toHaveBeenCalled()
+  })
+
+  it('renders the trailing annotation', () => {
+    render(
+      <DropdownMenuItem disabled trailing="Collector">
+        Export
+      </DropdownMenuItem>,
+    )
+    expect(screen.getByText('Collector')).toBeTruthy()
+  })
 })
 
 // DropdownMenuContent's placement can't be driven through the public trigger either (same

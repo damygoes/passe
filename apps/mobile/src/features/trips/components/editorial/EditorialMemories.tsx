@@ -9,6 +9,7 @@ import { useMemo } from 'react'
 import { ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native'
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated'
 
+import { GlassSurface } from '@/components/ui/glass-surface'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 import { MemoryLayoutMenu } from './MemoryLayoutMenu'
@@ -63,10 +64,8 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
           position: 'absolute',
           right: spacing[2],
           bottom: spacing[2],
-          borderRadius: 999,
           paddingHorizontal: spacing[2],
           paddingVertical: spacing[1],
-          backgroundColor: colors.background,
         },
         countBadgeText: { fontSize: fontSizes.xs, color: colors.foreground },
         captionRow: {
@@ -193,9 +192,9 @@ export function EditorialMemories({ memories }: EditorialMemoriesProps) {
             accessibilityLabel={t('photo_alt')}
           />
           {memory.media.length > 1 && (
-            <View style={styles.countBadge}>
+            <GlassSurface shape="capsule" style={styles.countBadge}>
               <Text style={styles.countBadgeText}>+{memory.media.length - 1}</Text>
-            </View>
+            </GlassSurface>
           )}
         </View>
         <Text style={styles.meta}>{[meta, date].filter(Boolean).join(' · ')}</Text>

@@ -7,7 +7,7 @@ import { cn } from '@passe/utils'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
-import { compressImage } from '@/lib/image-compression'
+import { compressImage } from '@/lib/media/image-compression'
 
 interface Props {
   id: string

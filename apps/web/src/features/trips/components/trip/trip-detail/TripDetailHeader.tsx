@@ -1,10 +1,11 @@
 'use client'
 
 import { Link, useRouter } from '@/i18n/navigation'
-import { getBlurProps } from '@/lib/image-blur'
-import { createMediaLoader } from '@/lib/media-image-loader'
+import { getBlurProps } from '@/lib/media/image-blur'
+import { createMediaLoader } from '@/lib/media/media-image-loader'
 import { routes, tripEditRoute } from '@/lib/routes'
-import { useDeleteTrip, useTrip } from '@passe/hooks'
+import { canExportPdf } from '@passe/auth/plan-gates'
+import { useDeleteTrip, useTrip, useUser } from '@passe/hooks'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -30,6 +31,7 @@ import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { TripDetailHeaderSkeleton } from './TripDetailHeaderSkeleton'
+import { TripExportMenu } from './TripExportMenu'
 
 interface Props {
   id: string
@@ -39,7 +41,9 @@ export function TripDetailHeader({ id }: Props) {
   const t = useTranslations('trips.detail')
   const router = useRouter()
   const { data: trip, isLoading, isError } = useTrip(id)
+  const { data: user } = useUser()
   const deleteTrip = useDeleteTrip()
+  const canDownloadPdf = canExportPdf(user?.plan ?? 'free')
   const [aspectRatio, setAspectRatio] = useState<number | null>(null)
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [deleteError, setDeleteError] = useState<string | null>(null)
@@ -89,6 +93,7 @@ export function TripDetailHeader({ id }: Props) {
           >
             {t('edit')}
           </Link>
+          <TripExportMenu tripId={trip.id} canExport={canDownloadPdf} />
           <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
             <AlertDialogTrigger
               render={<Button variant="destructive" size="icon-sm" aria-label={t('delete')} />}
@@ -145,7 +150,7 @@ export function TripDetailHeader({ id }: Props) {
             fill
             priority
             className="object-contain"
-            sizes="100vw"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1200px"
             {...getBlurProps(trip.coverImagePlaceholder)}
             {...(trip.coverImageSrcset ? { loader: createMediaLoader(trip.coverImageSrcset) } : {})}
             onLoad={(event) => {

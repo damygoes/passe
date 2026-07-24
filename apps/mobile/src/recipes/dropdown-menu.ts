@@ -8,9 +8,11 @@ interface DropdownMenuRecipe {
     content: ViewStyle
     item: ViewStyle
     label: TextStyle
+    trailing: TextStyle
     separator: ViewStyle
   }
   variants: Record<DropdownMenuItemVariant, { label: TextStyle }>
+  states: { disabled: { item: ViewStyle } }
 }
 
 export function createDropdownMenuRecipe(theme: AppTheme): DropdownMenuRecipe {
@@ -53,6 +55,16 @@ export function createDropdownMenuRecipe(theme: AppTheme): DropdownMenuRecipe {
         },
       }).style,
 
+      trailing: StyleSheet.create({
+        style: {
+          fontSize: fontSizes.xs,
+          fontWeight: fontWeights.medium,
+          color: colors.mutedForeground,
+          textTransform: 'uppercase',
+          letterSpacing: 0.5,
+        },
+      }).style,
+
       separator: StyleSheet.create({
         style: {
           height: 1,
@@ -68,6 +80,12 @@ export function createDropdownMenuRecipe(theme: AppTheme): DropdownMenuRecipe {
       },
       destructive: {
         label: { color: colors.destructive },
+      },
+    },
+
+    states: {
+      disabled: {
+        item: StyleSheet.create({ style: { opacity: 0.5 } }).style,
       },
     },
   }

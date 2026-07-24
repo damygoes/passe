@@ -1,12 +1,36 @@
 import type { PlanType } from './types'
 
 export const PLAN_LIMITS = {
-  free:      { maxTrips: 3,        maxMemoriesPerTrip: 10,       publicPortfolio: false, maxPublicMemoriesPerTrip: 3        },
-  explorer:  { maxTrips: 20,       maxMemoriesPerTrip: 50,       publicPortfolio: true,  maxPublicMemoriesPerTrip: Infinity },
-  collector: { maxTrips: Infinity, maxMemoriesPerTrip: Infinity, publicPortfolio: true,  maxPublicMemoriesPerTrip: Infinity },
+  free: {
+    maxTrips: 3,
+    maxMemoriesPerTrip: 10,
+    publicPortfolio: false,
+    maxPublicMemoriesPerTrip: 3,
+    pdfExport: false,
+  },
+  explorer: {
+    maxTrips: 20,
+    maxMemoriesPerTrip: 50,
+    publicPortfolio: true,
+    maxPublicMemoriesPerTrip: Infinity,
+    pdfExport: false,
+  },
+  collector: {
+    maxTrips: Infinity,
+    maxMemoriesPerTrip: Infinity,
+    publicPortfolio: true,
+    maxPublicMemoriesPerTrip: Infinity,
+    pdfExport: true,
+  },
 } as const satisfies Record<
   PlanType,
-  { maxTrips: number; maxMemoriesPerTrip: number; publicPortfolio: boolean; maxPublicMemoriesPerTrip: number }
+  {
+    maxTrips: number
+    maxMemoriesPerTrip: number
+    publicPortfolio: boolean
+    maxPublicMemoriesPerTrip: number
+    pdfExport: boolean
+  }
 >
 
 export function canCreateTrip(plan: PlanType, currentTripCount: number): boolean {
@@ -23,4 +47,8 @@ export function canMakePortfolioPublic(plan: PlanType): boolean {
 
 export function canMakeMemoryPublic(plan: PlanType, currentPublicMemoryCount: number): boolean {
   return currentPublicMemoryCount < PLAN_LIMITS[plan].maxPublicMemoriesPerTrip
+}
+
+export function canExportPdf(plan: PlanType): boolean {
+  return PLAN_LIMITS[plan].pdfExport
 }

@@ -28,6 +28,10 @@ export interface DropdownMenuItemProps extends ViewProps {
   onPress?: () => void
   children: ReactNode
   icon?: ReactNode
+  /** Non-interactive; pairs with `trailing` for plan-gated items */
+  disabled?: boolean
+  /** Right-aligned annotation (e.g. plan badge) — mirrors web's DropdownMenuShortcut */
+  trailing?: ReactNode
 }
 
 export type DropdownMenuSeparatorProps = ViewProps

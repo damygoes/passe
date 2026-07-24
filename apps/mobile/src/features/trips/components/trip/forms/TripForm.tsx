@@ -15,6 +15,7 @@ import { CoverImagePicker } from '@/features/trips/components/trip/image-upload/
 import { DateField } from '@/features/trips/components/trip/date-field/DateField'
 import { createTripSchema, type TripFormValues } from '@/features/trips/schemas/trip'
 import { useTheme } from '@/hooks/useTheme'
+import { haptics } from '@/lib/haptics'
 import { useTranslations } from '@/i18n/useTranslations'
 
 interface TripFormProps {
@@ -103,9 +104,11 @@ export function TripForm({ trip }: TripFormProps) {
     try {
       if (trip) {
         await updateTrip({ id: trip.id, ...(data as UpdateTrip) })
+        haptics.success()
         router.replace(`/(app)/trips/${trip.id}`)
       } else {
         const created = await createTrip(data as CreateTrip)
+        haptics.success()
         router.replace(`/(app)/trips/${created.id}`)
       }
     } catch (err) {

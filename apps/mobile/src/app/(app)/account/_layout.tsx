@@ -1,5 +1,7 @@
 import { Stack } from 'expo-router'
+import { StyleSheet } from 'react-native'
 
+import { GlassSurface } from '@/components/ui/glass-surface'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
@@ -20,7 +22,9 @@ export default function AccountLayout() {
   return (
     <Stack
       screenOptions={{
-        headerStyle: { backgroundColor: colors.background },
+        headerTransparent: true,
+        headerShadowVisible: false,
+        headerBackground: () => <GlassSurface shape="none" style={StyleSheet.absoluteFill} />,
         headerTintColor: colors.foreground,
         headerTitleStyle: { color: colors.foreground },
       }}

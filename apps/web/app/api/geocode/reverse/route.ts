@@ -1,5 +1,5 @@
-import { apiError, apiSuccess, requireAuth } from '@/lib/api'
-import { reverseGeocode } from '@/lib/geocode'
+import { apiError, apiSuccess, requireAuth } from '@/lib/api/api'
+import { reverseGeocode } from '@/lib/geocode/geocode'
 
 // GET /api/geocode/reverse?lat=&lng=
 export async function GET(req: Request) {

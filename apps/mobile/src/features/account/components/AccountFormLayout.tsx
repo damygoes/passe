@@ -52,6 +52,7 @@ export function AccountFormLayout({ title, description, children }: AccountFormL
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
+          automaticallyAdjustKeyboardInsets
         >
           {(title || description) && (
             <View style={styles.header}>

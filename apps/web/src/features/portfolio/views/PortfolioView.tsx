@@ -1,4 +1,4 @@
-import { resolveTripMedia } from '@/lib/media'
+import { resolveTripMedia } from '@/lib/media/media'
 import { db } from '@passe/db/client'
 import { memories, trips, users } from '@passe/db/schema'
 import { getUniqueCities, getUniqueStatsFromTrips } from '@passe/utils'

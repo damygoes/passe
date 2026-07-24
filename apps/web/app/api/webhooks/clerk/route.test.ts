@@ -6,10 +6,12 @@ import { POST } from './route'
 vi.mock('@clerk/nextjs/webhooks', () => ({ verifyWebhook: vi.fn() }))
 
 const mockSyncClerkUser = vi.fn()
-vi.mock('@passe/auth/webhook', () => ({ syncClerkUser: (...args: unknown[]) => mockSyncClerkUser(...args) }))
+vi.mock('@passe/auth/webhook', () => ({
+  syncClerkUser: (...args: unknown[]) => mockSyncClerkUser(...args),
+}))
 
 const mockCancelStripeBilling = vi.fn()
-vi.mock('@/lib/stripe', () => ({
+vi.mock('@/lib/billing/stripe', () => ({
   cancelStripeBilling: (...args: unknown[]) => mockCancelStripeBilling(...args),
 }))
 

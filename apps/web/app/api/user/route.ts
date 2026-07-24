@@ -1,6 +1,6 @@
 import { clerkClient } from '@clerk/nextjs/server'
-import { apiError, apiSuccess, requireAuth } from '@/lib/api'
-import { cancelStripeBilling } from '@/lib/stripe'
+import { apiError, apiSuccess, requireAuth } from '@/lib/api/api'
+import { cancelStripeBilling } from '@/lib/billing/stripe'
 import { db, users } from '@passe/db'
 import { createLogger } from '@passe/logger'
 import { AuthUserSchema, PublicUserSchema, UpdateUserSchema } from '@passe/types/user'

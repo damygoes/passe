@@ -102,6 +102,28 @@ export const ReorderMemoriesSchema = z.object({
 })
 export type ReorderMemories = z.infer<typeof ReorderMemoriesSchema>
 
+// Body of POST /api/trips/[id]/zine — the memories chosen for the zine's 6
+// content panels, in the order they'll read. The classic single-sheet zine
+// fold has exactly 6 content panels (plus 2 fixed cover panels) — a
+// geometric constraint of the paper fold, not an arbitrary limit — so
+// selection must be exactly 6, no fewer and no more.
+export const ZineSelectionSchema = z.object({
+  memoryIds: z.array(z.string().uuid()).length(6),
+})
+export type ZineSelection = z.infer<typeof ZineSelectionSchema>
+
+// Body of POST /api/trips/[id]/postcard — the memory whose first photo
+// becomes the postcard's front, plus an optional message written for the
+// back at export time (kept separate from the memory's own `note`, which is
+// never persisted onto the export). 280 chars keeps the back panel's message
+// column atomic under @react-pdf's `wrap={false}` — see PDF_NOTE_CHAR_LIMITS
+// in apps/web/src/lib/pdf/pdf-text.ts for the same reasoning.
+export const PostcardSelectionSchema = z.object({
+  memoryId: z.string().uuid(),
+  message: z.string().max(280).optional(),
+})
+export type PostcardSelection = z.infer<typeof PostcardSelectionSchema>
+
 export const CreateMemorySchema = MemorySchema.omit({
   id: true,
   userId: true,

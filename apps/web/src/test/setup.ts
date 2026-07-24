@@ -1,7 +1,15 @@
-import '@testing-library/jest-dom/vitest'
+import * as matchers from '@testing-library/jest-dom/matchers'
 import { cleanup } from '@testing-library/react'
 import React from 'react'
-import { afterEach, vi } from 'vitest'
+import { afterEach, expect, vi } from 'vitest'
+
+// Registered manually rather than via the '@testing-library/jest-dom/vitest' side-effect
+// import: that entry does its own bare `import { expect } from 'vitest'`, which under this
+// repo's hoisted node_modules resolves to the root-hoisted vitest copy — while this unit
+// project runs on a peer-forked copy (@vitest/browser-playwright via Storybook forks it).
+// The matchers then land on the wrong chai instance and every jest-dom assertion throws
+// "Invalid Chai property". Extending the runner's own `expect` is instance-proof.
+expect.extend(matchers)
 
 // Applied globally to the 'unit' vitest project — most client components call
 // useTranslations and the locale-aware navigation helpers, so mocking them once here

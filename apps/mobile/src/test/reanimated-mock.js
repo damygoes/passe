@@ -54,6 +54,17 @@ module.exports = {
   cancelAnimation: () => {},
   runOnJS: (fn) => fn,
   runOnUI: (fn) => fn,
+  // Piecewise-linear like the real one, minus extrapolation config handling
+  interpolate: (value, inputRange, outputRange) => {
+    const last = inputRange.length - 1
+    if (value <= inputRange[0]) return outputRange[0]
+    if (value >= inputRange[last]) return outputRange[last]
+    let i = 0
+    while (i < last - 1 && value > inputRange[i + 1]) i++
+    const progress = (value - inputRange[i]) / (inputRange[i + 1] - inputRange[i])
+    return outputRange[i] + progress * (outputRange[i + 1] - outputRange[i])
+  },
+  Extrapolation: { CLAMP: 'clamp', EXTEND: 'extend', IDENTITY: 'identity' },
   Easing: {
     linear: identity,
     ease: identity,

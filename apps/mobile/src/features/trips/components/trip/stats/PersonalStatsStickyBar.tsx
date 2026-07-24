@@ -1,3 +1,4 @@
+import { useHeaderHeight } from 'expo-router/react-navigation'
 import { useMemo } from 'react'
 import { StyleSheet, Text } from 'react-native'
 import Animated, { Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated'
@@ -30,6 +31,7 @@ export function PersonalStatsStickyBar({
 }: PersonalStatsStickyBarProps) {
   const t = useTranslations('trips.stats')
   const { colors, spacing, fontSizes, fontWeights } = useTheme()
+  const headerHeight = useHeaderHeight()
 
   const recap = [
     `${countriesCount} ${t('countries', { count: countriesCount })}`,
@@ -54,10 +56,11 @@ export function PersonalStatsStickyBar({
     () =>
       StyleSheet.create({
         bar: {
-          // The native header already reserves the status-bar inset, so the
-          // sticky bar anchors to the top of the screen content below it
+          // The header is transparent (floats over content, reserves no space), so anchor
+          // below its real height — `top: 0` would render behind the glass header instead
+          // of under it.
           position: 'absolute',
-          top: 0,
+          top: headerHeight,
           left: 0,
           right: 0,
           zIndex: 10,
@@ -74,7 +77,7 @@ export function PersonalStatsStickyBar({
           color: colors.foreground,
         },
       }),
-    [colors, spacing, fontSizes, fontWeights],
+    [colors, spacing, fontSizes, fontWeights, headerHeight],
   )
 
   return (

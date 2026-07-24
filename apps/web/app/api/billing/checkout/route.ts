@@ -1,5 +1,5 @@
-import { apiError, apiSuccess, requireAuth } from '@/lib/api'
-import { getOrCreateStripeCustomer, getStripe, planToPriceId } from '@/lib/stripe'
+import { apiError, apiSuccess, requireAuth } from '@/lib/api/api'
+import { getOrCreateStripeCustomer, getStripe, planToPriceId } from '@/lib/billing/stripe'
 import { db, users } from '@passe/db'
 import { createLogger } from '@passe/logger'
 import { CheckoutRequestSchema } from '@passe/types/billing'

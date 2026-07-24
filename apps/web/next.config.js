@@ -44,6 +44,14 @@ export default withSentryConfig(
     // sharp ships a native binary — let the bundler leave it external rather
     // than trying to trace/bundle it into the serverless function output.
     serverExternalPackages: ['sharp'],
+    // Next's file tracer can't see fs reads inside a dynamically-built path
+    // (Font.register in src/lib/pdf/fonts.ts joins process.cwd() at runtime),
+    // so the vendored .ttf files wouldn't otherwise ship with the
+    // serverless function — force-include them explicitly.
+    outputFileTracingIncludes: {
+      '/api/trips/[id]/pdf': ['./src/lib/pdf/fonts/*.ttf'],
+      '/api/trips/[id]/zine': ['./src/lib/pdf/fonts/*.ttf'],
+    },
     images: {
       dangerouslyAllowLocalIP: isOwnOriginLocalhost(),
       // Matches the RESPONSIVE_WIDTHS bucket list in apps/web/src/lib/media.ts

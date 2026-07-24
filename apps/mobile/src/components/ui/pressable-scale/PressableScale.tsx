@@ -1,10 +1,7 @@
 import { Pressable } from 'react-native'
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-} from 'react-native-reanimated'
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
 
+import { haptics } from '@/lib/haptics'
 import { pressSpring } from '@/lib/motion'
 import type { PressableScaleProps } from './PressableScale.types'
 
@@ -15,6 +12,7 @@ import type { PressableScaleProps } from './PressableScale.types'
 export function PressableScale({
   pressedScale = 0.97,
   restRotation = 0,
+  haptic = true,
   containerStyle,
   onPressIn,
   onPressOut,
@@ -35,6 +33,7 @@ export function PressableScale({
       <Pressable
         onPressIn={(event) => {
           pressed.value = withSpring(1, pressSpring)
+          if (haptic) haptics.impactLight()
           onPressIn?.(event)
         }}
         onPressOut={(event) => {
