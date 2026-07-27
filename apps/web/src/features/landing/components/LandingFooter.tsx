@@ -1,7 +1,7 @@
 import { Logo } from '@passe/ui/logo'
 import { getTranslations } from 'next-intl/server'
-import { Link } from '@/i18n/navigation'
 import { routes } from '@/lib/routes'
+import { UnderlineLink } from './UnderlineLink'
 
 export async function LandingFooter() {
   const t = await getTranslations('landing.footer')
@@ -16,27 +16,27 @@ export async function LandingFooter() {
           <p className="mt-1 text-sm text-muted-foreground">{tCommon('app_tagline')}</p>
         </div>
         <nav className="flex items-center gap-6 text-sm text-muted-foreground">
-          <Link href={routes.signIn} className="transition-colors hover:text-foreground">
+          <UnderlineLink href={routes.signIn} className="hover:text-foreground">
             {t('sign_in')}
-          </Link>
-          <Link href={routes.signUp} className="transition-colors hover:text-foreground">
+          </UnderlineLink>
+          <UnderlineLink href={routes.signUp} className="hover:text-foreground">
             {t('sign_up')}
-          </Link>
+          </UnderlineLink>
         </nav>
       </div>
       <nav className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
-        <Link href={routes.privacyPolicy} className="transition-colors hover:text-foreground">
+        <UnderlineLink href={routes.privacyPolicy} className="hover:text-foreground">
           {t('privacy_policy')}
-        </Link>
-        <Link href={routes.termsOfService} className="transition-colors hover:text-foreground">
+        </UnderlineLink>
+        <UnderlineLink href={routes.termsOfService} className="hover:text-foreground">
           {t('terms_of_service')}
-        </Link>
-        <Link href={routes.impressum} className="transition-colors hover:text-foreground">
+        </UnderlineLink>
+        <UnderlineLink href={routes.impressum} className="hover:text-foreground">
           {t('impressum')}
-        </Link>
-        <Link href={routes.support} className="transition-colors hover:text-foreground">
+        </UnderlineLink>
+        <UnderlineLink href={routes.support} className="hover:text-foreground">
           {t('support')}
-        </Link>
+        </UnderlineLink>
       </nav>
       <p className="mt-6 text-center text-xs text-muted-foreground">{t('copyright', { year })}</p>
     </footer>

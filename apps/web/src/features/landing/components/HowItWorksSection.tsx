@@ -28,7 +28,6 @@ export async function HowItWorksSection() {
           {STEPS.map(({ key, icon, image }, i) => (
             <PhotoTextRow
               key={key}
-              delay={i * 150}
               reversed={i % 2 === 1}
               stepNumber={i + 1}
               imageSrc={image}

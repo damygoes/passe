@@ -28,7 +28,6 @@ export async function FeaturesSection() {
           {FEATURES.map(({ key, icon, image }, i) => (
             <PhotoTextRow
               key={key}
-              delay={i * 120}
               reversed={i % 2 === 1}
               imageSrc={image}
               imageAlt=""

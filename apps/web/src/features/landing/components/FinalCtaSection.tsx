@@ -27,7 +27,7 @@ export async function FinalCtaSection() {
             href={routes.signUp}
             className={cn(
               buttonVariants({ size: 'lg' }),
-              'mt-10 bg-aged-cream text-dark-espresso transition-shadow hover:bg-warm-white hover:shadow-lg',
+              'mt-10 bg-aged-cream text-dark-espresso transition-all hover:-translate-y-0.5 hover:bg-warm-white hover:shadow-lg',
             )}
           >
             {t('button')}

@@ -6,6 +6,7 @@ import { Icon } from '@passe/ui/icon'
 import { getTranslations } from 'next-intl/server'
 import Image from 'next/image'
 import { HERO_PHOTO } from '../constants'
+import { PostmarkBadge } from './PostmarkBadge'
 
 const MARQUEE_PLACES = [
   'Kyoto',
@@ -52,7 +53,7 @@ export async function HeroSection() {
                 href={routes.signUp}
                 className={buttonVariants({
                   size: 'lg',
-                  className: 'transition-shadow hover:shadow-lg',
+                  className: 'transition-all hover:-translate-y-0.5 hover:shadow-lg',
                 })}
               >
                 {t('cta_primary')}
@@ -71,15 +72,18 @@ export async function HeroSection() {
             </p>
           </div>
 
-          <div className="animate-fade-up relative aspect-[4/3] w-full overflow-hidden rounded-xl shadow-xl [animation-delay:250ms]">
-            <Image
-              src={HERO_PHOTO}
-              alt=""
-              fill
-              priority
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 58vw"
-            />
+          <div className="animate-fade-up relative [animation-delay:250ms]">
+            <PostmarkBadge className="animate-float pointer-events-none absolute -top-6 -right-6 z-10 hidden size-16 rotate-12 text-dark-espresso/25 [animation-delay:-3s] md:block" />
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl shadow-xl">
+              <Image
+                src={HERO_PHOTO}
+                alt=""
+                fill
+                priority
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 58vw"
+              />
+            </div>
           </div>
         </div>
       </div>

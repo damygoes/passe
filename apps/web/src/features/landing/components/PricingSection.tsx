@@ -26,7 +26,7 @@ export async function PricingSection() {
         </Reveal>
 
         <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {PLANS.map((plan, i) => {
+          {PLANS.map((plan) => {
             const limits = PLAN_LIMITS[plan]
             const highlighted = plan === 'explorer'
             const bullets = [
@@ -40,52 +40,49 @@ export async function PricingSection() {
             ]
 
             return (
-              <Reveal key={plan} delay={i * 120}>
-                <Card
-                  className={cn(
-                    'relative h-full',
-                    highlighted && 'ring-2 ring-primary lg:scale-[1.03]',
-                  )}
-                >
-                  {highlighted && (
-                    <Badge className="absolute top-4 right-4">{t('most_popular')}</Badge>
-                  )}
-                  <CardHeader>
-                    <h3 className="font-heading text-lg font-semibold">
-                      {t(`plans.${plan}.name`)}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">{t(`plans.${plan}.tagline`)}</p>
-                  </CardHeader>
-                  <CardContent>
-                    <p>
-                      <span className="font-display text-4xl font-bold">
-                        {t(`plans.${plan}.price`)}
-                      </span>
-                      <span className="ml-1 text-sm text-muted-foreground">{t('per_month')}</span>
-                    </p>
-                    <Separator className="my-5" />
-                    <ul className="flex flex-col gap-3 text-sm">
-                      {bullets.map((bullet) => (
-                        <li key={bullet} className="flex items-center gap-2">
-                          <Icon name="check" size="sm" className="text-primary" aria-hidden />
-                          {bullet}
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                  <CardFooter className="mt-auto">
-                    <Link
-                      href={routes.signUp}
-                      className={buttonVariants({
-                        variant: highlighted ? 'default' : 'outline',
-                        className: 'w-full',
-                      })}
-                    >
-                      {t(`plans.${plan}.cta`)}
-                    </Link>
-                  </CardFooter>
-                </Card>
-              </Reveal>
+              <Card
+                key={plan}
+                className={cn(
+                  'relative h-full',
+                  highlighted && 'ring-2 ring-primary lg:scale-[1.03]',
+                )}
+              >
+                {highlighted && (
+                  <Badge className="absolute top-4 right-4">{t('most_popular')}</Badge>
+                )}
+                <CardHeader>
+                  <h3 className="font-heading text-lg font-semibold">{t(`plans.${plan}.name`)}</h3>
+                  <p className="text-sm text-muted-foreground">{t(`plans.${plan}.tagline`)}</p>
+                </CardHeader>
+                <CardContent>
+                  <p>
+                    <span className="font-display text-4xl font-bold">
+                      {t(`plans.${plan}.price`)}
+                    </span>
+                    <span className="ml-1 text-sm text-muted-foreground">{t('per_month')}</span>
+                  </p>
+                  <Separator className="my-5" />
+                  <ul className="flex flex-col gap-3 text-sm">
+                    {bullets.map((bullet) => (
+                      <li key={bullet} className="flex items-center gap-2">
+                        <Icon name="check" size="sm" className="text-primary" aria-hidden />
+                        {bullet}
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+                <CardFooter className="mt-auto">
+                  <Link
+                    href={routes.signUp}
+                    className={buttonVariants({
+                      variant: highlighted ? 'default' : 'outline',
+                      className: 'w-full',
+                    })}
+                  >
+                    {t(`plans.${plan}.cta`)}
+                  </Link>
+                </CardFooter>
+              </Card>
             )
           })}
         </div>
