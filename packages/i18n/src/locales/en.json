@@ -471,7 +471,11 @@
       "screenshotAlt": "The Passé app showing a traveller's trip archive"
     },
     "archiveStat": {
+<<<<<<< HEAD
       "label": "memories kept and counting"
+=======
+      "label": "memories archived and counting"
+>>>>>>> main
     },
     "pricing": {
       "heading": "Simple plans for every traveller",

@@ -471,7 +471,11 @@
       "screenshotAlt": "Die Passé App mit dem Reisearchiv einer Nutzerin"
     },
     "archiveStat": {
+<<<<<<< HEAD
       "label": "bewahrte Erinnerungen und es werden mehr"
+=======
+      "label": "archivierte Erinnerungen und es werden mehr"
+>>>>>>> main
     },
     "pricing": {
       "heading": "Einfache Pläne für alle Reisenden",
