@@ -6,13 +6,13 @@ import { m } from 'motion/react'
 import { useTranslations } from 'next-intl'
 
 // Placeholder until a real figure is available — replace before launch.
-const ARCHIVE_COUNT = 12480
+const MEMORY_COUNT = 12480
 
 export function ArchiveStatSection() {
   const t = useTranslations('landing.archiveStat')
 
   return (
-    <section className="border-y border-border px-6 py-16 text-center">
+    <section className="border-y border-border bg-secondary/30 px-6 py-16 text-center">
       <m.div
         className="mx-auto max-w-2xl"
         initial={{ opacity: 0, y: 20 }}
@@ -21,7 +21,7 @@ export function ArchiveStatSection() {
         transition={gentleSpring}
       >
         <p className="font-display text-5xl font-bold text-primary md:text-6xl">
-          <CountUp value={ARCHIVE_COUNT} />+
+          <CountUp value={MEMORY_COUNT} />+
         </p>
         <p className="mt-3 text-muted-foreground">{t('label')}</p>
       </m.div>

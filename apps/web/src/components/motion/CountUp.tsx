@@ -1,6 +1,6 @@
 'use client'
 
-import { animate, useReducedMotion } from 'motion/react'
+import { animate, useInView, useReducedMotion } from 'motion/react'
 import { useEffect, useRef } from 'react'
 
 export interface CountUpProps {
@@ -11,12 +11,14 @@ export interface CountUpProps {
 }
 
 /**
- * Ticks a number up from 0 to its final value on entrance. Renders the final
- * value immediately when the user prefers reduced motion.
+ * Ticks a number up from 0 to its final value once it scrolls into view.
+ * Renders the final value immediately when the user prefers reduced motion.
  */
 export function CountUp({ value, className, delay = 0 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null)
   const reducedMotion = useReducedMotion()
+  // margin matches the whileInView convention used across the app (gentleSpring sections)
+  const isInView = useInView(ref, { once: true, margin: '0px 0px -15% 0px' })
 
   useEffect(() => {
     const node = ref.current
@@ -25,6 +27,7 @@ export function CountUp({ value, className, delay = 0 }: CountUpProps) {
       node.textContent = String(value)
       return
     }
+    if (!isInView) return
     const controls = animate(0, value, {
       duration: 0.8,
       ease: 'easeOut',
@@ -34,7 +37,7 @@ export function CountUp({ value, className, delay = 0 }: CountUpProps) {
       },
     })
     return () => controls.stop()
-  }, [value, delay, reducedMotion])
+  }, [value, delay, reducedMotion, isInView])
 
   return (
     <span ref={ref} className={className}>
