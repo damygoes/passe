@@ -470,6 +470,9 @@
       "android": "Google Play",
       "screenshotAlt": "The Passé app showing a traveller's trip archive"
     },
+    "archiveStat": {
+      "label": "memories archived and counting"
+    },
     "pricing": {
       "heading": "Simple plans for every traveller",
       "subheading": "Start free. Upgrade when your archive outgrows it.",

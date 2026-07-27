@@ -470,6 +470,9 @@
       "android": "Google Play",
       "screenshotAlt": "Die Passé App mit dem Reisearchiv einer Nutzerin"
     },
+    "archiveStat": {
+      "label": "archivierte Erinnerungen und es werden mehr"
+    },
     "pricing": {
       "heading": "Einfache Pläne für alle Reisenden",
       "subheading": "Starte kostenlos. Upgrade, wenn dein Archiv wächst.",
