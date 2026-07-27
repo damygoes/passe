@@ -6,6 +6,7 @@ import { buttonVariants } from '@passe/ui/button'
 import { Logo } from '@passe/ui/logo'
 import { Navbar, NavbarBrand, NavbarUser } from '@passe/ui/navbar'
 import { getTranslations } from 'next-intl/server'
+import { ExitLink } from './ExitLink'
 
 export async function LandingHeader() {
   const t = await getTranslations('landing.nav')
@@ -32,7 +33,7 @@ export async function LandingHeader() {
       <NavbarUser className="gap-2 sm:gap-3">
         <LocaleDropdownMenu className="h-8 px-2.5 text-xs" />
         <ThemeDropdownMenu className="size-8" />
-        <Link
+        <ExitLink
           href={routes.signIn}
           className={buttonVariants({
             variant: 'ghost',
@@ -41,10 +42,10 @@ export async function LandingHeader() {
           })}
         >
           {t('sign_in')}
-        </Link>
-        <Link href={routes.signUp} className={buttonVariants({ size: 'sm' })}>
+        </ExitLink>
+        <ExitLink href={routes.signUp} className={buttonVariants({ size: 'sm' })}>
           {t('get_started')}
-        </Link>
+        </ExitLink>
       </NavbarUser>
     </Navbar>
   )

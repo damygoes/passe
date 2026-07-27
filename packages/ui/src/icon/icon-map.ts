@@ -1,4 +1,5 @@
 import {
+  Airplane01Icon,
   Alert01Icon,
   AppleIcon,
   ArrowDataTransferHorizontalIcon,
@@ -83,6 +84,7 @@ export const iconMap = {
   moon: Moon02Icon,
   more: MoreHorizontalIcon,
   'panel-left': PanelLeftIcon,
+  plane: Airplane01Icon,
   'play-store': PlayStoreIcon,
   plus: PlusSignIcon,
   share: Share01Icon,

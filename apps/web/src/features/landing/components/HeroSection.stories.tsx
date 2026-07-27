@@ -1,18 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
-import { AsyncServerComponentPreview } from '../../../../.storybook/AsyncServerComponentPreview'
 import { HeroSection } from './HeroSection'
 
-function HeroSectionPreview() {
-  return <AsyncServerComponentPreview component={HeroSection} props={{}} />
-}
-
-const meta: Meta<typeof HeroSectionPreview> = {
+const meta: Meta<typeof HeroSection> = {
   title: 'Landing/HeroSection',
-  component: HeroSectionPreview,
+  component: HeroSection,
   tags: ['autodocs'],
 }
 
 export default meta
-type Story = StoryObj<typeof HeroSectionPreview>
+type Story = StoryObj<typeof HeroSection>
 
 export const Default: Story = {}

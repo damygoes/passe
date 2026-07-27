@@ -1,3 +1,4 @@
+import { MotionProvider } from '@/components/motion/MotionProvider'
 import type { Preview } from '@storybook/nextjs-vite'
 import { NextIntlClientProvider } from 'next-intl'
 import { ThemeProvider } from 'next-themes'
@@ -20,9 +21,11 @@ const preview: Preview = {
     (Story) => (
       <NextIntlClientProvider locale="en" messages={messages}>
         <ThemeProvider attribute="class" defaultTheme="light">
-          <div className="bg-background text-foreground">
-            <Story />
-          </div>
+          <MotionProvider>
+            <div className="bg-background text-foreground">
+              <Story />
+            </div>
+          </MotionProvider>
         </ThemeProvider>
       </NextIntlClientProvider>
     ),

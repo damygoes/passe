@@ -22,7 +22,7 @@ export function Stagger({ inView = false, children, ...props }: StaggerProps) {
       variants={staggerContainerVariants}
       initial="hidden"
       {...(inView
-        ? { whileInView: 'visible', viewport: { once: true, margin: '0px 0px -10% 0px' } }
+        ? { whileInView: 'visible', viewport: { once: false, margin: '0px 0px -10% 0px' } }
         : { animate: 'visible' })}
       {...props}
     >
