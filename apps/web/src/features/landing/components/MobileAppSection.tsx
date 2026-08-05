@@ -48,6 +48,7 @@ export function MobileAppSection() {
             {IOS_HREF ? <a href={IOS_HREF}>{iosBadge}</a> : iosBadge}
             {ANDROID_HREF ? <a href={ANDROID_HREF}>{androidBadge}</a> : androidBadge}
           </div>
+          <p className="mt-3 text-sm text-muted-foreground">{t('subscriptionHint')}</p>
         </m.div>
 
         <div className="relative mx-auto w-full max-w-sm py-4">

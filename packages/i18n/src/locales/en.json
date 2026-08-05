@@ -143,6 +143,7 @@
       "public_label": "Make this trip public",
       "public_hint": "Public trips can be shared on your portfolio.",
       "public_gated_hint": "Upgrade to Explorer or Collector to share trips publicly.",
+      "public_gated_hint_locked": "Public trip pages aren't available on your current plan.",
       "limit_reached": "You've reached the trip limit for your plan.",
       "upgrade_cta": "Upgrade your plan",
       "create": "Create trip",
@@ -378,8 +379,7 @@
       "reverification_failed": "Verification failed. Please try again."
     },
     "plan": {
-      "title": "Plan",
-      "managed_on_web": "Subscriptions are managed on the Passé website."
+      "title": "Plan"
     },
     "legal": {
       "title": "Legal",
@@ -468,7 +468,8 @@
       "ios_eyebrow": "Download on the",
       "ios_name": "App Store",
       "android": "Google Play",
-      "screenshotAlt": "The Passé app showing a traveller's trip archive"
+      "screenshotAlt": "The Passé app showing a traveller's trip archive",
+      "subscriptionHint": "Plans and subscriptions are managed here on the website."
     },
     "archiveStat": {
       "label": "memories kept and counting"

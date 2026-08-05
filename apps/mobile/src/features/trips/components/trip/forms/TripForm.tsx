@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'expo-router'
 import { useMemo, useState } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
-import { Pressable, StyleSheet, Switch, Text, View } from 'react-native'
+import { StyleSheet, Switch, Text, View } from 'react-native'
 
 import { Button } from '@/components/ui/button'
 import { FormField } from '@/components/ui/form-field'
@@ -94,7 +94,6 @@ export function TripForm({ trip }: TripFormProps) {
           paddingVertical: spacing[3],
         },
         limitText: { fontSize: fontSizes.sm, color: colors.mutedForeground },
-        limitLink: { fontSize: fontSizes.sm, fontWeight: '500', color: colors.primary },
       }),
     [colors, spacing, fontSizes, borderRadius],
   )
@@ -123,9 +122,6 @@ export function TripForm({ trip }: TripFormProps) {
       {atTripLimit && (
         <View style={styles.limitBanner}>
           <Text style={styles.limitText}>{t('limit_reached')}</Text>
-          <Pressable onPress={() => router.push('/(app)/account')} hitSlop={8}>
-            <Text style={styles.limitLink}>{t('upgrade_cta')}</Text>
-          </Pressable>
         </View>
       )}
 
@@ -228,7 +224,7 @@ export function TripForm({ trip }: TripFormProps) {
             <View style={styles.publicTextGroup}>
               <Text style={styles.fieldLabel}>{t('public_label')}</Text>
               <Text style={styles.publicHint}>
-                {canPublish ? t('public_hint') : t('public_gated_hint')}
+                {canPublish ? t('public_hint') : t('public_gated_hint_locked')}
               </Text>
             </View>
             <Switch

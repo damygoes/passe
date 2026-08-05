@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native'
-import { mockPush, mockReplace } from '@/test/expo-router-mock'
+import { mockReplace } from '@/test/expo-router-mock'
 import { TripForm } from './TripForm'
 
 const mockUseUser = jest.fn()
@@ -110,11 +110,11 @@ describe('TripForm', () => {
     expect(screen.getByText('save')).toBeTruthy()
   })
 
-  it('navigates to account when the upgrade CTA is tapped at the limit', () => {
+  it('shows the limit banner with no upgrade action when the trip limit is reached', () => {
     mockUseUser.mockReturnValue({ data: { plan: 'free' } })
     mockUseTrips.mockReturnValue({ data: [{}, {}, {}] })
     render(<TripForm />)
-    fireEvent.press(screen.getByText('upgrade_cta'))
-    expect(mockPush).toHaveBeenCalledWith('/(app)/account')
+    expect(screen.getByText('limit_reached')).toBeTruthy()
+    expect(screen.queryByText('upgrade_cta')).toBeNull()
   })
 })

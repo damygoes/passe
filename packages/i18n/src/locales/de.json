@@ -143,6 +143,7 @@
       "public_label": "Diese Reise öffentlich machen",
       "public_hint": "Öffentliche Reisen können in deinem Portfolio geteilt werden.",
       "public_gated_hint": "Upgrade auf Explorer oder Collector, um Reisen öffentlich zu teilen.",
+      "public_gated_hint_locked": "Öffentliche Reiseseiten sind mit deinem aktuellen Tarif nicht verfügbar.",
       "limit_reached": "Du hast das Reiselimit deines Tarifs erreicht.",
       "upgrade_cta": "Tarif upgraden",
       "create": "Reise erstellen",
@@ -378,8 +379,7 @@
       "reverification_failed": "Überprüfung fehlgeschlagen. Bitte versuche es erneut."
     },
     "plan": {
-      "title": "Tarif",
-      "managed_on_web": "Abos werden auf der Passé-Website verwaltet."
+      "title": "Tarif"
     },
     "legal": {
       "title": "Rechtliches",
@@ -468,7 +468,8 @@
       "ios_eyebrow": "Download on the",
       "ios_name": "App Store",
       "android": "Google Play",
-      "screenshotAlt": "Die Passé App mit dem Reisearchiv einer Nutzerin"
+      "screenshotAlt": "Die Passé App mit dem Reisearchiv einer Nutzerin",
+      "subscriptionHint": "Tarife und Abos werden hier auf der Website verwaltet."
     },
     "archiveStat": {
       "label": "bewahrte Erinnerungen und es werden mehr"

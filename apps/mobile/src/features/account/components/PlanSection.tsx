@@ -3,14 +3,14 @@ import { useMemo } from 'react'
 import { StyleSheet, View } from 'react-native'
 
 import { Badge } from '@/components/ui/badge'
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
 // Read-only plan display — purchases and plan changes happen on the web only
-// (App Store rules forbid linking out to external payment), so this section
-// deliberately has no upgrade action.
+// (App Store rules forbid referencing purchasing outside In-App Purchase), so
+// this section deliberately has no upgrade action or purchase-directing copy.
 export function PlanSection() {
   const { spacing, borderRadius } = useTheme()
   const t = useTranslations('account.plan')
@@ -36,7 +36,6 @@ export function PlanSection() {
       <CardHeader style={styles.header}>
         <View style={styles.titleGroup}>
           <CardTitle>{t('title')}</CardTitle>
-          <CardDescription>{t('managed_on_web')}</CardDescription>
         </View>
         <Badge>{tPlans(`${user.plan}.name`)}</Badge>
       </CardHeader>
