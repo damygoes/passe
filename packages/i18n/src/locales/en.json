@@ -384,7 +384,8 @@
       "title": "Plan",
       "current": "Current plan",
       "trips_used": "{used}/{limit} Trips",
-      "trips_unlimited": "Unlimited trips"
+      "trips_unlimited": "Unlimited trips",
+      "manage_cta": "View plans"
     },
     "paywall": {
       "title": "Upgrade your plan",

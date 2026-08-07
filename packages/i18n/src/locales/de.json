@@ -384,7 +384,8 @@
       "title": "Tarif",
       "current": "Aktueller Tarif",
       "trips_used": "{used}/{limit} Reisen",
-      "trips_unlimited": "Unbegrenzte Reisen"
+      "trips_unlimited": "Unbegrenzte Reisen",
+      "manage_cta": "Tarife ansehen"
     },
     "paywall": {
       "title": "Tarif upgraden",

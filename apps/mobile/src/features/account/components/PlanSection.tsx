@@ -65,18 +65,16 @@ export function PlanSection() {
           <CardDescription>{usageLabel}</CardDescription>
         </View>
       </CardHeader>
-      {user.plan === 'free' && (
-        <CardContent style={styles.upgradeContent}>
-          <Button
-            size="md"
-            variant="primary"
-            fullWidth
-            onPress={() => router.push('/(app)/account/paywall')}
-          >
-            {tTrips('upgrade_cta')}
-          </Button>
-        </CardContent>
-      )}
+      <CardContent style={styles.upgradeContent}>
+        <Button
+          size="md"
+          variant="primary"
+          fullWidth
+          onPress={() => router.push('/(app)/account/paywall')}
+        >
+          {user.plan === 'free' ? tTrips('upgrade_cta') : t('manage_cta')}
+        </Button>
+      </CardContent>
     </Card>
   )
 }
