@@ -12,5 +12,5 @@ export type { DbMemoryMedia, DbNewMemoryMedia } from './memory-media'
 export { trips } from './trips'
 export type { DbTrip, DbNewTrip } from './trips'
 
-export { planEnum, users } from './users'
+export { planEnum, planSourceEnum, users } from './users'
 export type { DbUser, DbNewUser } from './users'

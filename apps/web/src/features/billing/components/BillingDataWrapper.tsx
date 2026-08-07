@@ -12,5 +12,5 @@ export function BillingDataWrapper() {
   if (isLoading) return <BillingViewSkeleton />
   if (isError || !user) return <p className="text-sm text-destructive">{t('load_error')}</p>
 
-  return <PlanCards currentPlan={user.plan} />
+  return <PlanCards currentPlan={user.plan} planSource={user.planSource} />
 }

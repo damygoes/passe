@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native'
-import { mockReplace } from '@/test/expo-router-mock'
+import { mockPush, mockReplace } from '@/test/expo-router-mock'
 import { TripForm } from './TripForm'
 
 const mockUseUser = jest.fn()
@@ -110,11 +110,21 @@ describe('TripForm', () => {
     expect(screen.getByText('save')).toBeTruthy()
   })
 
-  it('shows the limit banner with no upgrade action when the trip limit is reached', () => {
+  it('shows an upgrade action that opens the paywall when the trip limit is reached', () => {
     mockUseUser.mockReturnValue({ data: { plan: 'free' } })
     mockUseTrips.mockReturnValue({ data: [{}, {}, {}] })
     render(<TripForm />)
     expect(screen.getByText('limit_reached')).toBeTruthy()
-    expect(screen.queryByText('upgrade_cta')).toBeNull()
+
+    fireEvent.press(screen.getByText('upgrade_cta'))
+    expect(mockPush).toHaveBeenCalledWith('/(app)/account/paywall')
+  })
+
+  it('shows an upgrade hint that opens the paywall when publishing is gated', () => {
+    mockUseUser.mockReturnValue({ data: { plan: 'free' } })
+    render(<TripForm />)
+
+    fireEvent.press(screen.getByText('public_gated_hint'))
+    expect(mockPush).toHaveBeenCalledWith('/(app)/account/paywall')
   })
 })

@@ -10,8 +10,11 @@ import { Platform } from 'react-native'
 import * as WebBrowser from 'expo-web-browser'
 import * as Sentry from '@sentry/react-native'
 
+import { useEffect } from 'react'
+
 import { useAppStateFocusManager } from '@/hooks/useAppStateFocusManager'
 import { I18nProvider } from '@/i18n/I18nProvider'
+import { configureRevenueCat } from '@/lib/revenuecat'
 
 WebBrowser.maybeCompleteAuthSession()
 
@@ -42,7 +45,13 @@ const rawApiUrl = getRequiredEnvVar('EXPO_PUBLIC_API_URL', process.env.EXPO_PUBL
 const apiUrl = Platform.OS === 'android' ? rawApiUrl.replace('localhost', '10.0.2.2') : rawApiUrl
 
 function ApiConnectedApp() {
-  const { getToken } = useAuth()
+  const { getToken, userId } = useAuth()
+
+  // Deferred until Clerk resolves a real userId — there's no anonymous-purchase flow to
+  // support since the paywall is only reachable from within the authenticated app.
+  useEffect(() => {
+    if (userId) configureRevenueCat(userId)
+  }, [userId])
 
   return (
     <PasseApiProvider baseUrl={apiUrl} getToken={getToken}>

@@ -14,6 +14,9 @@ export async function POST(req: Request) {
 
   const user = await db.query.users.findFirst({ where: eq(users.id, userId) })
   if (!user) return apiError('User not found', 404)
+  if (user.planSource === 'revenuecat') {
+    return apiError('Your subscription is managed through the App Store or Google Play', 409)
+  }
   if (!user.stripeCustomerId) return apiError('No billing account for this user', 400)
 
   const origin = new URL(req.url).origin

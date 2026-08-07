@@ -95,15 +95,14 @@ export function TripExportOptionsScreen() {
   }) {
     return (
       <Pressable
-        disabled={!canExport || isDownloadingPdf}
-        onPress={options.onPress}
+        disabled={isDownloadingPdf}
+        onPress={() => (canExport ? options.onPress() : router.push('/(app)/account/paywall'))}
         style={({ pressed }) => [
           styles.row,
           pressed && styles.rowPressed,
           !canExport && styles.rowDisabled,
         ]}
         accessibilityRole="button"
-        accessibilityState={{ disabled: !canExport }}
       >
         <Icon name={options.icon} size="md" color={colors.mutedForeground} />
         <View style={styles.rowText}>

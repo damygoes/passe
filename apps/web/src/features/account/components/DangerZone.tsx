@@ -1,7 +1,7 @@
 'use client'
 
 import { useUser as useClerkUser } from '@clerk/nextjs'
-import { useDeleteAccount } from '@passe/hooks'
+import { useDeleteAccount, useUser } from '@passe/hooks'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -29,7 +29,9 @@ export function DangerZone() {
   const tErrors = useTranslations('account.errors')
   const router = useRouter()
   const { user: clerkUser } = useClerkUser()
+  const { data: user } = useUser()
   const { mutateAsync: deleteAccount, isPending } = useDeleteAccount()
+  const isManagedOnMobile = user?.planSource === 'revenuecat'
   const [open, setOpen] = useState(false)
   const [confirmation, setConfirmation] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -84,6 +86,12 @@ export function DangerZone() {
               <AlertDialogTitle>{t('delete_title')}</AlertDialogTitle>
               <AlertDialogDescription>{t('warning')}</AlertDialogDescription>
             </AlertDialogHeader>
+
+            {isManagedOnMobile && (
+              <div className="mx-1 rounded-lg border border-border bg-muted p-3">
+                <p className="text-sm text-muted-foreground">{t('iap_cancel_warning')}</p>
+              </div>
+            )}
 
             <div className="space-y-1.5 px-1">
               <label htmlFor="delete-confirm" className="text-sm font-medium text-foreground">

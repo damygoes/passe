@@ -45,6 +45,16 @@ describe('POST /api/billing/portal', () => {
     expect(res.status).toBe(400)
   })
 
+  it('returns 409 when the subscription is managed through RevenueCat', async () => {
+    mockDb.query.users.findFirst.mockResolvedValue({
+      id: 'user-1',
+      stripeCustomerId: null,
+      planSource: 'revenuecat',
+    })
+    const res = await POST(req())
+    expect(res.status).toBe(409)
+  })
+
   it('returns the portal URL on success', async () => {
     mockDb.query.users.findFirst.mockResolvedValue({ id: 'user-1', stripeCustomerId: 'cus_1' })
     mockSessionsCreate.mockResolvedValue({ url: 'https://billing.stripe.com/session' })

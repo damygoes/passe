@@ -276,6 +276,9 @@ export function AddMemoryForm({ tripId, memory }: AddMemoryFormProps) {
       {atMemoryLimit && (
         <View style={styles.limitBanner}>
           <Text style={styles.limitText}>{t('limit_reached')}</Text>
+          <Pressable onPress={() => router.push('/(app)/account/paywall')}>
+            <Text style={styles.limitLink}>{t('upgrade_cta')}</Text>
+          </Pressable>
         </View>
       )}
 

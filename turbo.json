@@ -11,6 +11,7 @@
         "CLERK_*",
         "CLOUDINARY_*",
         "STRIPE_*",
+        "REVENUECAT_*",
         "DATABASE_URL",
         "EXPO_PUBLIC_*",
         "VERCEL_ENV",

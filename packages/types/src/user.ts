@@ -3,6 +3,9 @@ import { z } from 'zod'
 export const PlanSchema = z.enum(['free', 'explorer', 'collector'])
 export type Plan = z.infer<typeof PlanSchema>
 
+export const PlanSourceSchema = z.enum(['stripe', 'revenuecat'])
+export type PlanSource = z.infer<typeof PlanSourceSchema>
+
 // DB representation — mirrors what the database actually stores; no UI-level constraints
 export const UserSchema = z.object({
   id: z.string(),
@@ -31,6 +34,7 @@ export type PublicUser = z.infer<typeof PublicUserSchema>
 // plan, which drives client-side plan gating. Never exposed on public pages.
 export const AuthUserSchema = PublicUserSchema.extend({
   plan: PlanSchema,
+  planSource: PlanSourceSchema.nullish(),
 })
 export type AuthUser = z.infer<typeof AuthUserSchema>
 

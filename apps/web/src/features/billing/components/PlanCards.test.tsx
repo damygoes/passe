@@ -53,4 +53,11 @@ describe('PlanCards', () => {
     render(<PlanCards currentPlan="free" />)
     expect(screen.getByRole('alert')).toHaveTextContent('action_error')
   })
+
+  it('shows a device-settings hint instead of portal buttons for RevenueCat subscribers', () => {
+    render(<PlanCards currentPlan="collector" planSource="revenuecat" />)
+    expect(screen.getByText('managed_on_mobile')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'manage_subscription' })).not.toBeInTheDocument()
+    expect(screen.queryByText(/switch_to/)).not.toBeInTheDocument()
+  })
 })

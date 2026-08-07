@@ -4,8 +4,10 @@ import { mockSignOut } from '@/test/clerk-expo-mock'
 import { DangerZoneScreen } from './DangerZoneScreen'
 
 const mockDeleteAccount = jest.fn()
+let mockUserData: { planSource?: string | null } | undefined = undefined
 jest.mock('@passe/hooks', () => ({
   useDeleteAccount: () => ({ mutateAsync: mockDeleteAccount, isPending: false }),
+  useUser: () => ({ data: mockUserData }),
 }))
 
 function openDialog() {
@@ -14,6 +16,10 @@ function openDialog() {
 }
 
 describe('DangerZoneScreen', () => {
+  beforeEach(() => {
+    mockUserData = undefined
+  })
+
   it('keeps the confirm action disabled until the exact phrase is typed', () => {
     render(<DangerZoneScreen />)
     openDialog()
@@ -52,5 +58,21 @@ describe('DangerZoneScreen', () => {
 
     expect(await screen.findByText('delete failed')).toBeTruthy()
     expect(mockSignOut).not.toHaveBeenCalled()
+  })
+
+  it('shows the IAP cancellation warning only for RevenueCat-sourced subscribers', () => {
+    mockUserData = { planSource: 'revenuecat' }
+    render(<DangerZoneScreen />)
+    openDialog()
+
+    expect(screen.getByText('iap_cancel_warning')).toBeTruthy()
+  })
+
+  it('does not show the IAP cancellation warning for Stripe-sourced subscribers', () => {
+    mockUserData = { planSource: 'stripe' }
+    render(<DangerZoneScreen />)
+    openDialog()
+
+    expect(screen.queryByText('iap_cancel_warning')).toBeNull()
   })
 })
