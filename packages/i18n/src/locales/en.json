@@ -402,7 +402,7 @@
       "feature_trips": "More trips to keep",
       "feature_memories": "More memories per trip",
       "feature_portfolio": "A public portfolio to share",
-      "feature_pdf_export": "Export your trips as PDF"
+      "feature_pdf_export": "Export as PDF, zine, or postcard"
     },
     "legal": {
       "title": "Legal",
@@ -510,7 +510,9 @@
         "portfolio_yes": "Public portfolio",
         "portfolio_no": "Private journaling only",
         "pdf_export_yes": "PDF export",
-        "pdf_export_no": "No PDF export"
+        "pdf_export_no": "No PDF export",
+        "zine_export_yes": "Zine export",
+        "postcard_export_yes": "Postcard export"
       },
       "plans": {
         "free": {

@@ -2,6 +2,7 @@
 
 import { FadeIn } from '@/components/motion/FadeIn'
 import { SECTION_STEP } from '@/lib/motion'
+import { PageHeader, PageHeaderDescription, PageHeaderTitle } from '@passe/ui/page-header'
 import { Separator } from '@passe/ui/separator'
 import { useTranslations } from 'next-intl'
 import { Suspense } from 'react'
@@ -12,10 +13,12 @@ export function BillingView() {
   const t = useTranslations('billing')
 
   return (
-    <div className="container max-w-4xl mx-auto py-8 px-4 md:px-6">
+    <div className="container max-w-6xl mx-auto py-8 px-4 md:px-6">
       <FadeIn>
-        <h1 className="text-2xl font-semibold tracking-tight">{t('title')}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{t('subtitle')}</p>
+        <PageHeader className="w-full">
+          <PageHeaderTitle>{t('title')}</PageHeaderTitle>
+          <PageHeaderDescription>{t('subtitle')}</PageHeaderDescription>
+        </PageHeader>
       </FadeIn>
 
       <Separator className="my-6" />

@@ -142,6 +142,13 @@ export function PaywallScreen() {
 
   function buildBullets(plan: PaidPlan) {
     const limits = PLAN_LIMITS[plan]
+    const exportBullets = limits.pdfExport
+      ? [
+          tPricing('bullets.pdf_export_yes'),
+          tPricing('bullets.zine_export_yes'),
+          tPricing('bullets.postcard_export_yes'),
+        ]
+      : [tPricing('bullets.pdf_export_no')]
     return [
       limits.maxTrips === Infinity
         ? tPricing('bullets.trips_unlimited')
@@ -150,7 +157,7 @@ export function PaywallScreen() {
         ? tPricing('bullets.memories_unlimited')
         : tPricing('bullets.memories', { count: limits.maxMemoriesPerTrip }),
       limits.publicPortfolio ? tPricing('bullets.portfolio_yes') : tPricing('bullets.portfolio_no'),
-      limits.pdfExport ? tPricing('bullets.pdf_export_yes') : tPricing('bullets.pdf_export_no'),
+      ...exportBullets,
     ]
   }
 

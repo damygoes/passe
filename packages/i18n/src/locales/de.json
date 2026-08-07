@@ -402,7 +402,7 @@
       "feature_trips": "Mehr Reisen behalten",
       "feature_memories": "Mehr Erinnerungen pro Reise",
       "feature_portfolio": "Ein öffentliches Portfolio zum Teilen",
-      "feature_pdf_export": "Reisen als PDF exportieren"
+      "feature_pdf_export": "Als PDF, Zine oder Postkarte exportieren"
     },
     "legal": {
       "title": "Rechtliches",
@@ -510,7 +510,9 @@
         "portfolio_yes": "Öffentliches Portfolio",
         "portfolio_no": "Nur privates Festhalten",
         "pdf_export_yes": "PDF-Export",
-        "pdf_export_no": "Kein PDF-Export"
+        "pdf_export_no": "Kein PDF-Export",
+        "zine_export_yes": "Zine-Export",
+        "postcard_export_yes": "Postkarten-Export"
       },
       "plans": {
         "free": {
