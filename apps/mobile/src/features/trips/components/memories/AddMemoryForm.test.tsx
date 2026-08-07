@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import type { Memory } from '@passe/types/memory'
+import { mockPush } from '@/test/expo-router-mock'
 import { AddMemoryForm } from './AddMemoryForm'
 
 const mockUseUser = jest.fn()
@@ -115,12 +116,14 @@ describe('AddMemoryForm', () => {
     expect(screen.getByPlaceholderText('country_placeholder')).toHaveProp('value', 'France')
   })
 
-  it('shows the limit banner with no upgrade action when the memory limit is reached', () => {
+  it('shows an upgrade action that opens the paywall when the memory limit is reached', () => {
     mockUseUser.mockReturnValue({ data: { plan: 'free' } })
     mockUseMemories.mockReturnValue({ data: Array.from({ length: 10 }) })
     render(<AddMemoryForm tripId="trip-1" />)
     expect(screen.getByText('limit_reached')).toBeTruthy()
-    expect(screen.queryByText('upgrade_cta')).toBeNull()
+
+    fireEvent.press(screen.getByText('upgrade_cta'))
+    expect(mockPush).toHaveBeenCalledWith('/(app)/account/paywall')
   })
 
   it('pre-fills fields and shows "save" when editing an existing memory', () => {

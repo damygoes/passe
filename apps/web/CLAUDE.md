@@ -280,20 +280,32 @@ app/api/
   webhooks/stripe/route.ts               — POST /api/webhooks/stripe (updates users.plan)
 ```
 
-### Billing (Stripe)
+### Billing (Stripe + RevenueCat)
 
-Purchases happen on the web only — mobile displays the plan but sells nothing (App Store rules).
-`users.plan` in the DB is the single source of truth; the Stripe webhook is the only writer.
+Web purchases go through Stripe; mobile purchases go through Apple/Google In-App Purchase via
+RevenueCat (App Store rules require IAP for content unlockable in-app). `users.plan` in the DB is
+the single source of truth read by both platforms, written by two independent webhooks. A nullable
+`users.planSource` (`'stripe' | 'revenuecat'`) records which one owns the active subscription —
+this matters because Stripe subscriptions can be force-cancelled server-side
+(`cancelStripeBilling`) but IAP subscriptions cannot; only the user can cancel those from their
+device's subscription settings.
 
-- `src/lib/stripe.ts` — lazy Stripe client, `planToPriceId`/`priceIdToPlan` (from
+- `src/lib/billing/stripe.ts` — lazy Stripe client, `planToPriceId`/`priceIdToPlan` (from
   `STRIPE_PRICE_EXPLORER`/`STRIPE_PRICE_COLLECTOR` env), `getOrCreateStripeCustomer`
 - `POST /api/billing/checkout` rejects users who already have a paid plan (409) — plan
   switches and cancellation go through the Customer Portal instead
+- `POST /api/billing/portal` rejects `planSource === 'revenuecat'` users (409) — there's no
+  Stripe customer to open a portal session for
 - `POST /api/webhooks/stripe` verifies the signature over the raw body and maps
   `customer.subscription.created/updated/deleted` → `users.plan`. `checkout.session.completed`
   is intentionally not handled (subscription.created carries the same data)
-- The Clerk webhook deletes the Stripe customer on `user.deleted` so cancelled accounts
-  stop being charged
+- `POST /api/webhooks/revenuecat` mirrors the Stripe webhook for mobile IAP events — verifies a
+  bearer-token shared secret (`REVENUECAT_WEBHOOK_SECRET`), maps RevenueCat entitlement IDs
+  (`explorer`/`collector`, 1:1 with `planEnum`) to `users.plan`, and only downgrades on
+  `EXPIRATION` (not `CANCELLATION`, which just means auto-renew was turned off)
+- The Clerk webhook deletes the Stripe customer on `user.deleted` so cancelled Stripe accounts
+  stop being charged; RevenueCat-sourced subscribers are warned in the deletion dialog instead,
+  since there's no equivalent server-side cancellation available for IAP
 - Local testing: `stripe listen --forward-to localhost:3000/api/webhooks/stripe`
 
 ### Media storage (S3)

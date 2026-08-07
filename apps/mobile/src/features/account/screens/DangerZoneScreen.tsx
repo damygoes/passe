@@ -1,5 +1,5 @@
 import { useClerk } from '@clerk/expo'
-import { useDeleteAccount } from '@passe/hooks'
+import { useDeleteAccount, useUser } from '@passe/hooks'
 import { useRouter } from 'expo-router'
 import { useMemo, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
@@ -30,10 +30,12 @@ export function DangerZoneScreen() {
   const tErrors = useTranslations('account.errors')
   const router = useRouter()
   const { signOut } = useClerk()
+  const { data: user } = useUser()
   const { mutateAsync: deleteAccount, isPending } = useDeleteAccount()
   const [open, setOpen] = useState(false)
   const [confirmation, setConfirmation] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const isManagedOnMobile = user?.planSource === 'revenuecat'
 
   const styles = useMemo(
     () =>
@@ -56,6 +58,14 @@ export function DangerZoneScreen() {
         cardDescription: { fontSize: fontSizes.sm, color: colors.mutedForeground },
         dialogBody: { gap: spacing[2], marginTop: spacing[2] },
         errorText: { fontSize: fontSizes.xs, color: colors.destructive },
+        iapWarning: {
+          borderRadius: borderRadius.lg,
+          borderWidth: 1,
+          borderColor: colors.border,
+          backgroundColor: colors.muted,
+          padding: spacing[3],
+        },
+        iapWarningText: { fontSize: fontSizes.sm, color: colors.mutedForeground },
       }),
     [colors, spacing, borderRadius, fontSizes, fontWeights],
   )
@@ -107,6 +117,12 @@ export function DangerZoneScreen() {
             <AlertDialogTitle>{t('delete_title')}</AlertDialogTitle>
             <AlertDialogDescription>{t('warning')}</AlertDialogDescription>
           </AlertDialogHeader>
+
+          {isManagedOnMobile && (
+            <View style={styles.iapWarning}>
+              <Text style={styles.iapWarningText}>{t('iap_cancel_warning')}</Text>
+            </View>
+          )}
 
           <View style={styles.dialogBody}>
             <FormField

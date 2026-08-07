@@ -335,7 +335,8 @@
       "profile": "Profile",
       "security": "Security",
       "danger": "Danger Zone",
-      "portfolio": "My portfolio"
+      "portfolio": "My portfolio",
+      "paywall": "Upgrade"
     },
     "profile": {
       "title": "Profile",
@@ -369,7 +370,8 @@
       "confirm_placeholder": "delete my account",
       "delete": "Delete my account",
       "deleting": "Deleting…",
-      "warning": "This action is permanent and cannot be reversed."
+      "warning": "This action is permanent and cannot be reversed.",
+      "iap_cancel_warning": "Deleting your account does not cancel your App Store or Google Play subscription — you'll keep being charged. Cancel it in your device's subscription settings first, then delete your account."
     },
     "errors": {
       "load_failed": "Failed to load account. Please try again.",
@@ -380,6 +382,17 @@
     },
     "plan": {
       "title": "Plan"
+    },
+    "paywall": {
+      "title": "Upgrade your plan",
+      "subtitle": "Unlock more trips, more memories, and a public portfolio.",
+      "current_plan_badge": "Current plan",
+      "upgrade_to": "Upgrade to {plan}",
+      "restore_purchases": "Restore purchases",
+      "restore_success": "Purchases restored — your plan updates within a few seconds.",
+      "purchase_success": "Thank you! Your plan updates within a few seconds.",
+      "purchase_error": "Something went wrong. Please try again.",
+      "load_error": "Could not load plans. Please try again."
     },
     "legal": {
       "title": "Legal",
@@ -541,6 +554,7 @@
     "switch_to": "Switch to {plan}",
     "manage_subscription": "Manage subscription",
     "portal_hint": "Switch plans, update your payment method, or cancel in the billing portal.",
+    "managed_on_mobile": "Your subscription is managed through the App Store or Google Play. Manage or cancel it from your device's subscription settings.",
     "success_banner": "Thank you! Your subscription is active — your plan updates within a few seconds.",
     "canceled_banner": "Checkout cancelled — your plan has not changed.",
     "load_error": "Could not load your billing details.",

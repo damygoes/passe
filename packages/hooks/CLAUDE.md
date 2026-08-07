@@ -62,7 +62,9 @@ export {
 // since reads of stored media always go through a server-signed URL.
 export { useUploadImage }
 
-// Billing (web-only in practice — mobile never sells; both resolve { url } to redirect to)
+// Billing (Stripe checkout/portal — web-only; both resolve { url } to redirect to).
+// Mobile sells Explorer/Collector too, but via react-native-purchases (RevenueCat) directly,
+// not through these hooks — see apps/web/CLAUDE.md "Billing (Stripe + RevenueCat)".
 export { useCreateCheckoutSession, useCreatePortalSession }
 ```
 

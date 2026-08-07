@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'expo-router'
 import { useMemo, useState } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
-import { StyleSheet, Switch, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Switch, Text, View } from 'react-native'
 
 import { Button } from '@/components/ui/button'
 import { FormField } from '@/components/ui/form-field'
@@ -94,6 +94,7 @@ export function TripForm({ trip }: TripFormProps) {
           paddingVertical: spacing[3],
         },
         limitText: { fontSize: fontSizes.sm, color: colors.mutedForeground },
+        upgradeCta: { fontSize: fontSizes.sm, color: colors.primary, fontWeight: '600' },
       }),
     [colors, spacing, fontSizes, borderRadius],
   )
@@ -122,6 +123,9 @@ export function TripForm({ trip }: TripFormProps) {
       {atTripLimit && (
         <View style={styles.limitBanner}>
           <Text style={styles.limitText}>{t('limit_reached')}</Text>
+          <Pressable onPress={() => router.push('/(app)/account/paywall')}>
+            <Text style={styles.upgradeCta}>{t('upgrade_cta')}</Text>
+          </Pressable>
         </View>
       )}
 
@@ -223,9 +227,13 @@ export function TripForm({ trip }: TripFormProps) {
           <View style={styles.publicRow}>
             <View style={styles.publicTextGroup}>
               <Text style={styles.fieldLabel}>{t('public_label')}</Text>
-              <Text style={styles.publicHint}>
-                {canPublish ? t('public_hint') : t('public_gated_hint_locked')}
-              </Text>
+              {canPublish ? (
+                <Text style={styles.publicHint}>{t('public_hint')}</Text>
+              ) : (
+                <Pressable onPress={() => router.push('/(app)/account/paywall')}>
+                  <Text style={styles.upgradeCta}>{t('public_gated_hint')}</Text>
+                </Pressable>
+              )}
             </View>
             <Switch
               value={field.value ?? false}

@@ -43,6 +43,13 @@
       "when": 1784565650222,
       "tag": "0005_eminent_senator_kelly",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1786090821309,
+      "tag": "0006_light_swordsman",
+      "breakpoints": true
     }
   ]
 }

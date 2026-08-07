@@ -2,7 +2,7 @@
 
 import { PLAN_LIMITS } from '@passe/auth/plan-gates'
 import { useCreateCheckoutSession, useCreatePortalSession } from '@passe/hooks'
-import type { BillingRedirect, PaidPlan, Plan } from '@passe/types'
+import type { BillingRedirect, PaidPlan, Plan, PlanSource } from '@passe/types'
 import { Badge } from '@passe/ui/badge'
 import { Button } from '@passe/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@passe/ui/card'
@@ -17,7 +17,13 @@ function redirectToStripe({ url }: BillingRedirect) {
   window.location.assign(url)
 }
 
-export function PlanCards({ currentPlan }: { currentPlan: Plan }) {
+export function PlanCards({
+  currentPlan,
+  planSource,
+}: {
+  currentPlan: Plan
+  planSource?: PlanSource | null
+}) {
   const t = useTranslations('billing')
   const tPricing = useTranslations('landing.pricing')
   const checkout = useCreateCheckoutSession()
@@ -26,6 +32,7 @@ export function PlanCards({ currentPlan }: { currentPlan: Plan }) {
   const isPending = checkout.isPending || portal.isPending
   const hasError = checkout.isError || portal.isError
   const hasPaidPlan = currentPlan !== 'free'
+  const isManagedOnMobile = planSource === 'revenuecat'
 
   const openCheckout = (plan: PaidPlan) => checkout.mutate(plan, { onSuccess: redirectToStripe })
   const openPortal = () => portal.mutate(undefined, { onSuccess: redirectToStripe })
@@ -85,7 +92,10 @@ export function PlanCards({ currentPlan }: { currentPlan: Plan }) {
                   // Subscribed users switch through the Stripe portal — a second
                   // Checkout would create a second subscription. Cancelling (the
                   // free card) is portal-only too, so that card gets no button.
-                  plan !== 'free' && (
+                  // RevenueCat-sourced subscribers have no Stripe portal to switch
+                  // through — they get no button here either (see the mobile hint below).
+                  plan !== 'free' &&
+                  !isManagedOnMobile && (
                     <Button
                       variant="outline"
                       className="w-full"
@@ -112,10 +122,16 @@ export function PlanCards({ currentPlan }: { currentPlan: Plan }) {
 
       {hasPaidPlan && (
         <div className="mt-8 flex flex-col items-start gap-2">
-          <p className="text-sm text-muted-foreground">{t('portal_hint')}</p>
-          <Button variant="secondary" disabled={isPending} onClick={openPortal}>
-            {t('manage_subscription')}
-          </Button>
+          {isManagedOnMobile ? (
+            <p className="text-sm text-muted-foreground">{t('managed_on_mobile')}</p>
+          ) : (
+            <>
+              <p className="text-sm text-muted-foreground">{t('portal_hint')}</p>
+              <Button variant="secondary" disabled={isPending} onClick={openPortal}>
+                {t('manage_subscription')}
+              </Button>
+            </>
+          )}
         </div>
       )}
 

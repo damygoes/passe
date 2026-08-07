@@ -335,7 +335,8 @@
       "profile": "Profil",
       "security": "Sicherheit",
       "danger": "Gefahrenbereich",
-      "portfolio": "Mein Portfolio"
+      "portfolio": "Mein Portfolio",
+      "paywall": "Upgrade"
     },
     "profile": {
       "title": "Profil",
@@ -369,7 +370,8 @@
       "confirm_placeholder": "delete my account",
       "delete": "Mein Konto löschen",
       "deleting": "Wird gelöscht…",
-      "warning": "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden."
+      "warning": "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden.",
+      "iap_cancel_warning": "Das Löschen deines Kontos kündigt dein App Store- oder Google Play-Abo nicht — du wirst weiterhin belastet. Kündige es zuerst in den Abo-Einstellungen deines Geräts und lösche dann dein Konto."
     },
     "errors": {
       "load_failed": "Konto konnte nicht geladen werden. Bitte versuche es erneut.",
@@ -380,6 +382,17 @@
     },
     "plan": {
       "title": "Tarif"
+    },
+    "paywall": {
+      "title": "Tarif upgraden",
+      "subtitle": "Schalte mehr Reisen, mehr Erinnerungen und ein öffentliches Portfolio frei.",
+      "current_plan_badge": "Aktueller Tarif",
+      "upgrade_to": "Auf {plan} upgraden",
+      "restore_purchases": "Käufe wiederherstellen",
+      "restore_success": "Käufe wiederhergestellt — dein Tarif wird in wenigen Sekunden aktualisiert.",
+      "purchase_success": "Danke! Dein Tarif wird in wenigen Sekunden aktualisiert.",
+      "purchase_error": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+      "load_error": "Tarife konnten nicht geladen werden. Bitte versuche es erneut."
     },
     "legal": {
       "title": "Rechtliches",
@@ -541,6 +554,7 @@
     "switch_to": "Zu {plan} wechseln",
     "manage_subscription": "Abo verwalten",
     "portal_hint": "Tarif wechseln, Zahlungsmethode ändern oder im Abrechnungsportal kündigen.",
+    "managed_on_mobile": "Dein Abo wird über den App Store oder Google Play verwaltet. Verwalte oder kündige es in den Abo-Einstellungen deines Geräts.",
     "success_banner": "Danke! Dein Abo ist aktiv — dein Tarif wird in wenigen Sekunden aktualisiert.",
     "canceled_banner": "Checkout abgebrochen — dein Tarif wurde nicht geändert.",
     "load_error": "Deine Abrechnungsdaten konnten nicht geladen werden.",

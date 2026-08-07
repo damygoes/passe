@@ -1,14 +1,16 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockPush } from '@/test/navigation-mock'
 import { DangerZone } from './DangerZone'
 
 vi.mock('@clerk/nextjs', () => import('@/test/clerk-mock'))
 
 const mockDeleteAccount = vi.fn()
+let mockUserData: { planSource?: string | null } | undefined = undefined
 vi.mock('@passe/hooks', () => ({
   useDeleteAccount: () => ({ mutateAsync: mockDeleteAccount, isPending: false }),
+  useUser: () => ({ data: mockUserData }),
 }))
 
 async function openDialog(user: ReturnType<typeof userEvent.setup>) {
@@ -16,6 +18,10 @@ async function openDialog(user: ReturnType<typeof userEvent.setup>) {
 }
 
 describe('DangerZone', () => {
+  beforeEach(() => {
+    mockUserData = undefined
+  })
+
   it('keeps the confirm action disabled until the exact phrase is typed', async () => {
     const user = userEvent.setup()
     render(<DangerZone />)
@@ -54,5 +60,23 @@ describe('DangerZone', () => {
     await user.click(confirmButtons[confirmButtons.length - 1]!)
 
     expect(await screen.findByText('delete failed')).toBeInTheDocument()
+  })
+
+  it('shows the IAP cancellation warning only for RevenueCat-sourced subscribers', async () => {
+    mockUserData = { planSource: 'revenuecat' }
+    const user = userEvent.setup()
+    render(<DangerZone />)
+    await openDialog(user)
+
+    expect(screen.getByText('iap_cancel_warning')).toBeInTheDocument()
+  })
+
+  it('does not show the IAP cancellation warning for Stripe-sourced subscribers', async () => {
+    mockUserData = { planSource: 'stripe' }
+    const user = userEvent.setup()
+    render(<DangerZone />)
+    await openDialog(user)
+
+    expect(screen.queryByText('iap_cancel_warning')).not.toBeInTheDocument()
   })
 })

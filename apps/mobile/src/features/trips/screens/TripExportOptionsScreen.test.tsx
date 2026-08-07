@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native'
-import { mockReplace, setMockSearchParams } from '@/test/expo-router-mock'
+import { mockPush, mockReplace, setMockSearchParams } from '@/test/expo-router-mock'
 import { downloadTripExport } from '@/features/trips/utils/downloadTripExport'
 import { TripExportOptionsScreen } from './TripExportOptionsScreen'
 
@@ -23,13 +23,15 @@ describe('TripExportOptionsScreen', () => {
     setMockSearchParams({ id: 'trip-1' })
   })
 
-  it('shows Collector badges and blocks actions on the free plan', () => {
+  it('shows Collector badges and opens the paywall instead of the gated action on the free plan', () => {
     mockUseUser.mockReturnValue({ data: { plan: 'free' } })
     render(<TripExportOptionsScreen />)
 
     expect(screen.getAllByText('collector_badge')).toHaveLength(3)
     fireEvent.press(screen.getByText('create_zine'))
     expect(mockReplace).not.toHaveBeenCalled()
+    expect(mockPush).toHaveBeenCalledWith('/(app)/account/paywall')
+
     fireEvent.press(screen.getByText('download_pdf'))
     expect(downloadTripExport).not.toHaveBeenCalled()
   })
