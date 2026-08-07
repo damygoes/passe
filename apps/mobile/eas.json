@@ -14,7 +14,7 @@
         "EXPO_PUBLIC_MAPTILER_KEY": "lvMcOthm8AmoVykoj6rm",
         "EXPO_PUBLIC_SENTRY_DSN": "https://e9aa535fb26e708d4b3509f717d08c52@o4510782202445824.ingest.de.sentry.io/4511744193265744",
         "EXPO_PUBLIC_REVENUECAT_API_KEY_IOS": "appl_lVaxwUZsvCZlMcFOAZDNcaehpar",
-        "EXPO_PUBLIC_REVENUECAT_API_KEY_ANDROID": ""
+        "EXPO_PUBLIC_REVENUECAT_API_KEY_ANDROID": "goggl_lVaxwUZsvCZlMcFOAZDNcaehpar"
       },
       "ios": {
         "simulator": true
@@ -30,7 +30,7 @@
         "EXPO_PUBLIC_MAPTILER_KEY": "lvMcOthm8AmoVykoj6rm",
         "EXPO_PUBLIC_SENTRY_DSN": "https://e9aa535fb26e708d4b3509f717d08c52@o4510782202445824.ingest.de.sentry.io/4511744193265744",
         "EXPO_PUBLIC_REVENUECAT_API_KEY_IOS": "appl_lVaxwUZsvCZlMcFOAZDNcaehpar",
-        "EXPO_PUBLIC_REVENUECAT_API_KEY_ANDROID": ""
+        "EXPO_PUBLIC_REVENUECAT_API_KEY_ANDROID": "goggl_lVaxwUZsvCZlMcFOAZDNcaehpar"
       },
       "ios": {
         "simulator": false
@@ -45,7 +45,7 @@
         "EXPO_PUBLIC_MAPTILER_KEY": "lvMcOthm8AmoVykoj6rm",
         "EXPO_PUBLIC_SENTRY_DSN": "https://e9aa535fb26e708d4b3509f717d08c52@o4510782202445824.ingest.de.sentry.io/4511744193265744",
         "EXPO_PUBLIC_REVENUECAT_API_KEY_IOS": "appl_lVaxwUZsvCZlMcFOAZDNcaehpar",
-        "EXPO_PUBLIC_REVENUECAT_API_KEY_ANDROID": ""
+        "EXPO_PUBLIC_REVENUECAT_API_KEY_ANDROID": "goggl_lVaxwUZsvCZlMcFOAZDNcaehpar"
       }
     },
     "production": {
@@ -56,8 +56,8 @@
         "EXPO_PUBLIC_API_URL": "https://passe.cc",
         "EXPO_PUBLIC_MAPTILER_KEY": "lvMcOthm8AmoVykoj6rm",
         "EXPO_PUBLIC_SENTRY_DSN": "https://e9aa535fb26e708d4b3509f717d08c52@o4510782202445824.ingest.de.sentry.io/4511744193265744",
-        "EXPO_PUBLIC_REVENUECAT_API_KEY_IOS": "",
-        "EXPO_PUBLIC_REVENUECAT_API_KEY_ANDROID": ""
+        "EXPO_PUBLIC_REVENUECAT_API_KEY_IOS": "appl_lVaxwUZsvCZlMcFOAZDNcaehpar",
+        "EXPO_PUBLIC_REVENUECAT_API_KEY_ANDROID": "goggl_lVaxwUZsvCZlMcFOAZDNcaehpar"
       }
     }
   },
