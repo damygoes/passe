@@ -381,7 +381,10 @@
       "reverification_failed": "Verification failed. Please try again."
     },
     "plan": {
-      "title": "Plan"
+      "title": "Plan",
+      "current": "Current plan",
+      "trips_used": "{used}/{limit} Trips",
+      "trips_unlimited": "Unlimited trips"
     },
     "paywall": {
       "title": "Upgrade your plan",
@@ -389,10 +392,16 @@
       "current_plan_badge": "Current plan",
       "upgrade_to": "Upgrade to {plan}",
       "restore_purchases": "Restore purchases",
-      "restore_success": "Purchases restored — your plan updates within a few seconds.",
-      "purchase_success": "Thank you! Your plan updates within a few seconds.",
       "purchase_error": "Something went wrong. Please try again.",
-      "load_error": "Could not load plans. Please try again."
+      "load_error": "Could not load plans. Please try again.",
+      "hero_title": "Your travels, remembered",
+      "hero_subtitle": "Unlock more room for the moments you don't want to lose.",
+      "select_plan_cta": "Continue with {plan}",
+      "select_a_plan": "Choose a plan to continue",
+      "feature_trips": "More trips to keep",
+      "feature_memories": "More memories per trip",
+      "feature_portfolio": "A public portfolio to share",
+      "feature_pdf_export": "Export your trips as PDF"
     },
     "legal": {
       "title": "Legal",
@@ -482,7 +491,7 @@
       "ios_name": "App Store",
       "android": "Google Play",
       "screenshotAlt": "The Passé app showing a traveller's trip archive",
-      "subscriptionHint": "Plans and subscriptions are managed here on the website."
+      "subscriptionHint": "Your trips stay in sync across web and mobile."
     },
     "archiveStat": {
       "label": "memories kept and counting"
@@ -498,7 +507,9 @@
         "memories": "{count, plural, one {# memory} other {# memories}} per trip",
         "memories_unlimited": "Unlimited memories per trip",
         "portfolio_yes": "Public portfolio",
-        "portfolio_no": "Private journaling only"
+        "portfolio_no": "Private journaling only",
+        "pdf_export_yes": "PDF export",
+        "pdf_export_no": "No PDF export"
       },
       "plans": {
         "free": {

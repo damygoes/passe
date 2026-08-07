@@ -34,6 +34,7 @@ export function PricingCard({ plan }: { plan: PlanType }) {
       ? t('bullets.memories_unlimited')
       : t('bullets.memories', { count: limits.maxMemoriesPerTrip }),
     limits.publicPortfolio ? t('bullets.portfolio_yes') : t('bullets.portfolio_no'),
+    limits.pdfExport ? t('bullets.pdf_export_yes') : t('bullets.pdf_export_no'),
   ]
 
   return (

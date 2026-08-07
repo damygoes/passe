@@ -26,26 +26,43 @@ const REVOKE_EVENTS = new Set(['EXPIRATION'])
 type RevenueCatEvent = {
   type: string
   app_user_id: string
-  entitlement_ids?: string[]
+  entitlement_ids?: string[] | null
+  product_id?: string
   environment?: string
 }
 
 function verifyAuth(req: Request): boolean {
   const secret = process.env.REVENUECAT_WEBHOOK_SECRET
-  if (!secret) return false
+  if (!secret) {
+    log.error('REVENUECAT_WEBHOOK_SECRET is not set')
+    return false
+  }
 
   const header = req.headers.get('authorization') ?? ''
   const expected = `Bearer ${secret}`
   const received = Buffer.from(header)
   const wanted = Buffer.from(expected)
-  // Buffers of different lengths would throw inside timingSafeEqual
-  if (received.length !== wanted.length) return false
+  // Buffers of different lengths would throw inside timingSafeEqual. Logging only the lengths
+  // (never the values) still pinpoints whitespace/quote copy-paste mismatches without leaking
+  // the secret.
+  if (received.length !== wanted.length) {
+    log.error('RevenueCat webhook auth header length mismatch', {
+      receivedLength: received.length,
+      expectedLength: wanted.length,
+    })
+    return false
+  }
   return timingSafeEqual(received, wanted)
 }
 
-function resolvePlan(entitlementIds: string[]): Plan | null {
+// entitlement_ids is the primary signal, but RevenueCat doesn't populate it for every grant
+// event type (observed null on UNCANCELLATION) — fall back to product_id, matching the same
+// substring convention the mobile client uses (resolvePlanForPackage in PaywallScreen.tsx).
+function resolvePlan(entitlementIds: string[], productId: string | undefined): Plan | null {
   if (entitlementIds.includes('collector')) return 'collector'
   if (entitlementIds.includes('explorer')) return 'explorer'
+  if (productId?.includes('collector')) return 'collector'
+  if (productId?.includes('explorer')) return 'explorer'
   return null
 }
 
@@ -67,6 +84,7 @@ export async function POST(req: Request) {
   }
 
   if (!GRANT_EVENTS.has(event.type) && !REVOKE_EVENTS.has(event.type)) {
+    log.debug('Ignoring unhandled RevenueCat event type', { eventType: event.type })
     return new Response('OK', { status: 200 })
   }
 
@@ -85,13 +103,14 @@ export async function POST(req: Request) {
 
   const plan: Plan | null = REVOKE_EVENTS.has(event.type)
     ? 'free'
-    : resolvePlan(event.entitlement_ids ?? [])
+    : resolvePlan(event.entitlement_ids ?? [], event.product_id)
 
   if (plan === null) {
     log.error('Grant event with no recognized entitlement', {
       userId: user.id,
       eventType: event.type,
       entitlementIds: event.entitlement_ids,
+      productId: event.product_id,
     })
     return new Response('OK', { status: 200 })
   }

@@ -65,7 +65,14 @@ export function Button({
       {loading ? (
         <Spinner color={variantRecipe.spinnerColor} />
       ) : typeof children === 'string' ? (
-        <Text style={[recipe.base.label, variantRecipe.label, sizeRecipe.label]}>{children}</Text>
+        <Text
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          minimumFontScale={0.8}
+          style={[recipe.base.label, variantRecipe.label, sizeRecipe.label]}
+        >
+          {children}
+        </Text>
       ) : (
         children
       )}

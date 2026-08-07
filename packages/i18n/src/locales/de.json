@@ -381,7 +381,10 @@
       "reverification_failed": "Überprüfung fehlgeschlagen. Bitte versuche es erneut."
     },
     "plan": {
-      "title": "Tarif"
+      "title": "Tarif",
+      "current": "Aktueller Tarif",
+      "trips_used": "{used}/{limit} Reisen",
+      "trips_unlimited": "Unbegrenzte Reisen"
     },
     "paywall": {
       "title": "Tarif upgraden",
@@ -389,10 +392,16 @@
       "current_plan_badge": "Aktueller Tarif",
       "upgrade_to": "Auf {plan} upgraden",
       "restore_purchases": "Käufe wiederherstellen",
-      "restore_success": "Käufe wiederhergestellt — dein Tarif wird in wenigen Sekunden aktualisiert.",
-      "purchase_success": "Danke! Dein Tarif wird in wenigen Sekunden aktualisiert.",
       "purchase_error": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
-      "load_error": "Tarife konnten nicht geladen werden. Bitte versuche es erneut."
+      "load_error": "Tarife konnten nicht geladen werden. Bitte versuche es erneut.",
+      "hero_title": "Deine Reisen, festgehalten",
+      "hero_subtitle": "Mehr Platz für die Momente, die du nicht verlieren willst.",
+      "select_plan_cta": "Weiter mit {plan}",
+      "select_a_plan": "Wähle einen Tarif, um fortzufahren",
+      "feature_trips": "Mehr Reisen behalten",
+      "feature_memories": "Mehr Erinnerungen pro Reise",
+      "feature_portfolio": "Ein öffentliches Portfolio zum Teilen",
+      "feature_pdf_export": "Reisen als PDF exportieren"
     },
     "legal": {
       "title": "Rechtliches",
@@ -482,7 +491,7 @@
       "ios_name": "App Store",
       "android": "Google Play",
       "screenshotAlt": "Die Passé App mit dem Reisearchiv einer Nutzerin",
-      "subscriptionHint": "Tarife und Abos werden hier auf der Website verwaltet."
+      "subscriptionHint": "Deine Reisen bleiben zwischen Web und Mobile synchron."
     },
     "archiveStat": {
       "label": "bewahrte Erinnerungen und es werden mehr"
@@ -498,7 +507,9 @@
         "memories": "{count, plural, one {# Erinnerung} other {# Erinnerungen}} pro Reise",
         "memories_unlimited": "Unbegrenzte Erinnerungen pro Reise",
         "portfolio_yes": "Öffentliches Portfolio",
-        "portfolio_no": "Nur privates Festhalten"
+        "portfolio_no": "Nur privates Festhalten",
+        "pdf_export_yes": "PDF-Export",
+        "pdf_export_no": "Kein PDF-Export"
       },
       "plans": {
         "free": {

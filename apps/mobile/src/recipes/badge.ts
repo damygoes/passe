@@ -1,6 +1,6 @@
 import { StyleSheet, type TextStyle, type ViewStyle } from 'react-native'
 
-import type { BadgeVariant } from '@/components/ui/badge/Badge.types'
+import type { BadgeSize, BadgeVariant } from '@/components/ui/badge/Badge.types'
 import type { AppTheme } from '@/hooks/useTheme'
 
 interface BadgeRecipe {
@@ -8,11 +8,15 @@ interface BadgeRecipe {
     container: ViewStyle
     label: TextStyle
   }
-  variants: Record<BadgeVariant, { container: ViewStyle; label: TextStyle }>
+  variants: Record<
+    BadgeVariant,
+    { container: ViewStyle; label: TextStyle; gradient?: readonly string[] }
+  >
+  sizes: Record<BadgeSize, { container: ViewStyle; label: TextStyle }>
 }
 
 export function createBadgeRecipe(theme: AppTheme): BadgeRecipe {
-  const { colors, spacing, fontSizes, fontWeights, borderRadius } = theme
+  const { colors, palette, spacing, fontSizes, fontWeights, borderRadius } = theme
 
   return {
     base: {
@@ -21,20 +25,40 @@ export function createBadgeRecipe(theme: AppTheme): BadgeRecipe {
           alignSelf: 'flex-start',
           flexDirection: 'row',
           alignItems: 'center',
-          paddingHorizontal: spacing[2],
-          paddingVertical: 2,
           borderRadius: borderRadius.full,
           borderWidth: 1,
           borderColor: 'transparent',
+          overflow: 'hidden',
         },
       }).style,
 
       label: StyleSheet.create({
         style: {
-          fontSize: fontSizes.xs,
           fontWeight: fontWeights.medium,
         },
       }).style,
+    },
+
+    sizes: {
+      sm: {
+        container: { paddingHorizontal: spacing[2], paddingVertical: 2 },
+        label: { fontSize: fontSizes.xs },
+      },
+
+      md: {
+        container: { paddingHorizontal: spacing[3], paddingVertical: 3 },
+        label: { fontSize: fontSizes.sm },
+      },
+
+      lg: {
+        container: { paddingHorizontal: spacing[3], paddingVertical: spacing[1] },
+        label: { fontSize: fontSizes.base },
+      },
+
+      xl: {
+        container: { paddingHorizontal: spacing[4], paddingVertical: spacing[2] },
+        label: { fontSize: fontSizes.lg },
+      },
     },
 
     variants: {
@@ -60,7 +84,24 @@ export function createBadgeRecipe(theme: AppTheme): BadgeRecipe {
 
       ghost: {
         container: { backgroundColor: colors.muted, borderColor: 'transparent' },
-        label: { color: colors.mutedForeground },
+        label: { color: colors.mutedForeground, fontWeight: fontWeights.semibold },
+      },
+
+      // Tier badges: paid plans get a foil gradient (same hue, light→dark shade) so they read
+      // as more premium without introducing off-brand colors. Gradient stops are fixed palette
+      // values (not theme-dependent), so label color is pinned too rather than following
+      // colors.secondaryForeground, which flips to a light tone in dark mode and disappears
+      // against this always-light sandyBeige gradient
+      'plan-explorer': {
+        container: { backgroundColor: colors.secondary, borderColor: 'transparent' },
+        label: { color: palette.darkEspresso.DEFAULT, fontWeight: fontWeights.semibold },
+        gradient: [palette.sandyBeige.light, palette.sandyBeige.dark],
+      },
+
+      'plan-collector': {
+        container: { backgroundColor: colors.primary, borderColor: 'transparent' },
+        label: { color: colors.primaryForeground, fontWeight: fontWeights.semibold },
+        gradient: [palette.terracotta.light, palette.terracotta.dark],
       },
 
       // Passport-stamp look: dashed ink border, uppercase label, slight tilt

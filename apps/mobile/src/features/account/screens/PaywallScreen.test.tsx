@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native'
+import { mockBack } from '@/test/expo-router-mock'
 import { PaywallScreen } from './PaywallScreen'
 
 const mockUseUser = jest.fn()
@@ -72,15 +73,16 @@ describe('PaywallScreen', () => {
     expect(await screen.findByText('load_error')).toBeTruthy()
   })
 
-  it('purchases a package and shows a success message', async () => {
+  it('purchases the selected package and dismisses the paywall', async () => {
     mockPurchasePackage.mockResolvedValue(undefined)
     render(<PaywallScreen />)
     await screen.findByText('€4.99')
 
-    fireEvent.press(screen.getAllByText('upgrade_to')[0]!)
+    fireEvent.press(screen.getByLabelText('plans.explorer.name'))
+    fireEvent.press(screen.getByText('select_plan_cta'))
 
     await waitFor(() => expect(mockPurchasePackage).toHaveBeenCalled())
-    expect(await screen.findByText('purchase_success')).toBeTruthy()
+    expect(mockBack).toHaveBeenCalled()
   })
 
   it('stays silent when the purchase is user-cancelled', async () => {
@@ -88,11 +90,12 @@ describe('PaywallScreen', () => {
     render(<PaywallScreen />)
     await screen.findByText('€4.99')
 
-    fireEvent.press(screen.getAllByText('upgrade_to')[0]!)
+    fireEvent.press(screen.getByLabelText('plans.explorer.name'))
+    fireEvent.press(screen.getByText('select_plan_cta'))
 
     await waitFor(() => expect(mockPurchasePackage).toHaveBeenCalled())
     expect(screen.queryByText('purchase_error')).toBeNull()
-    expect(screen.queryByText('purchase_success')).toBeNull()
+    expect(mockBack).not.toHaveBeenCalled()
   })
 
   it('shows an error banner when the purchase fails for another reason', async () => {
@@ -100,12 +103,31 @@ describe('PaywallScreen', () => {
     render(<PaywallScreen />)
     await screen.findByText('€4.99')
 
-    fireEvent.press(screen.getAllByText('upgrade_to')[0]!)
+    fireEvent.press(screen.getByLabelText('plans.explorer.name'))
+    fireEvent.press(screen.getByText('select_plan_cta'))
 
     expect(await screen.findByText('purchase_error')).toBeTruthy()
   })
 
-  it('restores purchases and shows a success message', async () => {
+  it('preselects the first plan so the CTA is enabled once offerings load', async () => {
+    render(<PaywallScreen />)
+    await screen.findByText('€4.99')
+
+    expect(screen.getByText('select_plan_cta')).toBeTruthy()
+    expect(screen.queryByText('select_a_plan')).toBeNull()
+  })
+
+  it('skips the current plan when preselecting, favoring an upgrade option', async () => {
+    mockUseUser.mockReturnValue({ data: { plan: 'explorer' } })
+    render(<PaywallScreen />)
+    await screen.findByText('€4.99')
+
+    fireEvent.press(screen.getByText('select_plan_cta'))
+    await waitFor(() => expect(mockPurchasePackage).toHaveBeenCalled())
+    expect(mockPurchasePackage.mock.calls[0][0]).toMatchObject({ identifier: 'collector_monthly' })
+  })
+
+  it('restores purchases and dismisses the paywall', async () => {
     mockRestorePurchases.mockResolvedValue(undefined)
     render(<PaywallScreen />)
     await screen.findByText('€4.99')
@@ -113,6 +135,6 @@ describe('PaywallScreen', () => {
     fireEvent.press(screen.getByText('restore_purchases'))
 
     await waitFor(() => expect(mockRestorePurchases).toHaveBeenCalled())
-    expect(await screen.findByText('restore_success')).toBeTruthy()
+    expect(mockBack).toHaveBeenCalled()
   })
 })

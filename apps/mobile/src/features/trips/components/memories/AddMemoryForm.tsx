@@ -20,6 +20,7 @@ import { FormField } from '@/components/ui/form-field'
 import { Icon } from '@/components/ui/icon'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
+import { UpgradeBanner } from '@/features/account/components/UpgradeBanner'
 import { DateField } from '@/features/trips/components/trip/date-field/DateField'
 import { useTheme } from '@/hooks/useTheme'
 import { haptics } from '@/lib/haptics'
@@ -131,16 +132,6 @@ export function AddMemoryForm({ tripId, memory }: AddMemoryFormProps) {
         pickerButtons: { flexDirection: 'row', gap: spacing[2] },
         pickerButton: { flex: 1 },
         locationRow: { flexDirection: 'row', alignItems: 'center', gap: spacing[2] },
-        limitBanner: {
-          gap: spacing[1],
-          borderRadius: borderRadius.lg,
-          borderWidth: 1,
-          borderColor: colors.border,
-          backgroundColor: colors.muted,
-          paddingHorizontal: spacing[4],
-          paddingVertical: spacing[3],
-        },
-        limitText: { fontSize: fontSizes.sm, color: colors.mutedForeground },
         limitLink: { fontSize: fontSizes.sm, fontWeight: '500', color: colors.primary },
       }),
     [colors, spacing, fontSizes, borderRadius],
@@ -274,12 +265,11 @@ export function AddMemoryForm({ tripId, memory }: AddMemoryFormProps) {
     <View style={styles.form}>
       {globalError && <ErrorBanner message={globalError} />}
       {atMemoryLimit && (
-        <View style={styles.limitBanner}>
-          <Text style={styles.limitText}>{t('limit_reached')}</Text>
-          <Pressable onPress={() => router.push('/(app)/account/paywall')}>
-            <Text style={styles.limitLink}>{t('upgrade_cta')}</Text>
-          </Pressable>
-        </View>
+        <UpgradeBanner
+          message={t('limit_reached')}
+          ctaLabel={t('upgrade_cta')}
+          onPressUpgrade={() => router.push('/(app)/account/paywall')}
+        />
       )}
 
       <View style={styles.fieldGroup}>

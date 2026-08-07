@@ -10,6 +10,7 @@ import { Pressable, StyleSheet, Switch, Text, View } from 'react-native'
 import { Button } from '@/components/ui/button'
 import { FormField } from '@/components/ui/form-field'
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
+import { UpgradeBanner } from '@/features/account/components/UpgradeBanner'
 import { CountryTagsInput } from '@/features/trips/components/trip/country-tags/CountryTagsInput'
 import { CoverImagePicker } from '@/features/trips/components/trip/image-upload/CoverImagePicker'
 import { DateField } from '@/features/trips/components/trip/date-field/DateField'
@@ -84,16 +85,6 @@ export function TripForm({ trip }: TripFormProps) {
         },
         publicTextGroup: { flex: 1, gap: spacing[1] },
         publicHint: { fontSize: fontSizes.xs, color: colors.mutedForeground },
-        limitBanner: {
-          gap: spacing[1],
-          borderRadius: borderRadius.lg,
-          borderWidth: 1,
-          borderColor: colors.border,
-          backgroundColor: colors.muted,
-          paddingHorizontal: spacing[4],
-          paddingVertical: spacing[3],
-        },
-        limitText: { fontSize: fontSizes.sm, color: colors.mutedForeground },
         upgradeCta: { fontSize: fontSizes.sm, color: colors.primary, fontWeight: '600' },
       }),
     [colors, spacing, fontSizes, borderRadius],
@@ -121,12 +112,11 @@ export function TripForm({ trip }: TripFormProps) {
     <View style={styles.form}>
       {globalError && <ErrorBanner message={globalError} />}
       {atTripLimit && (
-        <View style={styles.limitBanner}>
-          <Text style={styles.limitText}>{t('limit_reached')}</Text>
-          <Pressable onPress={() => router.push('/(app)/account/paywall')}>
-            <Text style={styles.upgradeCta}>{t('upgrade_cta')}</Text>
-          </Pressable>
-        </View>
+        <UpgradeBanner
+          message={t('limit_reached')}
+          ctaLabel={t('upgrade_cta')}
+          onPressUpgrade={() => router.push('/(app)/account/paywall')}
+        />
       )}
 
       <Controller

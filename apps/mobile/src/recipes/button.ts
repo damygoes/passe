@@ -136,6 +136,7 @@ export function createButtonRecipe(theme: AppTheme): ButtonRecipe {
         container: {
           paddingHorizontal: spacing[12],
           paddingVertical: spacing[6],
+          minHeight: spacing[20],
         },
 
         label: {

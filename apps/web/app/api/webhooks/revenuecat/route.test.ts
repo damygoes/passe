@@ -142,6 +142,23 @@ describe('POST /api/webhooks/revenuecat', () => {
     expect(mockDb.update).not.toHaveBeenCalled()
   })
 
+  it('falls back to product_id when entitlement_ids is null (e.g. UNCANCELLATION)', async () => {
+    mockDb.query.users.findFirst.mockResolvedValue({ id: 'user-1', plan: 'free', planSource: null })
+    const mockSet = vi.fn(() => dbChain(undefined))
+    mockDb.update.mockReturnValue({ set: mockSet } as never)
+
+    const res = await POST(
+      req(
+        revenueCatEvent('UNCANCELLATION', {
+          entitlement_ids: null,
+          product_id: 'cc.passe.explorer.monthly',
+        }),
+      ),
+    )
+    expect(res.status).toBe(200)
+    expect(mockSet).toHaveBeenCalledWith({ plan: 'explorer', planSource: 'revenuecat' })
+  })
+
   it('returns 500 when the DB write throws', async () => {
     mockDb.query.users.findFirst.mockResolvedValue({ id: 'user-1', plan: 'free', planSource: null })
     mockDb.update.mockImplementation(() => {
