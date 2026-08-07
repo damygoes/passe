@@ -27,8 +27,8 @@ export function AccountScreen() {
     () =>
       StyleSheet.create({
         safeArea: { flex: 1, backgroundColor: colors.background },
+        scroll: { flex: 1 },
         scrollContent: {
-          flexGrow: 1,
           padding: spacing[6],
           // iOS gets the header inset from `contentInsetAdjustmentBehavior` below —
           // adding headerHeight here too would double up the top space.
@@ -44,7 +44,7 @@ export function AccountScreen() {
         },
         userEmail: { fontSize: fontSizes.sm, color: colors.mutedForeground },
         menu: { gap: spacing[1] },
-        footer: { marginTop: 'auto' },
+        footer: { padding: spacing[6], paddingTop: spacing[4] },
       }),
     [colors, spacing, fontSizes, fontWeights, headerHeight],
   )
@@ -61,6 +61,7 @@ export function AccountScreen() {
   return (
     <SafeAreaView style={styles.safeArea} edges={['bottom']}>
       <ScrollView
+        style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
         contentInsetAdjustmentBehavior={Platform.OS === 'ios' ? 'automatic' : undefined}
       >
@@ -110,11 +111,11 @@ export function AccountScreen() {
         <Animated.View entering={enterUp(240)}>
           <LegalSection />
         </Animated.View>
-
-        <View style={styles.footer}>
-          <LogoutButton fullWidth />
-        </View>
       </ScrollView>
+
+      <View style={styles.footer}>
+        <LogoutButton fullWidth />
+      </View>
     </SafeAreaView>
   )
 }
