@@ -11,7 +11,7 @@ export function ProfileScreen() {
   const t = useTranslations('account.profile')
   const tTabs = useTranslations('account.tabs')
   const tErrors = useTranslations('account.errors')
-  const { data: user, isLoading, isError } = useUser()
+  const { data: user, isLoading, isError, refetch } = useUser()
   const { user: clerkUser } = useClerkUser()
 
   const email = clerkUser?.primaryEmailAddress?.emailAddress ?? ''
@@ -21,7 +21,7 @@ export function ProfileScreen() {
       {isLoading ? (
         <ProfileFormSkeleton />
       ) : isError || !user ? (
-        <ErrorBanner message={tErrors('load_failed')} />
+        <ErrorBanner message={tErrors('load_failed')} onRetry={() => refetch()} />
       ) : (
         <ProfileForm
           displayName={user.displayName}

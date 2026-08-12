@@ -43,7 +43,7 @@ export type AuthUser = z.infer<typeof AuthUserSchema>
 export const UpdateUserSchema = z
   .object({
     displayName: z.string().min(1).max(50),
-    username: z.string().min(3).max(30),
+    username: z.string().min(3).max(40),
     bio: z.string().max(160).nullish(),
   })
   .partial()

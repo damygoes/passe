@@ -114,7 +114,7 @@
       "passwords_no_match": "Passwörter stimmen nicht überein",
       "otp_length": "Gib den 6-stelligen Code ein",
       "username_min": "Mindestens 3 Zeichen",
-      "username_max": "Maximal 30 Zeichen",
+      "username_max": "Maximal 40 Zeichen",
       "bio_max": "Maximal 160 Zeichen"
     }
   },
@@ -378,7 +378,8 @@
       "update_failed": "Profil konnte nicht aktualisiert werden. Bitte versuche es erneut.",
       "password_failed": "Passwort konnte nicht aktualisiert werden. Bitte überprüfe dein aktuelles Passwort.",
       "delete_failed": "Konto konnte nicht gelöscht werden. Bitte versuche es erneut.",
-      "reverification_failed": "Überprüfung fehlgeschlagen. Bitte versuche es erneut."
+      "reverification_failed": "Überprüfung fehlgeschlagen. Bitte versuche es erneut.",
+      "retry": "Erneut versuchen"
     },
     "plan": {
       "title": "Tarif",

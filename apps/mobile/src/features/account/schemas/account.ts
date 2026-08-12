@@ -4,11 +4,8 @@ type TranslateFn = (key: string) => string
 
 export function createProfileSchema(t: TranslateFn) {
   return z.object({
-    displayName: z
-      .string()
-      .min(1, t('display_name_required'))
-      .max(50, t('display_name_max')),
-    username: z.string().min(3, t('username_min')).max(30, t('username_max')),
+    displayName: z.string().min(1, t('display_name_required')).max(50, t('display_name_max')),
+    username: z.string().min(3, t('username_min')).max(40, t('username_max')),
     bio: z.string().max(160, t('bio_max')),
   })
 }
