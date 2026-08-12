@@ -71,7 +71,7 @@ describe('UpdateUserSchema', () => {
     expect(UpdateUserSchema.safeParse({ username: 'ab' }).success).toBe(false)
   })
 
-  it('rejects a username longer than 30 characters', () => {
-    expect(UpdateUserSchema.safeParse({ username: 'a'.repeat(31) }).success).toBe(false)
+  it('rejects a username longer than 40 characters', () => {
+    expect(UpdateUserSchema.safeParse({ username: 'a'.repeat(41) }).success).toBe(false)
   })
 })
