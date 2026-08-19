@@ -13,7 +13,7 @@ import { TripCard } from '@/features/trips/components/trip/card/TripCard'
 import { TripsListSkeleton } from './TripsListSkeleton'
 
 export function TripsList() {
-  const { data: trips = [], isLoading, isError } = useTrips()
+  const { data: trips = [], isLoading, isError, refetch } = useTrips()
   const t = useTranslations('trips.dashboard')
   const router = useRouter()
   const { spacing } = useTheme()
@@ -28,7 +28,7 @@ export function TripsList() {
   }
 
   if (isError) {
-    return <ErrorBanner message={t('trips_error')} />
+    return <ErrorBanner message={t('trips_error')} onRetry={() => refetch()} />
   }
 
   if (trips.length === 0) {
