@@ -379,7 +379,8 @@
       "password_failed": "Passwort konnte nicht aktualisiert werden. Bitte überprüfe dein aktuelles Passwort.",
       "delete_failed": "Konto konnte nicht gelöscht werden. Bitte versuche es erneut.",
       "reverification_failed": "Überprüfung fehlgeschlagen. Bitte versuche es erneut.",
-      "retry": "Erneut versuchen"
+      "retry": "Erneut versuchen",
+      "dismiss": "Schließen"
     },
     "plan": {
       "title": "Tarif",
@@ -395,6 +396,7 @@
       "upgrade_to": "Auf {plan} upgraden",
       "restore_purchases": "Käufe wiederherstellen",
       "purchase_error": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+      "restore_not_found": "Kein aktiver Kauf zum Wiederherstellen gefunden.",
       "load_error": "Tarife konnten nicht geladen werden. Bitte versuche es erneut.",
       "hero_title": "Deine Reisen, festgehalten",
       "hero_subtitle": "Mehr Platz für die Momente, die du nicht verlieren willst.",

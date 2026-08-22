@@ -379,7 +379,8 @@
       "password_failed": "Failed to update password. Please check your current password.",
       "delete_failed": "Failed to delete account. Please try again.",
       "reverification_failed": "Verification failed. Please try again.",
-      "retry": "Try Again"
+      "retry": "Try Again",
+      "dismiss": "Dismiss"
     },
     "plan": {
       "title": "Plan",
@@ -395,6 +396,7 @@
       "upgrade_to": "Upgrade to {plan}",
       "restore_purchases": "Restore purchases",
       "purchase_error": "Something went wrong. Please try again.",
+      "restore_not_found": "No active purchase found to restore.",
       "load_error": "Could not load plans. Please try again.",
       "hero_title": "Your travels, remembered",
       "hero_subtitle": "Unlock more room for the moments you don't want to lose.",

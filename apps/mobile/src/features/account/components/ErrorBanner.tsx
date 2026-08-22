@@ -1,16 +1,18 @@
 import { useMemo } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 
 import { Button } from '@/components/ui/button'
+import { Icon } from '@/components/ui/icon'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
 interface ErrorBannerProps {
   message: string
   onRetry?: () => void
+  onDismiss?: () => void
 }
 
-export function ErrorBanner({ message, onRetry }: ErrorBannerProps) {
+export function ErrorBanner({ message, onRetry, onDismiss }: ErrorBannerProps) {
   const { colors, spacing, fontSizes } = useTheme()
   const tErrors = useTranslations('account.errors')
 
@@ -26,14 +28,22 @@ export function ErrorBanner({ message, onRetry }: ErrorBannerProps) {
           paddingVertical: spacing[3],
           gap: spacing[3],
         },
-        text: { fontSize: fontSizes.sm, color: colors.destructive },
+        row: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing[2] },
+        text: { flex: 1, fontSize: fontSizes.sm, color: colors.destructive },
       }),
     [colors, spacing, fontSizes],
   )
 
   return (
     <View style={styles.banner} accessibilityRole="alert">
-      <Text style={styles.text}>{message}</Text>
+      <View style={styles.row}>
+        <Text style={styles.text}>{message}</Text>
+        {onDismiss && (
+          <Pressable onPress={onDismiss} accessibilityLabel={tErrors('dismiss')} hitSlop={8}>
+            <Icon name="close" size="xs" color={colors.destructive} />
+          </Pressable>
+        )}
+      </View>
       {onRetry ? (
         <Button variant="secondary" size="sm" onPress={onRetry}>
           {tErrors('retry')}

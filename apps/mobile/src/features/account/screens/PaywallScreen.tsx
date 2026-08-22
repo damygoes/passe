@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
 import { FeatureHighlightList } from '@/features/account/components/FeatureHighlightList'
+import { PaywallFooterLinks } from '@/features/account/components/PaywallFooterLinks'
 import { PaywallHero } from '@/features/account/components/PaywallHero'
 import { PlanOptionCard } from '@/features/account/components/PlanOptionCard'
 import { useTheme } from '@/hooks/useTheme'
@@ -86,7 +87,7 @@ export function PaywallScreen() {
       await Purchases.purchasePackage(pkg)
       haptics.success()
       void pollForPlanUpdate(previousPlan).then((synced) => {
-        if (!synced) log.error('RevenueCat purchase did not sync to plan within polling window')
+        if (!synced) log.warn('RevenueCat purchase did not sync to plan within polling window')
       })
       router.back()
     } catch (err) {
@@ -104,11 +105,17 @@ export function PaywallScreen() {
     setIsRestoring(true)
     const previousPlan = user?.plan
     try {
-      await Purchases.restorePurchases()
+      const customerInfo = await Purchases.restorePurchases()
+      const hasActiveEntitlement = Object.keys(customerInfo.entitlements.active).some(
+        (id) => id === 'explorer' || id === 'collector',
+      )
+      if (!hasActiveEntitlement) {
+        setActionError(t('restore_not_found'))
+        return
+      }
       haptics.success()
-      void pollForPlanUpdate(previousPlan).then((synced) => {
-        if (!synced) log.error('RevenueCat restore did not sync to plan within polling window')
-      })
+      const synced = await pollForPlanUpdate(previousPlan)
+      if (!synced) log.warn('RevenueCat restore did not sync to plan within polling window')
       router.back()
     } catch {
       setActionError(t('purchase_error'))
@@ -129,7 +136,10 @@ export function PaywallScreen() {
   // load, rather than sitting in a low-contrast disabled state — until the user taps a
   // card, `selectedPlan` stays null and this default is used instead. Skips the user's
   // current plan (its card is already shown as current/disabled) in favor of an upgrade.
+  // Collector is the top tier, so there's no upgrade to default to — leave every card
+  // unhighlighted rather than pre-selecting a downgrade to Explorer.
   const defaultPlan = useMemo(() => {
+    if (user?.plan === 'collector') return null
     const defaultEntry =
       purchasablePackages.find((entry) => entry.plan !== user?.plan) ?? purchasablePackages[0]
     return defaultEntry?.plan ?? null
@@ -175,7 +185,7 @@ export function PaywallScreen() {
         scrollContent: { flexGrow: 1 },
         body: { padding: spacing[6], gap: spacing[6] },
         plans: { gap: spacing[4] },
-        footer: { gap: spacing[1] },
+        footer: { gap: spacing[3] },
       }),
     [colors, spacing],
   )
@@ -212,11 +222,13 @@ export function PaywallScreen() {
             </View>
           )}
 
-          {actionError && <ErrorBanner message={actionError} />}
+          {actionError && (
+            <ErrorBanner message={actionError} onDismiss={() => setActionError(null)} />
+          )}
 
           <View style={styles.footer}>
             <Button
-              size="lg"
+              size="md"
               variant="primary"
               fullWidth
               disabled={!selectedPackage || purchasingPackageId !== null}
@@ -230,15 +242,12 @@ export function PaywallScreen() {
                 : t('select_a_plan')}
             </Button>
 
-            <Button
-              size="sm"
-              variant="ghost"
-              onPress={handleRestore}
-              loading={isRestoring}
-              disabled={isRestoring || purchasingPackageId !== null}
-            >
-              {t('restore_purchases')}
-            </Button>
+            <PaywallFooterLinks
+              restoreLabel={t('restore_purchases')}
+              onRestorePress={handleRestore}
+              isRestoring={isRestoring}
+              restoreDisabled={isRestoring || purchasingPackageId !== null}
+            />
           </View>
         </View>
       </ScrollView>
