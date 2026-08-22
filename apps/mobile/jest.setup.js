@@ -18,6 +18,10 @@ jest.mock('@/i18n/useTranslations', () => ({
   useTranslations: () => (key) => key,
 }))
 
+jest.mock('@/i18n/I18nProvider', () => ({
+  useI18nContext: () => ({ locale: 'en', messages: {} }),
+}))
+
 jest.mock('@clerk/expo', () => require('./src/test/clerk-expo-mock'))
 jest.mock('@clerk/expo/legacy', () => require('./src/test/clerk-expo-mock'))
 jest.mock('expo-router', () => require('./src/test/expo-router-mock'))

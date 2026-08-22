@@ -1,15 +1,19 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react-native'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { mockBack } from '@/test/expo-router-mock'
 import { PaywallScreen } from './PaywallScreen'
 
 const mockUseUser = jest.fn()
 const mockInvalidateQueries = jest.fn()
+const mockGetQueryData = jest.fn()
 jest.mock('@passe/hooks', () => ({
   useUser: () => mockUseUser(),
   queryKeys: { user: () => ['user'] },
 }))
 jest.mock('@tanstack/react-query', () => ({
-  useQueryClient: () => ({ invalidateQueries: mockInvalidateQueries }),
+  useQueryClient: () => ({
+    invalidateQueries: mockInvalidateQueries,
+    getQueryData: mockGetQueryData,
+  }),
 }))
 
 const mockGetOfferings = jest.fn()
@@ -128,13 +132,31 @@ describe('PaywallScreen', () => {
   })
 
   it('restores purchases and dismisses the paywall', async () => {
-    mockRestorePurchases.mockResolvedValue(undefined)
+    mockRestorePurchases.mockResolvedValue({ entitlements: { active: { explorer: {} } } })
+    // pollForPlanUpdate re-checks the query cache after each 1500ms tick until the plan
+    // changes from its pre-restore value ('free') — resolving to 'explorer' lets it exit
+    // after a single tick instead of exhausting all 5 retries.
+    mockGetQueryData.mockReturnValue({ plan: 'explorer' })
+    render(<PaywallScreen />)
+    await screen.findByText('€4.99')
+
+    fireEvent.press(screen.getByText('restore_purchases'))
+    await waitFor(() => expect(mockRestorePurchases).toHaveBeenCalled())
+    await act(async () => {
+      await jest.advanceTimersByTimeAsync(1500)
+    })
+
+    await waitFor(() => expect(mockBack).toHaveBeenCalled())
+  })
+
+  it('shows a not-found error when restoring finds no active entitlement', async () => {
+    mockRestorePurchases.mockResolvedValue({ entitlements: { active: {} } })
     render(<PaywallScreen />)
     await screen.findByText('€4.99')
 
     fireEvent.press(screen.getByText('restore_purchases'))
 
-    await waitFor(() => expect(mockRestorePurchases).toHaveBeenCalled())
-    expect(mockBack).toHaveBeenCalled()
+    expect(await screen.findByText('restore_not_found')).toBeTruthy()
+    expect(mockBack).not.toHaveBeenCalled()
   })
 })
