@@ -1,7 +1,7 @@
 {
   "common": {
     "app_name": "Passe.",
-    "app_tagline": "The past, beautifully kept.",
+    "app_tagline": "Made to be kept, not scrolled.",
     "cancel": "Cancel"
   },
   "auth": {
@@ -417,7 +417,7 @@
   },
   "landing": {
     "meta": {
-      "title": "Passe. — The past, beautifully kept.",
+      "title": "Passe. — Made to be kept, not scrolled.",
       "description": "Create trips, attach geotagged memories, and share a beautiful travel portfolio. Private by default."
     },
     "nav": {
@@ -426,8 +426,8 @@
     },
     "hero": {
       "eyebrow": "Travel memory keeping",
-      "title_leading": "The past,",
-      "title_accent": "beautifully kept.",
+      "title_leading": "Made to be kept,",
+      "title_accent": "not scrolled.",
       "subtitle": "Passe turns your trips into a living archive — geotagged photos, notes, and moments, arranged into a portfolio worth sharing.",
       "cta_primary": "Start for free",
       "cta_secondary": "Sign in",
