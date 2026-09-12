@@ -192,6 +192,7 @@
       "trip_error": "Reise konnte nicht geladen werden. Versuche, die Seite neu zu laden.",
       "memories_error": "Erinnerungen konnten nicht geladen werden. Versuche, die Seite neu zu laden.",
       "add_memory": "Erinnerung hinzufügen",
+      "share": "Reise teilen",
       "export_menu_trigger": "Exportieren",
       "collector_badge": "Collector",
       "coming_soon_badge": "Bald",

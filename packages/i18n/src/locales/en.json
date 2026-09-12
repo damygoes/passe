@@ -192,6 +192,7 @@
       "trip_error": "Could not load trip. Try refreshing the page.",
       "memories_error": "Could not load memories. Try refreshing the page.",
       "add_memory": "Add memory",
+      "share": "Share this trip",
       "export_menu_trigger": "Export",
       "collector_badge": "Collector",
       "coming_soon_badge": "Soon",

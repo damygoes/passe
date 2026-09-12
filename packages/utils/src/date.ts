@@ -16,6 +16,13 @@ export function formatDateRange(start: Date | string, end: Date | string): strin
   return `${formatTripDateFull(start)} – ${formatTripDateFull(end)}`
 }
 
+// The memory masonry grid's mono caption under each tile ("11 MAR") — day
+// plus short month, no year, uppercased by the caller's CSS (the string
+// itself stays sentence case so it composes with i18n date settings).
+export function formatMemoryDate(date: Date | string): string {
+  return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' }).format(new Date(date))
+}
+
 // The Home screen's mono date caption ("Tuesday, 12 May 2026") — day-before-
 // month, always comma-separated from the weekday, per the design's exact
 // copy. Built from two separate Intl calls (rather than one combined

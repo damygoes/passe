@@ -5,10 +5,14 @@ import { MemoriesList } from './MemoriesList'
 const mockUseMemories = vi.fn()
 vi.mock('@passe/hooks', () => ({ useMemories: () => mockUseMemories() }))
 
-vi.mock('./MemoriesListSkeleton', () => ({ MemoriesListSkeleton: () => <div>loading-skeleton</div> }))
+vi.mock('./MemoriesListSkeleton', () => ({
+  MemoriesListSkeleton: () => <div>loading-skeleton</div>,
+}))
 vi.mock('./NoMemoriesEmpty', () => ({ NoMemoriesEmpty: () => <div>no-memories</div> }))
-vi.mock('../editorial/EditorialMemories', () => ({
-  EditorialMemories: ({ memories }: { memories: unknown[] }) => <div>memories:{memories.length}</div>,
+vi.mock('./MemoriesMasonryGrid', () => ({
+  MemoriesMasonryGrid: ({ memories }: { memories: unknown[] }) => (
+    <div>memories:{memories.length}</div>
+  ),
 }))
 
 describe('MemoriesList', () => {
@@ -30,10 +34,14 @@ describe('MemoriesList', () => {
     expect(screen.getByText('no-memories')).toBeInTheDocument()
   })
 
-  it('renders the editorial layout with a count when memories exist', () => {
-    mockUseMemories.mockReturnValue({ data: [{ id: '1' }, { id: '2' }], isLoading: false, isError: false })
+  it('renders the masonry grid with a count when memories exist', () => {
+    mockUseMemories.mockReturnValue({
+      data: [{ id: '1' }, { id: '2' }],
+      isLoading: false,
+      isError: false,
+    })
     render(<MemoriesList tripId="trip-1" />)
     expect(screen.getByText('memories:2')).toBeInTheDocument()
-    expect(screen.getByText('2')).toBeInTheDocument()
+    expect(screen.getByText('2 memories_heading')).toBeInTheDocument()
   })
 })
