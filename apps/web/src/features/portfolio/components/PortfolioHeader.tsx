@@ -41,7 +41,7 @@ export function PortfolioHeader({
             <p className="mb-1 text-xs uppercase tracking-widest text-muted-foreground">
               Portfolio
             </p>
-            <h1 className="font-heading text-3xl font-semibold">{user.displayName}</h1>
+            <h1 className="font-display text-3xl font-semibold">{user.displayName}</h1>
             {user.bio && <p className="mt-2 text-muted-foreground">{user.bio}</p>}
             <div className="mt-3 flex flex-wrap gap-2">
               <Badge variant="outline">

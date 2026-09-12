@@ -69,7 +69,7 @@ export function EditorialChapters({
                 {chapter.subtitle}
               </p>
             )}
-            <h3 className="font-heading mt-1 text-3xl text-foreground">{chapter.title}</h3>
+            <h3 className="font-display mt-1 text-3xl text-foreground">{chapter.title}</h3>
             <div className="mt-3 h-px w-16 bg-primary" />
           </header>
 

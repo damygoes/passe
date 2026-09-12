@@ -85,7 +85,7 @@ function MediaCardTitle({ className, ...props }: React.ComponentProps<'div'>) {
     <div
       data-slot="media-card-title"
       className={cn(
-        'cn-font-heading text-lg leading-snug font-semibold text-aged-cream drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]',
+        'font-display text-lg leading-snug font-semibold text-aged-cream drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]',
         className,
       )}
       {...props}

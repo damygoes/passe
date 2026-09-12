@@ -17,13 +17,6 @@ export const fonts = {
     default: 'serif',
   }) as string,
 
-  heading: Platform.select({
-    ios: fontFamilies.heading[0], // 'Lora'
-    android: fontFamilies.heading[0],
-    web: fontFamilies.heading.join(', '), // 'Lora, Georgia, serif'
-    default: 'serif',
-  }) as string,
-
   body: Platform.select({
     ios: fontFamilies.body[0], // 'Helvetica Neue'
     android: 'sans-serif',

@@ -26,7 +26,7 @@ export function PageHeaderTitle({ style, children, ...props }: PageHeaderTextSub
     <Text
       style={[
         {
-          fontFamily: fonts.heading,
+          fontFamily: fonts.display,
           fontSize: fontSizes['2xl'],
           fontWeight: fontWeights.semibold,
           color: colors.foreground,

@@ -97,7 +97,7 @@ export function PhotoTextRow({
         >
           <Icon name={icon} size="lg" aria-hidden />
         </div>
-        <h3 className="font-heading text-2xl font-semibold md:text-4xl">{title}</h3>
+        <h3 className="font-display text-2xl font-semibold md:text-4xl">{title}</h3>
         <p className="mt-3 text-lg text-muted-foreground">{description}</p>
       </m.div>
     </div>

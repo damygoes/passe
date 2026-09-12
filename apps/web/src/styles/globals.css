@@ -8,11 +8,10 @@
 
 /* Brand typefaces are self-hosted via next/font in app/layout.tsx, which exposes
    them as CSS variables on <html>. Override the token-package families here so
-   font-display/font-heading/font-mono resolve to the loaded fonts, keeping
-   @passe/theme app-agnostic. */
+   font-display/font-mono resolve to the loaded fonts, keeping @passe/theme
+   app-agnostic. */
 @theme {
   --font-display: var(--font-playfair), Georgia, serif;
-  --font-heading: var(--font-lora), Georgia, serif;
   --font-mono: var(--font-dm-mono), Menlo, monospace;
 }
 

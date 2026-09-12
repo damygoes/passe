@@ -26,7 +26,7 @@ export function PortfolioTripHeader({ slug, user, trip }: Props) {
         >
           ← {user.displayName}&apos;s portfolio
         </a>
-        <h1 className="font-heading text-3xl font-semibold">{trip.title}</h1>
+        <h1 className="font-display text-3xl font-semibold">{trip.title}</h1>
         {trip.description && <p className="mt-2 text-muted-foreground">{trip.description}</p>}
         {trip.countries.length > 0 && (
           <p className="mt-3 text-sm text-muted-foreground">{trip.countries.join(' · ')}</p>

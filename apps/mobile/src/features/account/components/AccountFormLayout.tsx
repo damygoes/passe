@@ -27,7 +27,7 @@ export function AccountFormLayout({ title, description, children }: AccountFormL
         },
         header: { gap: spacing[1] },
         title: {
-          fontFamily: fonts.heading,
+          fontFamily: fonts.display,
           fontSize: fontSizes.xl,
           lineHeight: resolveLineHeight(fontSizes.xl, lineHeights.tight),
           color: colors.foreground,

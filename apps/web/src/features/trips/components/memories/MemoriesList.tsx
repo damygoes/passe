@@ -26,7 +26,7 @@ export function MemoriesList({ tripId }: Props) {
   return (
     <div className="mt-8">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="font-heading text-lg font-semibold">
+        <h2 className="font-display text-lg font-semibold">
           {t('memories_heading')}
           {memories.length > 0 && (
             <span className="ml-2 text-sm font-normal text-muted-foreground">

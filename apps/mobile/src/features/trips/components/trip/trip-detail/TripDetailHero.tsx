@@ -104,7 +104,7 @@ export function TripDetailHero({ trip, scrollY }: TripDetailHeroProps) {
           gap: spacing[1],
         },
         title: {
-          fontFamily: fonts.heading,
+          fontFamily: fonts.display,
           fontSize: fontSizes['3xl'],
           fontWeight: fontWeights.semibold,
           color: cream,

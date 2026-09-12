@@ -52,7 +52,7 @@ export function ImageTextSection({ memory, side, photoAlt }: Props) {
           {[meta, formatTripDateFull(memory.capturedAt)].filter(Boolean).join(' · ')}
         </p>
         {memory.note && (
-          <p className="font-heading text-xl leading-relaxed text-foreground">{memory.note}</p>
+          <p className="font-display text-xl leading-relaxed text-foreground">{memory.note}</p>
         )}
       </div>
     </div>

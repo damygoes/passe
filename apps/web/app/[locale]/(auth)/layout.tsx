@@ -25,7 +25,7 @@ export default async function AuthLayout({ children }: { children: ReactNode }) 
         </div>
 
         <div className="relative space-y-5">
-          <blockquote className="font-heading text-3xl leading-snug text-sandy-beige">
+          <blockquote className="font-display text-3xl leading-snug text-sandy-beige">
             &ldquo;{tCommon('app_tagline')}&rdquo;
           </blockquote>
           <p className="text-sm leading-relaxed text-muted-taupe max-w-xs">

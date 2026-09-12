@@ -11,7 +11,7 @@ export function TextSection({ memory }: Props) {
   return (
     <div className="mx-auto max-w-prose py-4 text-center">
       {memory.note && (
-        <p className="font-heading text-2xl italic leading-relaxed text-foreground">
+        <p className="font-display text-2xl italic leading-relaxed text-foreground">
           {memory.note}
         </p>
       )}

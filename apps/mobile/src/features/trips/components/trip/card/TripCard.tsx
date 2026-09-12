@@ -87,7 +87,7 @@ export function TripCard({ trip, onPress, entranceDelay = 0, tilt = 0 }: TripCar
         },
         content: { padding: spacing[4], gap: spacing[1] },
         title: {
-          fontFamily: fonts.heading,
+          fontFamily: fonts.display,
           fontSize: fontSizes.lg,
           fontWeight: fontWeights.semibold,
           color: cream,

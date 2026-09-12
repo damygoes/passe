@@ -18,7 +18,7 @@ function PageHeaderTitle({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="page-header-title"
-      className={cn('cn-font-heading text-2xl font-semibold leading-tight tracking-tight', className)}
+      className={cn('font-display text-2xl font-semibold leading-tight tracking-tight', className)}
       {...props}
     />
   )

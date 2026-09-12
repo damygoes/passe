@@ -82,7 +82,7 @@ export function PlanCard({
         >
           {badge}
           <CardHeader>
-            <h3 className="font-heading text-lg font-semibold">{t(`plans.${plan}.name`)}</h3>
+            <h3 className="font-display text-lg font-semibold">{t(`plans.${plan}.name`)}</h3>
             <p className="text-sm text-muted-foreground">{t(`plans.${plan}.tagline`)}</p>
           </CardHeader>
           <CardContent>

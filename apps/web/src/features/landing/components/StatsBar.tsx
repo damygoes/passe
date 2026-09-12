@@ -24,7 +24,7 @@ export function StatsBar() {
             <div className="mb-4 flex size-14 items-center justify-center rounded-full bg-primary/10 text-primary">
               <Icon name={icon} size="xl" aria-hidden />
             </div>
-            <h3 className="font-heading text-2xl font-semibold">{t(`${key}.title`)}</h3>
+            <h3 className="font-display text-2xl font-semibold">{t(`${key}.title`)}</h3>
             <p className="mt-2 text-muted-foreground">{t(`${key}.description`)}</p>
           </StaggerItem>
         ))}
