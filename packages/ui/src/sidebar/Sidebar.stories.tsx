@@ -60,7 +60,7 @@ export const Default: Story = {
         <SidebarHeader>
           <div className="flex items-center gap-2 px-2 py-1">
             <Icon name="luggage" />
-            <span className="font-semibold">Passé</span>
+            <span className="font-semibold">Passe</span>
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -114,7 +114,7 @@ export const CollapsibleIcon: Story = {
         <SidebarHeader>
           <div className="flex items-center gap-2 px-2 py-1">
             <Icon name="luggage" />
-            <span className="font-semibold">Passé</span>
+            <span className="font-semibold">Passe</span>
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -168,7 +168,7 @@ export const FloatingVariant: Story = {
         <SidebarHeader>
           <div className="flex items-center gap-2 px-2 py-1">
             <Icon name="luggage" />
-            <span className="font-semibold">Passé</span>
+            <span className="font-semibold">Passe</span>
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -206,7 +206,7 @@ export const InsetVariant: Story = {
         <SidebarHeader>
           <div className="flex items-center gap-2 px-2 py-1">
             <Icon name="luggage" />
-            <span className="font-semibold">Passé</span>
+            <span className="font-semibold">Passe</span>
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -245,7 +245,7 @@ export const RightSide: Story = {
         <SidebarHeader>
           <div className="flex items-center gap-2 px-2 py-1">
             <Icon name="luggage" />
-            <span className="font-semibold">Passé</span>
+            <span className="font-semibold">Passe</span>
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -282,7 +282,7 @@ export const WithSubmenu: Story = {
         <SidebarHeader>
           <div className="flex items-center gap-2 px-2 py-1">
             <Icon name="luggage" />
-            <span className="font-semibold">Passé</span>
+            <span className="font-semibold">Passe</span>
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -328,7 +328,7 @@ export const WithBadgesAndActions: Story = {
         <SidebarHeader>
           <div className="flex items-center gap-2 px-2 py-1">
             <Icon name="luggage" />
-            <span className="font-semibold">Passé</span>
+            <span className="font-semibold">Passe</span>
           </div>
         </SidebarHeader>
         <SidebarContent>

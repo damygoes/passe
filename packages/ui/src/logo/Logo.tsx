@@ -2,11 +2,11 @@ import type { ComponentProps } from 'react'
 import { cn } from '@passe/utils'
 
 /**
- * Passé brand logo. Playfair Display glyphs converted to paths — renders
+ * Passe brand logo. Playfair Display glyphs converted to paths — renders
  * identically everywhere, no font loading involved.
  *
- * Letterforms use `currentColor`; the accent and full stop always take the
- * terracotta brand token. Size it with a height class (`h-6 w-auto`).
+ * Letterforms use `currentColor`; the full stop always takes the terracotta
+ * brand token. Size it with a height class (`h-6 w-auto`).
  */
 
 const WORDMARK_LETTERS =
@@ -21,7 +21,7 @@ const MARK_E =
 const ACCENT_FILL = 'var(--color-terracotta, #C4622D)'
 
 export interface LogoProps extends ComponentProps<'svg'> {
-  /** `wordmark` is the full "Passé." lockup; `mark` is the bare é for tight spaces. */
+  /** `wordmark` is the full "Passe." lockup; `mark` is the bare e for tight spaces. */
   variant?: 'wordmark' | 'mark'
 }
 
@@ -32,18 +32,11 @@ export function Logo({ variant = 'wordmark', className, ...props }: LogoProps) {
         data-slot="logo"
         viewBox="21.5 3.5 21 45"
         role="img"
-        aria-label="Passé"
+        aria-label="Passe"
         className={cn('h-8 w-auto', className)}
         {...props}
       >
         <path transform="translate(21.33 5) scale(0.42)" fill="currentColor" d={MARK_E} />
-        <path
-          d="M27 15 L38 8"
-          stroke={ACCENT_FILL}
-          strokeWidth={5}
-          strokeLinecap="round"
-          fill="none"
-        />
       </svg>
     )
   }
@@ -53,20 +46,13 @@ export function Logo({ variant = 'wordmark', className, ...props }: LogoProps) {
       data-slot="logo"
       viewBox="0 0 285 86"
       role="img"
-      aria-label="Passé"
+      aria-label="Passe"
       className={cn('h-6 w-auto', className)}
       {...props}
     >
       <g transform="translate(0 -18)">
         <path fill="currentColor" d={WORDMARK_LETTERS} />
         <path fill={ACCENT_FILL} d={WORDMARK_PERIOD} />
-        <path
-          d="M229 42.1 L245.9 26.3"
-          stroke={ACCENT_FILL}
-          strokeWidth={8.55}
-          strokeLinecap="round"
-          fill="none"
-        />
       </g>
     </svg>
   )

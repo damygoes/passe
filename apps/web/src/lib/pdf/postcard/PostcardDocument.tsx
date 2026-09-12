@@ -25,7 +25,7 @@ interface PostcardDocumentProps {
 
 export function PostcardDocument({ image, message, copyrightYear }: PostcardDocumentProps) {
   return (
-    <Document title="Postcard" author="Passé">
+    <Document title="Postcard" author="Passe">
       <Page
         size={{ width: POSTCARD_PAGE_WIDTH_PT, height: POSTCARD_PAGE_HEIGHT_PT }}
         style={styles.frontPage}

@@ -1,6 +1,6 @@
-# Passé — Mobile
+# Passe — Mobile
 
-Expo Router app for Passé. See [`CLAUDE.md`](./CLAUDE.md) in this directory for architecture,
+Expo Router app for Passe. See [`CLAUDE.md`](./CLAUDE.md) in this directory for architecture,
 conventions, and the component library. Full product identity: [`PRODUCT.md`](../../PRODUCT.md)
 at the repo root.
 

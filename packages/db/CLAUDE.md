@@ -1,6 +1,6 @@
 # @passe/db
 
-Drizzle ORM schema definitions and Neon serverless database client for the Passé platform.
+Drizzle ORM schema definitions and Neon serverless database client for the Passe platform.
 
 ---
 
@@ -22,12 +22,12 @@ that only need TypeScript types (e.g. server actions that receive already-fetche
 
 There are **two Neon instances**: development and production.
 
-| Variable            | File                  | Points at   | Used by                                     |
-| ------------------- | --------------------- | ----------- | ------------------------------------------- |
-| `DATABASE_URL`      | `packages/db/.env`    | development | everyday drizzle-kit commands               |
-| `DATABASE_URL`      | `apps/web/.env.local` | development | Next.js app at runtime (must match above)   |
-| `DATABASE_URL_PROD` | `packages/db/.env`    | production  | `db:migrate:prod` / `db:studio:prod` only   |
-| `PROD_DATABASE_URL` | GitHub repo secret    | production  | `.github/workflows/db-migrate.yml`          |
+| Variable            | File                  | Points at   | Used by                                   |
+| ------------------- | --------------------- | ----------- | ----------------------------------------- |
+| `DATABASE_URL`      | `packages/db/.env`    | development | everyday drizzle-kit commands             |
+| `DATABASE_URL`      | `apps/web/.env.local` | development | Next.js app at runtime (must match above) |
+| `DATABASE_URL_PROD` | `packages/db/.env`    | production  | `db:migrate:prod` / `db:studio:prod` only |
+| `PROD_DATABASE_URL` | GitHub repo secret    | production  | `.github/workflows/db-migrate.yml`        |
 
 All must be the **pooled** connection string from Neon (HTTP mode via `@neondatabase/serverless`).
 Do not use the direct connection string.
@@ -74,8 +74,8 @@ Never run `db:push` against production — it bypasses the migration journal.
 
 Three tables: `users`, `trips`, `memories`.
 
-| Table      | PK type | Notable columns                               |
-| ---------- | ------- | --------------------------------------------- |
+| Table      | PK type | Notable columns                                   |
+| ---------- | ------- | ------------------------------------------------- |
 | `users`    | text    | Clerk user ID; planEnum (free/explorer/collector) |
 | `trips`    | uuid    | countries text[], isPublic bool, cascade → users  |
 | `memories` | uuid    | lat/lng real, cascade → trips AND users           |

@@ -53,7 +53,7 @@ export interface MintedUpload {
 }
 
 // Mints a presigned S3 PUT URL for a new upload. The client uploads the raw
-// file bytes directly to S3 with this URL — bytes never touch the Passé
+// file bytes directly to S3 with this URL — bytes never touch the Passe
 // server. Key format (passe/<userId>/<uuid>.<ext>) mirrors the folder
 // convention the previous Cloudinary integration used.
 export async function mintUploadKeyAndUrl({

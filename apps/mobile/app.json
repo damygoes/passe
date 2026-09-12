@@ -109,14 +109,14 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Passé needs access to your photo library so you can add photos to your trips and memories.",
-          "cameraPermission": "Passé needs camera access so you can capture new memories."
+          "photosPermission": "Passe needs access to your photo library so you can add photos to your trips and memories.",
+          "cameraPermission": "Passe needs camera access so you can capture new memories."
         }
       ],
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "Passé uses your location to tag memories with the place they were captured."
+          "locationWhenInUsePermission": "Passe uses your location to tag memories with the place they were captured."
         }
       ],
       "@maplibre/maplibre-react-native",

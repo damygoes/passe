@@ -1,6 +1,6 @@
 # @passe/hooks — API Hooks
 
-TanStack Query v5 wrappers for all Passé data operations. Used by both `apps/web` and `apps/mobile`.
+TanStack Query v5 wrappers for all Passe data operations. Used by both `apps/web` and `apps/mobile`.
 
 **No Next.js imports anywhere in this package** — it is framework-agnostic and safe for React Native.
 

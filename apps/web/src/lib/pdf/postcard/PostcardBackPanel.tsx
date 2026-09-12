@@ -83,7 +83,7 @@ interface PostcardBackPanelProps {
 }
 
 // The back of the postcard: a written message on the left, a blank
-// address area with a faux Passé stamp on the right, and a copyright line
+// address area with a faux Passe stamp on the right, and a copyright line
 // (year + the real brand wordmark, not plain text) that always renders
 // across the bottom regardless of whether a message was written.
 export function PostcardBackPanel({ message, copyrightYear }: PostcardBackPanelProps) {

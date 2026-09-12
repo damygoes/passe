@@ -1,9 +1,9 @@
 ---
 name: verify
-description: Verify Passé changes end-to-end against the running dev servers (web on :3000, Metro on :8081, booted iOS simulator)
+description: Verify Passe changes end-to-end against the running dev servers (web on :3000, Metro on :8081, booted iOS simulator)
 ---
 
-# Verifying Passé changes
+# Verifying Passe changes
 
 ## Handles
 

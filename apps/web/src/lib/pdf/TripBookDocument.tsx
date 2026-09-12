@@ -75,7 +75,7 @@ export function TripBookDocument({
   chapters,
 }: TripBookDocumentProps) {
   return (
-    <Document title={title} author="Passé">
+    <Document title={title} author="Passe">
       <Page size="A4" style={styles.coverPage}>
         {coverImage ? (
           <Image src={coverImage} style={styles.coverImage} />

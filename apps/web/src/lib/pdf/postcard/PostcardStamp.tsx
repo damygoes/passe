@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
 })
 
-// A faux airmail-style Passé stamp for the postcard's back panel — the real
+// A faux airmail-style Passe stamp for the postcard's back panel — the real
 // app icon standing in for a real postage stamp, not a photo.
 export function PostcardStamp() {
   return (

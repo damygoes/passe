@@ -27,7 +27,7 @@ const dmMono = DM_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Passé.',
+  title: 'Passe.',
   description: 'The past, beautifully kept.',
 }
 

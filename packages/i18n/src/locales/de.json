@@ -1,24 +1,24 @@
 {
   "common": {
-    "app_name": "Passé.",
+    "app_name": "Passe.",
     "app_tagline": "Die Vergangenheit, wunderschön bewahrt.",
     "cancel": "Abbrechen"
   },
   "auth": {
     "layout": {
       "description": "Erstelle Reisen, füge geogetaggte Erinnerungen hinzu und teile deine Welt – wunderschön.",
-      "copyright": "© 2026 Passé"
+      "copyright": "© 2026 Passe"
     },
     "sign_in": {
       "heading": "Willkommen zurück",
-      "subheading": "Melde dich bei deinem Passé-Konto an",
+      "subheading": "Melde dich bei deinem Passe-Konto an",
       "or_email": "oder weiter mit E-Mail",
       "no_account": "Kein Konto?",
       "sign_up_link": "Registrieren"
     },
     "sign_up": {
       "heading": "Konto erstellen",
-      "subheading": "Bewahre deine Erinnerungen mit Passé",
+      "subheading": "Bewahre deine Erinnerungen mit Passe",
       "or_email": "oder weiter mit E-Mail",
       "have_account": "Bereits ein Konto?",
       "sign_in_link": "Anmelden",
@@ -417,7 +417,7 @@
   },
   "landing": {
     "meta": {
-      "title": "Passé. — Die Vergangenheit, wunderschön bewahrt.",
+      "title": "Passe. — Die Vergangenheit, wunderschön bewahrt.",
       "description": "Erstelle Reisen, füge geogetaggte Erinnerungen hinzu und teile ein wunderschönes Reise-Portfolio. Standardmäßig privat."
     },
     "nav": {
@@ -428,7 +428,7 @@
       "eyebrow": "Reiseerinnerungen bewahren",
       "title_leading": "Die Vergangenheit,",
       "title_accent": "wunderschön bewahrt.",
-      "subtitle": "Passé verwandelt deine Reisen in ein lebendiges Archiv — geogetaggte Fotos, Notizen und Momente, arrangiert zu einem Portfolio, das es wert ist, geteilt zu werden.",
+      "subtitle": "Passe verwandelt deine Reisen in ein lebendiges Archiv — geogetaggte Fotos, Notizen und Momente, arrangiert zu einem Portfolio, das es wert ist, geteilt zu werden.",
       "cta_primary": "Kostenlos starten",
       "cta_secondary": "Anmelden",
       "note": "Kostenloser Plan inklusive. Keine Kreditkarte erforderlich."
@@ -482,7 +482,7 @@
     "privacy": {
       "eyebrow": "Standardmäßig privat",
       "heading": "Deine Erinnerungen gehören zuerst dir",
-      "description": "Alles, was du zu Passé hinzufügst, ist zunächst privat. Nichts wird öffentlich, bis du es bewusst entscheidest — Reise für Reise, Erinnerung für Erinnerung.",
+      "description": "Alles, was du zu Passe hinzufügst, ist zunächst privat. Nichts wird öffentlich, bis du es bewusst entscheidest — Reise für Reise, Erinnerung für Erinnerung.",
       "point1": "Jede Reise und Erinnerung startet privat",
       "point2": "Du entscheidest genau, was öffentlich wird",
       "point3": "Mach alles jederzeit wieder privat"
@@ -490,11 +490,11 @@
     "mobileApp": {
       "eyebrow": "Auch mobil",
       "heading": "Nimm dein Archiv überall mit",
-      "description": "Halte Erinnerungen unterwegs fest und halte jede Reise synchron — die Passé App für iOS und Android.",
+      "description": "Halte Erinnerungen unterwegs fest und halte jede Reise synchron — die Passe App für iOS und Android.",
       "ios_eyebrow": "Download on the",
       "ios_name": "App Store",
       "android": "Google Play",
-      "screenshotAlt": "Die Passé App mit dem Reisearchiv einer Nutzerin",
+      "screenshotAlt": "Die Passe App mit dem Reisearchiv einer Nutzerin",
       "subscriptionHint": "Deine Reisen bleiben zwischen Web und Mobile synchron."
     },
     "archiveStat": {
@@ -539,12 +539,12 @@
       }
     },
     "cta": {
-      "heading": "Beginne heute dein Archiv",
+      "heading": "Starte deine Reise noch heute",
       "subtitle": "Deine nächste Reise verdient mehr als eine Fotogalerie.",
       "button": "Kostenlos starten"
     },
     "footer": {
-      "copyright": "© {year} Passé",
+      "copyright": "© {year} Passe",
       "sign_in": "Anmelden",
       "sign_up": "Registrieren",
       "privacy_policy": "Datenschutz",
@@ -580,8 +580,8 @@
   "info": {
     "privacy": {
       "meta": {
-        "title": "Datenschutzerklärung — Passé",
-        "description": "Wie Passé deine personenbezogenen Daten erhebt, nutzt und schützt."
+        "title": "Datenschutzerklärung — Passe",
+        "description": "Wie Passe deine personenbezogenen Daten erhebt, nutzt und schützt."
       },
       "eyebrow": "Rechtliches",
       "title": "Datenschutzerklärung",
@@ -589,13 +589,13 @@
       "sections": {
         "controller": {
           "heading": "Verantwortlicher",
-          "p1": "Diese Datenschutzerklärung informiert darüber, wie personenbezogene Daten bei der Nutzung von Passé verarbeitet werden — der Web-App unter passe.cc und der Passé Mobile-App (zusammen der \"Dienst\").",
+          "p1": "Diese Datenschutzerklärung informiert darüber, wie personenbezogene Daten bei der Nutzung von Passe verarbeitet werden — der Web-App unter passe.cc und der Passe Mobile-App (zusammen der \"Dienst\").",
           "p2": "Verantwortlicher im Sinne der Datenschutz-Grundverordnung (DSGVO) ist: {legalName}, {legalStreet}, {legalCity}, Deutschland.",
           "p3": "Du erreichst uns jederzeit unter {email}."
         },
         "overview": {
           "heading": "Privatsphäre als Standard",
-          "p1": "Passé ist konsequent privacy-first gebaut. Jede Reise und jede Erinnerung, die du erstellst, ist standardmäßig privat und nur für dich sichtbar. Nichts, was du hochlädst, wird anderen angezeigt, solange du es nicht ausdrücklich veröffentlichst.",
+          "p1": "Passe ist konsequent privacy-first gebaut. Jede Reise und jede Erinnerung, die du erstellst, ist standardmäßig privat und nur für dich sichtbar. Nichts, was du hochlädst, wird anderen angezeigt, solange du es nicht ausdrücklich veröffentlichst.",
           "p2": "Wir erheben nur die Daten, die wir für den Betrieb des Dienstes benötigen. Wir verkaufen deine personenbezogenen Daten nicht und nutzen sie nicht für Werbung."
         },
         "data": {
@@ -616,7 +616,7 @@
         },
         "processors": {
           "heading": "Dienstleister",
-          "p1": "Für den Betrieb von Passé setzen wir folgende Dienstleister (Auftragsverarbeiter) ein. Jeder erhält nur die Daten, die für seine Funktion erforderlich sind:",
+          "p1": "Für den Betrieb von Passe setzen wir folgende Dienstleister (Auftragsverarbeiter) ein. Jeder erhält nur die Daten, die für seine Funktion erforderlich sind:",
           "li1": "Clerk (Clerk, Inc., USA) — Authentifizierung und Kontoverwaltung, einschließlich Anmeldung mit Google und Apple.",
           "li2": "Neon (Neon, Inc., USA) — Hosting unserer Datenbank, in der deine Konto-, Reise- und Erinnerungsdaten gespeichert sind.",
           "li3": "Cloudinary (Cloudinary Ltd.) — Speicherung und Auslieferung der Fotos, die du hochlädst.",
@@ -667,8 +667,8 @@
     },
     "terms": {
       "meta": {
-        "title": "Nutzungsbedingungen — Passé",
-        "description": "Die Bedingungen für die Nutzung von Passé."
+        "title": "Nutzungsbedingungen — Passe",
+        "description": "Die Bedingungen für die Nutzung von Passe."
       },
       "eyebrow": "Rechtliches",
       "title": "Nutzungsbedingungen",
@@ -676,17 +676,17 @@
       "sections": {
         "scope": {
           "heading": "Geltungsbereich",
-          "p1": "Diese Nutzungsbedingungen gelten für die Nutzung von Passé — der Web-App unter passe.cc und der Passé Mobile-App (zusammen der \"Dienst\") — betrieben von {legalName}, {legalStreet}, {legalCity}, Deutschland (\"wir\", \"uns\").",
+          "p1": "Diese Nutzungsbedingungen gelten für die Nutzung von Passe — der Web-App unter passe.cc und der Passe Mobile-App (zusammen der \"Dienst\") — betrieben von {legalName}, {legalStreet}, {legalCity}, Deutschland (\"wir\", \"uns\").",
           "p2": "Mit der Erstellung eines Kontos stimmst du diesen Bedingungen zu."
         },
         "service": {
           "heading": "Der Dienst",
-          "p1": "Mit Passé erstellst du Reisen, fügst ihnen Erinnerungen (Fotos, Notizen und Orte) hinzu und kannst optional ein öffentliches Portfolio und öffentliche Reiseseiten teilen.",
+          "p1": "Mit Passe erstellst du Reisen, fügst ihnen Erinnerungen (Fotos, Notizen und Orte) hinzu und kannst optional ein öffentliches Portfolio und öffentliche Reiseseiten teilen.",
           "p2": "Den Dienst gibt es in einem kostenlosen Tarif sowie den kostenpflichtigen Tarifen Explorer und Collector. Die in den Tarifen enthaltenen Funktionen sind im Preisbereich unserer Website beschrieben und können sich weiterentwickeln."
         },
         "account": {
           "heading": "Dein Konto",
-          "p1": "Du musst mindestens 16 Jahre alt sein, um Passé zu nutzen. Du verpflichtest dich, bei der Registrierung korrekte Angaben zu machen und deine Zugangsdaten geheim zu halten.",
+          "p1": "Du musst mindestens 16 Jahre alt sein, um Passe zu nutzen. Du verpflichtest dich, bei der Registrierung korrekte Angaben zu machen und deine Zugangsdaten geheim zu halten.",
           "p2": "Du bist für alle Aktivitäten über dein Konto verantwortlich. Informiere uns umgehend unter {email}, wenn du eine unbefugte Nutzung vermutest."
         },
         "billing": {
@@ -739,8 +739,8 @@
     },
     "impressum": {
       "meta": {
-        "title": "Impressum — Passé",
-        "description": "Impressum von Passé gemäß § 5 DDG."
+        "title": "Impressum — Passe",
+        "description": "Impressum von Passe gemäß § 5 DDG."
       },
       "eyebrow": "Rechtliches",
       "title": "Impressum",
@@ -768,8 +768,8 @@
     },
     "support": {
       "meta": {
-        "title": "Support — Passé",
-        "description": "Hilfe zu Passé — häufige Fragen und Kontakt."
+        "title": "Support — Passe",
+        "description": "Hilfe zu Passe — häufige Fragen und Kontakt."
       },
       "eyebrow": "Hilfe",
       "title": "Support",
@@ -778,8 +778,8 @@
       "faq_title": "Häufige Fragen",
       "faq": {
         "what": {
-          "question": "Was ist Passé?",
-          "answer": "Passé ist eine Plattform für Reiseerinnerungen. Du erstellst Reisen, fügst ihnen Erinnerungen — Fotos, Notizen und Orte — hinzu und führst so ein schön organisiertes Archiv deiner Reisen."
+          "question": "Was ist Passe?",
+          "answer": "Passe ist eine Plattform für Reiseerinnerungen. Du erstellst Reisen, fügst ihnen Erinnerungen — Fotos, Notizen und Orte — hinzu und führst so ein schön organisiertes Archiv deiner Reisen."
         },
         "visibility": {
           "question": "Wer kann meine Reisen und Erinnerungen sehen?",

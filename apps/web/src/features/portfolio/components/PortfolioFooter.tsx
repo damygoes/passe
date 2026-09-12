@@ -8,7 +8,7 @@ export function PortfolioFooter() {
       <a
         href={routes.home}
         className="inline-flex items-baseline hover:text-foreground"
-        aria-label="Passé"
+        aria-label="Passe"
       >
         <Logo className="h-3 w-auto translate-y-px" />
       </a>
