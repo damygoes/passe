@@ -49,6 +49,30 @@ export function canMakeMemoryPublic(plan: PlanType, currentPublicMemoryCount: nu
   return currentPublicMemoryCount < PLAN_LIMITS[plan].maxPublicMemoriesPerTrip
 }
 
+export interface PublicMemorySlots {
+  used: number
+  limit: number | null
+  remaining: number | null
+  isUnlimited: boolean
+}
+
+// Single source of truth for the "2 of 3 public memories left on Free" /
+// "Unlimited public memories" captions on both platforms — derive this
+// instead of reimplementing the used/remaining math per screen.
+export function getPublicMemorySlots(
+  plan: PlanType,
+  currentPublicCount: number,
+): PublicMemorySlots {
+  const limit = PLAN_LIMITS[plan].maxPublicMemoriesPerTrip
+  const isUnlimited = limit === Infinity
+  return {
+    used: currentPublicCount,
+    limit: isUnlimited ? null : limit,
+    remaining: isUnlimited ? null : Math.max(0, limit - currentPublicCount),
+    isUnlimited,
+  }
+}
+
 export function canExportPdf(plan: PlanType): boolean {
   return PLAN_LIMITS[plan].pdfExport
 }

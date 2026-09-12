@@ -67,6 +67,9 @@ export const MemorySchema = z.object({
   location: CoordinatesSchema.nullish(),
   city: z.string().max(100).nullish(),
   country: z.string().max(100).nullish(),
+  // Freeform street-level address — owner-only, never shown on public pages.
+  placeName: z.string().max(200).nullish(),
+  tags: z.array(z.string().max(40)).default([]),
   capturedAt: z.coerce.date(),
   isPublic: z.boolean().default(false),
   layoutVariant: LayoutVariantSchema.default('auto'),

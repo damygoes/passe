@@ -22,6 +22,8 @@ const baseMemory: Memory = {
   location: null,
   city: null,
   country: null,
+  placeName: null,
+  tags: [],
   capturedAt: new Date('2026-01-01'),
   isPublic: false,
   layoutVariant: 'auto',

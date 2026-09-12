@@ -26,6 +26,8 @@ const existingMemory: Memory = {
   location: null,
   city: 'Paris',
   country: 'France',
+  placeName: null,
+  tags: [],
   capturedAt: new Date('2026-01-01'),
   isPublic: false,
   layoutVariant: 'auto',

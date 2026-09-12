@@ -4,6 +4,7 @@ import {
   canAddMemory,
   canMakePortfolioPublic,
   canExportPdf,
+  getPublicMemorySlots,
   PLAN_LIMITS,
 } from '../plan-gates'
 
@@ -82,6 +83,47 @@ describe('canExportPdf', () => {
 
   it('allows collector plan', () => {
     expect(canExportPdf('collector')).toBe(true)
+  })
+})
+
+describe('getPublicMemorySlots', () => {
+  it('reports used/remaining for free plan under the limit', () => {
+    expect(getPublicMemorySlots('free', 1)).toEqual({
+      used: 1,
+      limit: 3,
+      remaining: 2,
+      isUnlimited: false,
+    })
+  })
+
+  it('clamps remaining at zero once free plan is at or over the limit', () => {
+    expect(getPublicMemorySlots('free', 3)).toEqual({
+      used: 3,
+      limit: 3,
+      remaining: 0,
+      isUnlimited: false,
+    })
+    expect(getPublicMemorySlots('free', 5)).toEqual({
+      used: 5,
+      limit: 3,
+      remaining: 0,
+      isUnlimited: false,
+    })
+  })
+
+  it('reports unlimited for explorer and collector plans', () => {
+    expect(getPublicMemorySlots('explorer', 40)).toEqual({
+      used: 40,
+      limit: null,
+      remaining: null,
+      isUnlimited: true,
+    })
+    expect(getPublicMemorySlots('collector', 999)).toEqual({
+      used: 999,
+      limit: null,
+      remaining: null,
+      isUnlimited: true,
+    })
   })
 })
 

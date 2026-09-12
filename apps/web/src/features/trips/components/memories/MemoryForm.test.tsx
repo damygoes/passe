@@ -109,6 +109,8 @@ describe('MemoryForm', () => {
           location: null,
           city: 'Kyoto',
           country: 'Japan',
+          placeName: null,
+          tags: [],
           capturedAt: new Date('2024-03-02'),
           isPublic: false,
           layoutVariant: 'auto',
