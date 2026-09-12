@@ -262,7 +262,12 @@
       "delete_confirm": "Delete",
       "delete_cancel": "Cancel",
       "delete_failed": "Failed to delete memory. Please try again.",
-      "photo_count": "{count, plural, one {# photo} other {# photos}}"
+      "photo_count": "{count, plural, one {# photo} other {# photos}}",
+      "back": "← {title}",
+      "visible_on_public_page": "Visible on your public trip page",
+      "public_slots_limited": "{remaining} of {limit} public memories left on Free",
+      "public_slots_unlimited": "Unlimited public memories",
+      "make_postcard": "Make a postcard"
     },
     "empty": {
       "no_trips_title": "No trips yet",

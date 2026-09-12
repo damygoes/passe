@@ -23,6 +23,20 @@ export function formatMemoryDate(date: Date | string): string {
   return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' }).format(new Date(date))
 }
 
+// Memory Detail's full date+time caption ("11 March 2026 · 18:42").
+export function formatMemoryDateTime(date: Date | string): string {
+  const parsed = new Date(date)
+  const day = new Intl.DateTimeFormat('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(parsed)
+  const time = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit' }).format(
+    parsed,
+  )
+  return `${day} · ${time}`
+}
+
 // The Home screen's mono date caption ("Tuesday, 12 May 2026") — day-before-
 // month, always comma-separated from the weekday, per the design's exact
 // copy. Built from two separate Intl calls (rather than one combined

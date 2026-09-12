@@ -262,7 +262,12 @@
       "delete_confirm": "Löschen",
       "delete_cancel": "Abbrechen",
       "delete_failed": "Erinnerung konnte nicht gelöscht werden. Bitte versuche es erneut.",
-      "photo_count": "{count, plural, one {# Foto} other {# Fotos}}"
+      "photo_count": "{count, plural, one {# Foto} other {# Fotos}}",
+      "back": "← {title}",
+      "visible_on_public_page": "Auf deiner öffentlichen Reiseseite sichtbar",
+      "public_slots_limited": "{remaining} von {limit} öffentlichen Erinnerungen im Free-Plan übrig",
+      "public_slots_unlimited": "Unbegrenzte öffentliche Erinnerungen",
+      "make_postcard": "Postkarte erstellen"
     },
     "empty": {
       "no_trips_title": "Noch keine Reisen",
