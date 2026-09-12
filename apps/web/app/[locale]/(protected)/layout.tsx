@@ -1,6 +1,5 @@
 import { MotionProvider } from '@/components/motion/MotionProvider'
 import { AppSidebar } from '@/components/navigation/AppSidebar'
-import { SiteHeader } from '@/components/navigation/SiteHeader'
 import { currentUser } from '@clerk/nextjs/server'
 import { SidebarInset, SidebarProvider } from '@passe/ui'
 import type { ReactNode } from 'react'
@@ -26,15 +25,14 @@ export default async function ProtectedLayout({ children }: Props) {
       }
     >
       <AppSidebar
-        variant="inset"
+        variant="floating"
         displayName={user?.fullName ?? user?.username ?? 'User'}
         email={email}
         avatarUrl={user?.hasImage ? (user.imageUrl ?? null) : null}
         username={user?.username ?? null}
       />
       <SidebarInset>
-        <SiteHeader />
-        <main className="flex-1">
+        <main className="flex-1 py-8 px-12">
           <MotionProvider>{children}</MotionProvider>
         </main>
       </SidebarInset>

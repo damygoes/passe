@@ -1,7 +1,7 @@
 {
   "common": {
     "app_name": "Passe.",
-    "app_tagline": "Made to be kept, not scrolled.",
+    "app_tagline": "The past, beautifully kept.",
     "cancel": "Cancel"
   },
   "auth": {
@@ -319,7 +319,12 @@
     "map": "Map",
     "stats": "Stats",
     "keepsakes": "Keepsakes",
-    "new_memory": "New memory"
+    "new_memory": "New memory",
+    "view": "View",
+    "theme": "Theme",
+    "appearance": "Appearance",
+    "preferences": "Preferences",
+    "language": "Language"
   },
   "sidebar": {
     "plan_card": {
@@ -437,13 +442,13 @@
       "get_started": "Get started"
     },
     "hero": {
-      "eyebrow": "Travel memory keeping",
-      "title_leading": "Made to be kept,",
-      "title_accent": "not scrolled.",
-      "subtitle": "Passe turns your trips into a living archive — geotagged photos, notes, and moments, arranged into a portfolio worth sharing.",
-      "cta_primary": "Start for free",
+      "title": "The past, beautifully kept.",
+      "subtitle": "A private travel journal for people who actually go places. Keep every trip for yourself — share only what you choose, with only who you choose.",
+      "cta_primary": "Start keeping",
       "cta_secondary": "Sign in",
-      "note": "Free plan included. No credit card required."
+      "caption_private": "Private by default",
+      "caption_no_feed": "No feed, no followers",
+      "caption_export": "Export and keep"
     },
     "stats": {
       "privacy": {

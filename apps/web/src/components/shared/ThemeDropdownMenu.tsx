@@ -1,22 +1,48 @@
 'use client'
 
-import { useTheme } from 'next-themes'
-import { useEffect, useState } from 'react'
 import {
   Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuTrigger,
+  Icon,
 } from '@passe/ui'
+import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
 
-export function ThemeDropdownMenu({ className }: { className?: string }) {
+type ThemeDropdownMenuVariant = 'icon' | 'sidebar-menu'
+
+export function ThemeDropdownMenu({
+  variant = 'icon',
+  className,
+}: {
+  variant?: ThemeDropdownMenuVariant
+  className?: string
+}) {
   const { resolvedTheme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  if (variant === 'sidebar-menu') {
+    return (
+      <DropdownMenuRadioGroup value={resolvedTheme} onValueChange={setTheme}>
+        <DropdownMenuRadioItem value="light">
+          <Icon name="sun" />
+          Light
+        </DropdownMenuRadioItem>
+        <DropdownMenuRadioItem value="dark">
+          <Icon name="moon" />
+          Dark
+        </DropdownMenuRadioItem>
+      </DropdownMenuRadioGroup>
+    )
+  }
 
   return (
     <DropdownMenu>

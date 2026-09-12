@@ -319,7 +319,12 @@
     "map": "Karte",
     "stats": "Statistik",
     "keepsakes": "Andenken",
-    "new_memory": "Neue Erinnerung"
+    "new_memory": "Neue Erinnerung",
+    "view": "Ansicht",
+    "theme": "Design",
+    "appearance": "Erscheinungsbild",
+    "preferences": "Einstellungen",
+    "language": "Sprache"
   },
   "sidebar": {
     "plan_card": {
@@ -437,13 +442,13 @@
       "get_started": "Loslegen"
     },
     "hero": {
-      "eyebrow": "Reiseerinnerungen bewahren",
-      "title_leading": "Die Vergangenheit,",
-      "title_accent": "wunderschön bewahrt.",
-      "subtitle": "Passe verwandelt deine Reisen in ein lebendiges Archiv — geogetaggte Fotos, Notizen und Momente, arrangiert zu einem Portfolio, das es wert ist, geteilt zu werden.",
-      "cta_primary": "Kostenlos starten",
+      "title": "Die Vergangenheit, wunderschön bewahrt.",
+      "subtitle": "Ein privates Reisetagebuch für Menschen, die wirklich unterwegs sind. Behalte jede Reise für dich — teile nur, was du möchtest, nur mit wem du möchtest.",
+      "cta_primary": "Jetzt bewahren",
       "cta_secondary": "Anmelden",
-      "note": "Kostenloser Plan inklusive. Keine Kreditkarte erforderlich."
+      "caption_private": "Standardmäßig privat",
+      "caption_no_feed": "Kein Feed, keine Follower",
+      "caption_export": "Exportieren und behalten"
     },
     "stats": {
       "privacy": {

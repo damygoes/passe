@@ -1,4 +1,5 @@
 import { MotionProvider } from '@/components/motion/MotionProvider'
+import { LandingExitProvider } from '@/features/landing/components/LandingExitProvider'
 import type { Preview } from '@storybook/nextjs-vite'
 import { NextIntlClientProvider } from 'next-intl'
 import { ThemeProvider } from 'next-themes'
@@ -22,9 +23,11 @@ const preview: Preview = {
       <NextIntlClientProvider locale="en" messages={messages}>
         <ThemeProvider attribute="class" defaultTheme="light">
           <MotionProvider>
-            <div className="bg-background text-foreground">
-              <Story />
-            </div>
+            <LandingExitProvider>
+              <div className="bg-background text-foreground">
+                <Story />
+              </div>
+            </LandingExitProvider>
           </MotionProvider>
         </ThemeProvider>
       </NextIntlClientProvider>
