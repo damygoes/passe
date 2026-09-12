@@ -219,7 +219,25 @@
     "stats": {
       "countries": "{count, plural, one {Country} other {Countries}}",
       "cities": "{count, plural, one {City} other {Cities}}",
-      "years": "{count, plural, one {Year} other {Years}}"
+      "years": "{count, plural, one {Year} other {Years}}",
+      "trips_label": "{count, plural, one {Trip} other {Trips}}"
+    },
+    "home": {
+      "greeting_morning": "Good morning, {name}.",
+      "greeting_afternoon": "Good afternoon, {name}.",
+      "greeting_evening": "Good evening, {name}.",
+      "accent_line": "Where did life take you this year?",
+      "continue_heading": "Continue where you left off",
+      "continue_meta": "{dateRange} · {count, plural, one {# memory} other {# memories}}",
+      "private_tag": "Private",
+      "shared_tag": "Shared",
+      "noteless_memories": "{count, plural, =0 {} one {One memory still without a note.} other {{count} memories still without a note.}}",
+      "by_place_heading": "This year, by place",
+      "by_place_more": "+ {count} more",
+      "see_map": "See map",
+      "import_title": "Every memory deserves a home.",
+      "import_body": "Capture where you've been before the details fade.",
+      "import_cta": "Add a memory"
     },
     "card": {
       "view": "View trip",

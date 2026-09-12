@@ -22,6 +22,10 @@ export const colors = {
   },
   darkEspresso: {
     DEFAULT: '#2C1A0E',
+    // A richer, slightly redder-black step used only as a solid card
+    // background (the Upgrade screen's Collector tier, Home's import
+    // prompt) — never for text, where DEFAULT is correct.
+    dark: '#3B1D0E',
   },
   mutedTaupe: {
     DEFAULT: '#8C7B6B',

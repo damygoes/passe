@@ -219,7 +219,25 @@
     "stats": {
       "countries": "{count, plural, one {Land} other {Länder}}",
       "cities": "{count, plural, one {Stadt} other {Städte}}",
-      "years": "{count, plural, one {Jahr} other {Jahre}}"
+      "years": "{count, plural, one {Jahr} other {Jahre}}",
+      "trips_label": "{count, plural, one {Reise} other {Reisen}}"
+    },
+    "home": {
+      "greeting_morning": "Guten Morgen, {name}.",
+      "greeting_afternoon": "Guten Tag, {name}.",
+      "greeting_evening": "Guten Abend, {name}.",
+      "accent_line": "Wohin hat dich das Leben dieses Jahr geführt?",
+      "continue_heading": "Weitermachen, wo du aufgehört hast",
+      "continue_meta": "{dateRange} · {count, plural, one {# Erinnerung} other {# Erinnerungen}}",
+      "private_tag": "Privat",
+      "shared_tag": "Geteilt",
+      "noteless_memories": "{count, plural, =0 {} one {Eine Erinnerung hat noch keine Notiz.} other {{count} Erinnerungen haben noch keine Notiz.}}",
+      "by_place_heading": "Dieses Jahr, nach Ort",
+      "by_place_more": "+ {count} weitere",
+      "see_map": "Zur Karte",
+      "import_title": "Jede Erinnerung verdient ein Zuhause.",
+      "import_body": "Halte fest, wo du warst, bevor die Details verblassen.",
+      "import_cta": "Erinnerung hinzufügen"
     },
     "card": {
       "view": "Reise ansehen",

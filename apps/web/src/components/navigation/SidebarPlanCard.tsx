@@ -24,7 +24,7 @@ export function SidebarPlanCard() {
       : t(`${plan}_note`, { count: trips.length, limit: limits.maxTrips })
 
   return (
-    <div className="rounded-3xl bg-secondary p-4">
+    <div className="rounded-xl bg-secondary p-4">
       <div className="font-mono text-[10px] tracking-[0.14em] text-secondary-foreground uppercase">
         {tPricing(`plans.${plan}.name`)}
       </div>
