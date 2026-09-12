@@ -17,6 +17,12 @@ const badgeVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline',
         stamp:
           '-rotate-1 rounded-sm border-[1.5px] border-dashed border-current/60 bg-transparent px-1.5 text-xs font-semibold tracking-widest text-terracotta uppercase hover:rotate-0 motion-reduce:transition-none',
+        // PRIVATE — olive tint, per the redesign's tag-accent-2 treatment.
+        private: 'bg-deep-olive/12 text-deep-olive-dark',
+        // SHARED — terracotta tint, per the redesign's tag-accent treatment.
+        shared: 'bg-terracotta/12 text-terracotta-dark',
+        // Plain neutral tag (memory keywords, etc.) — the redesign's tag-neutral.
+        neutral: 'bg-muted-taupe/12 text-dark-espresso',
       },
     },
     defaultVariants: {
