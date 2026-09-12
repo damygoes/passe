@@ -6,10 +6,12 @@
     ".": "./src/index.ts"
   },
   "scripts": {
+    "check-types": "tsc --noEmit",
     "test": "vitest run"
   },
   "devDependencies": {
-    "@passe/typescript-config": "workspace:*"
+    "@passe/typescript-config": "workspace:*",
+    "typescript": "5.9.2"
   },
   "dependencies": {
     "@passe/types": "workspace:*",
