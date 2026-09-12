@@ -1,6 +1,6 @@
 # @passe/auth — Shared Auth Utilities
 
-Shared Clerk authentication helpers for the Passé monorepo.
+Shared Clerk authentication helpers for the Passe monorepo.
 **Not** a full auth SDK — each app integrates Clerk directly. This package holds the glue:
 framework-agnostic logic that would otherwise be duplicated across `apps/web` and `apps/mobile`.
 
@@ -8,13 +8,13 @@ framework-agnostic logic that would otherwise be duplicated across `apps/web` an
 
 ## What lives here
 
-| Export path             | File                    | What it does                                         |
-| ----------------------- | ----------------------- | ---------------------------------------------------- |
-| `@passe/auth`           | `src/index.ts`          | Barrel re-export of everything                       |
-| `@passe/auth/types`     | `src/types.ts`          | `ClerkWebhookEvent`, `ClerkWebhookUser`, `PlanType`  |
-| `@passe/auth/constants` | `src/constants.ts`      | Route strings + `PUBLIC_ROUTES` for web `proxy.ts`   |
-| `@passe/auth/webhook`   | `src/webhook-handler.ts`| `syncClerkUser(event)` → upserts `@passe/db` users   |
-| `@passe/auth/plan-gates`| `src/plan-gates.ts`     | `PLAN_LIMITS`, `canCreateTrip()`, `canAddMemory()`   |
+| Export path              | File                     | What it does                                        |
+| ------------------------ | ------------------------ | --------------------------------------------------- |
+| `@passe/auth`            | `src/index.ts`           | Barrel re-export of everything                      |
+| `@passe/auth/types`      | `src/types.ts`           | `ClerkWebhookEvent`, `ClerkWebhookUser`, `PlanType` |
+| `@passe/auth/constants`  | `src/constants.ts`       | Route strings + `PUBLIC_ROUTES` for web `proxy.ts`  |
+| `@passe/auth/webhook`    | `src/webhook-handler.ts` | `syncClerkUser(event)` → upserts `@passe/db` users  |
+| `@passe/auth/plan-gates` | `src/plan-gates.ts`      | `PLAN_LIMITS`, `canCreateTrip()`, `canAddMemory()`  |
 
 ## What does NOT live here
 
@@ -37,8 +37,12 @@ import { verifyWebhook } from '@clerk/nextjs/webhooks'
 import { syncClerkUser } from '@passe/auth/webhook'
 
 export async function POST(req: NextRequest) {
-  const event = await verifyWebhook(req)   // @clerk/nextjs/webhooks — Next.js specific
-  if (event.type === 'user.created' || event.type === 'user.updated' || event.type === 'user.deleted') {
+  const event = await verifyWebhook(req) // @clerk/nextjs/webhooks — Next.js specific
+  if (
+    event.type === 'user.created' ||
+    event.type === 'user.updated' ||
+    event.type === 'user.deleted'
+  ) {
     await syncClerkUser(event as unknown as ClerkWebhookEvent)
   }
   return new Response('OK', { status: 200 })
@@ -55,8 +59,8 @@ Clerk Dashboard → Webhooks → Add endpoint: `https://yourdomain.com/api/webho
 ```typescript
 import { canCreateTrip, canAddMemory, PLAN_LIMITS } from '@passe/auth/plan-gates'
 
-canCreateTrip('free', 3)      // false — free plan limit is 3
-canAddMemory('explorer', 49)  // true — explorer limit is 50
+canCreateTrip('free', 3) // false — free plan limit is 3
+canAddMemory('explorer', 49) // true — explorer limit is 50
 PLAN_LIMITS.collector.maxTrips // Infinity
 ```
 

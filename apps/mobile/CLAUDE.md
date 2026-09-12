@@ -1,6 +1,6 @@
 > Expo HAS CHANGED — Read the exact versioned docs at https://docs.expo.dev/versions/v57.0.0/ before writing any code.
 
-# apps/mobile — Passé Mobile App
+# apps/mobile — Passe Mobile App
 
 Expo SDK 57, Expo Router (file-based routing), React Native 0.86, TypeScript 6 (strict), `@clerk/expo` for auth.
 
@@ -293,7 +293,7 @@ Never import directly from `src/theme/` in components — always go through `use
 
 | File            | Exports                                                                                                                                                                                                                                        |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `colors.ts`     | `lightColors`, `darkColors` (`SemanticColors`) — Passé brand palette: `primary` (terracotta), `primaryForeground` (agedCream), `secondary` (sandyBeige), `secondaryForeground` (darkEspresso), `muted`, `mutedForeground`, `destructive`, etc. |
+| `colors.ts`     | `lightColors`, `darkColors` (`SemanticColors`) — Passe brand palette: `primary` (terracotta), `primaryForeground` (agedCream), `secondary` (sandyBeige), `secondaryForeground` (darkEspresso), `muted`, `mutedForeground`, `destructive`, etc. |
 | `spacing.ts`    | `spacing` (numeric scale), `borderRadius` — re-exported from `@passe/theme`                                                                                                                                                                    |
 | `typography.ts` | `fonts` (platform-aware font families), `fontSizes`, `fontWeights`, `lineHeights`, `resolveLineHeight(fontSize, multiplier)`                                                                                                                   |
 | `index.ts`      | Assembles the full `theme` const; exports `ThemeDefinition` type                                                                                                                                                                               |

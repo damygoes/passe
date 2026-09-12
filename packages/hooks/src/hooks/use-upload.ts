@@ -22,7 +22,7 @@ export interface UploadInput {
 
 // Uploads a file directly from the client to S3 using a presigned PUT URL
 // minted by POST /api/uploads/sign. Image bytes never pass through the
-// Passé API. Returns the S3 object key — not a renderable URL, since every
+// Passe API. Returns the S3 object key — not a renderable URL, since every
 // read of private media goes through a signed /api/media/... URL minted
 // server-side per request (see apps/web/src/lib/media.ts).
 export function useUploadImage() {

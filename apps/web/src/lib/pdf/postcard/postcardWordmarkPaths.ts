@@ -1,4 +1,4 @@
-// Literal copy of the wordmark letterforms + accent stroke from
+// Literal copy of the wordmark letterforms from
 // packages/ui/src/logo/Logo.tsx (`variant="wordmark"`) — not imported, since
 // that component renders a DOM <svg>/<path> and @react-pdf/renderer needs
 // its own Svg/Path primitives instead (same "mirror, don't import" reasoning
@@ -13,7 +13,5 @@ export const POSTCARD_WORDMARK_LETTERS_PATH =
 
 export const POSTCARD_WORDMARK_PERIOD_PATH =
   'M271.48 86Q275.38 86 277.68 88.05 279.98 90.1 279.98 93.7 279.98 97.3 277.68 99.35 275.38 101.4 271.48 101.4 267.58 101.4 265.28 99.35 262.98 97.3 262.98 93.7 262.98 90.1 265.28 88.05 267.58 86 271.48 86Z'
-
-export const POSTCARD_WORDMARK_ACCENT_PATH = 'M229 42.1 L245.9 26.3'
 
 export const POSTCARD_WORDMARK_GROUP_TRANSFORM = 'translate(0 -18)'

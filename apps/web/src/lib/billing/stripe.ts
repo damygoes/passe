@@ -42,7 +42,7 @@ export function priceIdToPlan(priceId: string): PaidPlan | null {
 
 // Returns the user's Stripe customer ID, creating the customer on first use.
 // The customer carries metadata.userId so webhook events can always be traced
-// back to a Passé user even if the DB row is looked up by customer ID.
+// back to a Passe user even if the DB row is looked up by customer ID.
 export async function getOrCreateStripeCustomer(userId: string): Promise<string> {
   const user = await db.query.users.findFirst({ where: eq(users.id, userId) })
   if (!user) throw new Error(`User ${userId} not found`)

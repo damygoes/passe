@@ -1,24 +1,24 @@
 {
   "common": {
-    "app_name": "Passé.",
+    "app_name": "Passe.",
     "app_tagline": "The past, beautifully kept.",
     "cancel": "Cancel"
   },
   "auth": {
     "layout": {
       "description": "Create trips, attach geotagged memories, and share your world — beautifully.",
-      "copyright": "© 2026 Passé"
+      "copyright": "© 2026 Passe"
     },
     "sign_in": {
       "heading": "Welcome back",
-      "subheading": "Sign in to your Passé account",
+      "subheading": "Sign in to your Passe account",
       "or_email": "or continue with email",
       "no_account": "Don't have an account?",
       "sign_up_link": "Sign up"
     },
     "sign_up": {
       "heading": "Create an account",
-      "subheading": "Start preserving your memories with Passé",
+      "subheading": "Start preserving your memories with Passe",
       "or_email": "or continue with email",
       "have_account": "Already have an account?",
       "sign_in_link": "Sign in",
@@ -417,7 +417,7 @@
   },
   "landing": {
     "meta": {
-      "title": "Passé. — The past, beautifully kept.",
+      "title": "Passe. — The past, beautifully kept.",
       "description": "Create trips, attach geotagged memories, and share a beautiful travel portfolio. Private by default."
     },
     "nav": {
@@ -428,7 +428,7 @@
       "eyebrow": "Travel memory keeping",
       "title_leading": "The past,",
       "title_accent": "beautifully kept.",
-      "subtitle": "Passé turns your trips into a living archive — geotagged photos, notes, and moments, arranged into a portfolio worth sharing.",
+      "subtitle": "Passe turns your trips into a living archive — geotagged photos, notes, and moments, arranged into a portfolio worth sharing.",
       "cta_primary": "Start for free",
       "cta_secondary": "Sign in",
       "note": "Free plan included. No credit card required."
@@ -482,7 +482,7 @@
     "privacy": {
       "eyebrow": "Private by default",
       "heading": "Your memories are yours first",
-      "description": "Everything you add to Passé starts private. Nothing goes public until you deliberately make it so — trip by trip, memory by memory.",
+      "description": "Everything you add to Passe starts private. Nothing goes public until you deliberately make it so — trip by trip, memory by memory.",
       "point1": "Every trip and memory starts private",
       "point2": "You choose exactly what goes public",
       "point3": "Make anything private again, any time"
@@ -490,11 +490,11 @@
     "mobileApp": {
       "eyebrow": "Also on mobile",
       "heading": "Take your archive with you",
-      "description": "Capture memories on the go and keep every trip synced — the Passé app for iOS and Android.",
+      "description": "Capture memories on the go and keep every trip synced — the Passe app for iOS and Android.",
       "ios_eyebrow": "Download on the",
       "ios_name": "App Store",
       "android": "Google Play",
-      "screenshotAlt": "The Passé app showing a traveller's trip archive",
+      "screenshotAlt": "The Passe app showing a traveller's trip archive",
       "subscriptionHint": "Your trips stay in sync across web and mobile."
     },
     "archiveStat": {
@@ -539,12 +539,12 @@
       }
     },
     "cta": {
-      "heading": "Begin your archive today",
+      "heading": "Start your journey today",
       "subtitle": "Your next trip deserves more than a camera roll.",
       "button": "Start for free"
     },
     "footer": {
-      "copyright": "© {year} Passé",
+      "copyright": "© {year} Passe",
       "sign_in": "Sign in",
       "sign_up": "Sign up",
       "privacy_policy": "Privacy Policy",
@@ -580,8 +580,8 @@
   "info": {
     "privacy": {
       "meta": {
-        "title": "Privacy Policy — Passé",
-        "description": "How Passé collects, uses, and protects your personal data."
+        "title": "Privacy Policy — Passe",
+        "description": "How Passe collects, uses, and protects your personal data."
       },
       "eyebrow": "Legal",
       "title": "Privacy Policy",
@@ -589,13 +589,13 @@
       "sections": {
         "controller": {
           "heading": "Data Controller",
-          "p1": "This privacy policy explains how personal data is processed when you use Passé — the web app at passe.cc and the Passé mobile app (together, the \"Service\").",
+          "p1": "This privacy policy explains how personal data is processed when you use Passe — the web app at passe.cc and the Passe mobile app (together, the \"Service\").",
           "p2": "The controller within the meaning of the General Data Protection Regulation (GDPR) is: {legalName}, {legalStreet}, {legalCity}, Germany.",
           "p3": "You can reach us at any time at {email}."
         },
         "overview": {
           "heading": "Privacy by Default",
-          "p1": "Passé is built privacy-first. Every trip and every memory you create is private by default and visible only to you. Nothing you upload is shown to anyone else unless you explicitly make it public.",
+          "p1": "Passe is built privacy-first. Every trip and every memory you create is private by default and visible only to you. Nothing you upload is shown to anyone else unless you explicitly make it public.",
           "p2": "We only collect the data we need to operate the Service. We do not sell your personal data and we do not use it for advertising."
         },
         "data": {
@@ -616,7 +616,7 @@
         },
         "processors": {
           "heading": "Service Providers",
-          "p1": "We use the following service providers (processors) to operate Passé. Each receives only the data required for its function:",
+          "p1": "We use the following service providers (processors) to operate Passe. Each receives only the data required for its function:",
           "li1": "Clerk (Clerk, Inc., USA) — authentication and account management, including sign-in with Google and Apple.",
           "li2": "Neon (Neon, Inc., USA) — hosting of our database, where your account, trip, and memory data is stored.",
           "li3": "Cloudinary (Cloudinary Ltd.) — storage and delivery of the photos you upload.",
@@ -667,8 +667,8 @@
     },
     "terms": {
       "meta": {
-        "title": "Terms of Service — Passé",
-        "description": "The terms that govern your use of Passé."
+        "title": "Terms of Service — Passe",
+        "description": "The terms that govern your use of Passe."
       },
       "eyebrow": "Legal",
       "title": "Terms of Service",
@@ -676,17 +676,17 @@
       "sections": {
         "scope": {
           "heading": "Scope",
-          "p1": "These terms of service govern the use of Passé — the web app at passe.cc and the Passé mobile app (together, the \"Service\") — operated by {legalName}, {legalStreet}, {legalCity}, Germany (\"we\", \"us\").",
+          "p1": "These terms of service govern the use of Passe — the web app at passe.cc and the Passe mobile app (together, the \"Service\") — operated by {legalName}, {legalStreet}, {legalCity}, Germany (\"we\", \"us\").",
           "p2": "By creating an account you agree to these terms."
         },
         "service": {
           "heading": "The Service",
-          "p1": "Passé lets you create trips, attach memories (photos, notes, and locations) to them, and optionally share a public portfolio and public trip pages.",
+          "p1": "Passe lets you create trips, attach memories (photos, notes, and locations) to them, and optionally share a public portfolio and public trip pages.",
           "p2": "The Service is offered in a free plan and the paid Explorer and Collector plans. The features included in each plan are described in the pricing section of our website and may evolve over time."
         },
         "account": {
           "heading": "Your Account",
-          "p1": "You must be at least 16 years old to use Passé. You agree to provide accurate information when registering and to keep your credentials confidential.",
+          "p1": "You must be at least 16 years old to use Passe. You agree to provide accurate information when registering and to keep your credentials confidential.",
           "p2": "You are responsible for all activity that happens through your account. Notify us immediately at {email} if you suspect unauthorized use."
         },
         "billing": {
@@ -739,8 +739,8 @@
     },
     "impressum": {
       "meta": {
-        "title": "Impressum — Passé",
-        "description": "Legal notice for Passé in accordance with § 5 DDG."
+        "title": "Impressum — Passe",
+        "description": "Legal notice for Passe in accordance with § 5 DDG."
       },
       "eyebrow": "Legal",
       "title": "Impressum",
@@ -768,8 +768,8 @@
     },
     "support": {
       "meta": {
-        "title": "Support — Passé",
-        "description": "Get help with Passé — frequently asked questions and contact."
+        "title": "Support — Passe",
+        "description": "Get help with Passe — frequently asked questions and contact."
       },
       "eyebrow": "Help",
       "title": "Support",
@@ -778,8 +778,8 @@
       "faq_title": "Frequently asked questions",
       "faq": {
         "what": {
-          "question": "What is Passé?",
-          "answer": "Passé is a travel memory platform. You create trips, attach memories — photos, notes, and places — to them, and keep a beautifully organized archive of where you've been."
+          "question": "What is Passe?",
+          "answer": "Passe is a travel memory platform. You create trips, attach memories — photos, notes, and places — to them, and keep a beautifully organized archive of where you've been."
         },
         "visibility": {
           "question": "Who can see my trips and memories?",

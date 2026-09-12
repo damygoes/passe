@@ -28,7 +28,7 @@ export function AppSidebar({ displayName, email, avatarUrl, username, ...props }
       <SidebarHeader>
         <Link
           href={routes.dashboard}
-          aria-label="Passé"
+          aria-label="Passe"
           className="flex items-center px-2 py-1 text-foreground transition-opacity hover:opacity-80"
         >
           <Logo className="h-12 w-auto" />

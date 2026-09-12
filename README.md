@@ -1,4 +1,4 @@
-# Passé.
+# Passe.
 
 > _The past, beautifully kept._
 

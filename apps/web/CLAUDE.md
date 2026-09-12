@@ -1,6 +1,6 @@
 # apps/web — Next.js 16 App
 
-Main Passé product. App Router, Clerk auth, Tailwind CSS 4.
+Main Passe product. App Router, Clerk auth, Tailwind CSS 4.
 
 ---
 
@@ -319,7 +319,7 @@ expose a raw S3 URL — everything goes through app-controlled signing.
   → signed `/api/media/...` URL) and `normalizeMediaRef` (write side: incoming value → canonical
   stored key, with an ownership check against the authenticated user)
 - `POST /api/uploads/sign` — mints a presigned S3 PUT URL for a new upload; the client PUTs the file
-  bytes directly to S3, bytes never touch the Passé server
+  bytes directly to S3, bytes never touch the Passe server
 - `GET /api/media/[...key]` — the only way media is ever served. Always requires a valid, non-expired
   HMAC signature (`MEDIA_URL_SIGNING_SECRET`) — there is no unsigned fallback. Resizes/transcodes via
   `sharp` on request. Private media gets a 1-hour-TTL signed URL minted fresh on every read; public

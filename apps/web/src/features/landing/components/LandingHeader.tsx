@@ -24,7 +24,7 @@ export async function LandingHeader() {
         <Link
           href={routes.home}
           className="text-foreground transition-opacity hover:opacity-80"
-          aria-label="Passé"
+          aria-label="Passe"
         >
           <Logo className="h-6 w-auto" />
         </Link>

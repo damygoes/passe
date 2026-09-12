@@ -16,7 +16,7 @@ export const Default: Story = {
   render: () => (
     <Navbar>
       <NavbarBrand>
-        <span className="text-base font-semibold tracking-tight">Passé</span>
+        <span className="text-base font-semibold tracking-tight">Passe</span>
       </NavbarBrand>
       <NavbarLinks>
         <Button variant="ghost" size="sm">

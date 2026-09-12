@@ -14,9 +14,9 @@ export const Default: Story = {
   args: {
     items: [
       {
-        question: 'What is Passé?',
+        question: 'What is Passe?',
         answer:
-          'Passé is a travel memory platform. You create trips, attach memories to them, and keep a beautifully organized archive of where you have been.',
+          'Passe is a travel memory platform. You create trips, attach memories to them, and keep a beautifully organized archive of where you have been.',
       },
       {
         question: 'Who can see my trips and memories?',

@@ -1,4 +1,4 @@
-# Passé. — Product Identity
+# Passe. — Product Identity
 
 > _The past, beautifully kept._
 
@@ -14,7 +14,7 @@ Everything is **private by default**. Trips and memories are only visible to the
 
 ### Not a social network
 
-Passé is a personal journal, not a feed. There are no followers, likes, or discovery algorithms. A public portfolio exists to share with people you choose — not to grow an audience.
+Passe is a personal journal, not a feed. There are no followers, likes, or discovery algorithms. A public portfolio exists to share with people you choose — not to grow an audience.
 
 ### Editorial quality
 
@@ -24,7 +24,7 @@ Every public-facing page should feel like a beautifully designed travel book, no
 
 ## Brand
 
-**Name:** Passé. (always with the accent and closing period — never "Passe" or "PASSÉ")
+**Name:** Passe. (always with the closing period, never the accented "Passé" or "PASSÉ")
 **Pronunciation:** pah-SAY
 **Tagline:** The past, beautifully kept.
 
@@ -67,7 +67,7 @@ Every public-facing page should feel like a beautifully designed travel book, no
 1. **Trip Creation** — title, date range, countries visited, cover photo
 2. **Memory Logging** — photo, GPS pin, date, personal note (per memory)
 3. **Interactive World Map** — countries and cities visited, highlighted and pinned
-4. **Public Portfolio Page** — shareable URL at `passé.app/u/[username]` (Explorer+ only)
+4. **Public Portfolio Page** — shareable URL at `passe.app/u/[username]` (Explorer+ only)
 5. **Public Trip Pages** — individual trip pages at `/u/[username]/trips/[tripId]` with curated public memories (Explorer+ only)
 6. **Personal Stats** — countries, cities, trips, years — typographic callouts, not charts
 7. **PDF Memory Book Export** — export any trip as a designed PDF keepsake (Collector only)
@@ -89,7 +89,7 @@ Every public-facing page should feel like a beautifully designed travel book, no
 
 - Up to **20 trips**
 - **50 memories** per trip
-- **Public portfolio** page at `passé.app/u/[username]`
+- **Public portfolio** page at `passe.app/u/[username]`
 - **Public trip pages** with curated memory sharing
 - Custom URL slug
 - HD photo storage
@@ -126,7 +126,7 @@ Web (Next.js 16) · iOS & Android (Expo / React Native) · API · NeonDB (Postgr
 
 ---
 
-## What Passé. Is NOT
+## What Passe. Is NOT
 
 - A social media or review platform
 - A trip planner or itinerary tool
