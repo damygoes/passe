@@ -1,17 +1,24 @@
 import type { MapPoint } from '@passe/types/memory'
 import {
+  buildFlatWorldStyle,
+  MAP_PIN_COLOR,
+  MAP_PIN_HALO_COLOR,
+  MAP_PIN_HALO_OPACITY,
+  MAP_PIN_RING_COLOR,
+} from '@passe/map'
+import {
   Camera,
   Map as MapLibreMap,
   Marker,
   type CameraRef,
   type MapRef,
+  type StyleSpecification,
 } from '@maplibre/maplibre-react-native'
 import { useRouter } from 'expo-router'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { Platform, StyleSheet, Text, View } from 'react-native'
 import Animated, { Easing, FadeInDown, FadeOutDown } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import Svg, { Path } from 'react-native-svg'
 import Supercluster from 'supercluster'
 
 import { useTheme } from '@/hooks/useTheme'
@@ -20,13 +27,17 @@ import { groupPointsByLocation, type LocationGroup } from '../utils/groupPointsB
 
 interface WorldMapProps {
   points: MapPoint[]
+  /** Free-text country names from the user's trips — drives the choropleth fill. */
+  visitedCountries: string[]
 }
 
-// Vector tiles top out well below 22 — without an explicit maxZoom, MapLibre
-// has nothing to fall back to for a raster layer that isn't there. Mirrors
-// apps/web WorldMap.tsx.
-const MAX_ZOOM = 19
-const PIN_SIZE = 26
+// No vector/raster tiles anymore — the flat GeoJSON fill scales to any zoom,
+// so this only needs to stay at or above Supercluster's own maxZoom (16)
+// below so a cluster's expansion zoom is never clamped short of separating
+// its pins. Mirrors apps/web WorldMap.tsx.
+const MAX_ZOOM = 16
+const PIN_SIZE = 18
+const PIN_HALO_SIZE = PIN_SIZE * 2.6
 const CLUSTER_RADIUS = 60
 // NativeTabs doesn't expose a way to measure the floating liquid-glass tab bar
 // (expo-router docs: "tab bar height cannot be measured programmatically"). This is an
@@ -34,17 +45,6 @@ const CLUSTER_RADIUS = 60
 // visually on-device if Apple changes the bar's sizing. Android already gets the right
 // insets.bottom automatically (NativeTabs wraps content in a bottom-inset SafeAreaView there).
 const IOS_TAB_BAR_CLEARANCE = 60
-
-// Classic "map pin" glyph (same silhouette as Google Maps markers / Material's
-// `place` icon) — a slim teardrop with a punched-out circle, in a 24x24
-// viewBox. Mirrors apps/web WorldMap.tsx's PIN_PATH.
-const PIN_PATH =
-  'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z'
-
-function mapStyleUrl() {
-  const key = process.env.EXPO_PUBLIC_MAPTILER_KEY ?? ''
-  return `https://api.maptiler.com/maps/streets-v4/style.json?key=${key}`
-}
 
 // A single center + zoom heuristic instead of a bounds-fit — fitting bounds
 // around a single point (or several at the same spot) degenerates to a
@@ -80,14 +80,18 @@ interface Viewport {
   bbox: [number, number, number, number]
 }
 
-export function WorldMap({ points }: WorldMapProps) {
+export function WorldMap({ points, visitedCountries }: WorldMapProps) {
   const router = useRouter()
-  const { colors, spacing } = useTheme()
+  const { spacing } = useTheme()
   const insets = useSafeAreaInsets()
   const mapRef = useRef<MapRef>(null)
   const cameraRef = useRef<CameraRef>(null)
 
   const camera = useMemo(() => computeCamera(points), [points])
+  const mapStyle = useMemo(
+    () => buildFlatWorldStyle(visitedCountries) as unknown as StyleSpecification,
+    [visitedCountries],
+  )
   // Exact-coincidence lookup (not proximity clustering, that's Supercluster
   // below) — powers the prev/next pager when several memories share a spot.
   const groups = useMemo(() => groupPointsByLocation(points), [points])
@@ -200,17 +204,42 @@ export function WorldMap({ points }: WorldMapProps) {
           elevation: 10,
           zIndex: 10,
         },
+        // Same olive family as individual pins (just bigger, with a count) —
+        // the design doesn't specify clustering, but pins and clusters
+        // should still read as one glyph family.
         cluster: {
           borderRadius: 999,
-          backgroundColor: colors.primary,
-          borderWidth: 3,
-          borderColor: '#fff',
+          backgroundColor: MAP_PIN_COLOR,
+          borderWidth: 2,
+          borderColor: MAP_PIN_RING_COLOR,
           alignItems: 'center',
           justifyContent: 'center',
         },
-        clusterText: { color: '#fff', fontWeight: '600', fontSize: 14 },
+        clusterText: { color: MAP_PIN_RING_COLOR, fontWeight: '600', fontSize: 14 },
+        pinHalo: {
+          position: 'absolute',
+          width: PIN_HALO_SIZE,
+          height: PIN_HALO_SIZE,
+          borderRadius: PIN_HALO_SIZE / 2,
+          backgroundColor: MAP_PIN_HALO_COLOR,
+          opacity: MAP_PIN_HALO_OPACITY,
+        },
+        pinDot: {
+          width: PIN_SIZE,
+          height: PIN_SIZE,
+          borderRadius: PIN_SIZE / 2,
+          backgroundColor: MAP_PIN_COLOR,
+          borderWidth: 1,
+          borderColor: MAP_PIN_RING_COLOR,
+        },
+        pinWrapper: {
+          width: PIN_HALO_SIZE,
+          height: PIN_HALO_SIZE,
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
       }),
-    [spacing, colors.primary, insets.bottom],
+    [spacing, insets.bottom],
   )
 
   return (
@@ -218,7 +247,7 @@ export function WorldMap({ points }: WorldMapProps) {
       <MapLibreMap
         ref={mapRef}
         style={styles.map}
-        mapStyle={mapStyleUrl()}
+        mapStyle={mapStyle}
         onPress={handleMapPress}
         onRegionDidChange={handleRegionDidChange}
         androidView="texture"
@@ -256,12 +285,13 @@ export function WorldMap({ points }: WorldMapProps) {
             <Marker
               key={point.id}
               lngLat={[lng, lat]}
-              anchor="bottom"
+              anchor="center"
               onPress={() => handlePointPress(point)}
             >
-              <Svg width={PIN_SIZE} height={PIN_SIZE} viewBox="0 0 24 24">
-                <Path d={PIN_PATH} fill={colors.primary} />
-              </Svg>
+              <View style={styles.pinWrapper}>
+                <View style={styles.pinHalo} />
+                <View style={styles.pinDot} />
+              </View>
             </Marker>
           )
         })}

@@ -1,4 +1,5 @@
-import { useMapPoints } from '@passe/hooks'
+import { useMapPoints, useTrips } from '@passe/hooks'
+import { getVisitedCountries } from '@passe/utils'
 import Animated, { FadeIn } from 'react-native-reanimated'
 
 import { Skeleton } from '@/components/ui/skeleton'
@@ -10,10 +11,16 @@ import { WorldMap } from './WorldMap'
 
 export function MapDataWrapper() {
   const t = useTranslations('map')
-  const { data: points = [], isLoading, isError, refetch } = useMapPoints()
+  const {
+    data: points = [],
+    isLoading: pointsLoading,
+    isError: pointsError,
+    refetch,
+  } = useMapPoints()
+  const { data: trips = [], isLoading: tripsLoading, isError: tripsError } = useTrips()
 
-  if (isLoading) return <Skeleton style={{ flex: 1 }} />
-  if (isError) {
+  if (pointsLoading || tripsLoading) return <Skeleton style={{ flex: 1 }} />
+  if (pointsError || tripsError) {
     return (
       <Animated.View entering={FadeIn.duration(200)} style={{ padding: spacing[8] }}>
         <ErrorBanner message={t('load_error')} onRetry={() => refetch()} />
@@ -28,9 +35,11 @@ export function MapDataWrapper() {
     )
   }
 
+  const { visitedCountries } = getVisitedCountries({ allTrips: trips })
+
   return (
     <Animated.View entering={FadeIn.duration(200)} style={{ flex: 1 }}>
-      <WorldMap points={points} />
+      <WorldMap points={points} visitedCountries={[...visitedCountries]} />
     </Animated.View>
   )
 }

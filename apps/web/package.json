@@ -25,6 +25,7 @@
     "@passe/hooks": "workspace:*",
     "@passe/i18n": "workspace:*",
     "@passe/logger": "workspace:*",
+    "@passe/map": "workspace:*",
     "@passe/theme": "workspace:*",
     "@passe/types": "workspace:*",
     "@passe/ui": "workspace:*",
