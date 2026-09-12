@@ -104,6 +104,33 @@ export function createBadgeRecipe(theme: AppTheme): BadgeRecipe {
         gradient: [palette.terracotta.light, palette.terracotta.dark],
       },
 
+      // Tag colors, matching packages/ui's Badge 1:1: PRIVATE (olive tint),
+      // SHARED (terracotta tint), neutral (taupe tint) — never the paid-plan
+      // foil gradients above, which are a distinct, unrelated meaning.
+      private: {
+        container: {
+          backgroundColor: `${palette.deepOlive.DEFAULT}1F`,
+          borderColor: 'transparent',
+        },
+        label: { color: palette.deepOlive.dark },
+      },
+
+      shared: {
+        container: {
+          backgroundColor: `${palette.terracotta.DEFAULT}1F`,
+          borderColor: 'transparent',
+        },
+        label: { color: palette.terracotta.dark },
+      },
+
+      neutral: {
+        container: {
+          backgroundColor: `${palette.mutedTaupe.DEFAULT}1F`,
+          borderColor: 'transparent',
+        },
+        label: { color: palette.darkEspresso.DEFAULT },
+      },
+
       // Passport-stamp look: dashed ink border, uppercase label, slight tilt
       stamp: {
         container: {
