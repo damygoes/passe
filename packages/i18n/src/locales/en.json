@@ -119,11 +119,16 @@
     }
   },
   "trips": {
-    "dashboard": {
-      "title": "My Trips",
-      "description": "{tripsCount, plural, one {# trip} other {# trips}} across {countriesCount, plural, one {# country} other {# countries}}",
+    "list": {
+      "title": "Trips",
       "new_trip": "New trip",
-      "trips_error": "Could not load your trips. Try refreshing the page."
+      "trips_error": "Could not load your trips. Try refreshing the page.",
+      "filter_all": "All",
+      "filter_private": "Private",
+      "filter_shared": "Shared",
+      "quota_label": "{count} of {limit} trips kept",
+      "quota_unlimited": "Unlimited trips",
+      "quota_cta": "Upgrade"
     },
     "new": {
       "back": "← Back to trips",

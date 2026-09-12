@@ -5,6 +5,7 @@ import {
   canMakePortfolioPublic,
   canExportPdf,
   getPublicMemorySlots,
+  getTripSlots,
   PLAN_LIMITS,
 } from '../plan-gates'
 
@@ -120,6 +121,35 @@ describe('getPublicMemorySlots', () => {
     })
     expect(getPublicMemorySlots('collector', 999)).toEqual({
       used: 999,
+      limit: null,
+      remaining: null,
+      isUnlimited: true,
+    })
+  })
+})
+
+describe('getTripSlots', () => {
+  it('reports used/remaining for free plan under the limit', () => {
+    expect(getTripSlots('free', 1)).toEqual({
+      used: 1,
+      limit: 3,
+      remaining: 2,
+      isUnlimited: false,
+    })
+  })
+
+  it('clamps remaining at zero once free plan is at or over the limit', () => {
+    expect(getTripSlots('free', 3)).toEqual({
+      used: 3,
+      limit: 3,
+      remaining: 0,
+      isUnlimited: false,
+    })
+  })
+
+  it('reports unlimited for collector plan', () => {
+    expect(getTripSlots('collector', 40)).toEqual({
+      used: 40,
       limit: null,
       remaining: null,
       isUnlimited: true,

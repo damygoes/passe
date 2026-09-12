@@ -119,11 +119,16 @@
     }
   },
   "trips": {
-    "dashboard": {
-      "title": "Meine Reisen",
-      "description": "{tripsCount, plural, one {# Reise} other {# Reisen}} in {countriesCount, plural, one {# Land} other {# Ländern}}",
+    "list": {
+      "title": "Reisen",
       "new_trip": "Neue Reise",
-      "trips_error": "Deine Reisen konnten nicht geladen werden. Versuche, die Seite neu zu laden."
+      "trips_error": "Deine Reisen konnten nicht geladen werden. Versuche, die Seite neu zu laden.",
+      "filter_all": "Alle",
+      "filter_private": "Privat",
+      "filter_shared": "Geteilt",
+      "quota_label": "{count} von {limit} Reisen aufbewahrt",
+      "quota_unlimited": "Unbegrenzte Reisen",
+      "quota_cta": "Upgrade"
     },
     "new": {
       "back": "← Zurück zu den Reisen",
