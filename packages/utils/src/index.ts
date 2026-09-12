@@ -1,6 +1,7 @@
 export * from './cn'
 export * from './date'
 export * from './editorial'
+export * from './getMostRecentTrip'
 export * from './getUniqueCities'
 export * from './getUniqueStatsFromTrips'
 export * from './getVisitedCountries'

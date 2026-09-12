@@ -19,7 +19,8 @@ export default async function ProtectedLayout({ children }: Props) {
     <SidebarProvider
       style={
         {
-          '--sidebar-width': 'calc(var(--spacing) * 62)',
+          // 244px, per the redesign's sidebar spec.
+          '--sidebar-width': 'calc(var(--spacing) * 61)',
           '--header-height': 'calc(var(--spacing) * 12)',
         } as React.CSSProperties
       }

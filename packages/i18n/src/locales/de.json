@@ -310,13 +310,25 @@
     }
   },
   "nav": {
-    "dashboard": "Dashboard",
-    "portfolio": "Mein Portfolio",
+    "home": "Start",
+    "portfolio": "Portfolio",
     "account": "Konto",
     "billing": "Abrechnung",
     "sign_out": "Abmelden",
     "trips": "Reisen",
-    "map": "Karte"
+    "map": "Karte",
+    "stats": "Statistik",
+    "keepsakes": "Andenken",
+    "new_memory": "Neue Erinnerung"
+  },
+  "sidebar": {
+    "plan_card": {
+      "free_note": "{count} von {limit} Reisen aufbewahrt. Teilen ist ein Explorer-Feature.",
+      "explorer_note": "{count} von {limit} Reisen aufbewahrt. Exporte gibt es in Collector.",
+      "collector_note": "Unbegrenzte Reisen, Erinnerungen und Andenken.",
+      "cta_upgrade": "Upgrade",
+      "cta_manage": "Plan verwalten"
+    }
   },
   "map": {
     "title": "Karte",

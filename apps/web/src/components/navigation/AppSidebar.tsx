@@ -14,6 +14,7 @@ import {
 } from '@passe/ui/sidebar'
 import { NavUser } from './NavUser'
 import { SidebarNav } from './SidebarNav'
+import { SidebarPlanCard } from './SidebarPlanCard'
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   displayName: string
@@ -37,7 +38,8 @@ export function AppSidebar({ displayName, email, avatarUrl, username, ...props }
       <SidebarContent>
         <SidebarNav username={username} />
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="gap-3">
+        <SidebarPlanCard />
         <NavUser displayName={displayName} email={email} avatarUrl={avatarUrl} />
       </SidebarFooter>
       <SidebarRail />

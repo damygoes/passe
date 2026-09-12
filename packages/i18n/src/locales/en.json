@@ -310,13 +310,25 @@
     }
   },
   "nav": {
-    "dashboard": "Dashboard",
-    "portfolio": "My Portfolio",
+    "home": "Home",
+    "portfolio": "Portfolio",
     "account": "Account",
     "billing": "Billing",
     "sign_out": "Sign out",
     "trips": "Trips",
-    "map": "Map"
+    "map": "Map",
+    "stats": "Stats",
+    "keepsakes": "Keepsakes",
+    "new_memory": "New memory"
+  },
+  "sidebar": {
+    "plan_card": {
+      "free_note": "{count} of {limit} trips kept. Sharing is an Explorer feature.",
+      "explorer_note": "{count} of {limit} trips kept. Exports live in Collector.",
+      "collector_note": "Unlimited trips, memories and keepsakes.",
+      "cta_upgrade": "Upgrade",
+      "cta_manage": "Manage plan"
+    }
   },
   "map": {
     "title": "Map",
