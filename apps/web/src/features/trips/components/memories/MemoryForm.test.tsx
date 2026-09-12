@@ -5,6 +5,7 @@ import { mockPush } from '@/test/navigation-mock'
 import { MemoryForm } from './MemoryForm'
 
 const mockUseUser = vi.fn()
+const mockUseTrip = vi.fn()
 const mockUseMemories = vi.fn()
 const mockCreateMemory = vi.fn()
 const mockUpdateMemory = vi.fn()
@@ -12,6 +13,7 @@ const mockReverseGeocode = vi.fn()
 
 vi.mock('@passe/hooks', () => ({
   useUser: () => mockUseUser(),
+  useTrip: () => mockUseTrip(),
   useMemories: () => mockUseMemories(),
   useCreateMemory: () => ({ mutateAsync: mockCreateMemory, isPending: false }),
   useUpdateMemory: () => ({ mutateAsync: mockUpdateMemory, isPending: false }),
@@ -30,6 +32,7 @@ vi.mock('@passe/ui/date-picker', () => ({
 
 beforeEach(() => {
   mockUseUser.mockReturnValue({ data: { plan: 'collector' } })
+  mockUseTrip.mockReturnValue({ data: undefined })
   mockUseMemories.mockReturnValue({ data: [] })
   mockCreateMemory.mockReset()
   mockUpdateMemory.mockReset()
@@ -63,9 +66,39 @@ describe('MemoryForm', () => {
 
     await waitFor(() => expect(mockCreateMemory).toHaveBeenCalled())
     expect(mockCreateMemory).toHaveBeenCalledWith(
-      expect.objectContaining({ tripId: 'trip-1', note: 'Great day', isPublic: false }),
+      expect.objectContaining({ tripId: 'trip-1', note: 'Great day', isPublic: false, tags: [] }),
     )
     expect(mockPush).toHaveBeenCalledWith('/trips/trip-1')
+  })
+
+  it('defaults the privacy toggle to private and lets it be switched on', async () => {
+    mockCreateMemory.mockResolvedValue({ id: 'memory-1' })
+    const user = userEvent.setup()
+    render(<MemoryForm tripId="trip-1" />)
+
+    expect(screen.getByRole('switch')).toHaveAttribute('data-checked')
+
+    await user.click(screen.getByRole('switch'))
+    await user.type(screen.getByLabelText('note_label'), 'Great day')
+    await user.click(screen.getByRole('button', { name: 'create' }))
+
+    await waitFor(() => expect(mockCreateMemory).toHaveBeenCalled())
+    expect(mockCreateMemory).toHaveBeenCalledWith(expect.objectContaining({ isPublic: true }))
+  })
+
+  it('parses the comma-separated tags input', async () => {
+    mockCreateMemory.mockResolvedValue({ id: 'memory-1' })
+    const user = userEvent.setup()
+    render(<MemoryForm tripId="trip-1" />)
+
+    await user.type(screen.getByLabelText('note_label'), 'Great day')
+    await user.type(screen.getByLabelText('tags_label'), 'Medina, Golden hour ,  Film')
+    await user.click(screen.getByRole('button', { name: 'create' }))
+
+    await waitFor(() => expect(mockCreateMemory).toHaveBeenCalled())
+    expect(mockCreateMemory).toHaveBeenCalledWith(
+      expect.objectContaining({ tags: ['Medina', 'Golden hour', 'Film'] }),
+    )
   })
 
   it('shows an error banner when the mutation throws', async () => {
@@ -84,7 +117,11 @@ describe('MemoryForm', () => {
       success({ coords: { latitude: 48.8, longitude: 2.3 } } as GeolocationPosition),
     )
     vi.stubGlobal('navigator', { geolocation: { getCurrentPosition } })
-    mockReverseGeocode.mockResolvedValue({ city: 'Paris', country: 'France' })
+    mockReverseGeocode.mockResolvedValue({
+      city: 'Paris',
+      country: 'France',
+      placeName: 'Paris, France',
+    })
 
     const user = userEvent.setup()
     render(<MemoryForm tripId="trip-1" />)
@@ -92,6 +129,7 @@ describe('MemoryForm', () => {
 
     await waitFor(() => expect(screen.getByLabelText('city_label')).toHaveValue('Paris'))
     expect(screen.getByLabelText('country_label')).toHaveValue('France')
+    expect(screen.getByLabelText('place_name_label')).toHaveValue('Paris, France')
 
     vi.unstubAllGlobals()
   })
