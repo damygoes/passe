@@ -2,8 +2,6 @@
 
 import { FadeIn } from '@/components/motion/FadeIn'
 import { SECTION_STEP } from '@/lib/motion'
-import { PageHeader, PageHeaderDescription, PageHeaderTitle } from '@passe/ui/page-header'
-import { Separator } from '@passe/ui/separator'
 import { useTranslations } from 'next-intl'
 import { Suspense } from 'react'
 import { BillingDataWrapper } from '../components/BillingDataWrapper'
@@ -13,24 +11,26 @@ export function BillingView() {
   const t = useTranslations('billing')
 
   return (
-    <div className="container max-w-6xl mx-auto py-8 px-4 md:px-6">
+    <div className="container mx-auto w-full max-w-6xl px-4 py-8 md:px-6">
       <FadeIn>
-        <PageHeader className="w-full">
-          <PageHeaderTitle>{t('title')}</PageHeaderTitle>
-          <PageHeaderDescription>{t('subtitle')}</PageHeaderDescription>
-        </PageHeader>
+        <h1 className="font-display text-4xl sm:text-5xl">{t('title')}</h1>
+        <p className="mt-3 max-w-[520px] text-[16px] text-muted-foreground">{t('subtitle')}</p>
       </FadeIn>
-
-      <Separator className="my-6" />
 
       {/* useSearchParams requires a Suspense boundary during prerender */}
       <Suspense fallback={null}>
-        <BillingStatusBanner />
+        <div className="mt-6">
+          <BillingStatusBanner />
+        </div>
       </Suspense>
 
-      <FadeIn delay={SECTION_STEP}>
+      <FadeIn delay={SECTION_STEP} className="mt-9">
         <BillingDataWrapper />
       </FadeIn>
+
+      <p className="mt-6 text-center font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
+        {t('footer_caption')}
+      </p>
     </div>
   )
 }

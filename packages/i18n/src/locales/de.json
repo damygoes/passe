@@ -590,16 +590,17 @@
       "heading": "Einfache Pläne für alle Reisenden",
       "subheading": "Starte kostenlos. Upgrade, wenn dein Archiv wächst.",
       "most_popular": "Am beliebtesten",
-      "per_month": "/ Monat",
+      "per_month": "Pro Monat",
       "bullets": {
         "trips": "{count, plural, one {# Reise} other {# Reisen}}",
         "trips_unlimited": "Unbegrenzte Reisen",
         "memories": "{count, plural, one {# Erinnerung} other {# Erinnerungen}} pro Reise",
         "memories_unlimited": "Unbegrenzte Erinnerungen pro Reise",
-        "portfolio_yes": "Öffentliches Portfolio",
+        "portfolio_yes": "Öffentliches Portfolio und Reiseseiten",
         "portfolio_no": "Nur privates Festhalten",
-        "pdf_export_yes": "PDF-Export",
-        "pdf_export_no": "Kein PDF-Export",
+        "public_memories_limited": "{count, plural, one {# Erinnerung} other {# Erinnerungen}} für die Freigabe vorausgewählt",
+        "public_memories_unlimited": "Unbegrenzte öffentliche Erinnerungen",
+        "pdf_export_yes": "PDF-Erinnerungsbuch",
         "zine_export_yes": "Zine-Export",
         "postcard_export_yes": "Postkarten-Export"
       },
@@ -650,8 +651,9 @@
     "error": "Dein Portfolio konnte nicht geladen werden. Bitte versuche es erneut."
   },
   "billing": {
-    "title": "Abrechnung",
-    "subtitle": "Dein Tarif und Abo, verwaltet über Stripe.",
+    "title": "Behalte mehr davon.",
+    "subtitle": "Was du bereits festgehalten hast, wird nie entfernt — ein Upgrade hebt nur die Grenze an.",
+    "footer_caption": "Jederzeit kündbar · deine Erinnerungen bleiben deine · jährliche Abrechnung folgt",
     "current_plan": "Dein aktueller Tarif",
     "upgrade_to": "Auf {plan} upgraden",
     "switch_to": "Zu {plan} wechseln",

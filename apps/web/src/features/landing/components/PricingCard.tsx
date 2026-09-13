@@ -15,7 +15,6 @@ export function PricingCard({ plan }: { plan: PlanType }) {
   return (
     <PlanCard
       plan={plan}
-      highlighted={highlighted}
       badge={highlighted && <Badge className="absolute top-4 right-4">{t('most_popular')}</Badge>}
       footer={
         <ExitLink

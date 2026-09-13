@@ -76,14 +76,7 @@ export function PlanCards({
           ) : null
 
           return (
-            <PlanCard
-              key={plan}
-              plan={plan}
-              highlighted={plan === 'explorer'}
-              current={isCurrent}
-              badge={badge}
-              footer={footer}
-            />
+            <PlanCard key={plan} plan={plan} current={isCurrent} badge={badge} footer={footer} />
           )
         })}
       </Stagger>

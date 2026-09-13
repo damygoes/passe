@@ -590,16 +590,17 @@
       "heading": "Simple plans for every traveller",
       "subheading": "Start free. Upgrade when your archive outgrows it.",
       "most_popular": "Most popular",
-      "per_month": "/ month",
+      "per_month": "Per month",
       "bullets": {
         "trips": "{count, plural, one {# trip} other {# trips}}",
         "trips_unlimited": "Unlimited trips",
         "memories": "{count, plural, one {# memory} other {# memories}} per trip",
         "memories_unlimited": "Unlimited memories per trip",
-        "portfolio_yes": "Public portfolio",
+        "portfolio_yes": "Public portfolio and trip pages",
         "portfolio_no": "Private journaling only",
-        "pdf_export_yes": "PDF export",
-        "pdf_export_no": "No PDF export",
+        "public_memories_limited": "{count, plural, one {# memory} other {# memories}} pre-selected for sharing",
+        "public_memories_unlimited": "Unlimited public memories",
+        "pdf_export_yes": "PDF memory book",
         "zine_export_yes": "Zine export",
         "postcard_export_yes": "Postcard export"
       },
@@ -650,8 +651,9 @@
     "error": "Could not load your portfolio. Try again later."
   },
   "billing": {
-    "title": "Billing",
-    "subtitle": "Your plan and subscription, managed through Stripe.",
+    "title": "Keep more of it.",
+    "subtitle": "Nothing you've already kept is ever removed — upgrading only lifts the ceiling.",
+    "footer_caption": "Cancel anytime · your memories stay yours · annual billing coming soon",
     "current_plan": "Your current plan",
     "upgrade_to": "Upgrade to {plan}",
     "switch_to": "Switch to {plan}",
