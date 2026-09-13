@@ -222,6 +222,20 @@
       "export_zine_description": "Ein Falt-Mini-Zine aus sechs Fotos",
       "export_postcard_description": "Ein Foto vorn, deine Nachricht auf der Rückseite"
     },
+    "keepsakes": {
+      "title": "Erinnerungsstücke",
+      "load_error": "Erinnerungsstücke konnten nicht geladen werden.",
+      "memories_count": "{count, plural, one {# Erinnerung} other {# Erinnerungen}}",
+      "badge_unlocked": "Collector",
+      "badge_locked": "Free",
+      "locked_cta": "Mit Collector freischalten",
+      "pdf_title": "PDF-Erinnerungsbuch",
+      "pdf_cta": "PDF herunterladen",
+      "zine_title": "Zine",
+      "zine_cta": "Zine erstellen",
+      "postcard_title": "Postkarte",
+      "postcard_cta": "Postkarte erstellen"
+    },
     "stats": {
       "countries": "{count, plural, one {Land} other {Länder}}",
       "cities": "{count, plural, one {Stadt} other {Städte}}",

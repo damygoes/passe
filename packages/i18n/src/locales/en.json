@@ -222,6 +222,20 @@
       "export_zine_description": "A fold-and-cut mini zine from six photos",
       "export_postcard_description": "One photo up front, your message on the back"
     },
+    "keepsakes": {
+      "title": "Keepsakes",
+      "load_error": "Couldn't load this trip's keepsakes.",
+      "memories_count": "{count, plural, one {# memory} other {# memories}}",
+      "badge_unlocked": "Collector",
+      "badge_locked": "Free",
+      "locked_cta": "Unlock with Collector",
+      "pdf_title": "PDF memory book",
+      "pdf_cta": "Download PDF",
+      "zine_title": "Zine",
+      "zine_cta": "Create zine",
+      "postcard_title": "Postcard",
+      "postcard_cta": "Create postcard"
+    },
     "stats": {
       "countries": "{count, plural, one {Country} other {Countries}}",
       "cities": "{count, plural, one {City} other {Cities}}",
