@@ -2,13 +2,13 @@ import { canExportPdf } from '@passe/auth/plan-gates'
 import { usePasseApi, useUser } from '@passe/hooks'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useMemo, useState } from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-import { Badge } from '@/components/ui/badge'
+import { Badge, type BadgeVariant } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import type { IconName } from '@/components/ui/icon'
-import { Spinner } from '@/components/ui/spinner'
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
 import {
   ShareUnavailableError,
@@ -17,55 +17,132 @@ import {
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
-// Export formSheet: Memory Book (inline download + share), Zine, Postcard.
-// All three are Collector-gated via the shared canExportPdf plan gate.
-export function TripExportOptionsScreen() {
-  const t = useTranslations('trips.detail')
-  const router = useRouter()
-  const { id } = useLocalSearchParams<{ id: string }>()
-  const { data: user } = useUser()
-  const { baseUrl, getToken } = usePasseApi()
-  const { colors, spacing, fontSizes, fontWeights, borderRadius } = useTheme()
-  const [isDownloadingPdf, setIsDownloadingPdf] = useState(false)
-  const [downloadError, setDownloadError] = useState<string | null>(null)
+interface KeepsakeCardProps {
+  icon: IconName
+  title: string
+  description: string
+  statusLabel: string
+  statusVariant: BadgeVariant
+  ctaLabel: string
+  canExport: boolean
+  loading?: boolean
+  onPress: () => void
+}
 
-  const canExport = canExportPdf(user?.plan ?? 'free')
+function KeepsakeCard({
+  icon,
+  title,
+  description,
+  statusLabel,
+  statusVariant,
+  ctaLabel,
+  canExport,
+  loading,
+  onPress,
+}: KeepsakeCardProps) {
+  const { colors, spacing, fonts, fontSizes } = useTheme()
 
   const styles = useMemo(
     () =>
       StyleSheet.create({
-        container: {
-          padding: spacing[4],
-          paddingTop: spacing[6],
-          gap: spacing[1],
-          backgroundColor: colors.background,
+        card: {
+          flexDirection: 'row',
+          gap: spacing[4],
+          alignItems: 'center',
+          backgroundColor: colors.popover,
+          borderRadius: 26,
+          padding: spacing[4] + 2,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.06,
+          shadowRadius: 8,
+          elevation: 2,
         },
-        title: {
-          fontSize: fontSizes.lg,
-          fontWeight: fontWeights.semibold,
-          color: colors.foreground,
-          paddingHorizontal: spacing[3],
-          paddingBottom: spacing[2],
+        preview: {
+          width: 76,
+          height: 96,
+          borderRadius: 14,
+          flexShrink: 0,
+          backgroundColor: colors.secondary,
+          alignItems: 'center',
+          justifyContent: 'center',
         },
-        row: {
+        content: { flex: 1, gap: spacing[1] },
+        titleRow: { flexDirection: 'row', alignItems: 'center', gap: spacing[2] },
+        title: { fontFamily: fonts.display, fontSize: fontSizes.xl, color: colors.foreground },
+        description: { fontSize: fontSizes.sm, lineHeight: 18, color: colors.mutedForeground },
+        cta: { marginTop: spacing[2] },
+      }),
+    [colors, spacing, fonts, fontSizes],
+  )
+
+  return (
+    <View style={styles.card}>
+      <View style={styles.preview}>
+        <Icon name={icon} size="2xl" color={`${colors.foreground}40`} />
+      </View>
+      <View style={styles.content}>
+        <View style={styles.titleRow}>
+          <Text style={styles.title}>{title}</Text>
+          <Badge variant={statusVariant}>{statusLabel}</Badge>
+        </View>
+        <Text style={styles.description}>{description}</Text>
+        <Button
+          size="sm"
+          variant={canExport ? 'primary' : 'secondary'}
+          fullWidth
+          loading={loading}
+          disabled={loading}
+          onPress={onPress}
+          style={styles.cta}
+        >
+          {ctaLabel}
+        </Button>
+      </View>
+    </View>
+  )
+}
+
+// Export picker sheet: Memory book (inline download + share), Zine, Postcard —
+// all three Collector-gated via the shared canExportPdf plan gate. Restyled to
+// the design handoff's horizontal keepsake-card list; the sheet route itself
+// and every underlying export/download flow is unchanged.
+export function TripExportOptionsScreen() {
+  const t = useTranslations('trips.keepsakes')
+  const tDetail = useTranslations('trips.detail')
+  const router = useRouter()
+  const { id } = useLocalSearchParams<{ id: string }>()
+  const { data: user } = useUser()
+  const { baseUrl, getToken } = usePasseApi()
+  const { colors, spacing, fonts, fontSizes } = useTheme()
+  const [isDownloadingPdf, setIsDownloadingPdf] = useState(false)
+  const [downloadError, setDownloadError] = useState<string | null>(null)
+
+  const canExport = canExportPdf(user?.plan ?? 'free')
+  const statusLabel = canExport ? t('status_ready') : t('status_locked')
+  const statusVariant: BadgeVariant = canExport ? 'neutral' : 'outline'
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        scrollContent: { padding: spacing[5], paddingTop: spacing[6], gap: spacing[4] },
+        headerRow: {
           flexDirection: 'row',
           alignItems: 'center',
-          gap: spacing[3],
-          paddingVertical: spacing[3],
-          paddingHorizontal: spacing[3],
-          borderRadius: borderRadius.lg,
+          justifyContent: 'space-between',
+          paddingHorizontal: spacing[1],
         },
-        rowPressed: { backgroundColor: colors.muted },
-        rowDisabled: { opacity: 0.5 },
-        rowText: { flex: 1, gap: 2 },
-        rowLabel: { fontSize: fontSizes.base, color: colors.foreground },
-        rowDescription: { fontSize: fontSizes.sm, color: colors.mutedForeground },
+        title: { fontFamily: fonts.display, fontSize: fontSizes['2xl'], color: colors.foreground },
       }),
-    [colors, spacing, fontSizes, fontWeights, borderRadius],
+    [colors, spacing, fonts, fontSizes],
   )
 
   async function handleDownloadPdf() {
     if (isDownloadingPdf) return
+    if (!canExport) {
+      router.push('/(app)/account/paywall')
+      return
+    }
     setDownloadError(null)
     setIsDownloadingPdf(true)
     try {
@@ -78,77 +155,68 @@ export function TripExportOptionsScreen() {
     } catch (err) {
       setDownloadError(
         err instanceof ShareUnavailableError
-          ? t('export_share_unavailable')
-          : t('export_download_failed'),
+          ? tDetail('export_share_unavailable')
+          : tDetail('export_download_failed'),
       )
     } finally {
       setIsDownloadingPdf(false)
     }
   }
 
-  function renderRow(options: {
-    icon: IconName
-    label: string
-    description: string
-    onPress: () => void
-    loading?: boolean
-  }) {
-    return (
-      <Pressable
-        disabled={isDownloadingPdf}
-        onPress={() => (canExport ? options.onPress() : router.push('/(app)/account/paywall'))}
-        style={({ pressed }) => [
-          styles.row,
-          pressed && styles.rowPressed,
-          !canExport && styles.rowDisabled,
-        ]}
-        accessibilityRole="button"
-      >
-        <Icon name={options.icon} size="md" color={colors.mutedForeground} />
-        <View style={styles.rowText}>
-          <Text style={styles.rowLabel}>{options.label}</Text>
-          <Text style={styles.rowDescription}>{options.description}</Text>
-        </View>
-        {options.loading ? (
-          <Spinner />
-        ) : !canExport ? (
-          <Badge variant="outline">{t('collector_badge')}</Badge>
-        ) : (
-          <Icon name="chevron-right" size="sm" color={colors.mutedForeground} />
-        )}
-      </Pressable>
-    )
-  }
-
   return (
     <SafeAreaView edges={['bottom']} style={{ backgroundColor: colors.background }}>
-      <View style={styles.container}>
-        <Text style={styles.title}>{t('export_menu_trigger')}</Text>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.headerRow}>
+          <Text style={styles.title}>{t('title')}</Text>
+          <Badge variant={canExport ? 'shared' : 'neutral'}>
+            {canExport ? t('badge_unlocked') : t('badge_locked')}
+          </Badge>
+        </View>
 
         {downloadError && <ErrorBanner message={downloadError} />}
 
-        {renderRow({
-          icon: 'download',
-          label: t('download_pdf'),
-          description: t('export_pdf_description'),
-          onPress: handleDownloadPdf,
-          loading: isDownloadingPdf,
-        })}
+        <KeepsakeCard
+          icon="book-open"
+          title={t('pdf_title')}
+          description={tDetail('export_pdf_description')}
+          statusLabel={statusLabel}
+          statusVariant={statusVariant}
+          ctaLabel={canExport ? t('pdf_cta') : t('locked_cta')}
+          canExport={canExport}
+          loading={isDownloadingPdf}
+          onPress={handleDownloadPdf}
+        />
 
-        {renderRow({
-          icon: 'camera',
-          label: t('create_zine'),
-          description: t('export_zine_description'),
-          onPress: () => router.replace(`/(app)/trips/export-zine/${id}`),
-        })}
+        <KeepsakeCard
+          icon="fold"
+          title={t('zine_title')}
+          description={tDetail('export_zine_description')}
+          statusLabel={statusLabel}
+          statusVariant={statusVariant}
+          ctaLabel={canExport ? t('zine_cta') : t('locked_cta')}
+          canExport={canExport}
+          onPress={() =>
+            canExport
+              ? router.replace(`/(app)/trips/export-zine/${id}`)
+              : router.push('/(app)/account/paywall')
+          }
+        />
 
-        {renderRow({
-          icon: 'mail',
-          label: t('create_postcard'),
-          description: t('export_postcard_description'),
-          onPress: () => router.replace(`/(app)/trips/export-postcard/${id}`),
-        })}
-      </View>
+        <KeepsakeCard
+          icon="mail"
+          title={t('postcard_title')}
+          description={tDetail('export_postcard_description')}
+          statusLabel={statusLabel}
+          statusVariant={statusVariant}
+          ctaLabel={canExport ? t('postcard_cta') : t('locked_cta')}
+          canExport={canExport}
+          onPress={() =>
+            canExport
+              ? router.replace(`/(app)/trips/export-postcard/${id}`)
+              : router.push('/(app)/account/paywall')
+          }
+        />
+      </ScrollView>
     </SafeAreaView>
   )
 }
