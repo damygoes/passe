@@ -131,7 +131,7 @@
       "quota_cta": "Upgrade"
     },
     "new": {
-      "back": "← Back to trips",
+      "back": "Back to trips",
       "title": "New trip",
       "subtitle": "Give your trip a name, add the countries you visited, and set the dates.",
       "title_label": "Title",
@@ -171,7 +171,7 @@
       "cover_label": "Cover photo"
     },
     "edit": {
-      "back": "← Back to trip",
+      "back": "Back to trip",
       "title": "Edit trip",
       "subtitle": "Update your trip details, countries, and dates.",
       "save": "Save changes",
@@ -179,8 +179,8 @@
       "update_failed": "Could not save your changes. Please try again."
     },
     "detail": {
-      "back": "← Back",
-      "back_label": "Back",
+      "back": "Back",
+      "back_label": "Back to trips",
       "edit": "Edit",
       "delete": "Delete",
       "delete_title": "Delete this trip?",
@@ -304,7 +304,7 @@
       "delete_cancel": "Cancel",
       "delete_failed": "Failed to delete memory. Please try again.",
       "photo_count": "{count, plural, one {# photo} other {# photos}}",
-      "back": "← {title}",
+      "back": "{title}",
       "visible_on_public_page": "Visible on your public trip page",
       "public_slots_limited": "{remaining} of {limit} public memories left on Free",
       "public_slots_unlimited": "Unlimited public memories",
@@ -326,7 +326,7 @@
       "preview_alt": "Uploaded photo preview"
     },
     "new_memory": {
-      "back": "← Back to trip",
+      "back": "Back to trip",
       "title": "New memory",
       "subtitle": "Add photos and a note from a moment on this trip.",
       "photos_label": "Photos",
@@ -364,7 +364,7 @@
       }
     },
     "edit_memory": {
-      "back": "← Back to trip",
+      "back": "Back to trip",
       "title": "Edit memory",
       "subtitle": "Update the photos, note, or details for this moment.",
       "save": "Save changes",

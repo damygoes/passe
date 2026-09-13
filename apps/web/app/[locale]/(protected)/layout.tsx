@@ -32,7 +32,7 @@ export default async function ProtectedLayout({ children }: Props) {
         username={user?.username ?? null}
       />
       <SidebarInset>
-        <main className="flex-1 py-8 px-12">
+        <main className="min-w-0 flex-1 overflow-x-hidden px-12 py-8">
           <MotionProvider>{children}</MotionProvider>
         </main>
       </SidebarInset>

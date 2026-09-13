@@ -131,7 +131,7 @@
       "quota_cta": "Upgrade"
     },
     "new": {
-      "back": "← Zurück zu den Reisen",
+      "back": "Zurück zu den Reisen",
       "title": "Neue Reise",
       "subtitle": "Gib deiner Reise einen Namen, füge die besuchten Länder hinzu und lege die Daten fest.",
       "title_label": "Titel",
@@ -171,7 +171,7 @@
       "cover_label": "Titelbild"
     },
     "edit": {
-      "back": "← Zurück zur Reise",
+      "back": "Zurück zur Reise",
       "title": "Reise bearbeiten",
       "subtitle": "Aktualisiere die Details, Länder und Daten deiner Reise.",
       "save": "Änderungen speichern",
@@ -179,8 +179,8 @@
       "update_failed": "Deine Änderungen konnten nicht gespeichert werden. Bitte versuche es erneut."
     },
     "detail": {
-      "back": "← Zurück",
-      "back_label": "Zurück",
+      "back": "Zurück",
+      "back_label": "Zurück zu den Reisen",
       "edit": "Bearbeiten",
       "delete": "Löschen",
       "delete_title": "Diese Reise löschen?",
@@ -304,7 +304,7 @@
       "delete_cancel": "Abbrechen",
       "delete_failed": "Erinnerung konnte nicht gelöscht werden. Bitte versuche es erneut.",
       "photo_count": "{count, plural, one {# Foto} other {# Fotos}}",
-      "back": "← {title}",
+      "back": "{title}",
       "visible_on_public_page": "Auf deiner öffentlichen Reiseseite sichtbar",
       "public_slots_limited": "{remaining} von {limit} öffentlichen Erinnerungen im Free-Plan übrig",
       "public_slots_unlimited": "Unbegrenzte öffentliche Erinnerungen",
@@ -326,7 +326,7 @@
       "preview_alt": "Vorschau des hochgeladenen Fotos"
     },
     "new_memory": {
-      "back": "← Zurück zur Reise",
+      "back": "Zurück zur Reise",
       "title": "Neue Erinnerung",
       "subtitle": "Füge Fotos und eine Notiz zu einem Moment dieser Reise hinzu.",
       "photos_label": "Fotos",
@@ -364,7 +364,7 @@
       }
     },
     "edit_memory": {
-      "back": "← Zurück zur Reise",
+      "back": "Zurück zur Reise",
       "title": "Erinnerung bearbeiten",
       "subtitle": "Aktualisiere Fotos, Notiz oder Details für diesen Moment.",
       "save": "Änderungen speichern",

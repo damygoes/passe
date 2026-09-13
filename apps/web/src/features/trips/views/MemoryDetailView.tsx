@@ -8,6 +8,7 @@ import { getPublicMemorySlots } from '@passe/auth/plan-gates'
 import { useMemories, useTrip, useUpdateMemory, useUser } from '@passe/hooks'
 import { Badge } from '@passe/ui/badge'
 import { buttonVariants } from '@passe/ui/button'
+import { Icon } from '@passe/ui/icon'
 import { Skeleton } from '@passe/ui/skeleton'
 import { Switch } from '@passe/ui/switch'
 import { formatCoordinates, formatMemoryDateTime } from '@passe/utils'
@@ -79,6 +80,7 @@ export function MemoryDetailView({ tripId, memoryId }: Props) {
             href={tripRoute(tripId)}
             className={buttonVariants({ variant: 'ghost', size: 'sm', className: 'pl-0' })}
           >
+            <Icon name="chevron-left" size="xs" aria-hidden />
             {t('back', { title: trip.title })}
           </Link>
         )}

@@ -121,6 +121,7 @@
    React-rendered className fights that on every re-render, stripping the theme
    class. Target it with a plain selector instead. */
 html {
+  overflow-x: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
