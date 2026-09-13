@@ -373,15 +373,6 @@
       "errors": {
         "create_failed": "Could not add your memory. Please try again.",
         "content_required": "Add a photo or a note."
-      },
-      "wizard": {
-        "step_label": "Step {current} of {total}",
-        "step1_title": "Every memory deserves a home.",
-        "photo_placeholder": "Tap to choose a photo",
-        "step2_title": "Details",
-        "step3_title": "Tags & privacy",
-        "continue": "Continue",
-        "back_step": "Back"
       }
     },
     "edit_memory": {

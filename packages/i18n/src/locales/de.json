@@ -373,15 +373,6 @@
       "errors": {
         "create_failed": "Deine Erinnerung konnte nicht hinzugefügt werden. Bitte versuche es erneut.",
         "content_required": "Füge ein Foto oder eine Notiz hinzu."
-      },
-      "wizard": {
-        "step_label": "Schritt {current} von {total}",
-        "step1_title": "Jede Erinnerung verdient ein Zuhause.",
-        "photo_placeholder": "Zum Auswählen eines Fotos tippen",
-        "step2_title": "Details",
-        "step3_title": "Tags & Privatsphäre",
-        "continue": "Weiter",
-        "back_step": "Zurück"
       }
     },
     "edit_memory": {

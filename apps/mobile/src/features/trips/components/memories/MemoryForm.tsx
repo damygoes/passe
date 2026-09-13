@@ -1,4 +1,11 @@
-import { useUpdateMemory, useUploadImage } from '@passe/hooks'
+import { canAddMemory } from '@passe/auth/plan-gates'
+import {
+  useCreateMemory,
+  useMemories,
+  useUpdateMemory,
+  useUploadImage,
+  useUser,
+} from '@passe/hooks'
 import { createLogger } from '@passe/logger'
 import { colors as brandColors } from '@passe/theme'
 import type { Memory } from '@passe/types/memory'
@@ -15,6 +22,7 @@ import { Icon } from '@/components/ui/icon'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Switch } from '@/components/ui/switch'
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
+import { UpgradeBanner } from '@/features/account/components/UpgradeBanner'
 import { DateField } from '@/features/trips/components/trip/date-field/DateField'
 import { useTheme } from '@/hooks/useTheme'
 import { haptics } from '@/lib/haptics'
@@ -22,13 +30,13 @@ import { useTranslations } from '@/i18n/useTranslations'
 import { compressImage } from '@/lib/image-compression'
 import { uploadFileToUrl } from '@/lib/upload-put'
 
-const log = createLogger({ context: { module: 'features/trips/EditMemoryForm' } })
+const log = createLogger({ context: { module: 'features/trips/MemoryForm' } })
 
 // `url` is what gets submitted (a bare S3 key for a fresh upload, or the
-// existing resolved URL for unchanged photos). `previewUri` is what gets
-// rendered — a local file uri for a fresh upload (the bare key isn't
-// renderable on its own until the next read-resolve round-trip), or the
-// same resolved URL as `url` for existing photos.
+// existing resolved URL when editing unchanged photos). `previewUri` is
+// what gets rendered — a local file uri for a fresh upload (the bare key
+// isn't renderable on its own until the next read-resolve round-trip), or
+// the same resolved URL as `url` for existing photos.
 interface MemoryPhoto {
   url: string
   previewUri: string
@@ -45,40 +53,54 @@ function mediaToPhotos(media: Memory['media']): MemoryPhoto[] {
   }))
 }
 
-interface EditMemoryFormProps {
+interface MemoryFormProps {
   tripId: string
-  memory: Memory
+  // When provided, the form edits this memory; otherwise it creates a new one.
+  memory?: Memory
 }
 
-export function EditMemoryForm({ tripId, memory }: EditMemoryFormProps) {
+export function MemoryForm({ tripId, memory }: MemoryFormProps) {
   const t = useTranslations('trips.new_memory')
   const tNew = useTranslations('trips.new')
   const tEdit = useTranslations('trips.edit_memory')
   const tUpload = useTranslations('trips.image_upload')
   const router = useRouter()
   const { colors, spacing, fontSizes, borderRadius } = useTheme()
+  const { data: user } = useUser()
+  const { data: memories = [] } = useMemories(tripId)
   const upload = useUploadImage()
-  const { mutateAsync: updateMemory, isPending } = useUpdateMemory()
+  const { mutateAsync: createMemory, isPending: isCreating } = useCreateMemory()
+  const { mutateAsync: updateMemory, isPending: isUpdating } = useUpdateMemory()
 
-  const [photos, setPhotos] = useState<MemoryPhoto[]>(() => mediaToPhotos(memory.media))
+  const isEditing = Boolean(memory)
+  const isPending = isCreating || isUpdating
+
+  const [photos, setPhotos] = useState<MemoryPhoto[]>(() =>
+    memory ? mediaToPhotos(memory.media) : [],
+  )
   const [pendingUploads, setPendingUploads] = useState(0)
-  const [note, setNote] = useState(() => memory.note ?? '')
-  const [capturedAt, setCapturedAt] = useState<Date>(() => new Date(memory.capturedAt))
-  const [city, setCity] = useState(() => memory.city ?? '')
-  const [country, setCountry] = useState(() => memory.country ?? '')
-  const [placeName, setPlaceName] = useState(() => memory.placeName ?? '')
-  const [tagsInput, setTagsInput] = useState(() => memory.tags.join(', '))
-  const [isPublic, setIsPublic] = useState(() => memory.isPublic)
+  const [note, setNote] = useState(() => memory?.note ?? '')
+  const [capturedAt, setCapturedAt] = useState<Date>(() =>
+    memory ? new Date(memory.capturedAt) : new Date(),
+  )
+  const [city, setCity] = useState(() => memory?.city ?? '')
+  const [country, setCountry] = useState(() => memory?.country ?? '')
+  const [placeName, setPlaceName] = useState(() => memory?.placeName ?? '')
+  const [tagsInput, setTagsInput] = useState(() => memory?.tags.join(', ') ?? '')
+  // Defaults to private, per the redesign's privacy-first spec.
+  const [isPublic, setIsPublic] = useState(() => memory?.isPublic ?? false)
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(
-    () => memory.location ?? null,
+    () => memory?.location ?? null,
   )
   const [isLocating, setIsLocating] = useState(false)
   const [locationError, setLocationError] = useState<string | null>(null)
   const [contentError, setContentError] = useState<string | null>(null)
   const [globalError, setGlobalError] = useState<string | null>(null)
 
+  const plan = user?.plan ?? 'free'
+  const atMemoryLimit = !isEditing && !canAddMemory(plan, memories.length)
   const isUploading = pendingUploads > 0
-  const isBusy = isPending || isUploading
+  const isBusy = isPending || isUploading || atMemoryLimit
 
   const styles = useMemo(
     () =>
@@ -225,41 +247,57 @@ export function EditMemoryForm({ tripId, memory }: EditMemoryFormProps) {
       .map((tag) => tag.trim())
       .filter(Boolean)
 
+    const commonFields = {
+      note: trimmedNote || undefined,
+      capturedAt,
+      city: city.trim() || undefined,
+      country: country.trim() || undefined,
+      placeName: placeName.trim() || undefined,
+      tags,
+      isPublic,
+      location: coords ?? undefined,
+      media: photos.map((photo) => ({
+        url: photo.url,
+        mediaType: 'photo' as const,
+        width: photo.width,
+        height: photo.height,
+      })),
+    }
+
     // A memory explicitly locked to "Text only" never renders photos (see
     // resolveVariant in @passe/utils/editorial) — adding a photo here is an
     // affirmative action that should make it visible, so reset the layout.
-    const shouldResetLayout = memory.layoutVariant === 'text' && photos.length > 0
+    const shouldResetLayout = memory?.layoutVariant === 'text' && photos.length > 0
 
     try {
-      await updateMemory({
-        id: memory.id,
-        tripId,
-        note: trimmedNote || undefined,
-        capturedAt,
-        city: city.trim() || undefined,
-        country: country.trim() || undefined,
-        placeName: placeName.trim() || undefined,
-        tags,
-        isPublic,
-        location: coords ?? undefined,
-        media: photos.map((photo) => ({
-          url: photo.url,
-          mediaType: 'photo' as const,
-          width: photo.width,
-          height: photo.height,
-        })),
-        ...(shouldResetLayout ? { layoutVariant: 'auto' as const } : {}),
-      })
+      if (memory) {
+        await updateMemory({
+          id: memory.id,
+          tripId,
+          ...commonFields,
+          ...(shouldResetLayout ? { layoutVariant: 'auto' as const } : {}),
+        })
+      } else {
+        await createMemory({ tripId, ...commonFields })
+      }
       haptics.success()
       router.back()
     } catch (err) {
-      setGlobalError(err instanceof Error ? err.message : tEdit('update_failed'))
+      const fallback = isEditing ? tEdit('update_failed') : t('errors.create_failed')
+      setGlobalError(err instanceof Error ? err.message : fallback)
     }
   }
 
   return (
     <View style={styles.form}>
       {globalError && <ErrorBanner message={globalError} />}
+      {atMemoryLimit && (
+        <UpgradeBanner
+          message={t('limit_reached')}
+          ctaLabel={t('upgrade_cta')}
+          onPressUpgrade={() => router.push('/(app)/account/paywall')}
+        />
+      )}
 
       <View style={styles.fieldGroup}>
         <Text style={styles.fieldLabel}>{t('photos_label')}</Text>
@@ -374,7 +412,13 @@ export function EditMemoryForm({ tripId, memory }: EditMemoryFormProps) {
       </View>
 
       <Button onPress={handleSubmit} loading={isPending} disabled={isBusy} fullWidth>
-        {isPending ? tEdit('saving') : tEdit('save')}
+        {isEditing
+          ? isPending
+            ? tEdit('saving')
+            : tEdit('save')
+          : isPending
+            ? t('creating')
+            : t('create')}
       </Button>
     </View>
   )

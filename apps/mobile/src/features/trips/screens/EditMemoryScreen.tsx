@@ -6,7 +6,7 @@ import { StyleSheet, View } from 'react-native'
 import { Skeleton } from '@/components/ui/skeleton'
 import { AccountFormLayout } from '@/features/account/components/AccountFormLayout'
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
-import { EditMemoryForm } from '@/features/trips/components/memories/EditMemoryForm'
+import { MemoryForm } from '@/features/trips/components/memories/MemoryForm'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
@@ -34,7 +34,7 @@ export function EditMemoryScreen() {
       ) : isError || !memory ? (
         <ErrorBanner message={t('not_found')} />
       ) : (
-        <EditMemoryForm tripId={tripId} memory={memory} />
+        <MemoryForm tripId={tripId} memory={memory} />
       )}
     </AccountFormLayout>
   )
