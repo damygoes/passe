@@ -3,7 +3,10 @@ import {
   buildFlatWorldStyle,
   buildVisitedFillExpression,
   buildVisitedOpacityExpression,
+  CONTINENT_LABELS_LAYER_ID,
+  CONTINENT_LABELS_SOURCE_ID,
   COUNTRIES_SOURCE_ID,
+  COUNTRY_LABELS_LAYER_ID,
 } from '../style'
 
 describe('buildVisitedFillExpression', () => {
@@ -47,11 +50,17 @@ describe('buildVisitedOpacityExpression', () => {
 })
 
 describe('buildFlatWorldStyle', () => {
-  it('produces a minimal style with no basemap tile layers', () => {
+  it('produces a style with no basemap tile layers, just fills, borders and labels', () => {
     const style = buildFlatWorldStyle(['Morocco'])
     expect(style.version).toBe(8)
-    expect(Object.keys(style.sources)).toEqual([COUNTRIES_SOURCE_ID])
-    expect(style.layers.map((layer) => layer.type)).toEqual(['background', 'fill', 'line'])
+    expect(Object.keys(style.sources)).toEqual([COUNTRIES_SOURCE_ID, CONTINENT_LABELS_SOURCE_ID])
+    expect(style.layers.map((layer) => layer.type)).toEqual([
+      'background',
+      'fill',
+      'line',
+      'symbol',
+      'symbol',
+    ])
   })
 
   it('embeds the country GeoJSON inline (no network fetch at style-load time)', () => {
@@ -59,5 +68,26 @@ describe('buildFlatWorldStyle', () => {
     const source = style.sources[COUNTRIES_SOURCE_ID]
     expect(source.type).toBe('geojson')
     expect(typeof source.data).toBe('object')
+  })
+
+  it('points at a key-free glyph server so country/continent labels can render', () => {
+    const style = buildFlatWorldStyle(['Morocco'])
+    expect(style.glyphs).toContain('{fontstack}')
+    expect(style.glyphs).toContain('{range}')
+  })
+
+  it('sources country name labels from the same countries GeoJSON', () => {
+    const style = buildFlatWorldStyle(['Morocco'])
+    const labelLayer = style.layers.find((layer) => layer.id === COUNTRY_LABELS_LAYER_ID)
+    expect(labelLayer?.source).toBe(COUNTRIES_SOURCE_ID)
+    expect(labelLayer?.layout?.['text-field']).toEqual(['get', 'name'])
+  })
+
+  it('renders continent labels from a dedicated point source', () => {
+    const style = buildFlatWorldStyle(['Morocco'])
+    const source = style.sources[CONTINENT_LABELS_SOURCE_ID]
+    expect(source.type).toBe('geojson')
+    const layer = style.layers.find((layer) => layer.id === CONTINENT_LABELS_LAYER_ID)
+    expect(layer?.source).toBe(CONTINENT_LABELS_SOURCE_ID)
   })
 })

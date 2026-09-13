@@ -12,7 +12,9 @@ import { NoGeotaggedMemoriesEmpty } from './NoGeotaggedMemoriesEmpty'
 // MapLibre GL touches `window`/`document`, so it can only run on the client.
 const WorldMap = dynamic(() => import('./WorldMap').then((mod) => mod.WorldMap), {
   ssr: false,
-  loading: () => <Skeleton className="h-[440px] w-full rounded-[34px]" />,
+  loading: () => (
+    <Skeleton className="h-[calc(100svh-300px)] min-h-[420px] w-full rounded-[34px]" />
+  ),
 })
 
 const LEGEND = [
@@ -44,7 +46,7 @@ export function MapDataWrapper() {
   )
 
   if (pointsLoading || tripsLoading) {
-    return <Skeleton className="h-[440px] w-full rounded-[34px]" />
+    return <Skeleton className="h-[calc(100svh-300px)] min-h-[420px] w-full rounded-[34px]" />
   }
   if (pointsError || tripsError) {
     return <p className="text-sm text-destructive">{t('load_error')}</p>
