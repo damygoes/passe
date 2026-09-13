@@ -7,6 +7,7 @@ import {
   CONTINENT_LABELS_SOURCE_ID,
   COUNTRIES_SOURCE_ID,
   COUNTRY_LABELS_LAYER_ID,
+  COUNTRY_LABELS_SOURCE_ID,
 } from '../style'
 
 describe('buildVisitedFillExpression', () => {
@@ -53,7 +54,11 @@ describe('buildFlatWorldStyle', () => {
   it('produces a style with no basemap tile layers, just fills, borders and labels', () => {
     const style = buildFlatWorldStyle(['Morocco'])
     expect(style.version).toBe(8)
-    expect(Object.keys(style.sources)).toEqual([COUNTRIES_SOURCE_ID, CONTINENT_LABELS_SOURCE_ID])
+    expect(Object.keys(style.sources)).toEqual([
+      COUNTRIES_SOURCE_ID,
+      COUNTRY_LABELS_SOURCE_ID,
+      CONTINENT_LABELS_SOURCE_ID,
+    ])
     expect(style.layers.map((layer) => layer.type)).toEqual([
       'background',
       'fill',
@@ -76,11 +81,13 @@ describe('buildFlatWorldStyle', () => {
     expect(style.glyphs).toContain('{range}')
   })
 
-  it('sources country name labels from the same countries GeoJSON', () => {
+  it('sources country name labels from a dedicated point source, not the polygon source', () => {
     const style = buildFlatWorldStyle(['Morocco'])
     const labelLayer = style.layers.find((layer) => layer.id === COUNTRY_LABELS_LAYER_ID)
-    expect(labelLayer?.source).toBe(COUNTRIES_SOURCE_ID)
+    expect(labelLayer?.source).toBe(COUNTRY_LABELS_SOURCE_ID)
     expect(labelLayer?.layout?.['text-field']).toEqual(['get', 'name'])
+    const source = style.sources[COUNTRY_LABELS_SOURCE_ID]
+    expect(source.type).toBe('geojson')
   })
 
   it('renders continent labels from a dedicated point source', () => {

@@ -16,9 +16,8 @@ import {
 } from '@maplibre/maplibre-react-native'
 import { useRouter } from 'expo-router'
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { Platform, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import Animated, { Easing, FadeInDown, FadeOutDown } from 'react-native-reanimated'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Supercluster from 'supercluster'
 
 import { useTheme } from '@/hooks/useTheme'
@@ -39,12 +38,9 @@ const MAX_ZOOM = 16
 const PIN_SIZE = 18
 const PIN_HALO_SIZE = PIN_SIZE * 2.6
 const CLUSTER_RADIUS = 60
-// NativeTabs doesn't expose a way to measure the floating liquid-glass tab bar
-// (expo-router docs: "tab bar height cannot be measured programmatically"). This is an
-// empirically-tuned estimate for the bar's height above the home indicator — re-check
-// visually on-device if Apple changes the bar's sizing. Android already gets the right
-// insets.bottom automatically (NativeTabs wraps content in a bottom-inset SafeAreaView there).
-const IOS_TAB_BAR_CLEARANCE = 60
+// The World map screen embeds this in a fixed-height band, not full-bleed —
+// matches the rounded panel apps/web's MapDataWrapper wraps the map in.
+const MAP_RADIUS = 20
 
 // A single center + zoom heuristic instead of a bounds-fit — fitting bounds
 // around a single point (or several at the same spot) degenerates to a
@@ -83,7 +79,6 @@ interface Viewport {
 export function WorldMap({ points, visitedCountries }: WorldMapProps) {
   const router = useRouter()
   const { spacing } = useTheme()
-  const insets = useSafeAreaInsets()
   const mapRef = useRef<MapRef>(null)
   const cameraRef = useRef<CameraRef>(null)
 
@@ -188,16 +183,18 @@ export function WorldMap({ points, visitedCountries }: WorldMapProps) {
   const styles = useMemo(
     () =>
       StyleSheet.create({
-        container: { flex: 1 },
+        // Clipping lives on this outer plain View, not on the `map` style
+        // prop below — applying borderRadius/overflow directly to
+        // MapLibreMap's own style risks breaking its native Metal/GL
+        // rendering surface on iOS (the layer that actually paints the
+        // flat-fill GeoJSON), where this outer RN View has no such risk.
+        container: { flex: 1, borderRadius: MAP_RADIUS, overflow: 'hidden' },
         map: { flex: 1 },
         cardWrapper: {
           position: 'absolute',
           left: spacing[4],
           right: spacing[4],
-          bottom:
-            insets.bottom +
-            spacing[4] +
-            Platform.select({ ios: IOS_TAB_BAR_CLEARANCE, default: 0 }),
+          bottom: spacing[4],
           // MapLibre's native Android surface can otherwise win touch
           // dispatch over this RN sibling despite render order — elevation
           // is Android's actual z-ordering signal, not just tree position.
@@ -239,7 +236,7 @@ export function WorldMap({ points, visitedCountries }: WorldMapProps) {
           justifyContent: 'center',
         },
       }),
-    [spacing, insets.bottom],
+    [spacing],
   )
 
   return (
@@ -251,8 +248,8 @@ export function WorldMap({ points, visitedCountries }: WorldMapProps) {
         onPress={handleMapPress}
         onRegionDidChange={handleRegionDidChange}
         androidView="texture"
-        logoPosition={{ top: 8, left: 8 }}
-        attributionPosition={{ top: 8, right: 8 }}
+        logoPosition={{ bottom: 8, left: 8 }}
+        attributionPosition={{ bottom: 8, right: 8 }}
         compass={false}
         scaleBar={false}
       >

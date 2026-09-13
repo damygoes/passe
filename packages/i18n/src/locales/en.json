@@ -430,6 +430,7 @@
     "title": "Your world",
     "subtitle": "Every place you've captured a memory.",
     "summary": "{countries, plural, one {# country} other {# countries}} · {cities, plural, one {# city} other {# cities}} · {yearRange}",
+    "recent_pins": "Recent pins",
     "filter_all_years": "All years",
     "legend_visited": "Countries visited",
     "legend_pins": "City pins",

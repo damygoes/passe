@@ -1,5 +1,6 @@
 import { colors } from '@passe/theme'
 import { getContinentLabelsGeoJSON } from './continents'
+import { getCountryLabelsGeoJSON } from './countryLabels'
 import { normalizeCountryName } from './countries'
 import { getWorldCountriesGeoJSON } from './geo'
 
@@ -20,16 +21,21 @@ export const MAP_PIN_RING_COLOR = colors.warmWhite.DEFAULT
 export const COUNTRIES_SOURCE_ID = 'countries'
 export const COUNTRIES_FILL_LAYER_ID = 'countries-fill'
 export const COUNTRIES_LINE_LAYER_ID = 'countries-line'
+export const COUNTRY_LABELS_SOURCE_ID = 'country-labels'
 export const COUNTRY_LABELS_LAYER_ID = 'countries-label'
 export const CONTINENT_LABELS_SOURCE_ID = 'continent-labels'
 export const CONTINENT_LABELS_LAYER_ID = 'continent-labels-layer'
 
-// Public, key-free glyph PBF server hosted by the OpenMapTiles project —
+// Public, key-free glyph PBF server hosted by the MapLibre project itself —
 // exists specifically so flat/custom MapLibre styles like this one (no
 // vector basemap, no MapTiler/Mapbox account) can still render `text-field`
 // symbol layers. MapLibre GL has no built-in text rendering without a
 // `glyphs` template like this one.
-const GLYPHS_URL = 'https://fonts.openmaptiles.org/{fontstack}/{range}.pbf'
+// (fonts.openmaptiles.org — the previous glyph host — now 200s an HTML
+// redirect page instead of PBF data for every font/range, which silently
+// broke every label; demotiles.maplibre.org/font is MapLibre's own glyph
+// server, confirmed serving real glyph PBFs.)
+const GLYPHS_URL = 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf'
 const LABEL_FONT = ['Noto Sans Regular']
 const LABEL_TEXT_COLOR = colors.darkEspresso.DEFAULT
 const LABEL_HALO_COLOR = colors.agedCream.DEFAULT
@@ -71,6 +77,10 @@ export function buildFlatWorldStyle(visitedCountryNames: string[]) {
         type: 'geojson' as const,
         data: getWorldCountriesGeoJSON(),
       },
+      [COUNTRY_LABELS_SOURCE_ID]: {
+        type: 'geojson' as const,
+        data: getCountryLabelsGeoJSON(),
+      },
       [CONTINENT_LABELS_SOURCE_ID]: {
         type: 'geojson' as const,
         data: getContinentLabelsGeoJSON(),
@@ -100,22 +110,32 @@ export function buildFlatWorldStyle(visitedCountryNames: string[]) {
           'line-width': STROKE_WIDTH,
         },
       },
+      // Labeled from a precomputed point source (one centroid per country),
+      // not the polygon source the fill/line layers use above — symbol
+      // placement derived directly from this dataset's complex multi-ring
+      // polygons never actually placed text on the native (iOS) renderer,
+      // while a plain point source (like the continent labels below) does.
+      // Every layout/paint property below also has to stay a flat literal,
+      // not a zoom `interpolate` expression — empirically, ANY interpolate
+      // (tried on both `text-size` and `text-opacity`) on this layer, on
+      // this MapLibre Native build, silently drops every label; the exact
+      // same interpolate shapes are fine on the continent-labels layer below
+      // and on this layer's own fill/line paint properties.
       {
         id: COUNTRY_LABELS_LAYER_ID,
         type: 'symbol' as const,
-        source: COUNTRIES_SOURCE_ID,
+        source: COUNTRY_LABELS_SOURCE_ID,
         minzoom: 2,
         layout: {
           'text-field': ['get', 'name'],
           'text-font': LABEL_FONT,
-          'text-size': ['interpolate', ['linear'], ['zoom'], 2, 9, 6, 13, 10, 17],
+          'text-size': 12,
           'text-max-width': 7,
         },
         paint: {
           'text-color': LABEL_TEXT_COLOR,
           'text-halo-color': LABEL_HALO_COLOR,
           'text-halo-width': 1.1,
-          'text-opacity': ['interpolate', ['linear'], ['zoom'], 2, 0, 3, 0.85],
         },
       },
       {

@@ -1,33 +1,21 @@
 import { useMemo } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { MapDataWrapper } from '@/features/map/components/MapDataWrapper'
 import { useTheme } from '@/hooks/useTheme'
 
 export function MapScreen() {
-  const { colors, spacing, borderRadius } = useTheme()
+  const { colors } = useTheme()
 
   const styles = useMemo(
-    () =>
-      StyleSheet.create({
-        safeArea: { flex: 1, backgroundColor: colors.background },
-        header: { paddingHorizontal: spacing[4], paddingVertical: spacing[3] },
-        mapContainer: { flex: 1, borderRadius: borderRadius.xl },
-      }),
-    [colors, spacing, borderRadius],
+    () => StyleSheet.create({ safeArea: { flex: 1, backgroundColor: colors.background } }),
+    [colors],
   )
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
-      {/* <Animated.View entering={enterUp(0)}>
-        <PageHeader style={styles.header}>
-          <PageHeaderTitle>{t('title')}</PageHeaderTitle>
-        </PageHeader>
-      </Animated.View> */}
-      <View style={styles.mapContainer}>
-        <MapDataWrapper />
-      </View>
+    <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+      <MapDataWrapper />
     </SafeAreaView>
   )
 }
