@@ -37,7 +37,15 @@ export function TripsScreen() {
       StyleSheet.create({
         safeArea: { flex: 1, backgroundColor: colors.background },
         scroll: { flex: 1 },
-        scrollContent: { padding: spacing[4], flexGrow: 1 },
+        scrollContent: { padding: spacing[4], paddingTop: spacing[2], flexGrow: 1 },
+        stickyHeader: {
+          paddingHorizontal: spacing[4],
+          paddingTop: spacing[2],
+          paddingBottom: spacing[3],
+          borderBottomWidth: StyleSheet.hairlineWidth,
+          borderBottomColor: colors.border,
+          backgroundColor: colors.background,
+        },
         header: {
           flexDirection: 'row',
           alignItems: 'center',
@@ -59,36 +67,36 @@ export function TripsScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <Animated.View entering={enterUp(0)} style={styles.stickyHeader}>
+        <PageHeader style={styles.header}>
+          <PageHeaderTitle style={styles.title}>{t('title')}</PageHeaderTitle>
+          <View>
+            <Button
+              variant="primary"
+              style={styles.addButton}
+              onPress={() => router.push('/(app)/trips/new')}
+              accessibilityLabel={t('new_trip')}
+            >
+              <Icon name="plus" size="md" color={colors.primaryForeground} />
+            </Button>
+          </View>
+        </PageHeader>
+      </Animated.View>
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
-        <Animated.View entering={enterUp(0)}>
-          <PageHeader style={styles.header}>
-            <PageHeaderTitle style={styles.title}>{t('title')}</PageHeaderTitle>
-            <View>
-              <Button
-                variant="primary"
-                style={styles.addButton}
-                onPress={() => router.push('/(app)/trips/new')}
-                accessibilityLabel={t('new_trip')}
-              >
-                <Icon name="plus" size="md" color={colors.primaryForeground} />
-              </Button>
-            </View>
-          </PageHeader>
-          <Segmented
-            style={styles.segmented}
-            value={filter}
-            onValueChange={(value) => setFilter(value as TripsFilter)}
-            options={[
-              { value: 'all', label: t('filter_all') },
-              { value: 'private', label: t('filter_private') },
-              { value: 'shared', label: t('filter_shared') },
-            ]}
-          />
-        </Animated.View>
+        <Segmented
+          style={styles.segmented}
+          value={filter}
+          onValueChange={(value) => setFilter(value as TripsFilter)}
+          options={[
+            { value: 'all', label: t('filter_all') },
+            { value: 'private', label: t('filter_private') },
+            { value: 'shared', label: t('filter_shared') },
+          ]}
+        />
         <TripsList filter={filter} />
       </ScrollView>
     </SafeAreaView>
