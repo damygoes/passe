@@ -3,7 +3,6 @@ import { formatWeekdayDate, getUniqueCities, getUniqueStatsFromTrips } from '@pa
 import { useMemo } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { StatTile } from '@/components/ui/stat-tile'
 import { useTheme } from '@/hooks/useTheme'
@@ -31,7 +30,6 @@ export function HomeHeaderDataWrapper() {
   const styles = useMemo(
     () =>
       StyleSheet.create({
-        row: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' },
         date: {
           fontFamily: fonts.mono,
           fontSize: 10.5,
@@ -65,29 +63,15 @@ export function HomeHeaderDataWrapper() {
   }
 
   const firstName = user?.displayName?.split(' ')[0] ?? ''
-  const initials = (user?.displayName ?? '')
-    .split(' ')
-    .map((part) => part.charAt(0))
-    .join('')
-    .slice(0, 2)
-    .toUpperCase()
   const { uniqueCountries } = getUniqueStatsFromTrips({ trips })
   const { uniqueCities } = getUniqueCities({ allMemories })
 
   return (
     <View>
-      <View style={styles.row}>
-        <View>
-          <Text style={styles.date}>{formatWeekdayDate(new Date())}</Text>
-          <Text style={styles.greeting}>
-            {t(greetingKey(new Date().getHours()), { name: firstName })}
-          </Text>
-        </View>
-        <Avatar size="default">
-          <AvatarFallback>{initials}</AvatarFallback>
-          {user?.avatarUrl && <AvatarImage source={{ uri: user.avatarUrl }} />}
-        </Avatar>
-      </View>
+      <Text style={styles.date}>{formatWeekdayDate(new Date())}</Text>
+      <Text style={styles.greeting}>
+        {t(greetingKey(new Date().getHours()), { name: firstName })}
+      </Text>
       <Text style={styles.accent}>{t('accent_line')}</Text>
       {!tripsError && !memoriesError && (
         <View style={styles.stats}>
