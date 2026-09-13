@@ -23,7 +23,7 @@ export function HeroSection({ memory, photoAlt }: Props) {
 
   return (
     <figure className="space-y-3">
-      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl">
+      <div className="washed relative h-[280px] w-full overflow-hidden rounded-[34px] sm:h-[420px]">
         <Image
           src={cover.url}
           alt={memory.note ?? photoAlt}

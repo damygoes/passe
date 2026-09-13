@@ -12,24 +12,30 @@ type Story = StoryObj<typeof PortfolioTripHeader>
 
 export const Default: Story = {
   args: {
-    slug: 'amara',
-    user: { displayName: 'Amara Okafor' },
+    user: { username: 'amara' },
     trip: {
       title: 'Morocco Roadtrip',
-      description: 'Two weeks winding through the Atlas Mountains and the Sahara.',
+      startDate: '2026-03-02',
       countries: ['Morocco'],
     },
+    cities: ['Marrakesh', 'Fès', 'Chefchaouen'],
+    daysCount: 9,
+    sharedMemoriesCount: 11,
+    totalMemoriesCount: 24,
   },
 }
 
-export const NoDescription: Story = {
+export const AllShared: Story = {
   args: {
-    slug: 'kenji',
-    user: { displayName: 'Kenji Watanabe' },
+    user: { username: 'kenji' },
     trip: {
       title: 'Kyoto in Autumn',
-      description: null,
+      startDate: '2024-11-02',
       countries: ['Japan'],
     },
+    cities: ['Kyoto'],
+    daysCount: 10,
+    sharedMemoriesCount: 6,
+    totalMemoriesCount: 6,
   },
 }

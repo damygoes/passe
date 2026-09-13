@@ -27,7 +27,7 @@ export function ImageTextSection({ memory, side, photoAlt }: Props) {
     <div className="grid items-center gap-6 md:grid-cols-2 md:gap-10">
       <div
         className={cn(
-          'relative aspect-[4/3] overflow-hidden rounded-xl',
+          'washed relative aspect-[4/3] overflow-hidden rounded-[30px]',
           side === 'right' && 'md:order-2',
         )}
       >
@@ -47,13 +47,15 @@ export function ImageTextSection({ memory, side, photoAlt }: Props) {
         )}
       </div>
 
-      <div className="space-y-3">
-        <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+      <div className="space-y-4">
+        {memory.note && (
+          <p className="font-display text-[26px] leading-[1.35] text-foreground italic sm:text-[28px]">
+            &ldquo;{memory.note}&rdquo;
+          </p>
+        )}
+        <p className="font-mono text-[10.5px] tracking-[0.12em] text-muted-foreground uppercase">
           {[meta, formatTripDateFull(memory.capturedAt)].filter(Boolean).join(' · ')}
         </p>
-        {memory.note && (
-          <p className="font-display text-xl leading-relaxed text-foreground">{memory.note}</p>
-        )}
       </div>
     </div>
   )
