@@ -71,7 +71,7 @@ export function MemoriesList({ tripId }: MemoriesListProps) {
       {memories.length === 0 ? (
         <NoMemoriesEmpty tripId={tripId} />
       ) : (
-        <MemoriesMasonryGrid memories={memories} />
+        <MemoriesMasonryGrid tripId={tripId} memories={memories} />
       )}
     </View>
   )

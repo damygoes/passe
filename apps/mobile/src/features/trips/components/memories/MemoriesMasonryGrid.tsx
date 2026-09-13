@@ -1,13 +1,16 @@
 import type { Memory } from '@passe/types/memory'
 import { formatMemoryDate } from '@passe/utils'
 import { Image } from 'expo-image'
+import { useRouter } from 'expo-router'
 import { useMemo } from 'react'
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native'
 
+import { PressableScale } from '@/components/ui/pressable-scale'
 import { MemoryLayoutMenu } from '@/features/trips/components/editorial/MemoryLayoutMenu'
 import { useTheme } from '@/hooks/useTheme'
 
 interface MemoriesMasonryGridProps {
+  tripId: string
   memories: Memory[]
 }
 
@@ -19,7 +22,8 @@ interface MemoriesMasonryGridProps {
 const FALLBACK_ASPECT_RATIO = 4 / 5
 const CAPTION_HEIGHT = 40
 
-export function MemoriesMasonryGrid({ memories }: MemoriesMasonryGridProps) {
+export function MemoriesMasonryGrid({ tripId, memories }: MemoriesMasonryGridProps) {
+  const router = useRouter()
   const { colors, fonts, spacing, borderRadius } = useTheme()
   const { width: windowWidth } = useWindowDimensions()
 
@@ -77,21 +81,25 @@ export function MemoriesMasonryGrid({ memories }: MemoriesMasonryGridProps) {
             const cover = memory.media[0]
             return (
               <View key={memory.id}>
-                <View style={styles.photoWrapper}>
-                  {cover && (
-                    <Image
-                      source={{ uri: cover.url }}
-                      style={[styles.photo, { aspectRatio }]}
-                      contentFit="cover"
+                <PressableScale
+                  onPress={() => router.push(`/(app)/trips/memory/${memory.id}?tripId=${tripId}`)}
+                >
+                  <View style={styles.photoWrapper}>
+                    {cover && (
+                      <Image
+                        source={{ uri: cover.url }}
+                        style={[styles.photo, { aspectRatio }]}
+                        contentFit="cover"
+                      />
+                    )}
+                    <MemoryLayoutMenu
+                      memory={memory}
+                      orderedIds={orderedIds}
+                      index={orderedIds.indexOf(memory.id)}
+                      style={styles.menu}
                     />
-                  )}
-                  <MemoryLayoutMenu
-                    memory={memory}
-                    orderedIds={orderedIds}
-                    index={orderedIds.indexOf(memory.id)}
-                    style={styles.menu}
-                  />
-                </View>
+                  </View>
+                </PressableScale>
                 <Text style={styles.date}>{formatMemoryDate(memory.capturedAt)}</Text>
                 {memory.note && (
                   <Text style={styles.note} numberOfLines={1}>

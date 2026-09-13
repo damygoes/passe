@@ -51,6 +51,14 @@ export default function TripsLayout() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="memory/[id]"
+        options={{
+          // Same reasoning as trip detail's [id]: no native header, so the
+          // full-bleed photo isn't clipped by react-native-screens.
+          headerShown: false,
+        }}
+      />
       <Stack.Screen name="actions/[id]" options={compactSheetOptions} />
       <Stack.Screen name="export/[id]" options={compactSheetOptions} />
       <Stack.Screen name="new" options={{ ...sheetOptions, title: tTrips('title') }} />
