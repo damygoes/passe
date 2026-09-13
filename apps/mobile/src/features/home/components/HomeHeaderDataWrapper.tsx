@@ -93,6 +93,7 @@ export function HomeHeaderDataWrapper() {
         <View style={styles.stats}>
           <StatTile
             style={styles.stat}
+            align="center"
             tone="surface"
             value={uniqueCities.size}
             label={tStats('cities', { count: uniqueCities.size })}
@@ -100,6 +101,7 @@ export function HomeHeaderDataWrapper() {
           />
           <StatTile
             style={styles.stat}
+            align="center"
             tone="surface"
             value={uniqueCountries.size}
             label={tStats('countries', { count: uniqueCountries.size })}
@@ -107,6 +109,7 @@ export function HomeHeaderDataWrapper() {
           />
           <StatTile
             style={styles.stat}
+            align="center"
             tone="sand"
             value={trips.length}
             label={tStats('trips_label', { count: trips.length })}
