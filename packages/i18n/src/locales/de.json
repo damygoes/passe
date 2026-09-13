@@ -385,6 +385,7 @@
       "not_found": "Diese Erinnerung konnte nicht gefunden werden."
     },
     "editorial": {
+      "menu_label": "Erinnerungsoptionen",
       "layout_label": "Layout",
       "variant_auto": "Automatisch",
       "variant_hero": "Volle Breite",
@@ -392,7 +393,6 @@
       "variant_image_right": "Bild rechts",
       "variant_carousel": "Karussell",
       "variant_text": "Nur Text",
-      "flip": "Seite wechseln",
       "move_up": "Nach oben",
       "move_down": "Nach unten",
       "scroll_left": "Nach links scrollen",

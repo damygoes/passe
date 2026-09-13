@@ -3,8 +3,10 @@ import type { SharedValue } from 'react-native-reanimated'
 import { TripDetailHeader } from './TripDetailHeader'
 
 const mockUseTrip = jest.fn()
+const mockUseMemories = jest.fn()
 jest.mock('@passe/hooks', () => ({
   useTrip: (id: string) => mockUseTrip(id),
+  useMemories: (id: string) => mockUseMemories(id),
 }))
 
 // The reanimated jest mock models shared values as plain { value } objects
@@ -18,7 +20,6 @@ jest.mock('./TripDetailHeaderSkeleton', () => {
 const mockTrip = {
   id: 'trip-1',
   title: 'Japan Adventure',
-  description: 'A wonderful trip',
   countries: ['JP'],
   coverImageUrl: 'https://example.com/cover.jpg',
   startDate: new Date('2024-03-01'),
@@ -28,8 +29,19 @@ const mockTrip = {
 // Edit/delete/export interactions moved to TripActionsScreen (the nav-bar ⋯
 // sheet) — see TripActionsScreen.test.tsx.
 describe('TripDetailHeader', () => {
+  beforeEach(() => {
+    mockUseMemories.mockReturnValue({ data: [], isLoading: false })
+  })
+
   it('shows a skeleton while loading', () => {
     mockUseTrip.mockReturnValue({ data: undefined, isLoading: true, isError: false })
+    render(<TripDetailHeader id="trip-1" scrollY={scrollY} />)
+    expect(screen.getByText('loading-skeleton')).toBeTruthy()
+  })
+
+  it('shows a skeleton while memories are loading', () => {
+    mockUseTrip.mockReturnValue({ data: mockTrip, isLoading: false, isError: false })
+    mockUseMemories.mockReturnValue({ data: undefined, isLoading: true })
     render(<TripDetailHeader id="trip-1" scrollY={scrollY} />)
     expect(screen.getByText('loading-skeleton')).toBeTruthy()
   })
@@ -40,22 +52,25 @@ describe('TripDetailHeader', () => {
     expect(screen.getByText('trip_error')).toBeTruthy()
   })
 
-  it('renders the trip title, countries, and description', () => {
+  it('renders the trip title and derived city tags', () => {
     mockUseTrip.mockReturnValue({ data: mockTrip, isLoading: false, isError: false })
-    render(<TripDetailHeader id="trip-1" scrollY={scrollY} />)
-    expect(screen.getByText('Japan Adventure')).toBeTruthy()
-    expect(screen.getByText('JP')).toBeTruthy()
-    expect(screen.getByText('A wonderful trip')).toBeTruthy()
-  })
-
-  it('does not render a description when the trip has none', () => {
-    mockUseTrip.mockReturnValue({
-      data: { ...mockTrip, description: null },
+    mockUseMemories.mockReturnValue({
+      data: [{ tripId: 'trip-1', city: 'Tokyo', isPublic: false }],
       isLoading: false,
-      isError: false,
     })
     render(<TripDetailHeader id="trip-1" scrollY={scrollY} />)
-    expect(screen.queryByText('A wonderful trip')).toBeNull()
+    expect(screen.getByText('Japan Adventure')).toBeTruthy()
+    expect(screen.getByText('Tokyo')).toBeTruthy()
+  })
+
+  it('shows the shared caption when a memory is public', () => {
+    mockUseTrip.mockReturnValue({ data: mockTrip, isLoading: false, isError: false })
+    mockUseMemories.mockReturnValue({
+      data: [{ tripId: 'trip-1', city: 'Tokyo', isPublic: true }],
+      isLoading: false,
+    })
+    render(<TripDetailHeader id="trip-1" scrollY={scrollY} />)
+    expect(screen.getByText('shared_tag')).toBeTruthy()
   })
 
   it('falls back to the branded hero with the trip initial when there is no cover', () => {

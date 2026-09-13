@@ -385,6 +385,7 @@
       "not_found": "This memory could not be found."
     },
     "editorial": {
+      "menu_label": "Memory options",
       "layout_label": "Layout",
       "variant_auto": "Auto",
       "variant_hero": "Full width",
@@ -392,7 +393,6 @@
       "variant_image_right": "Image right",
       "variant_carousel": "Carousel",
       "variant_text": "Text only",
-      "flip": "Flip side",
       "move_up": "Move up",
       "move_down": "Move down",
       "scroll_left": "Scroll left",

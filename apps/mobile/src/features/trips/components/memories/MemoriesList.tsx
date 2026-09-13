@@ -8,7 +8,7 @@ import { Icon } from '@/components/ui/icon'
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
-import { EditorialMemories } from '@/features/trips/components/editorial/EditorialMemories'
+import { MemoriesMasonryGrid } from './MemoriesMasonryGrid'
 import { MemoriesListSkeleton } from './MemoriesListSkeleton'
 import { NoMemoriesEmpty } from './NoMemoriesEmpty'
 
@@ -20,7 +20,7 @@ export function MemoriesList({ tripId }: MemoriesListProps) {
   const t = useTranslations('trips.detail')
   const router = useRouter()
   const { data: memories = [], isLoading, isError } = useMemories(tripId)
-  const { colors, spacing, fontSizes, fontWeights } = useTheme()
+  const { colors, fonts, spacing, fontSizes } = useTheme()
 
   const styles = useMemo(
     () =>
@@ -32,18 +32,17 @@ export function MemoriesList({ tripId }: MemoriesListProps) {
           justifyContent: 'space-between',
           gap: spacing[2],
         },
-        headingGroup: { flexDirection: 'row', alignItems: 'baseline', gap: spacing[2] },
+        heading: {
+          fontFamily: fonts.mono,
+          fontSize: 10.5,
+          letterSpacing: 1.4,
+          textTransform: 'uppercase',
+          color: colors.mutedForeground,
+        },
         addContent: { flexDirection: 'row', alignItems: 'center', gap: spacing[1] },
         addLabel: { fontSize: fontSizes.sm, color: colors.primary },
-        heading: {
-          fontSize: fontSizes.lg,
-          fontWeight: fontWeights.semibold,
-          color: colors.foreground,
-        },
-        count: { fontSize: fontSizes.sm, color: colors.mutedForeground },
-        list: { gap: spacing[4] },
       }),
-    [colors, spacing, fontSizes, fontWeights],
+    [colors, fonts, spacing, fontSizes],
   )
 
   if (isLoading) return <MemoriesListSkeleton />
@@ -53,10 +52,9 @@ export function MemoriesList({ tripId }: MemoriesListProps) {
   return (
     <View style={styles.container}>
       <View style={styles.headingRow}>
-        <View style={styles.headingGroup}>
-          <Text style={styles.heading}>{t('memories_heading')}</Text>
-          {memories.length > 0 && <Text style={styles.count}>{memories.length}</Text>}
-        </View>
+        <Text style={styles.heading}>
+          {memories.length} {t('memories_heading')}
+        </Text>
         <Button
           variant="ghost"
           size="sm"
@@ -73,7 +71,7 @@ export function MemoriesList({ tripId }: MemoriesListProps) {
       {memories.length === 0 ? (
         <NoMemoriesEmpty tripId={tripId} />
       ) : (
-        <EditorialMemories memories={memories} />
+        <MemoriesMasonryGrid memories={memories} />
       )}
     </View>
   )
