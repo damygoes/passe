@@ -1,7 +1,7 @@
 'use client'
 
-import { Segmented, SegmentedItem } from '@passe/ui/segmented'
 import { useMapPoints, useTrips } from '@passe/hooks'
+import { Segmented, SegmentedItem } from '@passe/ui/segmented'
 import { Skeleton } from '@passe/ui/skeleton'
 import { getUniqueCities, getVisitedCountries } from '@passe/utils'
 import { useTranslations } from 'next-intl'
@@ -94,7 +94,7 @@ export function MapDataWrapper() {
         )}
       </div>
 
-      <div className="rounded-[34px] bg-secondary p-3.5">
+      <div className="rounded-[34px] bg-secondary p-2">
         <WorldMap points={filteredPoints} visitedCountries={[...visitedCountries]} />
       </div>
 

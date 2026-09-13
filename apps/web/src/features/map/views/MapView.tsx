@@ -5,7 +5,7 @@ import { MapDataWrapper } from '../components/MapDataWrapper'
 
 export function MapView() {
   return (
-    <div className="container mx-auto w-full px-4 py-8">
+    <div className="container mx-auto w-full px-4 py-8 h-full">
       <FadeIn>
         <MapDataWrapper />
       </FadeIn>
