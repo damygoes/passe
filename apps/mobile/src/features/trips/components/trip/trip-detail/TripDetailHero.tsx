@@ -56,7 +56,17 @@ export function TripDetailHero({ trip, scrollY }: TripDetailHeroProps) {
   const styles = useMemo(
     () =>
       StyleSheet.create({
-        hero: { width: '100%', height: HERO_HEIGHT, overflow: 'hidden' },
+        // Stretches the whole block up by the status-bar inset (and grows by the
+        // same amount) so the photo bleeds all the way to the physical top of the
+        // screen — the trip-detail Stack screen hides its header entirely (see
+        // TripDetailNavBar), which otherwise leaves the safe-area gap visible
+        // above the cover instead of photo.
+        hero: {
+          width: '100%',
+          height: HERO_HEIGHT + insets.top,
+          marginTop: -insets.top,
+          overflow: 'hidden',
+        },
         fill: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
         fallback: {
           position: 'absolute',

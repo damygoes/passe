@@ -109,13 +109,15 @@ export function TripDetailInfoCard({ trip, cities, isShared }: TripDetailInfoCar
         >
           {t('add_memory')}
         </Button>
-        <Button
-          variant="secondary"
-          style={styles.button}
-          onPress={() => router.push('/(app)/account/portfolio')}
-        >
-          {t('share')}
-        </Button>
+        {!isShared && (
+          <Button
+            variant="secondary"
+            style={styles.button}
+            onPress={() => router.push('/(app)/account/portfolio')}
+          >
+            {t('share')}
+          </Button>
+        )}
       </View>
       <View style={styles.caption}>
         <View style={styles.dot} />
