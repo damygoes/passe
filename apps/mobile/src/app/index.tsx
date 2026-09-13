@@ -6,5 +6,5 @@ export default function Index() {
 
   if (!isLoaded) return null
 
-  return <Redirect href={isSignedIn ? '/(app)/home' : '/(auth)/sign-in'} />
+  return <Redirect href={isSignedIn ? '/(app)/home' : '/(auth)/welcome'} />
 }

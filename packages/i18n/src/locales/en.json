@@ -9,6 +9,14 @@
       "description": "Create trips, attach geotagged memories, and share your world — beautifully.",
       "copyright": "© 2026 Passe"
     },
+    "welcome": {
+      "title": "Passe.",
+      "tagline": "The past, beautifully kept.",
+      "body": "A private journal of everywhere you've been. Yours alone — until you decide otherwise.",
+      "cta_primary": "Start your first trip",
+      "cta_secondary": "I already have an account",
+      "caption_private": "Private by default"
+    },
     "sign_in": {
       "heading": "Welcome back",
       "subheading": "Sign in to your Passe account",

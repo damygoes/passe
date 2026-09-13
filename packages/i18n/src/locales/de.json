@@ -9,6 +9,14 @@
       "description": "Erstelle Reisen, füge geogetaggte Erinnerungen hinzu und teile deine Welt – wunderschön.",
       "copyright": "© 2026 Passe"
     },
+    "welcome": {
+      "title": "Passe.",
+      "tagline": "Die Vergangenheit, wunderschön bewahrt.",
+      "body": "Ein privates Tagebuch von allem, was du erlebt hast. Nur für dich – bis du dich entscheidest, es zu teilen.",
+      "cta_primary": "Starte deine erste Reise",
+      "cta_secondary": "Ich habe bereits ein Konto",
+      "caption_private": "Standardmäßig privat"
+    },
     "sign_in": {
       "heading": "Willkommen zurück",
       "subheading": "Melde dich bei deinem Passe-Konto an",
