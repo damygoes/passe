@@ -23,16 +23,21 @@ export function formatMemoryDate(date: Date | string): string {
   return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' }).format(new Date(date))
 }
 
-// Memory Detail's full date+time caption ("11 March 2026 · 18:42").
-export function formatMemoryDateTime(date: Date | string): string {
-  const parsed = new Date(date)
-  const day = new Intl.DateTimeFormat('en-GB', {
+// Day + long month + year, no time ("3 August 2023") — the Stats screen's
+// "Your furthest memory" card uses this for the logged-on date.
+export function formatLongDate(date: Date | string): string {
+  return new Intl.DateTimeFormat('en-GB', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
-  }).format(parsed)
+  }).format(new Date(date))
+}
+
+// Memory Detail's full date+time caption ("11 March 2026 · 18:42").
+export function formatMemoryDateTime(date: Date | string): string {
+  const day = formatLongDate(date)
   const time = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit' }).format(
-    parsed,
+    new Date(date),
   )
   return `${day} · ${time}`
 }
@@ -44,6 +49,12 @@ export function formatMemoryDateTime(date: Date | string): string {
 // year is present — dropping the year for mobile's shorter form otherwise
 // silently loses it too. `en-GB` (not `en-US`, like the formatters above) is
 // what gives the day-before-month ordering.
+// Stats screen's "Quietest month" card — a month name from a 0-11 index
+// (Date#getMonth()), independent of any particular year.
+export function formatMonthName(monthIndex: number): string {
+  return new Intl.DateTimeFormat('en-GB', { month: 'long' }).format(new Date(2000, monthIndex, 1))
+}
+
 export function formatWeekdayDate(
   date: Date | string,
   options: { withYear?: boolean } = {},
