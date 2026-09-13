@@ -66,7 +66,7 @@ export function TripsScreen() {
   )
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
+    <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
       <Animated.View entering={enterUp(0)} style={styles.stickyHeader}>
         <PageHeader style={styles.header}>
           <PageHeaderTitle style={styles.title}>{t('title')}</PageHeaderTitle>
