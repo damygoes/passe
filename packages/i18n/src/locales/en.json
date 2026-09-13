@@ -284,7 +284,7 @@
       "see_map": "See map",
       "import_title": "Every memory deserves a home.",
       "import_body": "Capture where you've been before the details fade.",
-      "import_cta": "Add a memory"
+      "import_cta": "Add a new memory to {title}"
     },
     "card": {
       "view": "View trip",

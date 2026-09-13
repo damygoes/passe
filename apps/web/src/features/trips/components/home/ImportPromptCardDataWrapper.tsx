@@ -3,9 +3,9 @@
 import { Link } from '@/i18n/navigation'
 import { tripNewMemoryRoute } from '@/lib/routes'
 import { useTrips } from '@passe/hooks'
-import { Button } from '@passe/ui/button'
+import { buttonVariants } from '@passe/ui/button'
 import { Skeleton } from '@passe/ui/skeleton'
-import { getMostRecentTrip } from '@passe/utils'
+import { cn, getMostRecentTrip } from '@passe/utils'
 import { useTranslations } from 'next-intl'
 
 export function ImportPromptCardDataWrapper() {
@@ -25,12 +25,15 @@ export function ImportPromptCardDataWrapper() {
     <div className="rounded-[28px] bg-dark-espresso-dark p-6 text-aged-cream">
       <h3 className="font-display text-2xl leading-snug">{t('import_title')}</h3>
       <p className="mt-2 text-[13.5px] text-aged-cream/80">{t('import_body')}</p>
-      <Button
-        render={<Link href={href} />}
-        className="mt-3.5 bg-aged-cream text-dark-espresso-dark hover:bg-aged-cream/90"
+      <Link
+        href={href}
+        className={cn(
+          buttonVariants(),
+          'mt-3.5 bg-aged-cream text-dark-espresso-dark hover:bg-aged-cream/90',
+        )}
       >
-        {t('import_cta')}
-      </Button>
+        {t('import_cta', { title: mostRecentTrip.title })}
+      </Link>
     </div>
   )
 }
