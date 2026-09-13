@@ -1,7 +1,7 @@
 'use client'
 
-import { PlanCard } from '@/components/shared/PlanCard'
 import { Stagger } from '@/components/motion/Stagger'
+import { PlanCard } from '@/components/shared/PlanCard'
 import { useCreateCheckoutSession, useCreatePortalSession } from '@passe/hooks'
 import type { BillingRedirect, PaidPlan, Plan, PlanSource } from '@passe/types'
 import { Badge } from '@passe/ui/badge'
@@ -49,7 +49,7 @@ export function PlanCards({
           ) : undefined
 
           const footer = isCurrent ? (
-            <Button variant="outline" className="w-full" disabled>
+            <Button variant="ghost" className="w-full" disabled>
               {t('current_plan')}
             </Button>
           ) : hasPaidPlan ? (
