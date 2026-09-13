@@ -28,10 +28,10 @@ export function PlanCard({ plan, current = false, badge, footer }: PlanCardProps
   const t = useTranslations('landing.pricing')
 
   const limits = PLAN_LIMITS[plan]
-  const exportSummary = limits.pdfExport
+  const exportFeatures = limits.pdfExport
     ? [t('bullets.pdf_export_yes'), t('bullets.zine_export_yes'), t('bullets.postcard_export_yes')]
     : []
-  const summary = [
+  const features = [
     limits.maxTrips === Infinity
       ? t('bullets.trips_unlimited')
       : t('bullets.trips', { count: limits.maxTrips }),
@@ -42,8 +42,8 @@ export function PlanCard({ plan, current = false, badge, footer }: PlanCardProps
     limits.maxPublicMemoriesPerTrip === Infinity
       ? t('bullets.public_memories_unlimited')
       : t('bullets.public_memories_limited', { count: limits.maxPublicMemoriesPerTrip }),
-    ...exportSummary,
-  ].join(' · ')
+    ...exportFeatures,
+  ]
 
   return (
     <m.div variants={staggerItemVariants} className="relative h-full">
@@ -64,7 +64,17 @@ export function PlanCard({ plan, current = false, badge, footer }: PlanCardProps
         <div className="mt-1 font-mono text-[10px] tracking-[0.1em] uppercase opacity-60">
           {t('per_month')}
         </div>
-        <p className="mt-5 flex-1 text-[14.5px] leading-[1.8] opacity-[0.88]">{summary}</p>
+        <ul className="mt-5 flex-1 space-y-2 text-[14.5px] leading-snug opacity-[0.88]">
+          {features.map((feature) => (
+            <li key={feature} className="flex items-start gap-2.5">
+              <span
+                className="mt-[7px] size-1 shrink-0 rounded-full bg-current opacity-60"
+                aria-hidden
+              />
+              {feature}
+            </li>
+          ))}
+        </ul>
         <div className="mt-[22px]">{footer}</div>
       </div>
     </m.div>
