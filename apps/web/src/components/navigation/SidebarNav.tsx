@@ -1,7 +1,7 @@
 'use client'
 
 import { Link, usePathname } from '@/i18n/navigation'
-import { publicPortfolioRoute, routes, tripKeepsakesRoute, tripNewMemoryRoute } from '@/lib/routes'
+import { publicPortfolioRoute, routes, tripKeepsakesRoute } from '@/lib/routes'
 import { useTrips, useUser } from '@passe/hooks'
 import { buttonVariants } from '@passe/ui/button'
 import {
@@ -38,7 +38,6 @@ export function SidebarNav({ username: initialUsername }: SidebarNavProps) {
   const username = user?.username ?? initialUsername
 
   const mostRecentTrip = getMostRecentTrip(trips)
-  const newMemoryHref = mostRecentTrip ? tripNewMemoryRoute(mostRecentTrip.id) : routes.tripsNew
   const keepsakesHref = mostRecentTrip ? tripKeepsakesRoute(mostRecentTrip.id) : routes.tripsNew
 
   const navItems = [
@@ -87,8 +86,8 @@ export function SidebarNav({ username: initialUsername }: SidebarNavProps) {
             </SidebarMenuItem>
           )}
         </SidebarMenu>
-        <Link href={newMemoryHref} className={cn(buttonVariants(), 'w-full')}>
-          {t('new_memory')}
+        <Link href={routes.tripsNew} className={cn(buttonVariants(), 'w-full')}>
+          {t('new_trip')}
         </Link>
       </SidebarGroupContent>
     </SidebarGroup>
