@@ -102,7 +102,8 @@ export function SocialAuthButtons() {
         browserResult.type === 'opened' ? await waitForOAuthRedirect(redirectUrl) : null
       if (!redirectedUrl) return
 
-      const rotatingTokenNonce = new URL(redirectedUrl).searchParams.get('rotating_token_nonce') ?? ''
+      const rotatingTokenNonce =
+        new URL(redirectedUrl).searchParams.get('rotating_token_nonce') ?? ''
       await signIn.reload({ rotatingTokenNonce })
 
       let createdSessionId = signIn.createdSessionId
@@ -113,7 +114,7 @@ export function SocialAuthButtons() {
 
       if (createdSessionId && setActive) {
         await setActive({ session: createdSessionId })
-        router.replace('/(app)/trips')
+        router.replace('/(app)/home')
       } else {
         logger.warn('OAuth flow did not return a session', {
           signInStatus: signIn.status,
@@ -145,7 +146,7 @@ export function SocialAuthButtons() {
 
         if (createdSessionId && setActiveSSO) {
           await setActiveSSO({ session: createdSessionId })
-          router.replace('/(app)/trips')
+          router.replace('/(app)/home')
         }
       } catch (err) {
         if (isClerkAPIResponseError(err)) {

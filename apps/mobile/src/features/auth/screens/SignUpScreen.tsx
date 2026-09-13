@@ -116,7 +116,7 @@ export function SignUpScreen() {
       const result = await signUp.attemptEmailAddressVerification({ code: data.code })
       if (result.status === 'complete') {
         await setActive({ session: result.createdSessionId })
-        router.replace('/(app)/trips')
+        router.replace('/(app)/home')
       }
     } catch (err) {
       if (isClerkAPIResponseError(err)) {

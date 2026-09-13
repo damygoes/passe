@@ -2,9 +2,8 @@ import { render, screen } from '@testing-library/react-native'
 import { StatTile } from './StatTile'
 
 // AnimatedNumber renders its value through an animated TextInput
-// (useAnimatedProps), which isn't mocked in this project's jest-expo setup —
-// see PersonalStatsDataWrapper.test.tsx for the same workaround. Mock it out
-// so these tests cover StatTile's own composition (label, note, tone).
+// (useAnimatedProps), which isn't mocked in this project's jest-expo setup.
+// Mock it out so these tests cover StatTile's own composition (label, note, tone).
 jest.mock('@/components/ui/animated-number', () => {
   const { Text } = require('react-native')
   return {

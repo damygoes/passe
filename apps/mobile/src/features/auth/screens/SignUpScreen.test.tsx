@@ -9,7 +9,10 @@ async function fillDetails(overrides: { password?: string; confirmPassword?: str
   fireEvent.changeText(screen.getByPlaceholderText('email_placeholder'), 'user@example.com')
   const passwordFields = screen.getAllByPlaceholderText('password_placeholder')
   fireEvent.changeText(passwordFields[0]!, overrides.password ?? 'Abcdef1!')
-  fireEvent.changeText(passwordFields[1]!, overrides.confirmPassword ?? overrides.password ?? 'Abcdef1!')
+  fireEvent.changeText(
+    passwordFields[1]!,
+    overrides.confirmPassword ?? overrides.password ?? 'Abcdef1!',
+  )
 }
 
 describe('SignUpScreen', () => {
@@ -48,7 +51,7 @@ describe('SignUpScreen', () => {
     fireEvent.press(screen.getByText('verify_email'))
 
     await waitFor(() => expect(mockSetActive).toHaveBeenCalledWith({ session: 'sess_1' }))
-    expect(mockReplace).toHaveBeenCalledWith('/(app)/trips')
+    expect(mockReplace).toHaveBeenCalledWith('/(app)/home')
   })
 
   it('shows a generic error banner when sign-up creation throws', async () => {

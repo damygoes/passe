@@ -80,7 +80,7 @@ export function SignInScreen() {
 
       if (result.status === 'complete') {
         await setActive({ session: result.createdSessionId })
-        router.replace('/(app)/trips')
+        router.replace('/(app)/home')
       } else if (
         (result.status as string) === 'needs_client_trust' ||
         result.status === 'needs_second_factor'
@@ -108,7 +108,7 @@ export function SignInScreen() {
       const result = await signIn.attemptSecondFactor({ strategy: 'email_code', code: data.code })
       if (result.status === 'complete') {
         await setActive({ session: result.createdSessionId })
-        router.replace('/(app)/trips')
+        router.replace('/(app)/home')
       }
     } catch (err) {
       if (isClerkAPIResponseError(err)) {

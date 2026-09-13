@@ -3,16 +3,13 @@ import { getUniqueStatsFromTrips } from '@passe/utils'
 import { useQueryClient } from '@tanstack/react-query'
 import { useHeaderHeight } from 'expo-router/react-navigation'
 import { useCallback, useMemo, useState } from 'react'
-import type { LayoutChangeEvent } from 'react-native'
 import { Platform, RefreshControl, StyleSheet } from 'react-native'
-import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { PageHeader, PageHeaderDescription, PageHeaderTitle } from '@/components/ui/page-header'
 import { Skeleton } from '@/components/ui/skeleton'
 import { TripsList } from '@/features/trips/components/trip/lists/TripsList'
-import { PersonalStatsDataWrapper } from '@/features/trips/components/trip/stats/PersonalStatsDataWrapper'
-import { PersonalStatsStickyBarDataWrapper } from '@/features/trips/components/trip/stats/PersonalStatsStickyBarDataWrapper'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 import { enterUp } from '@/lib/motion'
@@ -25,23 +22,6 @@ export function TripsScreen() {
   const { uniqueCountries } = getUniqueStatsFromTrips({ trips })
   const queryClient = useQueryClient()
   const [refreshing, setRefreshing] = useState(false)
-
-  const scrollY = useSharedValue(0)
-  const statsBottom = useSharedValue(0)
-  const scrollHandler = useAnimatedScrollHandler((event) => {
-    // iOS's `contentInsetAdjustmentBehavior="automatic"` (used to inset content under the
-    // glass header) offsets contentOffset.y by -contentInset.top at rest. Add it back so
-    // scrollY stays 0-based, matching the layout-relative `threshold` from onStatsLayout.
-    // contentInset is always {0,0,0,0} on Android, so this is a no-op there.
-    scrollY.value = event.contentOffset.y + event.contentInset.top
-  })
-  const onStatsLayout = useCallback(
-    (event: LayoutChangeEvent) => {
-      const { y, height } = event.nativeEvent.layout
-      statsBottom.set(y + height)
-    },
-    [statsBottom],
-  )
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
@@ -78,8 +58,6 @@ export function TripsScreen() {
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
         contentInsetAdjustmentBehavior={Platform.OS === 'ios' ? 'automatic' : undefined}
-        onScroll={scrollHandler}
-        scrollEventThrottle={16}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
         <Animated.View entering={enterUp(0)}>
@@ -97,12 +75,8 @@ export function TripsScreen() {
             ) : null}
           </PageHeader>
         </Animated.View>
-        <Animated.View entering={enterUp(80)} onLayout={onStatsLayout}>
-          <PersonalStatsDataWrapper />
-        </Animated.View>
         <TripsList />
       </Animated.ScrollView>
-      <PersonalStatsStickyBarDataWrapper scrollY={scrollY} threshold={statsBottom} />
     </SafeAreaView>
   )
 }
