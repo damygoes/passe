@@ -21,6 +21,9 @@ interface AccountFormLayoutProps {
   title?: string
   description?: string
   children: ReactNode
+  /** Defaults to router.back() — override when the caller knows a more
+   *  reliable or more specific destination (e.g. a fixed parent screen). */
+  onClose?: () => void
 }
 
 // Every screen using this layout is presented as a formSheet with its native
@@ -28,9 +31,15 @@ interface AccountFormLayoutProps {
 // the sheet's drag-to-dismiss grabber was the only way out — not discoverable
 // enough on its own. This renders an explicit close button so there's always
 // a guaranteed way back, matching the title/description row it already owns.
-export function AccountFormLayout({ title, description, children }: AccountFormLayoutProps) {
+export function AccountFormLayout({
+  title,
+  description,
+  children,
+  onClose,
+}: AccountFormLayoutProps) {
   const router = useRouter()
   const tCommon = useTranslations('common')
+  const handleClose = onClose ?? (() => router.back())
   const { colors, spacing, fonts, fontSizes, lineHeights } = useTheme()
 
   const styles = useMemo(
@@ -89,7 +98,7 @@ export function AccountFormLayout({ title, description, children }: AccountFormL
               </View>
             )}
             <Pressable
-              onPress={() => router.back()}
+              onPress={handleClose}
               accessibilityRole="button"
               accessibilityLabel={tCommon('cancel')}
               hitSlop={8}

@@ -1,5 +1,5 @@
 import { useMemories } from '@passe/hooks'
-import { useLocalSearchParams } from 'expo-router'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useMemo } from 'react'
 import { StyleSheet, View } from 'react-native'
 
@@ -13,6 +13,7 @@ import { useTranslations } from '@/i18n/useTranslations'
 export function EditMemoryScreen() {
   const { id, tripId } = useLocalSearchParams<{ id: string; tripId: string }>()
   const t = useTranslations('trips.edit_memory')
+  const router = useRouter()
   const { data: memories, isLoading, isError } = useMemories(tripId)
   const { spacing } = useTheme()
 
@@ -34,7 +35,7 @@ export function EditMemoryScreen() {
       ) : isError || !memory ? (
         <ErrorBanner message={t('not_found')} />
       ) : (
-        <MemoryForm tripId={tripId} memory={memory} />
+        <MemoryForm tripId={tripId} memory={memory} onCancel={() => router.back()} />
       )}
     </AccountFormLayout>
   )

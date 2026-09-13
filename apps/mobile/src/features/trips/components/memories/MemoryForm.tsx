@@ -57,10 +57,12 @@ interface MemoryFormProps {
   tripId: string
   // When provided, the form edits this memory; otherwise it creates a new one.
   memory?: Memory
+  onCancel: () => void
 }
 
-export function MemoryForm({ tripId, memory }: MemoryFormProps) {
+export function MemoryForm({ tripId, memory, onCancel }: MemoryFormProps) {
   const t = useTranslations('trips.new_memory')
+  const tCommon = useTranslations('common')
   const tNew = useTranslations('trips.new')
   const tEdit = useTranslations('trips.edit_memory')
   const tUpload = useTranslations('trips.image_upload')
@@ -150,6 +152,8 @@ export function MemoryForm({ tripId, memory }: MemoryFormProps) {
         privacyText: { flex: 1, gap: 2 },
         privacyTitle: { fontSize: fontSizes.sm, color: brandColors.deepOlive.dark },
         privacyDescription: { fontSize: fontSizes.xs, color: `${brandColors.deepOlive.dark}D9` },
+        actions: { flexDirection: 'row', gap: spacing[3] },
+        actionButton: { flex: 1 },
       }),
     [colors, spacing, fontSizes, borderRadius],
   )
@@ -411,15 +415,30 @@ export function MemoryForm({ tripId, memory }: MemoryFormProps) {
         <Switch checked={!isPublic} onCheckedChange={(checked) => setIsPublic(!checked)} />
       </View>
 
-      <Button onPress={handleSubmit} loading={isPending} disabled={isBusy} fullWidth>
-        {isEditing
-          ? isPending
-            ? tEdit('saving')
-            : tEdit('save')
-          : isPending
-            ? t('creating')
-            : t('create')}
-      </Button>
+      <View style={styles.actions}>
+        <Button
+          variant="secondary"
+          style={styles.actionButton}
+          onPress={onCancel}
+          disabled={isPending}
+        >
+          {tCommon('cancel')}
+        </Button>
+        <Button
+          style={styles.actionButton}
+          onPress={handleSubmit}
+          loading={isPending}
+          disabled={isBusy}
+        >
+          {isEditing
+            ? isPending
+              ? tEdit('saving')
+              : tEdit('save')
+            : isPending
+              ? t('creating')
+              : t('create')}
+        </Button>
+      </View>
     </View>
   )
 }

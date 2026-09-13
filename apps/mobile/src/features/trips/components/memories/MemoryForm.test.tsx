@@ -8,6 +8,7 @@ const mockUseMemories = jest.fn()
 const mockCreateMemory = jest.fn()
 const mockUpdateMemory = jest.fn()
 const mockUploadMutateAsync = jest.fn()
+const mockOnCancel = jest.fn()
 
 jest.mock('@passe/hooks', () => ({
   useUser: () => mockUseUser(),
@@ -64,11 +65,12 @@ beforeEach(() => {
   mockCreateMemory.mockClear()
   mockUpdateMemory.mockClear()
   mockPush.mockClear()
+  mockOnCancel.mockClear()
 })
 
 describe('MemoryForm — create', () => {
   it('shows a validation error when submitting with no note and no photos', async () => {
-    render(<MemoryForm tripId="trip-1" />)
+    render(<MemoryForm tripId="trip-1" onCancel={mockOnCancel} />)
     fireEvent.press(screen.getByText('create'))
     expect(await screen.findByText('errors.content_required')).toBeTruthy()
     expect(mockCreateMemory).not.toHaveBeenCalled()
@@ -77,21 +79,21 @@ describe('MemoryForm — create', () => {
   it('shows the plan-limit banner when at the memory limit', () => {
     mockUseUser.mockReturnValue({ data: { plan: 'free' } })
     mockUseMemories.mockReturnValue({ data: Array.from({ length: 10 }) })
-    render(<MemoryForm tripId="trip-1" />)
+    render(<MemoryForm tripId="trip-1" onCancel={mockOnCancel} />)
     expect(screen.getByText('limit_reached')).toBeTruthy()
   })
 
   it('shows an upgrade action that opens the paywall when the memory limit is reached', () => {
     mockUseUser.mockReturnValue({ data: { plan: 'free' } })
     mockUseMemories.mockReturnValue({ data: Array.from({ length: 10 }) })
-    render(<MemoryForm tripId="trip-1" />)
+    render(<MemoryForm tripId="trip-1" onCancel={mockOnCancel} />)
     fireEvent.press(screen.getByText('upgrade_cta'))
     expect(mockPush).toHaveBeenCalledWith('/(app)/account/paywall')
   })
 
   it('creates a memory with trimmed fields, parsed tags, and private by default', async () => {
     mockCreateMemory.mockResolvedValue({ id: 'memory-1' })
-    render(<MemoryForm tripId="trip-1" />)
+    render(<MemoryForm tripId="trip-1" onCancel={mockOnCancel} />)
 
     fireEvent.changeText(screen.getByPlaceholderText('note_placeholder'), 'Great day')
     fireEvent.changeText(screen.getByPlaceholderText('tags_placeholder'), 'Medina,  Film ')
@@ -110,7 +112,7 @@ describe('MemoryForm — create', () => {
 
   it('creates a public memory when the privacy switch is toggled off', async () => {
     mockCreateMemory.mockResolvedValue({ id: 'memory-1' })
-    render(<MemoryForm tripId="trip-1" />)
+    render(<MemoryForm tripId="trip-1" onCancel={mockOnCancel} />)
 
     fireEvent.changeText(screen.getByPlaceholderText('note_placeholder'), 'Great day')
     fireEvent.press(screen.getByRole('switch'))
@@ -122,7 +124,7 @@ describe('MemoryForm — create', () => {
 
   it('shows an error banner when the mutation throws', async () => {
     mockCreateMemory.mockRejectedValue(new Error('network down'))
-    render(<MemoryForm tripId="trip-1" />)
+    render(<MemoryForm tripId="trip-1" onCancel={mockOnCancel} />)
 
     fireEvent.changeText(screen.getByPlaceholderText('note_placeholder'), 'Great day')
     fireEvent.press(screen.getByText('create'))
@@ -138,7 +140,7 @@ describe('MemoryForm — create', () => {
     })
     Location.reverseGeocodeAsync.mockResolvedValue([{ city: 'Paris', country: 'France' }])
 
-    render(<MemoryForm tripId="trip-1" />)
+    render(<MemoryForm tripId="trip-1" onCancel={mockOnCancel} />)
     fireEvent.press(screen.getByText('use_current_location'))
 
     await waitFor(() =>
@@ -146,11 +148,18 @@ describe('MemoryForm — create', () => {
     )
     expect(screen.getByPlaceholderText('country_placeholder')).toHaveProp('value', 'France')
   })
+
+  it('calls onCancel and does not create a memory when Cancel is pressed', () => {
+    render(<MemoryForm tripId="trip-1" onCancel={mockOnCancel} />)
+    fireEvent.press(screen.getByText('cancel'))
+    expect(mockOnCancel).toHaveBeenCalled()
+    expect(mockCreateMemory).not.toHaveBeenCalled()
+  })
 })
 
 describe('MemoryForm — edit', () => {
   it('pre-fills fields, including tags, from the existing memory', () => {
-    render(<MemoryForm tripId="trip-1" memory={existingMemory} />)
+    render(<MemoryForm tripId="trip-1" memory={existingMemory} onCancel={mockOnCancel} />)
     expect(screen.getByPlaceholderText('note_placeholder')).toHaveProp('value', 'Great day')
     expect(screen.getByPlaceholderText('city_placeholder')).toHaveProp('value', 'Paris')
     expect(screen.getByPlaceholderText('country_placeholder')).toHaveProp('value', 'France')
@@ -161,13 +170,13 @@ describe('MemoryForm — edit', () => {
   it('does not show the plan-limit banner when editing, even at the memory limit', () => {
     mockUseUser.mockReturnValue({ data: { plan: 'free' } })
     mockUseMemories.mockReturnValue({ data: Array.from({ length: 10 }) })
-    render(<MemoryForm tripId="trip-1" memory={existingMemory} />)
+    render(<MemoryForm tripId="trip-1" memory={existingMemory} onCancel={mockOnCancel} />)
     expect(screen.queryByText('limit_reached')).toBeNull()
   })
 
   it('updates a memory with trimmed tags and navigates back on success', async () => {
     mockUpdateMemory.mockResolvedValue({ id: 'memory-1' })
-    render(<MemoryForm tripId="trip-1" memory={existingMemory} />)
+    render(<MemoryForm tripId="trip-1" memory={existingMemory} onCancel={mockOnCancel} />)
 
     fireEvent.changeText(screen.getByPlaceholderText('note_placeholder'), 'Updated note')
     fireEvent.press(screen.getByText('save'))
@@ -181,7 +190,7 @@ describe('MemoryForm — edit', () => {
 
   it('toggles the memory public via the privacy switch', async () => {
     mockUpdateMemory.mockResolvedValue({ id: 'memory-1' })
-    render(<MemoryForm tripId="trip-1" memory={existingMemory} />)
+    render(<MemoryForm tripId="trip-1" memory={existingMemory} onCancel={mockOnCancel} />)
 
     fireEvent.press(screen.getByRole('switch'))
     fireEvent.press(screen.getByText('save'))
@@ -190,5 +199,12 @@ describe('MemoryForm — edit', () => {
     expect(mockUpdateMemory).toHaveBeenCalledWith(
       expect.objectContaining({ id: 'memory-1', isPublic: true }),
     )
+  })
+
+  it('calls onCancel and does not update the memory when Cancel is pressed', () => {
+    render(<MemoryForm tripId="trip-1" memory={existingMemory} onCancel={mockOnCancel} />)
+    fireEvent.press(screen.getByText('cancel'))
+    expect(mockOnCancel).toHaveBeenCalled()
+    expect(mockUpdateMemory).not.toHaveBeenCalled()
   })
 })

@@ -28,4 +28,16 @@ describe('AccountFormLayout', () => {
     fireEvent.press(screen.getByLabelText('cancel'))
     expect(mockBack).toHaveBeenCalled()
   })
+
+  it('calls the provided onClose instead of router.back() when given', () => {
+    const onClose = jest.fn()
+    render(
+      <AccountFormLayout title="New memory" onClose={onClose}>
+        <Text>form body</Text>
+      </AccountFormLayout>,
+    )
+    fireEvent.press(screen.getByLabelText('cancel'))
+    expect(onClose).toHaveBeenCalled()
+    expect(mockBack).not.toHaveBeenCalled()
+  })
 })
