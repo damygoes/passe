@@ -1,13 +1,7 @@
-import { canAddMemory } from '@passe/auth/plan-gates'
-import {
-  useCreateMemory,
-  useMemories,
-  useUpdateMemory,
-  useUploadImage,
-  useUser,
-} from '@passe/hooks'
-import type { Memory } from '@passe/types/memory'
+import { useUpdateMemory, useUploadImage } from '@passe/hooks'
 import { createLogger } from '@passe/logger'
+import { colors as brandColors } from '@passe/theme'
+import type { Memory } from '@passe/types/memory'
 import { Image } from 'expo-image'
 import * as ImagePicker from 'expo-image-picker'
 import * as Location from 'expo-location'
@@ -19,8 +13,8 @@ import { Button } from '@/components/ui/button'
 import { FormField } from '@/components/ui/form-field'
 import { Icon } from '@/components/ui/icon'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Switch } from '@/components/ui/switch'
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
-import { UpgradeBanner } from '@/features/account/components/UpgradeBanner'
 import { DateField } from '@/features/trips/components/trip/date-field/DateField'
 import { useTheme } from '@/hooks/useTheme'
 import { haptics } from '@/lib/haptics'
@@ -28,13 +22,13 @@ import { useTranslations } from '@/i18n/useTranslations'
 import { compressImage } from '@/lib/image-compression'
 import { uploadFileToUrl } from '@/lib/upload-put'
 
-const log = createLogger({ context: { module: 'features/trips/AddMemoryForm' } })
+const log = createLogger({ context: { module: 'features/trips/EditMemoryForm' } })
 
 // `url` is what gets submitted (a bare S3 key for a fresh upload, or the
-// existing resolved URL when editing unchanged photos). `previewUri` is
-// what gets rendered — a local file uri for a fresh upload (the bare key
-// isn't renderable on its own until the next read-resolve round-trip), or
-// the same resolved URL as `url` for existing photos.
+// existing resolved URL for unchanged photos). `previewUri` is what gets
+// rendered — a local file uri for a fresh upload (the bare key isn't
+// renderable on its own until the next read-resolve round-trip), or the
+// same resolved URL as `url` for existing photos.
 interface MemoryPhoto {
   url: string
   previewUri: string
@@ -51,50 +45,40 @@ function mediaToPhotos(media: Memory['media']): MemoryPhoto[] {
   }))
 }
 
-interface AddMemoryFormProps {
+interface EditMemoryFormProps {
   tripId: string
-  // When provided, the form edits this memory; otherwise it creates a new one.
-  memory?: Memory
+  memory: Memory
 }
 
-export function AddMemoryForm({ tripId, memory }: AddMemoryFormProps) {
+export function EditMemoryForm({ tripId, memory }: EditMemoryFormProps) {
   const t = useTranslations('trips.new_memory')
   const tNew = useTranslations('trips.new')
   const tEdit = useTranslations('trips.edit_memory')
   const tUpload = useTranslations('trips.image_upload')
   const router = useRouter()
   const { colors, spacing, fontSizes, borderRadius } = useTheme()
-  const { data: user } = useUser()
-  const { data: memories = [] } = useMemories(tripId)
   const upload = useUploadImage()
-  const { mutateAsync: createMemory, isPending: isCreating } = useCreateMemory()
-  const { mutateAsync: updateMemory, isPending: isUpdating } = useUpdateMemory()
+  const { mutateAsync: updateMemory, isPending } = useUpdateMemory()
 
-  const isEditing = Boolean(memory)
-  const isPending = isCreating || isUpdating
-
-  const [photos, setPhotos] = useState<MemoryPhoto[]>(() =>
-    memory ? mediaToPhotos(memory.media) : [],
-  )
+  const [photos, setPhotos] = useState<MemoryPhoto[]>(() => mediaToPhotos(memory.media))
   const [pendingUploads, setPendingUploads] = useState(0)
-  const [note, setNote] = useState(() => memory?.note ?? '')
-  const [capturedAt, setCapturedAt] = useState<Date>(() =>
-    memory ? new Date(memory.capturedAt) : new Date(),
-  )
-  const [city, setCity] = useState(() => memory?.city ?? '')
-  const [country, setCountry] = useState(() => memory?.country ?? '')
+  const [note, setNote] = useState(() => memory.note ?? '')
+  const [capturedAt, setCapturedAt] = useState<Date>(() => new Date(memory.capturedAt))
+  const [city, setCity] = useState(() => memory.city ?? '')
+  const [country, setCountry] = useState(() => memory.country ?? '')
+  const [placeName, setPlaceName] = useState(() => memory.placeName ?? '')
+  const [tagsInput, setTagsInput] = useState(() => memory.tags.join(', '))
+  const [isPublic, setIsPublic] = useState(() => memory.isPublic)
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(
-    () => memory?.location ?? null,
+    () => memory.location ?? null,
   )
   const [isLocating, setIsLocating] = useState(false)
   const [locationError, setLocationError] = useState<string | null>(null)
   const [contentError, setContentError] = useState<string | null>(null)
   const [globalError, setGlobalError] = useState<string | null>(null)
 
-  const plan = user?.plan ?? 'free'
-  const atMemoryLimit = !isEditing && !canAddMemory(plan, memories.length)
   const isUploading = pendingUploads > 0
-  const isBusy = isPending || isUploading || atMemoryLimit
+  const isBusy = isPending || isUploading
 
   const styles = useMemo(
     () =>
@@ -133,6 +117,17 @@ export function AddMemoryForm({ tripId, memory }: AddMemoryFormProps) {
         pickerButton: { flex: 1 },
         locationRow: { flexDirection: 'row', alignItems: 'center', gap: spacing[2] },
         limitLink: { fontSize: fontSizes.sm, fontWeight: '500', color: colors.primary },
+        privacyRow: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: spacing[4],
+          borderRadius: borderRadius.xl,
+          backgroundColor: `${brandColors.deepOlive.DEFAULT}1F`,
+          padding: spacing[4],
+        },
+        privacyText: { flex: 1, gap: 2 },
+        privacyTitle: { fontSize: fontSizes.sm, color: brandColors.deepOlive.dark },
+        privacyDescription: { fontSize: fontSizes.xs, color: `${brandColors.deepOlive.dark}D9` },
       }),
     [colors, spacing, fontSizes, borderRadius],
   )
@@ -202,6 +197,8 @@ export function AddMemoryForm({ tripId, memory }: AddMemoryFormProps) {
       })
       if (place?.city) setCity(place.city)
       if (place?.country) setCountry(place.country)
+      const street = [place?.streetNumber, place?.street].filter(Boolean).join(' ')
+      if (street) setPlaceName(street)
     } catch {
       setLocationError(t('location_permission_denied'))
     } finally {
@@ -223,54 +220,46 @@ export function AddMemoryForm({ tripId, memory }: AddMemoryFormProps) {
     }
     setContentError(null)
 
-    const commonFields = {
-      note: trimmedNote || undefined,
-      capturedAt,
-      city: city.trim() || undefined,
-      country: country.trim() || undefined,
-      location: coords ?? undefined,
-      media: photos.map((photo) => ({
-        url: photo.url,
-        mediaType: 'photo' as const,
-        width: photo.width,
-        height: photo.height,
-      })),
-    }
+    const tags = tagsInput
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter(Boolean)
 
     // A memory explicitly locked to "Text only" never renders photos (see
     // resolveVariant in @passe/utils/editorial) — adding a photo here is an
     // affirmative action that should make it visible, so reset the layout.
-    const shouldResetLayout = memory?.layoutVariant === 'text' && photos.length > 0
+    const shouldResetLayout = memory.layoutVariant === 'text' && photos.length > 0
 
     try {
-      if (memory) {
-        await updateMemory({
-          id: memory.id,
-          tripId,
-          ...commonFields,
-          ...(shouldResetLayout ? { layoutVariant: 'auto' as const } : {}),
-        })
-      } else {
-        await createMemory({ tripId, ...commonFields, isPublic: false })
-      }
+      await updateMemory({
+        id: memory.id,
+        tripId,
+        note: trimmedNote || undefined,
+        capturedAt,
+        city: city.trim() || undefined,
+        country: country.trim() || undefined,
+        placeName: placeName.trim() || undefined,
+        tags,
+        isPublic,
+        location: coords ?? undefined,
+        media: photos.map((photo) => ({
+          url: photo.url,
+          mediaType: 'photo' as const,
+          width: photo.width,
+          height: photo.height,
+        })),
+        ...(shouldResetLayout ? { layoutVariant: 'auto' as const } : {}),
+      })
       haptics.success()
       router.back()
     } catch (err) {
-      const fallback = isEditing ? tEdit('update_failed') : t('errors.create_failed')
-      setGlobalError(err instanceof Error ? err.message : fallback)
+      setGlobalError(err instanceof Error ? err.message : tEdit('update_failed'))
     }
   }
 
   return (
     <View style={styles.form}>
       {globalError && <ErrorBanner message={globalError} />}
-      {atMemoryLimit && (
-        <UpgradeBanner
-          message={t('limit_reached')}
-          ctaLabel={t('upgrade_cta')}
-          onPressUpgrade={() => router.push('/(app)/account/paywall')}
-        />
-      )}
 
       <View style={styles.fieldGroup}>
         <Text style={styles.fieldLabel}>{t('photos_label')}</Text>
@@ -330,26 +319,6 @@ export function AddMemoryForm({ tripId, memory }: AddMemoryFormProps) {
         doneLabel={tNew('date_done')}
       />
 
-      <View style={styles.fieldGroup}>
-        <Text style={styles.fieldLabel}>{t('location_label')}</Text>
-        <View style={styles.locationRow}>
-          <Button
-            variant="ghost"
-            size="sm"
-            onPress={handleUseLocation}
-            disabled={isBusy || isLocating}
-          >
-            <View style={styles.locationRow}>
-              <Icon name="location" size="sm" color={colors.primary} />
-              <Text style={styles.limitLink}>
-                {isLocating ? t('locating') : t('use_current_location')}
-              </Text>
-            </View>
-          </Button>
-        </View>
-        {locationError && <Text style={styles.errorText}>{locationError}</Text>}
-      </View>
-
       <FormField
         label={t('city_label')}
         placeholder={t('city_placeholder')}
@@ -364,14 +333,48 @@ export function AddMemoryForm({ tripId, memory }: AddMemoryFormProps) {
         onChangeText={setCountry}
       />
 
+      <View>
+        <FormField
+          label={t('place_name_label')}
+          labelRight={
+            <Button
+              variant="ghost"
+              size="sm"
+              onPress={handleUseLocation}
+              disabled={isBusy || isLocating}
+            >
+              <View style={styles.locationRow}>
+                <Icon name="location" size="sm" color={colors.primary} />
+                <Text style={styles.limitLink}>
+                  {isLocating ? t('locating') : t('use_current_location')}
+                </Text>
+              </View>
+            </Button>
+          }
+          placeholder={t('place_name_placeholder')}
+          value={placeName}
+          onChangeText={setPlaceName}
+        />
+        {locationError && <Text style={styles.errorText}>{locationError}</Text>}
+      </View>
+
+      <FormField
+        label={t('tags_label')}
+        placeholder={t('tags_placeholder')}
+        value={tagsInput}
+        onChangeText={setTagsInput}
+      />
+
+      <View style={styles.privacyRow}>
+        <View style={styles.privacyText}>
+          <Text style={styles.privacyTitle}>{t('privacy_title')}</Text>
+          <Text style={styles.privacyDescription}>{t('privacy_description')}</Text>
+        </View>
+        <Switch checked={!isPublic} onCheckedChange={(checked) => setIsPublic(!checked)} />
+      </View>
+
       <Button onPress={handleSubmit} loading={isPending} disabled={isBusy} fullWidth>
-        {isEditing
-          ? isPending
-            ? tEdit('saving')
-            : tEdit('save')
-          : isPending
-            ? t('creating')
-            : t('create')}
+        {isPending ? tEdit('saving') : tEdit('save')}
       </Button>
     </View>
   )
