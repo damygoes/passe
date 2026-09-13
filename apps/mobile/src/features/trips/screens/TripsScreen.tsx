@@ -1,27 +1,27 @@
-import { queryKeys, useTrips } from '@passe/hooks'
-import { getUniqueStatsFromTrips } from '@passe/utils'
+import { queryKeys } from '@passe/hooks'
 import { useQueryClient } from '@tanstack/react-query'
-import { useHeaderHeight } from 'expo-router/react-navigation'
+import { useRouter } from 'expo-router'
 import { useCallback, useMemo, useState } from 'react'
-import { Platform, RefreshControl, StyleSheet } from 'react-native'
+import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-import { PageHeader, PageHeaderDescription, PageHeaderTitle } from '@/components/ui/page-header'
-import { Skeleton } from '@/components/ui/skeleton'
-import { TripsList } from '@/features/trips/components/trip/lists/TripsList'
+import { Button } from '@/components/ui/button'
+import { Icon } from '@/components/ui/icon'
+import { PageHeader, PageHeaderTitle } from '@/components/ui/page-header'
+import { Segmented } from '@/components/ui/segmented'
+import { TripsList, type TripsFilter } from '@/features/trips/components/trip/lists/TripsList'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 import { enterUp } from '@/lib/motion'
 
 export function TripsScreen() {
-  const t = useTranslations('trips.dashboard')
-  const { colors, spacing } = useTheme()
-  const headerHeight = useHeaderHeight()
-  const { data: trips = [], isLoading, isError } = useTrips()
-  const { uniqueCountries } = getUniqueStatsFromTrips({ trips })
+  const t = useTranslations('trips.list')
+  const { colors, spacing, fontSizes, borderRadius } = useTheme()
+  const router = useRouter()
   const queryClient = useQueryClient()
   const [refreshing, setRefreshing] = useState(false)
+  const [filter, setFilter] = useState<TripsFilter>('all')
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
@@ -37,46 +37,60 @@ export function TripsScreen() {
       StyleSheet.create({
         safeArea: { flex: 1, backgroundColor: colors.background },
         scroll: { flex: 1 },
-        scrollContent: {
-          backgroundColor: colors.background,
-          padding: spacing[4],
-          // iOS gets the header inset from `contentInsetAdjustmentBehavior` below —
-          // adding headerHeight here too would double up the top space.
-          paddingTop: Platform.OS === 'android' ? headerHeight + spacing[4] : spacing[4],
-          gap: spacing[6],
-          flexGrow: 1,
+        scrollContent: { padding: spacing[4], flexGrow: 1 },
+        header: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: spacing[3],
         },
-        header: { flexDirection: 'column', gap: spacing[1] },
-        descriptionSkeleton: { height: 20, width: 96 },
+        title: { fontSize: fontSizes['3xl'] },
+        addButton: {
+          width: 44,
+          height: 44,
+          paddingHorizontal: 0,
+          paddingVertical: 0,
+          borderRadius: borderRadius.full,
+        },
+        segmented: { marginTop: spacing[4] + 2, marginBottom: spacing[2] },
       }),
-    [colors, spacing, headerHeight],
+    [colors, spacing, fontSizes, borderRadius],
   )
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={[]}>
-      <Animated.ScrollView
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
-        contentInsetAdjustmentBehavior={Platform.OS === 'ios' ? 'automatic' : undefined}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
         <Animated.View entering={enterUp(0)}>
           <PageHeader style={styles.header}>
-            <PageHeaderTitle>{t('title')}</PageHeaderTitle>
-            {isLoading ? (
-              <Skeleton style={styles.descriptionSkeleton} />
-            ) : !isError ? (
-              <PageHeaderDescription>
-                {t('description', {
-                  tripsCount: trips.length,
-                  countriesCount: uniqueCountries.size,
-                })}
-              </PageHeaderDescription>
-            ) : null}
+            <PageHeaderTitle style={styles.title}>{t('title')}</PageHeaderTitle>
+            <View>
+              <Button
+                variant="primary"
+                style={styles.addButton}
+                onPress={() => router.push('/(app)/trips/new')}
+                accessibilityLabel={t('new_trip')}
+              >
+                <Icon name="plus" size="md" color={colors.primaryForeground} />
+              </Button>
+            </View>
           </PageHeader>
+          <Segmented
+            style={styles.segmented}
+            value={filter}
+            onValueChange={(value) => setFilter(value as TripsFilter)}
+            options={[
+              { value: 'all', label: t('filter_all') },
+              { value: 'private', label: t('filter_private') },
+              { value: 'shared', label: t('filter_shared') },
+            ]}
+          />
         </Animated.View>
-        <TripsList />
-      </Animated.ScrollView>
+        <TripsList filter={filter} />
+      </ScrollView>
     </SafeAreaView>
   )
 }

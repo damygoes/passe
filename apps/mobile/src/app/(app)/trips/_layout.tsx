@@ -2,7 +2,6 @@ import { Stack } from 'expo-router'
 import { StyleSheet } from 'react-native'
 
 import { GlassSurface } from '@/components/ui/glass-surface'
-import { NewTripHeaderButton } from '@/features/trips/components/trip/lists/NewTripHeaderButton'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
@@ -41,10 +40,7 @@ export default function TripsLayout() {
         headerTitleStyle: { color: colors.foreground },
       }}
     >
-      <Stack.Screen
-        name="index"
-        options={{ title: '', headerRight: () => <NewTripHeaderButton /> }}
-      />
+      <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen
         name="[id]"
         options={{

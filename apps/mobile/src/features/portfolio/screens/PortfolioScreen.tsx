@@ -9,7 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
 import { TripCard } from '@/features/trips/components/trip/card/TripCard'
-import { TripsListSkeleton } from '@/features/trips/components/trip/lists/TripsListSkeleton'
+import { TripCardSkeleton } from '@/features/trips/components/trip/card/TripCardSkeleton'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 import { enterUp, LIST_STAGGER_MS, MAX_STAGGER_DELAY_MS } from '@/lib/motion'
@@ -53,7 +53,11 @@ export function PortfolioScreen() {
         {isLoading ? (
           <>
             <Skeleton style={styles.headerSkeleton} />
-            <TripsListSkeleton />
+            <View style={styles.list}>
+              <TripCardSkeleton />
+              <TripCardSkeleton />
+              <TripCardSkeleton />
+            </View>
           </>
         ) : isError || !user ? (
           <ErrorBanner message={t('error')} />
