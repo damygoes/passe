@@ -237,7 +237,8 @@
       "zine_cta": "Zine exportieren",
       "postcard_title": "Postkarte",
       "postcard_cta": "Postkarte exportieren",
-      "switch_trip": "Reise wechseln"
+      "heading_prefix": "Erinnerungsstücke für",
+      "switch_trip": "Reise wechseln (aktuell {title})"
     },
     "stats": {
       "countries": "{count, plural, one {Land} other {Länder}}",

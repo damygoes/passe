@@ -237,7 +237,8 @@
       "zine_cta": "Export zine",
       "postcard_title": "Postcard",
       "postcard_cta": "Export postcard",
-      "switch_trip": "Switch trip"
+      "heading_prefix": "Keepsakes for",
+      "switch_trip": "Switch trip (currently {title})"
     },
     "stats": {
       "countries": "{count, plural, one {Country} other {Countries}}",

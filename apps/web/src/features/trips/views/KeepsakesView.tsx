@@ -1,5 +1,6 @@
 import { FadeIn } from '@/components/motion/FadeIn'
-import { KeepsakesDataWrapper } from '../components/keepsakes/KeepsakesDataWrapper'
+import { KeepsakesCardsDataWrapper } from '../components/keepsakes/KeepsakesCardsDataWrapper'
+import { KeepsakesHeaderDataWrapper } from '../components/keepsakes/KeepsakesHeaderDataWrapper'
 
 interface Props {
   tripId: string
@@ -7,10 +8,11 @@ interface Props {
 
 export function KeepsakesView({ tripId }: Props) {
   return (
-    <div className="container mx-auto w-full px-4 py-8">
+    <div className="container mx-auto flex w-full flex-col gap-9 px-4 py-8">
       <FadeIn>
-        <KeepsakesDataWrapper tripId={tripId} />
+        <KeepsakesHeaderDataWrapper tripId={tripId} />
       </FadeIn>
+      <KeepsakesCardsDataWrapper tripId={tripId} />
     </div>
   )
 }
