@@ -373,8 +373,13 @@
     }
   },
   "map": {
-    "title": "Karte",
+    "title": "Deine Welt",
     "subtitle": "Jeder Ort, an dem du eine Erinnerung festgehalten hast.",
+    "summary": "{countries, plural, one {# Land} other {# Länder}} · {cities, plural, one {# Stadt} other {# Städte}} · {yearRange}",
+    "filter_all_years": "Alle Jahre",
+    "legend_visited": "Besuchte Länder",
+    "legend_pins": "Stadt-Pins",
+    "legend_not_yet": "Noch nicht",
     "view_trip": "Reise ansehen",
     "close": "Schließen",
     "load_error": "Deine Karte konnte nicht geladen werden. Bitte lade die Seite neu.",

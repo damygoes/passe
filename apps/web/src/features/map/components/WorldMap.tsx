@@ -192,7 +192,7 @@ export function WorldMap({ points, visitedCountries }: WorldMapProps) {
   }, [])
 
   return (
-    <div className="h-[80vh] w-full overflow-hidden rounded-xl border">
+    <div className="h-[440px] w-full overflow-hidden rounded-[26px]">
       <Map
         ref={mapRef}
         initialViewState={{
