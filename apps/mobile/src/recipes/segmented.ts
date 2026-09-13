@@ -6,6 +6,7 @@ interface SegmentedRecipe {
   group: ViewStyle
   item: {
     base: ViewStyle
+    divider: ViewStyle
     checked: ViewStyle
     unchecked: ViewStyle
   }
@@ -16,6 +17,10 @@ interface SegmentedRecipe {
   }
 }
 
+// Matches the design system's `.seg`/`.seg-opt`: an edge-to-edge pill with no
+// gaps between segments — the active segment is a solid fill, not a floating
+// rounded chip, and inactive segments are separated by a thin divider rather
+// than by spacing.
 export function createSegmentedRecipe(theme: AppTheme): SegmentedRecipe {
   const { colors, spacing, fontSizes, fontWeights, borderRadius } = theme
 
@@ -23,13 +28,12 @@ export function createSegmentedRecipe(theme: AppTheme): SegmentedRecipe {
     group: StyleSheet.create({
       style: {
         flexDirection: 'row',
-        alignItems: 'center',
-        gap: 2,
+        alignItems: 'stretch',
+        overflow: 'hidden',
         borderRadius: borderRadius.full,
         borderWidth: 1,
         borderColor: colors.border,
         backgroundColor: colors.background,
-        padding: 4,
       },
     }).style,
 
@@ -39,10 +43,12 @@ export function createSegmentedRecipe(theme: AppTheme): SegmentedRecipe {
           flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
-          paddingVertical: spacing[2] - 2,
+          paddingVertical: spacing[2] + 1,
           paddingHorizontal: spacing[3],
-          borderRadius: borderRadius.full,
         },
+      }).style,
+      divider: StyleSheet.create({
+        style: { borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: colors.border },
       }).style,
       checked: StyleSheet.create({ style: { backgroundColor: colors.primary } }).style,
       unchecked: StyleSheet.create({ style: { backgroundColor: 'transparent' } }).style,

@@ -11,7 +11,7 @@ export function Segmented({ options, value, onValueChange, style }: SegmentedPro
 
   return (
     <View style={[recipe.group, style]} accessibilityRole="radiogroup">
-      {options.map((option) => {
+      {options.map((option, index) => {
         const checked = option.value === value
         return (
           <TouchableOpacity
@@ -24,7 +24,11 @@ export function Segmented({ options, value, onValueChange, style }: SegmentedPro
               haptics.selection()
               onValueChange(option.value)
             }}
-            style={[recipe.item.base, checked ? recipe.item.checked : recipe.item.unchecked]}
+            style={[
+              recipe.item.base,
+              index > 0 && recipe.item.divider,
+              checked ? recipe.item.checked : recipe.item.unchecked,
+            ]}
           >
             <Text
               style={[recipe.label.base, checked ? recipe.label.checked : recipe.label.unchecked]}
