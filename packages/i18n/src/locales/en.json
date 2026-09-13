@@ -2,7 +2,8 @@
   "common": {
     "app_name": "Passe.",
     "app_tagline": "The past, beautifully kept.",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "back": "Back"
   },
   "auth": {
     "layout": {
@@ -397,6 +398,19 @@
       "move_down": "Move down",
       "scroll_left": "Scroll left",
       "scroll_right": "Scroll right"
+    },
+    "public_trip": {
+      "url_suffix": "trips",
+      "description_days": "{days, plural, one {# day} other {# days}} across {countries}.",
+      "description_generic": "A trip across {countries}.",
+      "shared_partial": "{shared} of {total} memories are shared here — the rest stay where they belong.",
+      "shared_all": "Every memory from this trip is shared here.",
+      "photo_alt": "Memory photo",
+      "kept_by": "Kept by {name} on Passe.",
+      "see_other_trips": "See {name}'s other trips",
+      "empty_title": "No memories shared yet",
+      "empty_description": "The owner hasn't made any memories public for this trip.",
+      "error": "Couldn't load this trip's public preview."
     }
   },
   "nav": {
@@ -674,9 +688,14 @@
     "country_count": "{count, plural, one {# country} other {# countries}}",
     "city_count": "{count, plural, one {# city} other {# cities}}",
     "year_count": "{count, plural, one {# year} other {# years}}",
+    "stat_trips_label": "{count, plural, one {Trip} other {Trips}}",
+    "stat_countries_label": "{count, plural, one {Country} other {Countries}}",
+    "stat_cities_label": "{count, plural, one {City} other {Cities}}",
     "empty_title": "Nothing to see here yet",
     "empty_description": "{displayName} hasn't shared any public trips yet.",
-    "error": "Could not load your portfolio. Try again later."
+    "error": "Could not load your portfolio. Try again later.",
+    "public_badge": "Public",
+    "public_url": "passe.cc/u/{username}"
   },
   "billing": {
     "title": "Keep more of it.",

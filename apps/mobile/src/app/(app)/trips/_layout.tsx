@@ -59,6 +59,14 @@ export default function TripsLayout() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="public/[id]"
+        options={{
+          // No native header: same react-native-screens/iOS 26 clipping reasoning as
+          // trip detail's [id] — this screen renders its own back row instead.
+          headerShown: false,
+        }}
+      />
       <Stack.Screen name="actions/[id]" options={compactSheetOptions} />
       <Stack.Screen name="export/[id]" options={compactSheetOptions} />
       <Stack.Screen name="new" options={{ ...sheetOptions, title: tTrips('title') }} />

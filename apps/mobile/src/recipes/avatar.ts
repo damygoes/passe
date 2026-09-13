@@ -37,6 +37,7 @@ export function createAvatarRecipe(theme: AppTheme): AvatarRecipe {
       sm: makeSize(24, fontSizes.xs),
       default: makeSize(32, fontSizes.sm),
       lg: makeSize(40, fontSizes.base),
+      xl: makeSize(88, fontSizes['4xl']),
     },
   }
 }

@@ -2,7 +2,8 @@
   "common": {
     "app_name": "Passe.",
     "app_tagline": "Die Vergangenheit, wunderschön bewahrt.",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "back": "Zurück"
   },
   "auth": {
     "layout": {
@@ -397,6 +398,19 @@
       "move_down": "Nach unten",
       "scroll_left": "Nach links scrollen",
       "scroll_right": "Nach rechts scrollen"
+    },
+    "public_trip": {
+      "url_suffix": "trips",
+      "description_days": "{days, plural, one {# Tag} other {# Tage}} durch {countries}.",
+      "description_generic": "Eine Reise durch {countries}.",
+      "shared_partial": "{shared} von {total} Erinnerungen werden hier geteilt — der Rest bleibt privat.",
+      "shared_all": "Jede Erinnerung dieser Reise wird hier geteilt.",
+      "photo_alt": "Erinnerungsfoto",
+      "kept_by": "Bewahrt von {name} auf Passe.",
+      "see_other_trips": "Weitere Reisen von {name} ansehen",
+      "empty_title": "Noch keine Erinnerungen geteilt",
+      "empty_description": "Der Besitzer hat für diese Reise noch keine Erinnerungen öffentlich gemacht.",
+      "error": "Die öffentliche Vorschau dieser Reise konnte nicht geladen werden."
     }
   },
   "nav": {
@@ -674,9 +688,14 @@
     "country_count": "{count, plural, one {# Land} other {# Länder}}",
     "city_count": "{count, plural, one {# Stadt} other {# Städte}}",
     "year_count": "{count, plural, one {# Jahr} other {# Jahre}}",
+    "stat_trips_label": "{count, plural, one {Reise} other {Reisen}}",
+    "stat_countries_label": "{count, plural, one {Land} other {Länder}}",
+    "stat_cities_label": "{count, plural, one {Stadt} other {Städte}}",
     "empty_title": "Hier gibt es noch nichts zu sehen",
     "empty_description": "{displayName} hat noch keine öffentlichen Reisen geteilt.",
-    "error": "Dein Portfolio konnte nicht geladen werden. Bitte versuche es erneut."
+    "error": "Dein Portfolio konnte nicht geladen werden. Bitte versuche es erneut.",
+    "public_badge": "Öffentlich",
+    "public_url": "passe.cc/u/{username}"
   },
   "billing": {
     "title": "Behalte mehr davon.",
