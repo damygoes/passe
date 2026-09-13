@@ -1,69 +1,16 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@passe/ui/avatar'
-import { Badge } from '@passe/ui/badge'
-
-interface UserData {
-  displayName: string
-  bio?: string | null
-  avatarUrl?: string | null
-}
+import { Logo } from '@passe/ui/logo'
 
 interface Props {
-  user: UserData
-  tripCount: number
-  countriesCount: number
-  citiesCount: number
-  yearsCount: number
+  username: string
 }
 
-export function PortfolioHeader({
-  user,
-  tripCount,
-  countriesCount,
-  citiesCount,
-  yearsCount,
-}: Props) {
-  const initials = user.displayName
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2)
-
+export function PortfolioHeader({ username }: Props) {
   return (
-    <header className="border-b px-6 py-10">
-      <div className="mx-auto max-w-4xl">
-        <div className="flex items-start gap-5">
-          <Avatar className="size-16 shrink-0">
-            {user.avatarUrl && <AvatarImage src={user.avatarUrl} alt={user.displayName} />}
-            <AvatarFallback>{initials}</AvatarFallback>
-          </Avatar>
-          <div className="min-w-0 flex-1">
-            <p className="mb-1 text-xs uppercase tracking-widest text-muted-foreground">
-              Portfolio
-            </p>
-            <h1 className="font-display text-3xl font-semibold">{user.displayName}</h1>
-            {user.bio && <p className="mt-2 text-muted-foreground">{user.bio}</p>}
-            <div className="mt-3 flex flex-wrap gap-2">
-              <Badge variant="outline">
-                {tripCount} {tripCount === 1 ? 'trip' : 'trips'}
-              </Badge>
-              {tripCount > 0 && (
-                <>
-                  <Badge variant="outline">
-                    {countriesCount} {countriesCount === 1 ? 'country' : 'countries'}
-                  </Badge>
-                  <Badge variant="outline">
-                    {citiesCount} {citiesCount === 1 ? 'city' : 'cities'}
-                  </Badge>
-                  <Badge variant="outline">
-                    {yearsCount} {yearsCount === 1 ? 'year' : 'years'}
-                  </Badge>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
+    <header className="flex items-center justify-between border-b px-6 py-5 sm:px-14">
+      <Logo className="h-5 w-auto" />
+      <span className="font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
+        passe.cc/u/{username}
+      </span>
     </header>
   )
 }

@@ -6,23 +6,15 @@
 
 import { getBlurProps } from '@/lib/media/image-blur'
 import { createMediaLoader } from '@/lib/media/media-image-loader'
-import { Badge } from '@passe/ui/badge'
-import {
-  MediaCard,
-  MediaCardDescription,
-  MediaCardMedia,
-  MediaCardScrim,
-  MediaCardTitle,
-} from '@passe/ui/media-card'
 import { formatDateRange } from '@passe/utils'
 import Image from 'next/image'
+import { TripCardCoverFallback } from '@/features/trips/components/trip/card/TripCardCoverFallback'
 
 interface TripData {
   id: string
   title: string
   startDate: Date | string
   endDate: Date | string
-  countries: string[]
   coverImageUrl?: string | null
   coverImagePlaceholder?: string | null
   coverImageSrcset?: Record<string, string> | null
@@ -31,45 +23,31 @@ interface TripData {
 interface Props {
   trip: TripData
   href?: string
-  tilt?: 'none' | 'left' | 'right'
 }
 
-export function PortfolioTripCard({ trip, href, tilt = 'none' }: Props) {
+export function PortfolioTripCard({ trip, href }: Props) {
   const card = (
-    <MediaCard
-      tilt={tilt}
-      className={
-        trip.coverImageUrl
-          ? undefined
-          : 'bg-gradient-to-br from-sandy-beige via-sandy-beige-dark to-terracotta/40'
-      }
-    >
-      {trip.coverImageUrl && (
-        <MediaCardMedia>
+    <div>
+      <div className="washed relative h-[230px] w-full overflow-hidden rounded-[28px]">
+        {trip.coverImageUrl ? (
           <Image
             src={trip.coverImageUrl}
             alt={trip.title}
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 50vw"
             {...getBlurProps(trip.coverImagePlaceholder)}
             {...(trip.coverImageSrcset ? { loader: createMediaLoader(trip.coverImageSrcset) } : {})}
           />
-        </MediaCardMedia>
-      )}
-      <MediaCardScrim>
-        <MediaCardTitle>{trip.title}</MediaCardTitle>
-        <MediaCardDescription>{formatDateRange(trip.startDate, trip.endDate)}</MediaCardDescription>
-        {trip.countries.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 pt-0.5">
-            {trip.countries.map((country) => (
-              <Badge key={country} variant="stamp" className="text-aged-cream">
-                {country}
-              </Badge>
-            ))}
-          </div>
+        ) : (
+          <TripCardCoverFallback title={trip.title} />
         )}
-      </MediaCardScrim>
-    </MediaCard>
+      </div>
+      <h3 className="font-display mt-3.5 text-[27px] leading-tight">{trip.title}</h3>
+      <p className="mt-1 font-mono text-[10.5px] tracking-[0.08em] text-muted-foreground uppercase">
+        {formatDateRange(trip.startDate, trip.endDate)}
+      </p>
+    </div>
   )
 
   if (href) {
