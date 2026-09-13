@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 import { Pressable, StyleSheet, Text } from 'react-native'
 
@@ -10,6 +11,8 @@ interface AccountMenuRowProps {
   label: string
   destructive?: boolean
   trailingIcon?: IconName
+  /** Rendered between the label and the trailing chevron — e.g. a plan Badge. */
+  trailing?: ReactNode
   onPress: () => void
 }
 
@@ -18,6 +21,7 @@ export function AccountMenuRow({
   label,
   destructive = false,
   trailingIcon = 'chevron-right',
+  trailing,
   onPress,
 }: AccountMenuRowProps) {
   const { colors, spacing, borderRadius, fontSizes, fontWeights } = useTheme()
@@ -55,6 +59,7 @@ export function AccountMenuRow({
     >
       <Icon name={icon} size="md" color={tint} />
       <Text style={[styles.label, destructive && styles.labelDestructive]}>{label}</Text>
+      {trailing}
       <Icon name={trailingIcon} size="sm" color={colors.mutedForeground} />
     </Pressable>
   )
