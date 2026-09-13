@@ -4,7 +4,7 @@ import { Link } from '@/i18n/navigation'
 import { routes } from '@/lib/routes'
 import { PLAN_LIMITS } from '@passe/auth/plan-gates'
 import { useTrips, useUser } from '@passe/hooks'
-import { Button } from '@passe/ui/button'
+import { buttonVariants } from '@passe/ui/button'
 import { useTranslations } from 'next-intl'
 
 export function SidebarPlanCard() {
@@ -29,9 +29,12 @@ export function SidebarPlanCard() {
         {tPricing(`plans.${plan}.name`)}
       </div>
       <p className="mt-1.5 text-xs text-secondary-foreground/85">{note}</p>
-      <Button size="sm" className="mt-2.5 w-full" render={<Link href={routes.billing} />}>
+      <Link
+        href={routes.billing}
+        className={buttonVariants({ size: 'sm', className: 'mt-2.5 w-full' })}
+      >
         {plan === 'collector' ? t('cta_manage') : t('cta_upgrade')}
-      </Button>
+      </Link>
     </div>
   )
 }

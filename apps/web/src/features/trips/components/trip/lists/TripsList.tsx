@@ -5,7 +5,7 @@ import { Link } from '@/i18n/navigation'
 import { routes, tripRoute } from '@/lib/routes'
 import { useAllMemories, useTrips, useUser } from '@passe/hooks'
 import { getTripSlots } from '@passe/auth/plan-gates'
-import { Button } from '@passe/ui/button'
+import { buttonVariants } from '@passe/ui/button'
 import { getUniqueCities } from '@passe/utils'
 import { useTranslations } from 'next-intl'
 import { TripCard } from '../card/TripCard'
@@ -79,9 +79,9 @@ export function TripsList({ filter }: Props) {
               />
             </div>
           </div>
-          <Button size="sm" render={<Link href={routes.billing} />}>
+          <Link href={routes.billing} className={buttonVariants({ size: 'sm' })}>
             {t('quota_cta')}
-          </Button>
+          </Link>
         </div>
       )}
     </div>

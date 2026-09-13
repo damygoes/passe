@@ -3,7 +3,7 @@
 import { Link, usePathname } from '@/i18n/navigation'
 import { publicPortfolioRoute, routes, tripKeepsakesRoute, tripNewMemoryRoute } from '@/lib/routes'
 import { useTrips, useUser } from '@passe/hooks'
-import { Button } from '@passe/ui/button'
+import { buttonVariants } from '@passe/ui/button'
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -87,9 +87,9 @@ export function SidebarNav({ username: initialUsername }: SidebarNavProps) {
             </SidebarMenuItem>
           )}
         </SidebarMenu>
-        <Button render={<Link href={newMemoryHref} />} className="w-full">
+        <Link href={newMemoryHref} className={cn(buttonVariants(), 'w-full')}>
           {t('new_memory')}
-        </Button>
+        </Link>
       </SidebarGroupContent>
     </SidebarGroup>
   )
