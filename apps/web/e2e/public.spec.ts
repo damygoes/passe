@@ -8,8 +8,10 @@ test.describe('landing page', () => {
     // "Start for free" appears in the hero, the pricing card, and the final CTA — any one of
     // them proves the page rendered.
     await expect(page.getByRole('link', { name: 'Start for free' }).first()).toBeVisible()
+    // "What you keep" section heading (landing.keep.heading) — the old "Everything you need to
+    // preserve your travels" features section was removed in the landing page redesign.
     await expect(
-      page.getByRole('heading', { name: 'Everything you need to preserve your travels' }),
+      page.getByRole('heading', { name: 'A camera roll is not a memory.' }),
     ).toBeVisible()
   })
 

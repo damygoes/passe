@@ -49,7 +49,7 @@ function DialogContent({
         data-slot="dialog-content"
         data-size={size}
         className={cn(
-          'group/dialog-content fixed top-1/2 left-1/2 z-50 grid w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-3xl bg-popover p-6 text-popover-foreground shadow-lg outline-none data-[size=default]:max-w-sm data-[size=lg]:max-w-2xl data-[size=xl]:max-w-[880px] data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
+          'group/dialog-content fixed top-1/2 left-1/2 z-50 grid max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 overflow-y-auto rounded-3xl bg-popover p-6 text-popover-foreground shadow-lg outline-none data-[size=default]:max-w-sm data-[size=lg]:max-w-2xl data-[size=xl]:max-w-[880px] data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
           className,
         )}
         {...props}
