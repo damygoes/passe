@@ -1,4 +1,11 @@
 export {
+  Accordion,
+  AccordionHeader,
+  AccordionItem,
+  AccordionPanel,
+  AccordionTrigger,
+} from './accordion/Accordion'
+export {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,

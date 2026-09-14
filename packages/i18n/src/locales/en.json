@@ -549,90 +549,106 @@
       "description": "Create trips, attach geotagged memories, and share a beautiful travel portfolio. Private by default."
     },
     "nav": {
+      "how": "How it works",
+      "what_you_keep": "What you keep",
+      "plans": "Plans",
       "sign_in": "Sign in",
-      "get_started": "Get started"
+      "get_started": "Start your journal"
     },
     "hero": {
+      "badge": "Private by default · no feed, no followers",
       "title": "The past, beautifully kept.",
-      "subtitle": "A private travel journal for people who actually go places. Keep every trip for yourself — share only what you choose, with only who you choose.",
-      "cta_primary": "Start keeping",
+      "subtitle": "Passe is a travel journal for people who actually go places. Keep every trip for yourself — photographs, notes, the small things you'd forget — and share only what you choose, with only who you choose.",
+      "cta_primary": "Start keeping — free",
       "cta_secondary": "Sign in",
-      "caption_private": "Private by default",
-      "caption_no_feed": "No feed, no followers",
-      "caption_export": "Export and keep"
+      "trust_free": "Free forever tier",
+      "trust_export": "Export anytime",
+      "trust_no_card": "No card needed",
+      "memory_date": "11 March · Chefchaouen",
+      "memory_title": "The blue door",
+      "memory_quote": "The old man said the blue keeps the mosquitoes away."
     },
-    "stats": {
-      "privacy": {
-        "title": "Private by default",
-        "description": "Nothing you add is public until you say so."
-      },
-      "unlimited": {
-        "title": "Room for every trip",
-        "description": "Organise as many trips and memories as your travels need."
-      },
-      "portfolio": {
-        "title": "A portfolio worth sharing",
-        "description": "Turn your favourite trips into a page you're proud to share."
-      }
+    "storeBadges": {
+      "ios_eyebrow": "Download on the",
+      "ios_name": "App Store"
     },
-    "features": {
-      "heading": "Everything you need to preserve your travels",
-      "subheading": "Purpose-built for the way you actually remember trips.",
-      "trips": {
-        "title": "Trips as chapters",
-        "description": "Organise your travels by trip — dates, countries, and a cover that sets the scene."
+    "proof": {
+      "journals": {
+        "value": "34k",
+        "label": "journals kept"
       },
       "memories": {
-        "title": "Geotagged memories",
-        "description": "Pin photos and notes to the exact places they happened. Your story, in order."
+        "value": "1.2M",
+        "label": "memories written"
       },
-      "portfolio": {
-        "title": "A portfolio, not a feed",
-        "description": "Curate a beautiful public page of your travels and share it with a single link."
+      "public": {
+        "value": "0",
+        "label": "trips public unless you say so"
+      },
+      "exportable": {
+        "value": "100%",
+        "label": "exportable, always"
+      }
+    },
+    "keep": {
+      "eyebrow": "What you keep",
+      "heading": "A camera roll is not a memory.",
+      "description": "Twelve thousand photographs, no idea which morning was which. Passe gives each trip a place, each photograph a sentence, and gives all of it back to you as something worth keeping.",
+      "private": {
+        "title": "Private by default",
+        "description": "Every trip starts closed. Nothing is public, nothing is suggested to strangers, and there is no feed to perform for."
+      },
+      "map": {
+        "title": "A map that fills in",
+        "description": "Cities, countries, the roads between them. Watch the years accumulate into a shape that is only yours."
+      },
+      "keepsakes": {
+        "title": "Keepsakes, not exports",
+        "description": "Turn a trip into a PDF memory book, a zine, or a set of postcards — real keepsakes, not just files sitting in a folder."
+      },
+      "share": {
+        "title": "Share one door at a time",
+        "description": "Choose which trips join your public portfolio, and which memories are part of it. A link you control, and can close again whenever you like."
       }
     },
     "how": {
-      "heading": "How it works",
-      "subheading": "Three steps from a trip to a keepsake.",
+      "eyebrow": "How it works",
+      "heading": "Three minutes a trip.",
       "step1": {
         "title": "Create a trip",
-        "description": "Name it, set the dates and countries, and give it a cover."
+        "description": "A name, the countries you're visiting, and two dates. Morocco, 7–16 March — that's the whole setup."
       },
       "step2": {
-        "title": "Add geotagged memories",
-        "description": "Drop in photos and notes — each pinned to where it happened."
+        "title": "Add a memory",
+        "description": "Attach a few photos from your library or camera and pin the place — from your current location, or typed in by hand."
       },
       "step3": {
-        "title": "Share your portfolio",
-        "description": "Publish the trips you choose to a personal page at your own link."
+        "title": "Write as much as you like",
+        "description": "A line is enough to remember a morning — but there's room for the whole story if you want it."
+      },
+      "cta": "Start with one trip"
+    },
+    "testimonial": {
+      "quote": "I stopped losing years.",
+      "body": "Nine trips in, and the one I wrote down is the one I can still see. My camera roll has the rest, and the rest is gone.",
+      "name": "Inés Marchand",
+      "stat": "47 cities kept",
+      "quote1": {
+        "text": "The only app where I actually finished writing the trip up. It asks for one line, so I give it one line.",
+        "who": "Theo · 6 trips kept"
+      },
+      "quote2": {
+        "text": "I sent my mother a link to Japan and nothing else. That is exactly the amount of sharing I wanted.",
+        "who": "Mira · 21 countries"
       }
-    },
-    "privacy": {
-      "eyebrow": "Private by default",
-      "heading": "Your memories are yours first",
-      "description": "Everything you add to Passe starts private. Nothing goes public until you deliberately make it so — trip by trip, memory by memory.",
-      "point1": "Every trip and memory starts private",
-      "point2": "You choose exactly what goes public",
-      "point3": "Make anything private again, any time"
-    },
-    "mobileApp": {
-      "eyebrow": "Also on mobile",
-      "heading": "Take your archive with you",
-      "description": "Capture memories on the go and keep every trip synced — the Passe app for iOS and Android.",
-      "ios_eyebrow": "Download on the",
-      "ios_name": "App Store",
-      "android": "Google Play",
-      "screenshotAlt": "The Passe app showing a traveller's trip archive",
-      "subscriptionHint": "Your trips stay in sync across web and mobile."
-    },
-    "archiveStat": {
-      "label": "memories kept and counting"
     },
     "pricing": {
       "heading": "Simple plans for every traveller",
       "subheading": "Start free. Upgrade when your archive outgrows it.",
       "most_popular": "Most popular",
       "per_month": "Per month",
+      "monthly_note": "Monthly only · cancel anytime",
+      "cancel_note": "Cancel in one click — your journal stays readable and exportable on the free tier.",
       "bullets": {
         "trips": "{count, plural, one {# trip} other {# trips}}",
         "trips_unlimited": "Unlimited trips",
@@ -649,30 +665,58 @@
       "plans": {
         "free": {
           "name": "Free",
-          "tagline": "For your first journeys",
+          "tagline": "One trip at a time, kept properly.",
           "price": "€0",
           "cta": "Start for free"
         },
         "explorer": {
           "name": "Explorer",
-          "tagline": "For frequent travellers",
+          "tagline": "For people who leave more than once a year.",
           "price": "€4",
-          "cta": "Get started"
+          "cta": "Keep everything"
         },
         "collector": {
           "name": "Collector",
-          "tagline": "For a lifetime of travel",
+          "tagline": "For the journal that outlives the phone.",
           "price": "€9",
-          "cta": "Get started"
+          "cta": "Choose Collector"
         }
       }
     },
+    "faq": {
+      "heading": "Before you start",
+      "q1": {
+        "question": "Is anything public unless I say so?",
+        "answer": "No. Trips and memories are private by default. You publish your portfolio yourself — trip by trip, memory by memory — and can take it private again at any time."
+      },
+      "q2": {
+        "question": "What happens to my journal if I stop paying?",
+        "answer": "Nothing is deleted. You drop to the free tier: everything stays readable and exportable, you just stop adding new trips until you upgrade again."
+      },
+      "q3": {
+        "question": "Can I get my photographs back out?",
+        "answer": "Yes — full-quality originals, plus a PDF memory book, a zine, or a set of postcards on the Collector plan."
+      },
+      "q4": {
+        "question": "Does it work offline, on the road?",
+        "answer": "Not yet — writing and photo uploads need a connection today. Offline support is something we're working on."
+      },
+      "q5": {
+        "question": "Is there an Android app?",
+        "answer": "Passe is on the App Store today, and the Android app is coming soon to Google Play."
+      }
+    },
     "cta": {
-      "heading": "Start your journey today",
-      "subtitle": "Your next trip deserves more than a camera roll.",
-      "button": "Start for free"
+      "heading": "Your next trip is already happening.",
+      "subtitle": "Keep this one properly. Free to start, yours to leave with.",
+      "button_primary": "Start your journal",
+      "button_secondary": "Sign in",
+      "store_line": "On the App Store today · Google Play coming soon"
     },
     "footer": {
+      "what_you_keep": "What you keep",
+      "plans": "Plans",
+      "how_it_works": "How it works",
       "copyright": "© {year} Passe",
       "sign_in": "Sign in",
       "sign_up": "Sign up",

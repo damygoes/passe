@@ -1,52 +1,74 @@
 'use client'
 
 import { gentleSpring } from '@/lib/motion'
-import type { IconName } from '@passe/ui/icon'
+import { routes } from '@/lib/routes'
+import { buttonVariants } from '@passe/ui/button'
 import { m } from 'motion/react'
-import type { StaticImageData } from 'next/image'
+import Image from 'next/image'
 import { useTranslations } from 'next-intl'
-import { HOW_PHOTOS } from '../constants'
-import { PhotoTextRow } from './PhotoTextRow'
-import { SectionHeading } from './SectionHeading'
-import { SectionStamp } from './SectionStamp'
+import { HOW_PHOTO } from '../constants'
+import { ExitLink } from './ExitLink'
 
-const STEPS = [
-  { key: 'step1', icon: 'map', image: HOW_PHOTOS[0] },
-  { key: 'step2', icon: 'camera', image: HOW_PHOTOS[1] },
-  { key: 'step3', icon: 'share', image: HOW_PHOTOS[2] },
-] as const satisfies ReadonlyArray<{ key: string; icon: IconName; image: StaticImageData }>
+const STEPS = ['step1', 'step2', 'step3'] as const
 
 export function HowItWorksSection() {
   const t = useTranslations('landing.how')
 
   return (
-    <section className="overflow-x-hidden bg-secondary/30 px-6 py-24 md:py-32">
-      <div className="relative mx-auto max-w-6xl">
-        <SectionStamp className="-top-6 left-2 md:left-8" rotate={9} />
+    <section id="how" className="scroll-mt-[68px] bg-secondary/30 px-6 py-24 md:py-32">
+      <div className="mx-auto grid max-w-6xl grid-cols-[repeat(auto-fit,minmax(320px,1fr))] items-center gap-[clamp(28px,4vw,54px)]">
         <m.div
-          className="max-w-2xl"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, margin: '0px 0px -15% 0px' }}
           transition={gentleSpring}
         >
-          <SectionHeading title={t('heading')} subtitle={t('subheading')} />
+          <p className="mb-3 text-xs font-medium tracking-widest text-muted-foreground uppercase">
+            {t('eyebrow')}
+          </p>
+          <h2 className="font-display text-[clamp(30px,3.8vw,48px)] leading-[1.08]">
+            {t('heading')}
+          </h2>
+
+          <div className="mt-8 flex flex-col gap-[22px]">
+            {STEPS.map((key, index) => (
+              <div key={key} className="flex items-start gap-4">
+                <span className="font-display flex size-[46px] shrink-0 items-center justify-center rounded-full bg-terracotta-500 text-lg text-aged-cream">
+                  {index + 1}
+                </span>
+                <div className="min-w-0 pt-1.5">
+                  <h3 className="font-display text-2xl">{t(`${key}.title`)}</h3>
+                  <p className="mt-1.5 max-w-[420px] text-[14.5px] leading-relaxed text-muted-foreground">
+                    {t(`${key}.description`)}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <ExitLink
+            href={routes.signUp}
+            className={buttonVariants({ size: 'lg', className: 'mt-8 h-[50px] px-6.5' })}
+          >
+            {t('cta')}
+          </ExitLink>
         </m.div>
 
-        <div className="mt-16 flex flex-col gap-20">
-          {STEPS.map(({ key, icon, image }, i) => (
-            <PhotoTextRow
-              key={key}
-              reversed={i % 2 === 1}
-              stepNumber={i + 1}
-              imageSrc={image}
-              imageAlt=""
-              icon={icon}
-              title={t(`${key}.title`)}
-              description={t(`${key}.description`)}
-            />
-          ))}
-        </div>
+        <m.div
+          className="washed relative aspect-[5/4] w-full overflow-hidden rounded-[34px] shadow-soft-md"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, margin: '0px 0px -15% 0px' }}
+          transition={{ ...gentleSpring, delay: 0.1 }}
+        >
+          <Image
+            src={HOW_PHOTO}
+            alt=""
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        </m.div>
       </div>
     </section>
   )

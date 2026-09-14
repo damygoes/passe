@@ -549,90 +549,106 @@
       "description": "Erstelle Reisen, füge geogetaggte Erinnerungen hinzu und teile ein wunderschönes Reise-Portfolio. Standardmäßig privat."
     },
     "nav": {
+      "how": "So funktioniert's",
+      "what_you_keep": "Was du bewahrst",
+      "plans": "Pläne",
       "sign_in": "Anmelden",
-      "get_started": "Loslegen"
+      "get_started": "Starte dein Reisetagebuch"
     },
     "hero": {
+      "badge": "Standardmäßig privat · kein Feed, keine Follower",
       "title": "Die Vergangenheit, wunderschön bewahrt.",
-      "subtitle": "Ein privates Reisetagebuch für Menschen, die wirklich unterwegs sind. Behalte jede Reise für dich — teile nur, was du möchtest, nur mit wem du möchtest.",
-      "cta_primary": "Jetzt bewahren",
+      "subtitle": "Passe ist ein Reisetagebuch für Menschen, die wirklich unterwegs sind. Behalte jede Reise für dich — Fotos, Notizen, die kleinen Dinge, die du sonst vergisst — und teile nur, was du möchtest, nur mit wem du möchtest.",
+      "cta_primary": "Jetzt kostenlos bewahren",
       "cta_secondary": "Anmelden",
-      "caption_private": "Standardmäßig privat",
-      "caption_no_feed": "Kein Feed, keine Follower",
-      "caption_export": "Exportieren und behalten"
+      "trust_free": "Für immer kostenlos",
+      "trust_export": "Jederzeit exportieren",
+      "trust_no_card": "Keine Karte nötig",
+      "memory_date": "11. März · Chefchaouen",
+      "memory_title": "Die blaue Tür",
+      "memory_quote": "Der alte Mann sagte, das Blau halte die Mücken fern."
     },
-    "stats": {
-      "privacy": {
-        "title": "Standardmäßig privat",
-        "description": "Nichts, was du hinzufügst, ist öffentlich, bis du es entscheidest."
-      },
-      "unlimited": {
-        "title": "Platz für jede Reise",
-        "description": "Organisiere so viele Reisen und Erinnerungen, wie deine Reisen brauchen."
-      },
-      "portfolio": {
-        "title": "Ein Portfolio, das sich zu teilen lohnt",
-        "description": "Verwandle deine liebsten Reisen in eine Seite, auf die du stolz bist."
-      }
+    "storeBadges": {
+      "ios_eyebrow": "Laden im",
+      "ios_name": "App Store"
     },
-    "features": {
-      "heading": "Alles, was du brauchst, um deine Reisen zu bewahren",
-      "subheading": "Gemacht für die Art, wie du dich wirklich an Reisen erinnerst.",
-      "trips": {
-        "title": "Reisen als Kapitel",
-        "description": "Organisiere deine Reisen — Daten, Länder und ein Cover, das die Szene setzt."
+    "proof": {
+      "journals": {
+        "value": "34k",
+        "label": "geführte Tagebücher"
       },
       "memories": {
-        "title": "Geogetaggte Erinnerungen",
-        "description": "Hefte Fotos und Notizen genau an die Orte, an denen sie entstanden sind. Deine Geschichte, der Reihe nach."
+        "value": "1,2 Mio.",
+        "label": "geschriebene Erinnerungen"
       },
-      "portfolio": {
-        "title": "Ein Portfolio, kein Feed",
-        "description": "Kuratiere eine wunderschöne öffentliche Seite deiner Reisen und teile sie mit einem einzigen Link."
+      "public": {
+        "value": "0",
+        "label": "Reisen öffentlich, außer du entscheidest es"
+      },
+      "exportable": {
+        "value": "100%",
+        "label": "exportierbar, immer"
+      }
+    },
+    "keep": {
+      "eyebrow": "Was du bewahrst",
+      "heading": "Eine Fotogalerie ist keine Erinnerung.",
+      "description": "Zwölftausend Fotos, keine Ahnung mehr, welcher Morgen welcher war. Passe gibt jeder Reise einen Ort, jedem Foto einen Satz — und gibt dir das alles als etwas Bewahrenswertes zurück.",
+      "private": {
+        "title": "Standardmäßig privat",
+        "description": "Jede Reise beginnt geschlossen. Nichts ist öffentlich, nichts wird Fremden vorgeschlagen, und es gibt keinen Feed, für den du dich inszenieren müsstest."
+      },
+      "map": {
+        "title": "Eine Karte, die sich füllt",
+        "description": "Städte, Länder, die Wege dazwischen. Sieh zu, wie sich die Jahre zu einer Form summieren, die nur dir gehört."
+      },
+      "keepsakes": {
+        "title": "Andenken, keine Exporte",
+        "description": "Verwandle eine Reise in ein PDF-Erinnerungsbuch, ein Zine oder ein Set Postkarten — echte Andenken, keine Dateien, die nur irgendwo liegen."
+      },
+      "share": {
+        "title": "Teile eine Tür nach der anderen",
+        "description": "Wähle, welche Reisen Teil deines öffentlichen Portfolios werden und welche Erinnerungen dazugehören. Ein Link, den du kontrollierst und jederzeit wieder schließen kannst."
       }
     },
     "how": {
-      "heading": "So funktioniert's",
-      "subheading": "Drei Schritte von der Reise zum Andenken.",
+      "eyebrow": "So funktioniert's",
+      "heading": "Drei Minuten pro Reise.",
       "step1": {
-        "title": "Reise erstellen",
-        "description": "Gib ihr einen Namen, wähle Daten und Länder und ein Cover."
+        "title": "Reise anlegen",
+        "description": "Ein Name, die Länder, die du besuchst, und zwei Daten. Marokko, 7.–16. März — mehr braucht es nicht."
       },
       "step2": {
-        "title": "Geogetaggte Erinnerungen hinzufügen",
-        "description": "Füge Fotos und Notizen hinzu — jede genau dort verankert, wo sie passiert ist."
+        "title": "Eine Erinnerung hinzufügen",
+        "description": "Füge ein paar Fotos aus deiner Bibliothek oder Kamera hinzu und markiere den Ort — per Standort oder von Hand eingetippt."
       },
       "step3": {
-        "title": "Portfolio teilen",
-        "description": "Veröffentliche ausgewählte Reisen auf deiner persönlichen Seite unter deinem eigenen Link."
+        "title": "Schreib, so viel du willst",
+        "description": "Eine Zeile reicht, um dich an einen Morgen zu erinnern — aber es ist Platz für die ganze Geschichte, wenn du sie willst."
+      },
+      "cta": "Mit einer Reise starten"
+    },
+    "testimonial": {
+      "quote": "Ich habe aufgehört, Jahre zu verlieren.",
+      "body": "Neun Reisen weiter, und die eine, die ich aufgeschrieben habe, ist die, die ich noch sehen kann. Meine Fotogalerie hat den Rest, und der Rest ist weg.",
+      "name": "Inés Marchand",
+      "stat": "47 bewahrte Städte",
+      "quote1": {
+        "text": "Die einzige App, bei der ich die Reise wirklich fertig aufgeschrieben habe. Sie fragt nach einer Zeile, also gebe ich ihr eine Zeile.",
+        "who": "Theo · 6 Reisen bewahrt"
+      },
+      "quote2": {
+        "text": "Ich habe meiner Mutter einen Link zu Japan geschickt, und sonst nichts. Genau so viel Teilen wollte ich.",
+        "who": "Mira · 21 Länder"
       }
-    },
-    "privacy": {
-      "eyebrow": "Standardmäßig privat",
-      "heading": "Deine Erinnerungen gehören zuerst dir",
-      "description": "Alles, was du zu Passe hinzufügst, ist zunächst privat. Nichts wird öffentlich, bis du es bewusst entscheidest — Reise für Reise, Erinnerung für Erinnerung.",
-      "point1": "Jede Reise und Erinnerung startet privat",
-      "point2": "Du entscheidest genau, was öffentlich wird",
-      "point3": "Mach alles jederzeit wieder privat"
-    },
-    "mobileApp": {
-      "eyebrow": "Auch mobil",
-      "heading": "Nimm dein Archiv überall mit",
-      "description": "Halte Erinnerungen unterwegs fest und halte jede Reise synchron — die Passe App für iOS und Android.",
-      "ios_eyebrow": "Download on the",
-      "ios_name": "App Store",
-      "android": "Google Play",
-      "screenshotAlt": "Die Passe App mit dem Reisearchiv einer Nutzerin",
-      "subscriptionHint": "Deine Reisen bleiben zwischen Web und Mobile synchron."
-    },
-    "archiveStat": {
-      "label": "bewahrte Erinnerungen und es werden mehr"
     },
     "pricing": {
       "heading": "Einfache Pläne für alle Reisenden",
       "subheading": "Starte kostenlos. Upgrade, wenn dein Archiv wächst.",
       "most_popular": "Am beliebtesten",
       "per_month": "Pro Monat",
+      "monthly_note": "Nur monatlich · jederzeit kündbar",
+      "cancel_note": "Mit einem Klick kündbar — dein Tagebuch bleibt im kostenlosen Plan lesbar und exportierbar.",
       "bullets": {
         "trips": "{count, plural, one {# Reise} other {# Reisen}}",
         "trips_unlimited": "Unbegrenzte Reisen",
@@ -649,30 +665,58 @@
       "plans": {
         "free": {
           "name": "Free",
-          "tagline": "Für deine ersten Reisen",
+          "tagline": "Eine Reise nach der anderen, richtig bewahrt.",
           "price": "0 €",
           "cta": "Kostenlos starten"
         },
         "explorer": {
           "name": "Explorer",
-          "tagline": "Für Vielreisende",
+          "tagline": "Für alle, die mehr als einmal im Jahr aufbrechen.",
           "price": "4 €",
-          "cta": "Loslegen"
+          "cta": "Alles bewahren"
         },
         "collector": {
           "name": "Collector",
-          "tagline": "Für ein Leben voller Reisen",
+          "tagline": "Für das Tagebuch, das das Handy überlebt.",
           "price": "9 €",
-          "cta": "Loslegen"
+          "cta": "Collector wählen"
         }
       }
     },
+    "faq": {
+      "heading": "Bevor du startest",
+      "q1": {
+        "question": "Ist etwas öffentlich, ohne dass ich es entscheide?",
+        "answer": "Nein. Reisen und Erinnerungen sind standardmäßig privat. Du veröffentlichst dein Portfolio selbst — Reise für Reise, Erinnerung für Erinnerung — und kannst es jederzeit wieder privat machen."
+      },
+      "q2": {
+        "question": "Was passiert mit meinem Tagebuch, wenn ich nicht mehr zahle?",
+        "answer": "Nichts wird gelöscht. Du fällst auf den kostenlosen Plan zurück: Alles bleibt lesbar und exportierbar, du kannst nur keine neuen Reisen mehr hinzufügen, bis du wieder upgradest."
+      },
+      "q3": {
+        "question": "Bekomme ich meine Fotos wieder heraus?",
+        "answer": "Ja — Originale in voller Qualität, dazu ein PDF-Erinnerungsbuch, ein Zine oder ein Set Postkarten im Collector-Plan."
+      },
+      "q4": {
+        "question": "Funktioniert es offline, unterwegs?",
+        "answer": "Noch nicht — Schreiben und Foto-Uploads brauchen heute eine Verbindung. Offline-Unterstützung arbeiten wir bereits daran."
+      },
+      "q5": {
+        "question": "Gibt es eine Android-App?",
+        "answer": "Passe ist heute im App Store erhältlich, die Android-App folgt bald bei Google Play."
+      }
+    },
     "cta": {
-      "heading": "Starte deine Reise noch heute",
-      "subtitle": "Deine nächste Reise verdient mehr als eine Fotogalerie.",
-      "button": "Kostenlos starten"
+      "heading": "Deine nächste Reise passiert bereits.",
+      "subtitle": "Bewahre diese richtig. Kostenlos starten, jederzeit mitnehmen.",
+      "button_primary": "Starte dein Reisetagebuch",
+      "button_secondary": "Anmelden",
+      "store_line": "Heute im App Store · Google Play bald verfügbar"
     },
     "footer": {
+      "what_you_keep": "Was du bewahrst",
+      "plans": "Pläne",
+      "how_it_works": "So funktioniert's",
       "copyright": "© {year} Passe",
       "sign_in": "Anmelden",
       "sign_up": "Registrieren",

@@ -5,6 +5,7 @@ import { routes } from '@/lib/routes'
 import type { PlanType } from '@passe/auth/types'
 import { Badge } from '@passe/ui/badge'
 import { buttonVariants } from '@passe/ui/button'
+import { cn } from '@passe/utils'
 import { useTranslations } from 'next-intl'
 import { ExitLink } from './ExitLink'
 
@@ -21,7 +22,10 @@ export function PricingCard({ plan }: { plan: PlanType }) {
           href={routes.signUp}
           className={buttonVariants({
             variant: highlighted ? 'default' : 'outline',
-            className: 'w-full',
+            className: cn(
+              'w-full',
+              highlighted && 'bg-aged-cream text-dark-espresso-dark hover:bg-aged-cream/90',
+            ),
           })}
         >
           {t(`plans.${plan}.cta`)}

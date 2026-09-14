@@ -4,6 +4,7 @@
   "private": true,
   "exports": {
     ".": "./src/index.ts",
+    "./accordion": "./src/accordion/Accordion.tsx",
     "./alert-dialog": "./src/alert-dialog/AlertDialog.tsx",
     "./assets/*": "./src/assets/*",
     "./avatar": "./src/avatar/Avatar.tsx",

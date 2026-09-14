@@ -1,17 +1,15 @@
 import { MotionProvider } from '@/components/motion/MotionProvider'
-import { ArchiveStatSection } from '../components/ArchiveStatSection'
-import { FeaturesSection } from '../components/FeaturesSection'
+import { FaqSection } from '../components/FaqSection'
 import { FinalCtaSection } from '../components/FinalCtaSection'
-import { FlightPathSpan } from '../components/FlightPathSpan'
 import { HeroSection } from '../components/HeroSection'
 import { HowItWorksSection } from '../components/HowItWorksSection'
 import { LandingExitProvider } from '../components/LandingExitProvider'
 import { LandingFooter } from '../components/LandingFooter'
 import { LandingHeader } from '../components/LandingHeader'
-import { MobileAppSection } from '../components/MobileAppSection'
 import { PricingSection } from '../components/PricingSection'
-import { PrivacySection } from '../components/PrivacySection'
-import { StatsBar } from '../components/StatsBar'
+import { ProofStrip } from '../components/ProofStrip'
+import { TestimonialSection } from '../components/TestimonialSection'
+import { WhatYouKeepSection } from '../components/WhatYouKeepSection'
 
 export function LandingView() {
   return (
@@ -26,16 +24,13 @@ export function LandingView() {
           </div>
           <LandingHeader />
           <main>
-            <FlightPathSpan>
-              <HeroSection />
-              <StatsBar />
-              <FeaturesSection />
-              <HowItWorksSection />
-            </FlightPathSpan>
-            <PrivacySection />
-            <MobileAppSection />
-            <ArchiveStatSection />
+            <HeroSection />
+            <ProofStrip />
+            <WhatYouKeepSection />
+            <HowItWorksSection />
+            <TestimonialSection />
             <PricingSection />
+            <FaqSection />
             <FinalCtaSection />
           </main>
           <LandingFooter />
