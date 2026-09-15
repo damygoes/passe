@@ -16,7 +16,7 @@ import { WorldMap } from './WorldMap'
 // A fraction of the window rather than a fixed px value — the map is the
 // point of this screen, so let it dominate on tall phones too, not just
 // clear a fixed minimum on small ones.
-const MAP_BAND_HEIGHT_RATIO = 0.75
+const MAP_BAND_HEIGHT_RATIO = 0.65
 const MIN_MAP_BAND_HEIGHT = 560
 const MAP_PIN_CHIP_RADIUS = 999
 
@@ -57,7 +57,7 @@ export function MapDataWrapper() {
           marginHorizontal: spacing[4],
         },
         mapWrapper: { height: mapBandHeight },
-        pinsSection: { paddingHorizontal: spacing[6] },
+        pinsSection: { paddingHorizontal: spacing[6], marginTop: spacing[4] },
         pinsLabel: {
           fontFamily: fonts.mono,
           fontSize: 10.5,
