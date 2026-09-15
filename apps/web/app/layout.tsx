@@ -22,7 +22,7 @@ const dmMono = DM_Mono({
 
 export const metadata: Metadata = {
   title: 'Passe.',
-  description: 'The past, beautifully kept.',
+  description: 'A place for the memories worth keeping.',
 }
 
 export default async function RootLayout({ children }: { children: ReactNode }) {

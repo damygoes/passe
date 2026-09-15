@@ -1,7 +1,7 @@
 {
   "common": {
     "app_name": "Passe.",
-    "app_tagline": "Die Vergangenheit, wunderschön bewahrt.",
+    "app_tagline": "Ein Ort für die Erinnerungen, die es wert sind, bewahrt zu werden.",
     "cancel": "Abbrechen",
     "back": "Zurück"
   },
@@ -12,7 +12,7 @@
     },
     "welcome": {
       "title": "Passe.",
-      "tagline": "Die Vergangenheit, wunderschön bewahrt.",
+      "tagline": "Ein Ort für die Erinnerungen, die es wert sind, bewahrt zu werden.",
       "body": "Ein privates Tagebuch von allem, was du erlebt hast. Nur für dich – bis du dich entscheidest, es zu teilen.",
       "cta_primary": "Starte deine erste Reise",
       "cta_secondary": "Ich habe bereits ein Konto",
@@ -545,7 +545,7 @@
   },
   "landing": {
     "meta": {
-      "title": "Passe. — Die Vergangenheit, wunderschön bewahrt.",
+      "title": "Passe. — Ein Ort für die Erinnerungen, die es wert sind, bewahrt zu werden.",
       "description": "Erstelle Reisen, füge geogetaggte Erinnerungen hinzu und teile ein wunderschönes Reise-Portfolio. Standardmäßig privat."
     },
     "nav": {
@@ -557,7 +557,7 @@
     },
     "hero": {
       "badge": "Standardmäßig privat · kein Feed, keine Follower",
-      "title": "Die Vergangenheit, wunderschön bewahrt.",
+      "title": "Ein Ort für die Erinnerungen, die es wert sind, bewahrt zu werden.",
       "subtitle": "Passe ist ein Reisetagebuch für Menschen, die wirklich unterwegs sind. Behalte jede Reise für dich — Fotos, Notizen, die kleinen Dinge, die du sonst vergisst — und teile nur, was du möchtest, nur mit wem du möchtest.",
       "cta_primary": "Jetzt kostenlos bewahren",
       "cta_secondary": "Anmelden",

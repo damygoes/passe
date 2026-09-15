@@ -58,7 +58,7 @@ export function MemoryDetailView({ tripId, memoryId }: Props) {
 
   return (
     <div className="grid min-h-[calc(100svh-4rem)] grid-cols-1 lg:grid-cols-[1.35fr_1fr]">
-      <div className="washed relative min-h-[420px] bg-dark-espresso-dark p-9">
+      <div className="washed relative min-h-[420px] bg-dark-espresso-dark p-5">
         {cover && (
           <div className="relative h-full w-full overflow-hidden rounded-[26px]">
             <Image

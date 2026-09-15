@@ -1,6 +1,6 @@
 # Passe — AI Agent Context
 
-> "The past, beautifully kept." — A travel memory sharing platform.
+> "A place for the memories worth keeping." — A travel memory sharing platform.
 
 Users create **trips** (with dates, countries, cover images), attach geotagged **memories** (photos + notes) to them, and optionally share **public portfolios** and **individual trip pages**. Subscription plans (free / explorer / collector) gate features.
 

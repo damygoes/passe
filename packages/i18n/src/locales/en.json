@@ -1,7 +1,7 @@
 {
   "common": {
     "app_name": "Passe.",
-    "app_tagline": "The past, beautifully kept.",
+    "app_tagline": "A place for the memories worth keeping.",
     "cancel": "Cancel",
     "back": "Back"
   },
@@ -12,7 +12,7 @@
     },
     "welcome": {
       "title": "Passe.",
-      "tagline": "The past, beautifully kept.",
+      "tagline": "A place for the memories worth keeping.",
       "body": "A private journal of everywhere you've been. Yours alone — until you decide otherwise.",
       "cta_primary": "Start your first trip",
       "cta_secondary": "I already have an account",
@@ -545,7 +545,7 @@
   },
   "landing": {
     "meta": {
-      "title": "Passe. — Made to be kept, not scrolled.",
+      "title": "Passe. — A place for the memories worth keeping.",
       "description": "Create trips, attach geotagged memories, and share a beautiful travel portfolio. Private by default."
     },
     "nav": {
@@ -557,7 +557,7 @@
     },
     "hero": {
       "badge": "Private by default · no feed, no followers",
-      "title": "The past, beautifully kept.",
+      "title": "A place for the memories worth keeping.",
       "subtitle": "Passe is a travel journal for people who actually go places. Keep every trip for yourself — photographs, notes, the small things you'd forget — and share only what you choose, with only who you choose.",
       "cta_primary": "Start keeping — free",
       "cta_secondary": "Sign in",
