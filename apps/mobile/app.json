@@ -2,7 +2,7 @@
   "expo": {
     "name": "passe",
     "slug": "passe-mobile",
-    "version": "1.0.1",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "passe",
@@ -16,9 +16,7 @@
       },
       "usesAppleSignIn": true,
       "entitlements": {
-        "com.apple.developer.applesignin": [
-          "Default"
-        ]
+        "com.apple.developer.applesignin": ["Default"]
       }
     },
     "android": {
