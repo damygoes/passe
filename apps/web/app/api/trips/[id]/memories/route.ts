@@ -142,6 +142,8 @@ export async function POST(req: Request, ctx: RouteContext<'/api/trips/[id]/memo
             width: item.width ?? null,
             height: item.height ?? null,
             placeholder: placeholders[index] ?? null,
+            caption: item.caption ?? null,
+            capturedAt: item.capturedAt ?? null,
           })),
         )
         .returning()

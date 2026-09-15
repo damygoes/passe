@@ -152,6 +152,8 @@ export async function PATCH(
             width: item.width ?? null,
             height: item.height ?? null,
             placeholder: placeholders[index] ?? null,
+            caption: item.caption ?? null,
+            capturedAt: item.capturedAt ?? null,
           })),
         )
       }

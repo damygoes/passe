@@ -1,0 +1,5 @@
+export { CarouselCountPill } from './CarouselCountPill'
+export { CarouselProgressDots } from './CarouselProgressDots'
+export { PhotoCarousel } from './PhotoCarousel'
+export type { PhotoCarouselItem, PhotoCarouselProps } from './PhotoCarousel.types'
+export { ThumbnailStrip } from './ThumbnailStrip'

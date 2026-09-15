@@ -33,13 +33,16 @@ export function formatLongDate(date: Date | string): string {
   }).format(new Date(date))
 }
 
-// Memory Detail's full date+time caption ("11 March 2026 · 18:42").
-export function formatMemoryDateTime(date: Date | string): string {
-  const day = formatLongDate(date)
-  const time = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit' }).format(
+// Time-only, 24h ("18:42") — Memory Detail's per-photo capture meta.
+export function formatTime(date: Date | string): string {
+  return new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit' }).format(
     new Date(date),
   )
-  return `${day} · ${time}`
+}
+
+// Memory Detail's full date+time caption ("11 March 2026 · 18:42").
+export function formatMemoryDateTime(date: Date | string): string {
+  return `${formatLongDate(date)} · ${formatTime(date)}`
 }
 
 // The Home screen's mono date caption ("Tuesday, 12 May 2026") — day-before-

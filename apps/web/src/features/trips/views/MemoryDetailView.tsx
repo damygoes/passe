@@ -1,23 +1,32 @@
 'use client'
 
 import { FadeIn } from '@/components/motion/FadeIn'
-import { Link } from '@/i18n/navigation'
-import { getBlurProps } from '@/lib/media/image-blur'
-import { memoryEditRoute, tripKeepsakesRoute, tripRoute } from '@/lib/routes'
+import { MemoryGalleryPane } from '@/features/trips/components/memory-detail/MemoryGalleryPane'
+import { MemoryInfoPane } from '@/features/trips/components/memory-detail/MemoryInfoPane'
+import { ThisPhotographCard } from '@/features/trips/components/memory-detail/ThisPhotographCard'
+import { useAddMemoryPhotos } from '@/features/trips/components/memory-detail/useAddMemoryPhotos'
 import { getPublicMemorySlots } from '@passe/auth/plan-gates'
 import { useMemories, useTrip, useUpdateMemory, useUser } from '@passe/hooks'
-import { Badge } from '@passe/ui/badge'
-import { buttonVariants } from '@passe/ui/button'
-import { Icon } from '@passe/ui/icon'
+import type { CreateMemoryMedia, Memory } from '@passe/types/memory'
+import type { Trip } from '@passe/types/trip'
 import { Skeleton } from '@passe/ui/skeleton'
-import { Switch } from '@passe/ui/switch'
-import { formatCoordinates, formatMemoryDateTime } from '@passe/utils'
 import { useTranslations } from 'next-intl'
-import Image from 'next/image'
+import { useEffect, useState } from 'react'
 
 interface Props {
   tripId: string
   memoryId: string
+}
+
+function toCreateMemoryMedia(photo: Memory['media'][number]): CreateMemoryMedia {
+  return {
+    url: photo.url,
+    mediaType: photo.mediaType,
+    width: photo.width,
+    height: photo.height,
+    caption: photo.caption,
+    capturedAt: photo.capturedAt,
+  }
 }
 
 export function MemoryDetailView({ tripId, memoryId }: Props) {
@@ -25,7 +34,6 @@ export function MemoryDetailView({ tripId, memoryId }: Props) {
   const { data: trip } = useTrip(tripId)
   const { data: memories = [], isLoading, isError } = useMemories(tripId)
   const { data: user } = useUser()
-  const updateMemory = useUpdateMemory()
 
   if (isLoading) {
     return (
@@ -40,7 +48,7 @@ export function MemoryDetailView({ tripId, memoryId }: Props) {
     )
   }
 
-  const memory = memories?.find((item) => item.id === memoryId)
+  const memory = memories.find((item) => item.id === memoryId)
   if (isError || !memory) {
     return (
       <div className="p-8">
@@ -49,109 +57,139 @@ export function MemoryDetailView({ tripId, memoryId }: Props) {
     )
   }
 
-  const cover = memory.media[0]
-  const otherPublicCount = memories.filter((m) => m.id !== memory.id && m.isPublic).length
+  const otherPublicCount = memories.filter((item) => item.id !== memory.id && item.isPublic).length
   const slots = user ? getPublicMemorySlots(user.plan, otherPublicCount) : null
+
+  return (
+    <MemoryDetailContent
+      tripId={tripId}
+      memoryId={memoryId}
+      trip={trip}
+      memory={memory}
+      slots={slots}
+      photoAlt={t('photo_alt')}
+    />
+  )
+}
+
+interface ContentProps {
+  tripId: string
+  memoryId: string
+  trip: Trip | undefined
+  memory: Memory
+  slots: ReturnType<typeof getPublicMemorySlots> | null
+  photoAlt: string
+}
+
+// Owns selection state and every per-photo mutation. Split out from
+// MemoryDetailView so every hook here (including useAddMemoryPhotos, which
+// needs a guaranteed Memory) is called unconditionally on every render —
+// the parent's loading/error guards run before this component ever mounts.
+function MemoryDetailContent({ tripId, memoryId, trip, memory, slots, photoAlt }: ContentProps) {
+  const updateMemory = useUpdateMemory()
+  const [selectedIndex, setSelectedIndex] = useState(0)
+
+  // Reset selection when navigating to a different memory.
+  useEffect(() => {
+    setSelectedIndex(0)
+  }, [memoryId])
+
+  const {
+    inputRef,
+    openPicker,
+    handleFilesChange,
+    error: uploadError,
+  } = useAddMemoryPhotos({
+    tripId,
+    memory,
+    onAdded: (firstNewIndex) => setSelectedIndex(firstNewIndex),
+  })
+
+  const media = memory.media
+  const clampedIndex = media.length > 0 ? Math.min(selectedIndex, media.length - 1) : 0
+  const activePhoto = media[clampedIndex]
   const canPublish =
     memory.isPublic || (slots ? !slots.isUnlimited && (slots.remaining ?? 0) > 0 : true)
-  const placeLabel = memory.placeName ?? [memory.city, memory.country].filter(Boolean).join(', ')
+
+  function selectPhoto(index: number) {
+    if (media.length === 0) return
+    setSelectedIndex(((index % media.length) + media.length) % media.length)
+  }
+  const prevPhoto = () => selectPhoto(clampedIndex - 1)
+  const nextPhoto = () => selectPhoto(clampedIndex + 1)
+
+  function setCover(index: number) {
+    if (index === 0) return
+    const reordered = [media[index]!, ...media.filter((_, i) => i !== index)]
+    updateMemory.mutate({ tripId, id: memory.id, media: reordered.map(toCreateMemoryMedia) })
+    setSelectedIndex(0)
+  }
+
+  function saveCaption(index: number, caption: string) {
+    const next = media.map((item, i) =>
+      i === index ? { ...item, caption: caption || null } : item,
+    )
+    updateMemory.mutate({ tripId, id: memory.id, media: next.map(toCreateMemoryMedia) })
+  }
+
+  function deletePhoto(index: number) {
+    const next = media.filter((_, i) => i !== index)
+    updateMemory.mutate({ tripId, id: memory.id, media: next.map(toCreateMemoryMedia) })
+    setSelectedIndex((current) => Math.min(current, Math.max(next.length - 1, 0)))
+  }
 
   return (
     <div className="grid min-h-[calc(100svh-4rem)] grid-cols-1 lg:grid-cols-[1.35fr_1fr]">
-      <div className="washed relative min-h-[420px] bg-dark-espresso-dark p-5">
-        {cover && (
-          <div className="relative h-full w-full overflow-hidden rounded-[26px]">
-            <Image
-              src={cover.url}
-              alt=""
-              fill
-              priority
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 62vw"
-              {...getBlurProps(cover.placeholder)}
-            />
-          </div>
-        )}
-      </div>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        className="sr-only"
+        onChange={handleFilesChange}
+      />
+
+      <MemoryGalleryPane
+        memory={memory}
+        media={media}
+        activePhoto={activePhoto}
+        selectedIndex={clampedIndex}
+        onSelect={selectPhoto}
+        onPrev={prevPhoto}
+        onNext={nextPhoto}
+        onAddPhotos={openPicker}
+        photoAlt={photoAlt}
+      />
 
       <FadeIn className="overflow-auto p-11">
-        {trip && (
-          <Link
-            href={tripRoute(tripId)}
-            className={buttonVariants({ variant: 'ghost', size: 'sm', className: 'pl-0' })}
-          >
-            <Icon name="chevron-left" size="xs" aria-hidden />
-            {t('back', { title: trip.title })}
-          </Link>
-        )}
+        <MemoryInfoPane
+          tripId={tripId}
+          trip={trip}
+          memory={memory}
+          slots={slots}
+          canPublish={canPublish}
+          isPublicPending={updateMemory.isPending}
+          onTogglePublic={(checked) =>
+            updateMemory.mutate({ tripId, id: memory.id, isPublic: checked })
+          }
+          onAddPhotos={openPicker}
+        />
 
-        <div className="mt-6 font-mono text-[10.5px] tracking-[0.14em] text-muted-foreground uppercase">
-          {formatMemoryDateTime(memory.capturedAt)}
-        </div>
-        <h1 className="font-display mt-2 text-4xl leading-tight">{placeLabel}</h1>
-        {memory.note && <p className="mt-4 text-[15.5px] leading-relaxed">{memory.note}</p>}
+        {uploadError && <p className="mt-3 text-xs text-destructive">{uploadError}</p>}
 
-        {placeLabel && (
-          <div className="mt-5 flex items-center gap-2.5 rounded-[20px] bg-popover p-4">
-            <span className="size-2.5 shrink-0 rounded-full bg-terracotta" />
-            <div>
-              <div className="text-[13.5px]">{placeLabel}</div>
-              {memory.location && (
-                <div className="mt-0.5 font-mono text-[10.5px] text-muted-foreground">
-                  {formatCoordinates(memory.location.lat, memory.location.lng)}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        <div className="mt-3.5 flex items-center justify-between gap-4 rounded-[20px] bg-popover p-4">
-          <div>
-            <div className="text-[13.5px]">{t('visible_on_public_page')}</div>
-            {slots && (
-              <div className="mt-0.5 text-[11.5px] text-muted-foreground">
-                {slots.isUnlimited
-                  ? t('public_slots_unlimited')
-                  : t('public_slots_limited', {
-                      remaining: slots.remaining ?? 0,
-                      limit: slots.limit ?? 0,
-                    })}
-              </div>
-            )}
-          </div>
-          <Switch
-            checked={memory.isPublic}
-            disabled={!canPublish || updateMemory.isPending}
-            onCheckedChange={(checked) =>
-              updateMemory.mutate({ tripId, id: memory.id, isPublic: checked })
-            }
+        {activePhoto && (
+          <ThisPhotographCard
+            tripId={tripId}
+            media={media}
+            activePhoto={activePhoto}
+            selectedIndex={clampedIndex}
+            isCover={clampedIndex === 0}
+            isPending={updateMemory.isPending}
+            onSetCover={setCover}
+            onSaveCaption={saveCaption}
+            onDelete={deletePhoto}
           />
-        </div>
-
-        {memory.tags.length > 0 && (
-          <div className="mt-4 flex flex-wrap gap-2">
-            {memory.tags.map((tag) => (
-              <Badge key={tag} variant="neutral">
-                {tag}
-              </Badge>
-            ))}
-          </div>
         )}
-
-        <div className="mt-6 flex gap-2.5">
-          <Link
-            href={tripKeepsakesRoute(tripId)}
-            className={buttonVariants({ variant: 'secondary', className: 'flex-1' })}
-          >
-            {t('make_postcard')}
-          </Link>
-          <Link
-            href={memoryEditRoute(tripId, memory.id)}
-            className={buttonVariants({ variant: 'secondary', className: 'flex-1' })}
-          >
-            {t('edit')}
-          </Link>
-        </div>
       </FadeIn>
     </div>
   )
