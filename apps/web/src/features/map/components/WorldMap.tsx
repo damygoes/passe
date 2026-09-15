@@ -133,9 +133,17 @@ interface Viewport {
   bbox: [number, number, number, number]
 }
 
+interface SelectedGroup {
+  key: string
+  lat: number
+  lng: number
+  points: MapPoint[]
+}
+
 export function WorldMap({ points, visitedCountries }: WorldMapProps) {
   const mapRef = useRef<MapRef>(null)
-  const [selectedPoint, setSelectedPoint] = useState<MapPoint | null>(null)
+  const [selectedGroup, setSelectedGroup] = useState<SelectedGroup | null>(null)
+  const [selectedIndex, setSelectedIndex] = useState(0)
   const [viewport, setViewport] = useState<Viewport | null>(null)
 
   const bounds = useMemo(() => computeBounds(points), [points])
@@ -177,19 +185,44 @@ export function WorldMap({ points, visitedCountries }: WorldMapProps) {
       const map = mapRef.current
       if (!map) return
       const [lng, lat] = toLngLat(cluster.geometry.coordinates)
-      const expansionZoom = Math.min(
-        index.getClusterExpansionZoom(cluster.properties.cluster_id),
-        MAX_ZOOM,
-      )
+      const rawExpansionZoom = index.getClusterExpansionZoom(cluster.properties.cluster_id)
+      const expansionZoom = Math.min(rawExpansionZoom, MAX_ZOOM)
       map.easeTo({ center: [lng, lat], zoom: expansionZoom, duration: 300 })
+
+      // The cluster can never separate further within the app's zoom range (either the
+      // points are exactly coincident, or just close enough to still need zoom >= MAX_ZOOM) —
+      // fall back to showing its points directly instead of leaving the camera "stuck".
+      if (rawExpansionZoom >= MAX_ZOOM) {
+        const leaves = index.getLeaves(cluster.properties.cluster_id, Infinity)
+        setSelectedGroup({
+          key: `cluster-${cluster.properties.cluster_id}`,
+          lat,
+          lng,
+          points: leaves.map((leaf) => leaf.properties),
+        })
+        setSelectedIndex(0)
+      }
     },
     [index],
   )
 
   const handlePointClick = useCallback((event: MarkerEvent<MouseEvent>, point: MapPoint) => {
     event.originalEvent.stopPropagation()
-    setSelectedPoint(point)
+    setSelectedGroup({ key: point.id, lat: point.lat, lng: point.lng, points: [point] })
+    setSelectedIndex(0)
   }, [])
+
+  const handlePrev = useCallback(() => {
+    setSelectedIndex((prevIndex) => Math.max(0, prevIndex - 1))
+  }, [])
+
+  const handleNext = useCallback(() => {
+    setSelectedIndex((prevIndex) =>
+      selectedGroup ? Math.min(selectedGroup.points.length - 1, prevIndex + 1) : prevIndex,
+    )
+  }, [selectedGroup])
+
+  const selectedPoint = selectedGroup?.points[selectedIndex] ?? null
 
   return (
     <div className="h-[calc(100svh-300px)] min-h-[420px] w-full overflow-hidden rounded-[26px]">
@@ -238,17 +271,30 @@ export function WorldMap({ points, visitedCountries }: WorldMapProps) {
           )
         })}
 
-        {selectedPoint && (
+        {selectedGroup && selectedPoint && (
           <Popup
-            longitude={selectedPoint.lng}
-            latitude={selectedPoint.lat}
+            longitude={selectedGroup.lng}
+            latitude={selectedGroup.lat}
             anchor="bottom"
             offset={PIN_HALO_SIZE / 2 + 4}
             closeButton={false}
             closeOnClick={false}
-            onClose={() => setSelectedPoint(null)}
+            onClose={() => setSelectedGroup(null)}
           >
-            <MapMemoryPopup point={selectedPoint} onClose={() => setSelectedPoint(null)} />
+            <MapMemoryPopup
+              point={selectedPoint}
+              onClose={() => setSelectedGroup(null)}
+              pager={
+                selectedGroup.points.length > 1
+                  ? {
+                      index: selectedIndex,
+                      total: selectedGroup.points.length,
+                      onPrev: handlePrev,
+                      onNext: handleNext,
+                    }
+                  : undefined
+              }
+            />
           </Popup>
         )}
       </Map>

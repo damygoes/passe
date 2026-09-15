@@ -13,7 +13,7 @@ import { NoGeotaggedMemoriesEmpty } from './NoGeotaggedMemoriesEmpty'
 const WorldMap = dynamic(() => import('./WorldMap').then((mod) => mod.WorldMap), {
   ssr: false,
   loading: () => (
-    <Skeleton className="h-[calc(100svh-300px)] min-h-[420px] w-full rounded-[34px]" />
+    <Skeleton className="h-[calc(100svh-300px)] min-h-[420px] w-full rounded-[26px]" />
   ),
 })
 
@@ -96,9 +96,7 @@ export function MapDataWrapper() {
         )}
       </div>
 
-      <div className="rounded-[34px] bg-secondary p-2">
-        <WorldMap points={filteredPoints} visitedCountries={[...visitedCountries]} />
-      </div>
+      <WorldMap points={filteredPoints} visitedCountries={[...visitedCountries]} />
 
       <div className="flex flex-wrap gap-8">
         {LEGEND.map((item) => (

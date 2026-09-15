@@ -58,8 +58,8 @@ export function createPhotoCarouselRecipe(theme: AppTheme): PhotoCarouselRecipe 
           alignItems: 'center',
           gap: spacing[1] + 1,
           borderRadius: borderRadius.full,
-          paddingHorizontal: spacing[3] + 1,
-          paddingVertical: spacing[2] - 1,
+          paddingHorizontal: spacing[3] + 3,
+          paddingVertical: spacing[2] + 1,
           backgroundColor: `${palette.darkEspresso.DEFAULT}8C`,
           overflow: 'hidden',
         },
@@ -67,8 +67,8 @@ export function createPhotoCarouselRecipe(theme: AppTheme): PhotoCarouselRecipe 
       label: StyleSheet.create({
         style: {
           fontFamily: fonts.mono,
-          fontSize: 10,
-          letterSpacing: 1.2,
+          fontSize: 12,
+          letterSpacing: 1,
           color: palette.agedCream.DEFAULT,
         },
       }).style,

@@ -39,8 +39,8 @@ const PIN_SIZE = 18
 const PIN_HALO_SIZE = PIN_SIZE * 2.6
 const CLUSTER_RADIUS = 60
 // The World map screen embeds this in a fixed-height band, not full-bleed —
-// matches the rounded panel apps/web's MapDataWrapper wraps the map in.
-const MAP_RADIUS = 20
+// matches the rounded corner apps/web's WorldMap uses.
+const MAP_RADIUS = 26
 
 // A single center + zoom heuristic instead of a bounds-fit — fitting bounds
 // around a single point (or several at the same spot) degenerates to a
@@ -133,11 +133,23 @@ export function WorldMap({ points, visitedCountries }: WorldMapProps) {
     (cluster: Supercluster.ClusterFeature<MapPoint>) => {
       suppressMapPressRef.current = true
       const [lng, lat] = toLngLat(cluster.geometry.coordinates)
-      const expansionZoom = Math.min(
-        index.getClusterExpansionZoom(cluster.properties.cluster_id),
-        MAX_ZOOM,
-      )
+      const rawExpansionZoom = index.getClusterExpansionZoom(cluster.properties.cluster_id)
+      const expansionZoom = Math.min(rawExpansionZoom, MAX_ZOOM)
       cameraRef.current?.easeTo({ center: [lng, lat], zoom: expansionZoom, duration: 300 })
+
+      // The cluster can never separate further within the app's zoom range (either the
+      // points are exactly coincident, or just close enough to still need zoom >= MAX_ZOOM) —
+      // fall back to showing its points directly instead of leaving the camera "stuck".
+      if (rawExpansionZoom >= MAX_ZOOM) {
+        const leaves = index.getLeaves(cluster.properties.cluster_id, Infinity)
+        setSelectedGroup({
+          key: `cluster-${cluster.properties.cluster_id}`,
+          lat,
+          lng,
+          points: leaves.map((leaf) => leaf.properties),
+        })
+        setSelectedIndex(0)
+      }
     },
     [index],
   )

@@ -61,7 +61,8 @@ export function WelcomeScreen() {
           marginTop: spacing[4],
           maxWidth: 300,
         },
-        actions: { marginTop: 'auto', gap: spacing[3] },
+        spacer: { flexGrow: 1, minHeight: spacing[8] },
+        actions: { gap: spacing[3] },
         caption: {
           flexDirection: 'row',
           alignItems: 'center',
@@ -96,6 +97,7 @@ export function WelcomeScreen() {
         <Text style={styles.title}>{t('title')}</Text>
         <Text style={styles.tagline}>{t('tagline')}</Text>
         <Text style={styles.body}>{t('body')}</Text>
+        <View style={styles.spacer} />
         <View style={styles.actions}>
           <Button size="lg" fullWidth onPress={() => router.push('/(auth)/sign-up')}>
             {t('cta_primary')}

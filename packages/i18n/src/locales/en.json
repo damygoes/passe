@@ -475,6 +475,8 @@
     "legend_not_yet": "Not yet",
     "view_trip": "View trip",
     "close": "Close",
+    "prev_photo": "Previous memory",
+    "next_photo": "Next memory",
     "load_error": "Couldn't load your map. Try refreshing the page.",
     "empty": {
       "title": "No pins yet",

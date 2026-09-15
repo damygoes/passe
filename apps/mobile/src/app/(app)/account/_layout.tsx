@@ -17,6 +17,7 @@ const sheetOptions = {
 
 export default function AccountLayout() {
   const t = useTranslations('account')
+  const tNav = useTranslations('nav')
   const { colors } = useTheme()
 
   return (
@@ -29,7 +30,7 @@ export default function AccountLayout() {
         headerTitleStyle: { color: colors.foreground },
       }}
     >
-      <Stack.Screen name="index" options={{ title: '' }} />
+      <Stack.Screen name="index" options={{ title: tNav('you') }} />
       <Stack.Screen name="stats" options={{ title: '' }} />
       <Stack.Screen name="portfolio" options={{ ...sheetOptions, title: t('tabs.portfolio') }} />
       <Stack.Screen name="profile" options={{ ...sheetOptions, title: t('tabs.profile') }} />

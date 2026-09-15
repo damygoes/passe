@@ -3,7 +3,7 @@ import { useMemories, useTrip, useUpdateMemory, useUser } from '@passe/hooks'
 import { colors as brandColors } from '@passe/theme'
 import type { CreateMemoryMedia, Memory } from '@passe/types/memory'
 import type { Trip } from '@passe/types/trip'
-import { formatCoordinates, formatMemoryDateTime, formatTime } from '@passe/utils'
+import { formatCoordinates, formatMemoryDateTime } from '@passe/utils'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useMemo, useState } from 'react'
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
@@ -23,7 +23,7 @@ import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
 const PHOTO_HEIGHT = 430
-const BACK_BUTTON_SIZE = 34
+const BACK_BUTTON_SIZE = 40
 
 function toCreateMemoryMedia(photo: Memory['media'][number]): CreateMemoryMedia {
   return {
@@ -181,12 +181,6 @@ function MemoryDetailContent({ tripId, memoryId, trip, memory, slots, insetsTop 
           paddingTop: spacing[3],
         },
         caption: { flex: 1, fontSize: 13, color: colors.mutedForeground },
-        captionMeta: {
-          fontFamily: fonts.mono,
-          fontSize: 9.5,
-          letterSpacing: 1,
-          color: colors.mutedForeground,
-        },
         content: { padding: spacing[6], paddingBottom: spacing[8] },
         date: {
           fontFamily: fonts.mono,
@@ -323,13 +317,10 @@ function MemoryDetailContent({ tripId, memoryId, trip, memory, slots, insetsTop 
           />
         )}
 
-        {activePhoto && (
+        {activePhoto?.caption && (
           <View style={styles.captionRow}>
             <Text style={styles.caption} numberOfLines={2}>
               {activePhoto.caption}
-            </Text>
-            <Text style={styles.captionMeta}>
-              {formatTime(activePhoto.capturedAt ?? memory.capturedAt)}
             </Text>
           </View>
         )}
@@ -440,7 +431,7 @@ function MemoryDetailContent({ tripId, memoryId, trip, memory, slots, insetsTop 
         hitSlop={8}
       >
         <GlassSurface shape="circle" style={StyleSheet.absoluteFill} />
-        <Icon name="chevron-left" size="md" color={colors.foreground} />
+        <Icon name="chevron-left" size="lg" color={colors.foreground} />
       </Pressable>
     </SafeAreaView>
   )

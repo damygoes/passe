@@ -134,13 +134,13 @@ export function createButtonRecipe(theme: AppTheme): ButtonRecipe {
 
       lg: {
         container: {
-          paddingHorizontal: spacing[12],
-          paddingVertical: spacing[6],
-          minHeight: spacing[20],
+          paddingHorizontal: spacing[10],
+          paddingVertical: spacing[5],
+          minHeight: spacing[16],
         },
 
         label: {
-          fontSize: fontSizes['2xl'],
+          fontSize: fontSizes.xl,
         },
       },
     },

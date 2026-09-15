@@ -16,10 +16,9 @@ import { WorldMap } from './WorldMap'
 // A fraction of the window rather than a fixed px value — the map is the
 // point of this screen, so let it dominate on tall phones too, not just
 // clear a fixed minimum on small ones.
-const MAP_BAND_HEIGHT_RATIO = 0.58
-const MIN_MAP_BAND_HEIGHT = 460
-const MAP_BAND_PADDING = 10
-const MAP_BAND_RADIUS = 26
+const MAP_BAND_HEIGHT_RATIO = 0.75
+const MIN_MAP_BAND_HEIGHT = 560
+const MAP_PIN_CHIP_RADIUS = 999
 
 export function MapDataWrapper() {
   const t = useTranslations('map')
@@ -56,9 +55,6 @@ export function MapDataWrapper() {
         band: {
           marginTop: spacing[4],
           marginHorizontal: spacing[4],
-          backgroundColor: colors.secondary,
-          borderRadius: MAP_BAND_RADIUS,
-          padding: MAP_BAND_PADDING,
         },
         mapWrapper: { height: mapBandHeight },
         pinsSection: { paddingHorizontal: spacing[6] },
@@ -71,17 +67,18 @@ export function MapDataWrapper() {
           marginTop: spacing[6],
           marginBottom: spacing[2] + 2,
         },
-        pinRow: {
+        pinScroll: { flexDirection: 'row', gap: spacing[3] },
+        pinChip: {
           flexDirection: 'row',
           alignItems: 'center',
-          gap: spacing[3],
-          paddingVertical: spacing[3] - 1,
-          borderBottomWidth: StyleSheet.hairlineWidth,
-          borderBottomColor: colors.border,
+          gap: spacing[2],
+          paddingVertical: spacing[2],
+          paddingHorizontal: spacing[3],
+          borderRadius: MAP_PIN_CHIP_RADIUS,
+          backgroundColor: colors.secondary,
         },
         pinDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: MAP_PIN_COLOR },
         pinName: {
-          flex: 1,
           fontFamily: fonts.display,
           fontSize: fontSizes.lg,
           color: colors.foreground,
@@ -141,13 +138,17 @@ export function MapDataWrapper() {
         {recentPins.length > 0 && (
           <View style={styles.pinsSection}>
             <Text style={styles.pinsLabel}>{t('recent_pins')}</Text>
-            {recentPins.map((pin) => (
-              <View key={pin.id} style={styles.pinRow}>
-                <View style={styles.pinDot} />
-                <Text style={styles.pinName}>{pin.name}</Text>
-                <Text style={styles.pinMeta}>{pin.meta}</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <View style={styles.pinScroll}>
+                {recentPins.map((pin) => (
+                  <View key={pin.id} style={styles.pinChip}>
+                    <View style={styles.pinDot} />
+                    <Text style={styles.pinName}>{pin.name}</Text>
+                    <Text style={styles.pinMeta}>{pin.meta}</Text>
+                  </View>
+                ))}
               </View>
-            ))}
+            </ScrollView>
           </View>
         )}
       </ScrollView>

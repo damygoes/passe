@@ -93,7 +93,7 @@ export function StatsGridDataWrapper() {
     <div className="flex flex-col gap-9">
       <div>
         <h1 className="font-display text-4xl sm:text-5xl">{t('title')}</h1>
-        <p className="font-display mt-2.5 text-xl text-terracotta-dark italic sm:text-[22px]">
+        <p className="font-display mt-2.5 text-xl text-terracotta-dark italic sm:text-[22px] dark:text-terracotta-light">
           {t('subhead', {
             cities: uniqueCities.size,
             countries: uniqueCountries.size,

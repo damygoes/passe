@@ -57,7 +57,7 @@ export function createStatTileRecipe(theme: AppTheme): StatTileRecipe {
     },
     value: {
       base: StyleSheet.create({
-        style: { fontFamily: fonts.display },
+        style: { fontFamily: fonts.display, color: colors.foreground },
       }).style,
       sizes: {
         sm: StyleSheet.create({ style: { fontSize: 26 } }).style,

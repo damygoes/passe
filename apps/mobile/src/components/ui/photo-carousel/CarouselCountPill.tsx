@@ -17,7 +17,7 @@ export function CarouselCountPill({ label }: CarouselCountPillProps) {
 
   return (
     <View style={recipe.countPill.container}>
-      <Icon name="photo-stack" size="xs" color={theme.palette.agedCream.DEFAULT} />
+      <Icon name="photo-stack" size="sm" color={theme.palette.agedCream.DEFAULT} />
       <Text style={recipe.countPill.label}>{label}</Text>
     </View>
   )

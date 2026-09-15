@@ -45,7 +45,9 @@ export function HomeHeaderDataWrapper() {
         <h1 className="font-display mt-2 text-4xl leading-tight sm:text-5xl">
           {t(greetingKey(new Date().getHours()), { name: firstName })}
         </h1>
-        <p className="font-display mt-2 text-xl text-terracotta-dark italic">{t('accent_line')}</p>
+        <p className="font-display mt-2 text-xl text-terracotta-dark italic dark:text-terracotta-light">
+          {t('accent_line')}
+        </p>
       </div>
       {!tripsError && !memoriesError && (
         <div className="flex gap-8">
