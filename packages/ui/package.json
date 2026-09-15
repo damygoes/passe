@@ -4,6 +4,7 @@
   "private": true,
   "exports": {
     ".": "./src/index.ts",
+    "./accordion": "./src/accordion/Accordion.tsx",
     "./alert-dialog": "./src/alert-dialog/AlertDialog.tsx",
     "./assets/*": "./src/assets/*",
     "./avatar": "./src/avatar/Avatar.tsx",
@@ -12,6 +13,7 @@
     "./calendar": "./src/calendar/Calendar.tsx",
     "./card": "./src/card/Card.tsx",
     "./date-picker": "./src/date-picker/DatePicker.tsx",
+    "./dialog": "./src/dialog/Dialog.tsx",
     "./dropdown-menu": "./src/dropdown-menu/DropdownMenu.tsx",
     "./empty": "./src/empty/Empty.tsx",
     "./icon": "./src/icon/Icon.tsx",
@@ -22,10 +24,12 @@
     "./navbar": "./src/navbar/Navbar.tsx",
     "./page-header": "./src/page-header/PageHeader.tsx",
     "./popover": "./src/popover/Popover.tsx",
+    "./segmented": "./src/segmented/Segmented.tsx",
     "./separator": "./src/separator/Separator.tsx",
     "./sidebar": "./src/sidebar/Sidebar.tsx",
     "./sheet": "./src/sheet/Sheet.tsx",
     "./skeleton": "./src/skeleton/Skeleton.tsx",
+    "./stat-tile": "./src/stat-tile/StatTile.tsx",
     "./switch": "./src/switch/Switch.tsx",
     "./textarea": "./src/textarea/Textarea.tsx",
     "./tooltip": "./src/tooltip/Tooltip.tsx"
@@ -55,7 +59,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
-    "@hugeicons/core-free-icons": "^4.2.2",
+    "@hugeicons/core-free-icons": "^4.3.0",
     "@hugeicons/react": "^1.1.9",
     "@passe/utils": "workspace:*",
     "@passe/hooks": "workspace:*",

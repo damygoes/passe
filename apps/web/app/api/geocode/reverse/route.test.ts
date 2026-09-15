@@ -4,7 +4,9 @@ import { GET } from './route'
 
 vi.mock('@clerk/nextjs/server', () => ({ auth: vi.fn() }))
 vi.mock('@/lib/geocode/geocode', () => ({
-  reverseGeocode: vi.fn().mockResolvedValue({ city: 'Kyoto', country: 'Japan' }),
+  reverseGeocode: vi
+    .fn()
+    .mockResolvedValue({ city: 'Kyoto', country: 'Japan', placeName: 'Kyoto, Japan' }),
 }))
 
 function req(query: string) {
@@ -31,6 +33,6 @@ describe('GET /api/geocode/reverse', () => {
     const res = await GET(req('?lat=35&lng=135'))
     expect(res.status).toBe(200)
     const body = await res.json()
-    expect(body.data).toEqual({ city: 'Kyoto', country: 'Japan' })
+    expect(body.data).toEqual({ city: 'Kyoto', country: 'Japan', placeName: 'Kyoto, Japan' })
   })
 })

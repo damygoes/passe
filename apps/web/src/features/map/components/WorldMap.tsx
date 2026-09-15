@@ -3,8 +3,15 @@
 import 'maplibre-gl/dist/maplibre-gl.css'
 import './map-popup.css'
 
-import { colors } from '@passe/theme'
+import {
+  buildFlatWorldStyle,
+  MAP_PIN_COLOR,
+  MAP_PIN_HALO_COLOR,
+  MAP_PIN_HALO_OPACITY,
+  MAP_PIN_RING_COLOR,
+} from '@passe/map'
 import type { MapPoint } from '@passe/types/memory'
+import type { StyleSpecification } from 'maplibre-gl'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import Map, { Marker, Popup, type MapRef, type MarkerEvent } from 'react-map-gl/maplibre'
 import Supercluster from 'supercluster'
@@ -12,25 +19,19 @@ import { MapMemoryPopup } from './MapMemoryPopup'
 
 interface WorldMapProps {
   points: MapPoint[]
+  /** Free-text country names from the user's trips — drives the choropleth fill. */
+  visitedCountries: string[]
 }
 
-// Vector tiles top out well below 22 — without an explicit maxZoom, MapLibre
-// has nothing to fall back to for a raster layer that isn't there.
-const MAX_ZOOM = 19
-const PIN_SIZE = 26
+// No vector/raster tiles anymore — the flat GeoJSON fill scales to any zoom,
+// so this only needs to stay at or above Supercluster's own maxZoom (16)
+// below so a cluster's expansion zoom is never clamped short of separating
+// its pins, while still keeping "zoom in" from going anywhere meaningfully
+// further on a flat polygon.
+const MAX_ZOOM = 16
+const PIN_SIZE = 18
+const PIN_HALO_SIZE = PIN_SIZE * 2.6
 const CLUSTER_RADIUS = 60
-
-// Classic "map pin" glyph (same silhouette as Google Maps markers / Material's
-// `place` icon) — a slim teardrop with a punched-out circle, in a 24x24
-// viewBox. Used as a raw path (not the shared Icon set) so it renders
-// identically on web and mobile from one source of truth for the `d` string.
-const PIN_PATH =
-  'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z'
-
-function mapStyleUrl() {
-  const key = process.env.NEXT_PUBLIC_MAPTILER_KEY ?? ''
-  return `https://api.maptiler.com/maps/streets-v4/style.json?key=${key}`
-}
 
 function computeBounds(points: MapPoint[]): [[number, number], [number, number]] {
   const bounds = points.reduce(
@@ -62,23 +63,46 @@ function clusterIconSize(count: number) {
   return 52
 }
 
-// Custom pin instead of a raster marker image, which would need per-bundler
-// asset-path fixes to resolve correctly under Next.js/Turbopack.
+// Flat olive dot + 16%-opacity halo + white ring, per the design's city-pin
+// spec — replaces the previous teardrop glyph now that the basemap itself is
+// flat too. Anchored center (not bottom) since a concentric dot has no "tip".
 function MapPin() {
   return (
-    <svg
-      width={PIN_SIZE}
-      height={PIN_SIZE}
-      viewBox="0 0 24 24"
-      style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.4))' }}
+    <div
+      style={{
+        width: PIN_HALO_SIZE,
+        height: PIN_HALO_SIZE,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
     >
-      <path d={PIN_PATH} fill={colors.terracotta.DEFAULT} />
-    </svg>
+      <div
+        style={{
+          position: 'absolute',
+          width: PIN_HALO_SIZE,
+          height: PIN_HALO_SIZE,
+          borderRadius: '50%',
+          background: MAP_PIN_HALO_COLOR,
+          opacity: MAP_PIN_HALO_OPACITY,
+        }}
+      />
+      <div
+        style={{
+          width: PIN_SIZE,
+          height: PIN_SIZE,
+          borderRadius: '50%',
+          background: MAP_PIN_COLOR,
+          border: `1px solid ${MAP_PIN_RING_COLOR}`,
+        }}
+      />
+    </div>
   )
 }
 
-// Brand-colored cluster bubble, replacing the plugin-default green/yellow/
-// orange circles that used to blend into the basemap's own landcover shading.
+// Same olive family as individual pins (just bigger, with a count) — the
+// design doesn't specify clustering, but pins and clusters should still read
+// as one glyph family rather than clusters reintroducing the old terracotta.
 function ClusterBubble({ count }: { count: number }) {
   const size = clusterIconSize(count)
 
@@ -91,10 +115,10 @@ function ClusterBubble({ count }: { count: number }) {
         width: size,
         height: size,
         borderRadius: '50%',
-        background: colors.terracotta.DEFAULT,
-        border: '3px solid #fff',
-        boxShadow: '0 1px 4px rgba(0,0,0,0.4)',
-        color: '#fff',
+        background: MAP_PIN_COLOR,
+        border: `2px solid ${MAP_PIN_RING_COLOR}`,
+        boxShadow: '0 1px 4px rgba(0,0,0,0.25)',
+        color: MAP_PIN_RING_COLOR,
         fontWeight: 600,
         fontSize: 14,
       }}
@@ -109,12 +133,24 @@ interface Viewport {
   bbox: [number, number, number, number]
 }
 
-export function WorldMap({ points }: WorldMapProps) {
+interface SelectedGroup {
+  key: string
+  lat: number
+  lng: number
+  points: MapPoint[]
+}
+
+export function WorldMap({ points, visitedCountries }: WorldMapProps) {
   const mapRef = useRef<MapRef>(null)
-  const [selectedPoint, setSelectedPoint] = useState<MapPoint | null>(null)
+  const [selectedGroup, setSelectedGroup] = useState<SelectedGroup | null>(null)
+  const [selectedIndex, setSelectedIndex] = useState(0)
   const [viewport, setViewport] = useState<Viewport | null>(null)
 
   const bounds = useMemo(() => computeBounds(points), [points])
+  const mapStyle = useMemo(
+    () => buildFlatWorldStyle(visitedCountries) as unknown as StyleSpecification,
+    [visitedCountries],
+  )
 
   // Proximity-based clustering (same engine react-map-gl's own clustering
   // examples use) — recomputed only when the point set changes; queried
@@ -137,18 +173,11 @@ export function WorldMap({ points }: WorldMapProps) {
     const mapBounds = map.getBounds()
     setViewport({
       zoom: Math.round(map.getZoom()),
-      bbox: [
-        mapBounds.getWest(),
-        mapBounds.getSouth(),
-        mapBounds.getEast(),
-        mapBounds.getNorth(),
-      ],
+      bbox: [mapBounds.getWest(), mapBounds.getSouth(), mapBounds.getEast(), mapBounds.getNorth()],
     })
   }, [])
 
-  const clusters = viewport
-    ? index.getClusters(viewport.bbox, viewport.zoom)
-    : []
+  const clusters = viewport ? index.getClusters(viewport.bbox, viewport.zoom) : []
 
   const handleClusterClick = useCallback(
     (event: MarkerEvent<MouseEvent>, cluster: Supercluster.ClusterFeature<MapPoint>) => {
@@ -156,19 +185,47 @@ export function WorldMap({ points }: WorldMapProps) {
       const map = mapRef.current
       if (!map) return
       const [lng, lat] = toLngLat(cluster.geometry.coordinates)
-      const expansionZoom = Math.min(index.getClusterExpansionZoom(cluster.properties.cluster_id), MAX_ZOOM)
+      const rawExpansionZoom = index.getClusterExpansionZoom(cluster.properties.cluster_id)
+      const expansionZoom = Math.min(rawExpansionZoom, MAX_ZOOM)
       map.easeTo({ center: [lng, lat], zoom: expansionZoom, duration: 300 })
+
+      // The cluster can never separate further within the app's zoom range (either the
+      // points are exactly coincident, or just close enough to still need zoom >= MAX_ZOOM) —
+      // fall back to showing its points directly instead of leaving the camera "stuck".
+      if (rawExpansionZoom >= MAX_ZOOM) {
+        const leaves = index.getLeaves(cluster.properties.cluster_id, Infinity)
+        setSelectedGroup({
+          key: `cluster-${cluster.properties.cluster_id}`,
+          lat,
+          lng,
+          points: leaves.map((leaf) => leaf.properties),
+        })
+        setSelectedIndex(0)
+      }
     },
     [index],
   )
 
   const handlePointClick = useCallback((event: MarkerEvent<MouseEvent>, point: MapPoint) => {
     event.originalEvent.stopPropagation()
-    setSelectedPoint(point)
+    setSelectedGroup({ key: point.id, lat: point.lat, lng: point.lng, points: [point] })
+    setSelectedIndex(0)
   }, [])
 
+  const handlePrev = useCallback(() => {
+    setSelectedIndex((prevIndex) => Math.max(0, prevIndex - 1))
+  }, [])
+
+  const handleNext = useCallback(() => {
+    setSelectedIndex((prevIndex) =>
+      selectedGroup ? Math.min(selectedGroup.points.length - 1, prevIndex + 1) : prevIndex,
+    )
+  }, [selectedGroup])
+
+  const selectedPoint = selectedGroup?.points[selectedIndex] ?? null
+
   return (
-    <div className="h-[80vh] w-full overflow-hidden rounded-xl border">
+    <div className="h-[calc(100svh-300px)] min-h-[420px] w-full overflow-hidden rounded-[26px]">
       <Map
         ref={mapRef}
         initialViewState={{
@@ -176,7 +233,7 @@ export function WorldMap({ points }: WorldMapProps) {
           fitBoundsOptions: { padding: 40, maxZoom: 12 },
         }}
         maxZoom={MAX_ZOOM}
-        mapStyle={mapStyleUrl()}
+        mapStyle={mapStyle}
         onLoad={syncViewport}
         onMoveEnd={syncViewport}
         style={{ width: '100%', height: '100%' }}
@@ -206,7 +263,7 @@ export function WorldMap({ points }: WorldMapProps) {
               key={point.id}
               longitude={lng}
               latitude={lat}
-              anchor="bottom"
+              anchor="center"
               onClick={(event) => handlePointClick(event, point)}
             >
               <MapPin />
@@ -214,17 +271,30 @@ export function WorldMap({ points }: WorldMapProps) {
           )
         })}
 
-        {selectedPoint && (
+        {selectedGroup && selectedPoint && (
           <Popup
-            longitude={selectedPoint.lng}
-            latitude={selectedPoint.lat}
+            longitude={selectedGroup.lng}
+            latitude={selectedGroup.lat}
             anchor="bottom"
-            offset={PIN_SIZE + 4}
+            offset={PIN_HALO_SIZE / 2 + 4}
             closeButton={false}
             closeOnClick={false}
-            onClose={() => setSelectedPoint(null)}
+            onClose={() => setSelectedGroup(null)}
           >
-            <MapMemoryPopup point={selectedPoint} onClose={() => setSelectedPoint(null)} />
+            <MapMemoryPopup
+              point={selectedPoint}
+              onClose={() => setSelectedGroup(null)}
+              pager={
+                selectedGroup.points.length > 1
+                  ? {
+                      index: selectedIndex,
+                      total: selectedGroup.points.length,
+                      onPrev: handlePrev,
+                      onNext: handleNext,
+                    }
+                  : undefined
+              }
+            />
           </Popup>
         )}
       </Map>

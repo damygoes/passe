@@ -1,6 +1,5 @@
 export const fontFamilies = {
   display: ['Playfair Display', 'Georgia', 'serif'],
-  heading: ['Lora', 'Georgia', 'serif'],
   body: ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
   mono: ['DM Mono', 'Menlo', 'monospace'],
 } as const

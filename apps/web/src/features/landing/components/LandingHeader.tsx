@@ -8,11 +8,17 @@ import { Navbar, NavbarBrand, NavbarUser } from '@passe/ui/navbar'
 import { getTranslations } from 'next-intl/server'
 import { ExitLink } from './ExitLink'
 
+const ANCHOR_LINKS = [
+  { key: 'how', href: '#how' },
+  { key: 'what_you_keep', href: '#keep' },
+  { key: 'plans', href: '#plans' },
+] as const
+
 export async function LandingHeader() {
   const t = await getTranslations('landing.nav')
 
   return (
-    <Navbar className="border-none bg-background/75 px-6 backdrop-blur-md">
+    <Navbar className="border-b-[color:var(--color-divider)] bg-background/88 px-6 backdrop-blur-md">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 overflow-hidden [mask-image:radial-gradient(64rem_16rem_at_5%_0%,#c4622d,transparent)]"
@@ -29,6 +35,14 @@ export async function LandingHeader() {
           <Logo className="h-6 w-auto" />
         </Link>
       </NavbarBrand>
+
+      <nav className="hidden items-center gap-6 font-mono text-[13px] text-muted-foreground md:flex">
+        {ANCHOR_LINKS.map(({ key, href }) => (
+          <a key={key} href={href} className="transition-colors hover:text-foreground">
+            {t(key)}
+          </a>
+        ))}
+      </nav>
 
       <NavbarUser className="gap-2 sm:gap-3">
         <LocaleDropdownMenu className="h-8 px-2.5 text-xs" />

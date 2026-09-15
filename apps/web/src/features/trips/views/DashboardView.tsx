@@ -1,52 +1,26 @@
 'use client'
 
 import { FadeIn } from '@/components/motion/FadeIn'
-import { Link } from '@/i18n/navigation'
 import { SECTION_STEP } from '@/lib/motion'
-import { routes } from '@/lib/routes'
-import { useTrips } from '@passe/hooks'
-import { buttonVariants } from '@passe/ui/button'
-import {
-  PageHeader,
-  PageHeaderAction,
-  PageHeaderDescription,
-  PageHeaderTitle,
-} from '@passe/ui/page-header'
-import { Skeleton } from '@passe/ui/skeleton'
-import { getUniqueStatsFromTrips } from '@passe/utils'
-import { useTranslations } from 'next-intl'
-import { TripsList } from '../components/trip/lists/TripsList'
-import { PersonalStatsDataWrapper } from '../components/trip/stats/PersonalStatsDataWrapper'
+import { ByPlaceListDataWrapper } from '../components/home/ByPlaceListDataWrapper'
+import { ContinueTripCardDataWrapper } from '../components/home/ContinueTripCardDataWrapper'
+import { HomeHeaderDataWrapper } from '../components/home/HomeHeaderDataWrapper'
+import { ImportPromptCardDataWrapper } from '../components/home/ImportPromptCardDataWrapper'
 
 export function DashboardView() {
-  const t = useTranslations('trips.dashboard')
-  const { data: trips = [], isLoading, isError } = useTrips()
-  const { uniqueCountries } = getUniqueStatsFromTrips({ trips })
-
   return (
-    <div className="container mx-auto w-full px-4 py-8 flex flex-col gap-6">
+    <div className="container mx-auto flex w-full flex-col gap-8 px-4 py-8">
       <FadeIn>
-        <PageHeader className="w-full">
-          <PageHeaderTitle>{t('title')}</PageHeaderTitle>
-          {isLoading ? (
-            <Skeleton className="h-5 w-24" />
-          ) : !isError ? (
-            <PageHeaderDescription>
-              {t('description', { tripsCount: trips.length, countriesCount: uniqueCountries.size })}
-            </PageHeaderDescription>
-          ) : null}
-          <PageHeaderAction>
-            <Link href={routes.tripsNew} className={buttonVariants({ size: 'sm' })}>
-              {t('new_trip')}
-            </Link>
-          </PageHeaderAction>
-        </PageHeader>
+        <HomeHeaderDataWrapper />
       </FadeIn>
       <FadeIn delay={SECTION_STEP}>
-        <PersonalStatsDataWrapper />
-      </FadeIn>
-      <FadeIn delay={SECTION_STEP * 2}>
-        <TripsList />
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1.55fr_1fr]">
+          <ContinueTripCardDataWrapper />
+          <div className="flex flex-col gap-5">
+            <ByPlaceListDataWrapper />
+            <ImportPromptCardDataWrapper />
+          </div>
+        </div>
       </FadeIn>
     </div>
   )

@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemories } from '@passe/hooks'
+import { Icon } from '@passe/ui/icon'
 import { PageHeader, PageHeaderDescription, PageHeaderTitle } from '@passe/ui/page-header'
 import { Skeleton } from '@passe/ui/skeleton'
 import { useTranslations } from 'next-intl'
@@ -22,8 +23,9 @@ export function EditMemoryView({ tripId, memoryId }: Props) {
     <div className="container mx-auto flex w-full max-w-2xl flex-col gap-6 px-4 py-8">
       <Link
         href={tripRoute(tripId)}
-        className="text-sm text-muted-foreground hover:text-foreground"
+        className="inline-flex w-fit items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
       >
+        <Icon name="chevron-left" size="xs" aria-hidden />
         {t('back')}
       </Link>
       <PageHeader>

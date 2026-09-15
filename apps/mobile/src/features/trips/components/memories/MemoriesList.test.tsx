@@ -13,10 +13,10 @@ jest.mock('./NoMemoriesEmpty', () => {
   const { Text } = require('react-native')
   return { NoMemoriesEmpty: () => <Text>no-memories</Text> }
 })
-jest.mock('@/features/trips/components/editorial/EditorialMemories', () => {
+jest.mock('./MemoriesMasonryGrid', () => {
   const { Text } = require('react-native')
   return {
-    EditorialMemories: ({ memories }: { memories: unknown[] }) => (
+    MemoriesMasonryGrid: ({ memories }: { memories: unknown[] }) => (
       <Text>memories:{memories.length}</Text>
     ),
   }
@@ -41,8 +41,12 @@ describe('MemoriesList', () => {
     expect(screen.getByText('no-memories')).toBeTruthy()
   })
 
-  it('renders the editorial layout with a count when memories exist', () => {
-    mockUseMemories.mockReturnValue({ data: [{ id: '1' }, { id: '2' }], isLoading: false, isError: false })
+  it('renders the masonry grid with a count when memories exist', () => {
+    mockUseMemories.mockReturnValue({
+      data: [{ id: '1' }, { id: '2' }],
+      isLoading: false,
+      isError: false,
+    })
     render(<MemoriesList tripId="trip-1" />)
     expect(screen.getByText('memories:2')).toBeTruthy()
   })

@@ -1,6 +1,6 @@
 # Passe.
 
-> _The past, beautifully kept._
+> _A place for the memories worth keeping._
 
 A personal travel portfolio app. Users create **trips**, attach **memories** (photos, notes, GPS
 locations), and optionally share trips and memories publicly via a personal portfolio URL.

@@ -170,7 +170,7 @@ export function ZineBackCoverPanel({ title, copyrightYear }: BackCoverPanelProps
       <View style={styles.backCoverMain}>
         <Text style={styles.backCoverTitle}>{title}</Text>
         <View style={styles.divider} />
-        <Text style={styles.tagline}>The past, beautifully kept.</Text>
+        <Text style={styles.tagline}>A place for the memories worth keeping.</Text>
       </View>
       <View style={styles.copyrightStrip}>
         <Text style={styles.copyrightText}>© {copyrightYear}</Text>

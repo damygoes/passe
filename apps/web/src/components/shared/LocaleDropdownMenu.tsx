@@ -1,7 +1,5 @@
 'use client'
 
-import { useEffect, useTransition } from 'react'
-import { useLocale } from 'next-intl'
 import { usePathname, useRouter } from '@/i18n/navigation'
 import { LOCALES, type Locale } from '@passe/i18n'
 import {
@@ -12,13 +10,23 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@passe/ui'
+import { useLocale } from 'next-intl'
+import { useEffect, useTransition } from 'react'
+
+type LocaleDropdownMenuVariant = 'icon' | 'sidebar-menu'
 
 const LOCALE_CONFIG: Record<Locale, { name: string; flag: string }> = {
   en: { name: 'English', flag: '🇬🇧' },
   de: { name: 'Deutsch', flag: '🇩🇪' },
 }
 
-export function LocaleDropdownMenu({ className }: { className?: string }) {
+export function LocaleDropdownMenu({
+  variant = 'icon',
+  className,
+}: {
+  variant?: LocaleDropdownMenuVariant
+  className?: string
+}) {
   const locale = useLocale() as Locale
   const router = useRouter()
   const pathname = usePathname()
@@ -33,6 +41,29 @@ export function LocaleDropdownMenu({ className }: { className?: string }) {
       if (loc !== locale) router.prefetch(pathname, { locale: loc })
     }
   }, [locale, pathname, router])
+
+  if (variant === 'sidebar-menu') {
+    return (
+      <DropdownMenuRadioGroup
+        value={locale}
+        onValueChange={(value) => {
+          startTransition(() => {
+            router.replace(pathname, { locale: value as Locale })
+          })
+        }}
+      >
+        {LOCALES.map((loc) => {
+          const { name, flag: locFlag } = LOCALE_CONFIG[loc]
+          return (
+            <DropdownMenuRadioItem key={loc} value={loc}>
+              <span aria-hidden>{locFlag}</span>
+              {name}
+            </DropdownMenuRadioItem>
+          )
+        })}
+      </DropdownMenuRadioGroup>
+    )
+  }
 
   return (
     <DropdownMenu>

@@ -1,6 +1,5 @@
 import { MotionProvider } from '@/components/motion/MotionProvider'
 import { AppSidebar } from '@/components/navigation/AppSidebar'
-import { SiteHeader } from '@/components/navigation/SiteHeader'
 import { currentUser } from '@clerk/nextjs/server'
 import { SidebarInset, SidebarProvider } from '@passe/ui'
 import type { ReactNode } from 'react'
@@ -19,21 +18,21 @@ export default async function ProtectedLayout({ children }: Props) {
     <SidebarProvider
       style={
         {
-          '--sidebar-width': 'calc(var(--spacing) * 62)',
+          // 244px, per the redesign's sidebar spec.
+          '--sidebar-width': 'calc(var(--spacing) * 61)',
           '--header-height': 'calc(var(--spacing) * 12)',
         } as React.CSSProperties
       }
     >
       <AppSidebar
-        variant="inset"
+        variant="floating"
         displayName={user?.fullName ?? user?.username ?? 'User'}
         email={email}
         avatarUrl={user?.hasImage ? (user.imageUrl ?? null) : null}
         username={user?.username ?? null}
       />
       <SidebarInset>
-        <SiteHeader />
-        <main className="flex-1">
+        <main className="min-w-0 flex-1 overflow-x-hidden px-12 py-8">
           <MotionProvider>{children}</MotionProvider>
         </main>
       </SidebarInset>

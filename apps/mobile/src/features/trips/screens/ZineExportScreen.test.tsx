@@ -27,6 +27,15 @@ function makeMemory(id: string, withPhoto = true) {
 
 const sixMemories = ['m1', 'm2', 'm3', 'm4', 'm5', 'm6'].map((id) => makeMemory(id))
 
+// AccountFormLayout now renders its own close button (accessibilityRole="button"),
+// so a plain getAllByRole('button') index no longer lines up with the photo tiles.
+// Photo tiles are the only buttons carrying accessibilityState.selected.
+function getTiles() {
+  return screen
+    .getAllByRole('button')
+    .filter((element) => typeof element.props.accessibilityState?.selected === 'boolean')
+}
+
 describe('ZineExportScreen', () => {
   beforeEach(() => {
     setMockSearchParams({ id: 'trip-1' })
@@ -56,7 +65,7 @@ describe('ZineExportScreen', () => {
     fireEvent.press(generate)
     expect(downloadTripExport).not.toHaveBeenCalled()
 
-    const tiles = screen.getAllByRole('button')
+    const tiles = getTiles()
     // First five selections still not enough
     for (let index = 0; index < 5; index++) fireEvent.press(tiles[index])
     fireEvent.press(generate)
@@ -65,7 +74,7 @@ describe('ZineExportScreen', () => {
 
   it('numbers selections in tap order and generates with the ordered ids', async () => {
     render(<ZineExportScreen />)
-    const tiles = screen.getAllByRole('button')
+    const tiles = getTiles()
 
     // Tap in a scrambled order — the POST body must preserve tap order
     const order = [2, 0, 5, 1, 4, 3]
@@ -90,7 +99,7 @@ describe('ZineExportScreen', () => {
 
   it('toggling a selected photo off re-enables selection of others', () => {
     render(<ZineExportScreen />)
-    const tiles = screen.getAllByRole('button')
+    const tiles = getTiles()
 
     for (let index = 0; index < 6; index++) fireEvent.press(tiles[index])
     // Deselect the first, select the last again — badge renumbers

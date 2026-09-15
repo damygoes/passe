@@ -1,5 +1,7 @@
 'use client'
 
+import { useRouter } from '@/i18n/navigation'
+import { routes } from '@/lib/routes'
 import { useClerk } from '@clerk/nextjs'
 import { Avatar, AvatarFallback, AvatarImage } from '@passe/ui/avatar'
 import {
@@ -8,15 +10,19 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@passe/ui/dropdown-menu'
-import { Icon } from '@passe/ui/icon'
 import type { IconName } from '@passe/ui/icon'
+import { Icon } from '@passe/ui/icon'
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@passe/ui/sidebar'
 import { useTranslations } from 'next-intl'
-import { useRouter } from '@/i18n/navigation'
-import { routes } from '@/lib/routes'
+import { LocaleDropdownMenu } from '../shared/LocaleDropdownMenu'
+import { ThemeDropdownMenu } from '../shared/ThemeDropdownMenu'
 
 interface NavUserProps {
   displayName: string
@@ -99,6 +105,45 @@ export function NavUser({ displayName, email, avatarUrl }: NavUserProps) {
                   {t(item.key)}
                 </DropdownMenuItem>
               ))}
+            </DropdownMenuGroup>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>{t('view')}</DropdownMenuLabel>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <Icon name="palette" />
+                  {t('theme')}
+                </DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuGroup>
+                      <DropdownMenuLabel>{t('appearance')}</DropdownMenuLabel>
+                      <ThemeDropdownMenu variant="sidebar-menu" />
+                    </DropdownMenuGroup>
+                  </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+              </DropdownMenuSub>
+            </DropdownMenuGroup>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>{t('preferences')}</DropdownMenuLabel>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <Icon name="languages" />
+                  {t('language')}
+                </DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuGroup>
+                      <LocaleDropdownMenu variant="sidebar-menu" />
+                    </DropdownMenuGroup>
+                  </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+              </DropdownMenuSub>
             </DropdownMenuGroup>
 
             <DropdownMenuSeparator />

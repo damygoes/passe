@@ -7,7 +7,7 @@ import { cn } from '@passe/utils'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { tripNewMemoryRoute } from '@/lib/routes'
-import { EditorialMemories } from '../editorial/EditorialMemories'
+import { MemoriesMasonryGrid } from './MemoriesMasonryGrid'
 import { MemoriesListSkeleton } from './MemoriesListSkeleton'
 import { NoMemoriesEmpty } from './NoMemoriesEmpty'
 
@@ -24,15 +24,10 @@ export function MemoriesList({ tripId }: Props) {
   if (isError) return <p className="mt-8 text-sm text-destructive">{t('memories_error')}</p>
 
   return (
-    <div className="mt-8">
+    <div className="mt-10">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="font-heading text-lg font-semibold">
-          {t('memories_heading')}
-          {memories.length > 0 && (
-            <span className="ml-2 text-sm font-normal text-muted-foreground">
-              {memories.length}
-            </span>
-          )}
+        <h2 className="font-mono text-[10.5px] tracking-[0.14em] text-muted-foreground uppercase">
+          {memories.length} {t('memories_heading')}
         </h2>
         <Link
           href={tripNewMemoryRoute(tripId)}
@@ -46,7 +41,7 @@ export function MemoriesList({ tripId }: Props) {
       {memories.length === 0 ? (
         <NoMemoriesEmpty tripId={tripId} />
       ) : (
-        <EditorialMemories memories={memories} />
+        <MemoriesMasonryGrid tripId={tripId} memories={memories} />
       )}
     </div>
   )

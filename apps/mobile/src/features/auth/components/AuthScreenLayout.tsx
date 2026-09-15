@@ -30,7 +30,7 @@ export function AuthScreenLayout({ heading, subheading, children, footer }: Auth
         },
         headingGroup: { gap: spacing[1] },
         heading: {
-          fontFamily: fonts.heading,
+          fontFamily: fonts.display,
           fontSize: fontSizes['2xl'],
           fontWeight: fontWeights.semibold,
           lineHeight: resolveLineHeight(fontSizes['2xl'], lineHeights.tight),
@@ -54,7 +54,10 @@ export function AuthScreenLayout({ heading, subheading, children, footer }: Auth
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={styles.flex}
       >
-        <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+        >
           <View style={styles.headingGroup}>
             <Text style={styles.heading}>{heading}</Text>
             <Text style={styles.subheading}>{subheading}</Text>

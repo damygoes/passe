@@ -47,20 +47,23 @@ describe('geocodeCityCountry', () => {
 
 describe('reverseGeocode', () => {
   it('extracts city/country from the address, falling back through town/village/municipality', async () => {
-    mockFetchOk({ address: { town: 'Kyoto', country: 'Japan' } })
+    mockFetchOk({
+      display_name: 'Kyoto, Japan',
+      address: { town: 'Kyoto', country: 'Japan' },
+    })
     const result = await reverseGeocode(35.0, 135.7)
-    expect(result).toEqual({ city: 'Kyoto', country: 'Japan' })
+    expect(result).toEqual({ city: 'Kyoto', country: 'Japan', placeName: 'Kyoto, Japan' })
   })
 
   it('returns nulls when the address is missing', async () => {
     mockFetchOk({})
     const result = await reverseGeocode(0, 0)
-    expect(result).toEqual({ city: null, country: null })
+    expect(result).toEqual({ city: null, country: null, placeName: null })
   })
 
   it('returns nulls when the request fails', async () => {
     vi.mocked(fetch).mockResolvedValueOnce({ ok: false, status: 503 } as Response)
     const result = await reverseGeocode(0, 0)
-    expect(result).toEqual({ city: null, country: null })
+    expect(result).toEqual({ city: null, country: null, placeName: null })
   })
 })

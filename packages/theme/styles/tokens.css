@@ -17,9 +17,42 @@
   --color-aged-cream: #faf6ee;
   --color-warm-white: #fffdf8;
   --color-dark-espresso: #2c1a0e;
+  --color-dark-espresso-dark: #3b1d0e;
   --color-muted-taupe: #8c7b6b;
   --color-muted-taupe-light: #a89888;
   --color-muted-taupe-dark: #6e5f51;
+
+  /* Full 100–900 ramps for terracotta and deep-olive — the 500 step matches
+     the DEFAULT tokens above exactly. Used by editorial/marketing surfaces
+     (landing page) that need finer steps than light/DEFAULT/dark. */
+  --color-terracotta-100: #fbede3;
+  --color-terracotta-200: #f4d9c4;
+  --color-terracotta-300: #e9b892;
+  --color-terracotta-400: #d88f5c;
+  --color-terracotta-500: #c4622d;
+  --color-terracotta-600: #a85224;
+  --color-terracotta-700: #86401b;
+  --color-terracotta-800: #5e2d13;
+  --color-terracotta-900: #3b1d0e;
+
+  --color-deep-olive-100: #edf0e3;
+  --color-deep-olive-200: #dce2ca;
+  --color-deep-olive-300: #c3cdaa;
+  --color-deep-olive-400: #98a87a;
+  --color-deep-olive-500: #5c6b3a;
+  --color-deep-olive-600: #4e5b31;
+  --color-deep-olive-700: #3d4726;
+  --color-deep-olive-800: #2b331b;
+  --color-deep-olive-900: #1b2011;
+
+  /* Translucent ink hairline — for editorial dividers, distinct from the
+     solid --color-border used by app chrome. */
+  --color-divider: color-mix(in srgb, var(--color-dark-espresso) 12%, transparent);
+
+  /* Ink-tinted shadows for editorial/marketing surfaces. */
+  --shadow-soft-sm: 0 1px 2px color-mix(in srgb, var(--color-dark-espresso) 10%, transparent);
+  --shadow-soft-md: 0 6px 18px color-mix(in srgb, var(--color-dark-espresso) 10%, transparent);
+  --shadow-soft-lg: 0 24px 60px color-mix(in srgb, var(--color-dark-espresso) 16%, transparent);
 
   /* Semantic aliases — map generic utility names to brand tokens */
   --color-background: var(--color-aged-cream);
@@ -55,7 +88,6 @@
 
   /* Font families */
   --font-display: 'Playfair Display', Georgia, serif;
-  --font-heading: 'Lora', Georgia, serif;
   --font-body: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-mono: 'DM Mono', Menlo, monospace;
 
@@ -64,6 +96,8 @@
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-3xl: 32px;
 
   /* Motion */
   --animate-shimmer: shimmer 1.8s ease-in-out infinite;

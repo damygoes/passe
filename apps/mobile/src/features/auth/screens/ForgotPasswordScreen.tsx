@@ -102,7 +102,7 @@ export function ForgotPasswordScreen() {
 
       if (result.status === 'complete') {
         await setActive({ session: result.createdSessionId })
-        router.replace('/(app)/trips')
+        router.replace('/(app)/home')
       }
     } catch (err) {
       if (isClerkAPIResponseError(err)) {
@@ -117,7 +117,10 @@ export function ForgotPasswordScreen() {
 
   if (step === 'reset') {
     return (
-      <AuthScreenLayout heading={tResetPassword('heading')} subheading={tResetPassword('subheading')}>
+      <AuthScreenLayout
+        heading={tResetPassword('heading')}
+        subheading={tResetPassword('subheading')}
+      >
         <Text style={styles.codeSentText}>{t('code_sent_to', { email })}</Text>
 
         {globalError && (

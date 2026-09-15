@@ -16,6 +16,7 @@ interface NominatimSearchResult {
 }
 
 interface NominatimReverseResult {
+  display_name?: string
   address?: {
     city?: string
     town?: string
@@ -61,12 +62,14 @@ export async function geocodeCityCountry(
   }
 }
 
-// Reverse geocode — converts GPS coordinates into a city/country pair so the
-// "Use current location" button can auto-fill those fields.
+// Reverse geocode — converts GPS coordinates into a city/country pair (and a
+// full-address placeName pre-fill) so the "Use current location" button can
+// auto-fill those fields. placeName is only ever a suggested starting value —
+// callers must leave it user-editable, never silently overwrite an edit.
 export async function reverseGeocode(
   lat: number,
   lng: number,
-): Promise<{ city: string | null; country: string | null }> {
+): Promise<{ city: string | null; country: string | null; placeName: string | null }> {
   try {
     const url = new URL('https://nominatim.openstreetmap.org/reverse')
     url.searchParams.set('lat', String(lat))
@@ -79,20 +82,21 @@ export async function reverseGeocode(
     const res = await fetch(url, { headers: { 'User-Agent': NOMINATIM_USER_AGENT } })
     if (!res.ok) {
       log.error('Nominatim reverse geocode failed', { status: res.status, lat, lng })
-      return { city: null, country: null }
+      return { city: null, country: null, placeName: null }
     }
 
     const result = (await res.json()) as NominatimReverseResult
     const address = result.address ?? {}
     const city = address.city ?? address.town ?? address.village ?? address.municipality ?? null
     const country = address.country ?? null
-    return { city, country }
+    const placeName = result.display_name ?? null
+    return { city, country, placeName }
   } catch (err) {
     log.error('Nominatim reverse geocode threw', {
       lat,
       lng,
       error: err instanceof Error ? err.message : String(err),
     })
-    return { city: null, country: null }
+    return { city: null, country: null, placeName: null }
   }
 }

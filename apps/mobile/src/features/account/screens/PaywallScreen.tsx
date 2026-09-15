@@ -158,7 +158,7 @@ export function PaywallScreen() {
           tPricing('bullets.zine_export_yes'),
           tPricing('bullets.postcard_export_yes'),
         ]
-      : [tPricing('bullets.pdf_export_no')]
+      : []
     return [
       limits.maxTrips === Infinity
         ? tPricing('bullets.trips_unlimited')

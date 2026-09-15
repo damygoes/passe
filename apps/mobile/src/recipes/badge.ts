@@ -16,7 +16,8 @@ interface BadgeRecipe {
 }
 
 export function createBadgeRecipe(theme: AppTheme): BadgeRecipe {
-  const { colors, palette, spacing, fontSizes, fontWeights, borderRadius } = theme
+  const { colors, palette, spacing, fontSizes, fontWeights, borderRadius, colorScheme } = theme
+  const isDark = colorScheme === 'dark'
 
   return {
     base: {
@@ -102,6 +103,33 @@ export function createBadgeRecipe(theme: AppTheme): BadgeRecipe {
         container: { backgroundColor: colors.primary, borderColor: 'transparent' },
         label: { color: colors.primaryForeground, fontWeight: fontWeights.semibold },
         gradient: [palette.terracotta.light, palette.terracotta.dark],
+      },
+
+      // Tag colors, matching packages/ui's Badge 1:1: PRIVATE (olive tint),
+      // SHARED (terracotta tint), neutral (taupe tint) — never the paid-plan
+      // foil gradients above, which are a distinct, unrelated meaning.
+      private: {
+        container: {
+          backgroundColor: `${palette.deepOlive.DEFAULT}${isDark ? '33' : '1F'}`,
+          borderColor: 'transparent',
+        },
+        label: { color: isDark ? palette.deepOlive.light : palette.deepOlive.dark },
+      },
+
+      shared: {
+        container: {
+          backgroundColor: `${palette.terracotta.DEFAULT}${isDark ? '33' : '1F'}`,
+          borderColor: 'transparent',
+        },
+        label: { color: isDark ? palette.terracotta.light : palette.terracotta.dark },
+      },
+
+      neutral: {
+        container: {
+          backgroundColor: `${palette.mutedTaupe.DEFAULT}${isDark ? '33' : '1F'}`,
+          borderColor: 'transparent',
+        },
+        label: { color: isDark ? palette.agedCream.DEFAULT : palette.darkEspresso.DEFAULT },
       },
 
       // Passport-stamp look: dashed ink border, uppercase label, slight tilt

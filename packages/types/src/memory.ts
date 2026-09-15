@@ -38,6 +38,11 @@ export const MemoryMediaSchema = z.object({
   // CreateMemoryMediaSchema below).
   placeholder: z.string().nullish(),
   srcset: z.record(z.string(), z.string()).nullish(),
+  // Per-photo caption shown in the memory detail gallery's caption row and
+  // "This photograph" card.
+  caption: z.string().max(300).nullish(),
+  // Per-photo capture time; UI falls back to the memory's capturedAt when null.
+  capturedAt: z.coerce.date().nullish(),
   createdAt: z.coerce.date(),
 })
 
@@ -54,6 +59,8 @@ export const CreateMemoryMediaSchema = z.object({
   mediaType: MediaTypeSchema.default('photo'),
   width: z.number().int().positive().nullish(),
   height: z.number().int().positive().nullish(),
+  caption: z.string().max(300).nullish(),
+  capturedAt: z.coerce.date().nullish(),
 })
 
 export type CreateMemoryMedia = z.infer<typeof CreateMemoryMediaSchema>
@@ -67,6 +74,9 @@ export const MemorySchema = z.object({
   location: CoordinatesSchema.nullish(),
   city: z.string().max(100).nullish(),
   country: z.string().max(100).nullish(),
+  // Freeform street-level address — owner-only, never shown on public pages.
+  placeName: z.string().max(200).nullish(),
+  tags: z.array(z.string().max(40)).default([]),
   capturedAt: z.coerce.date(),
   isPublic: z.boolean().default(false),
   layoutVariant: LayoutVariantSchema.default('auto'),

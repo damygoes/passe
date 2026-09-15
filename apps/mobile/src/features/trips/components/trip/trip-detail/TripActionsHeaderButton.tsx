@@ -1,19 +1,18 @@
+import { colors as brandColors } from '@passe/theme'
 import { router, useGlobalSearchParams } from 'expo-router'
-import { Pressable, StyleSheet } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
 
-import { GlassSurface } from '@/components/ui/glass-surface'
 import { Icon } from '@/components/ui/icon'
-import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
-const BUTTON_SIZE = 34
+const BUTTON_SIZE = 40
 
 // Rendered inside TripDetailNavBar on the trips/[id] screen, so the trip id
 // comes from the global search params, not props.
-// The glass circle matches the system back button and keeps the icon legible
-// both over the hero photo and over content once the hero scrolls away.
+// A plain dark scrim (not GlassSurface) — this sits over a photo and needs
+// to read regardless of the viewer's light/dark theme or whether real Liquid
+// Glass is available on the device, same rationale as CarouselCountPill.
 export function TripActionsHeaderButton() {
-  const { colors } = useTheme()
   const t = useTranslations('trips.detail')
   const { id } = useGlobalSearchParams<{ id: string }>()
 
@@ -26,8 +25,8 @@ export function TripActionsHeaderButton() {
       hitSlop={8}
       style={styles.button}
     >
-      <GlassSurface shape="circle" style={StyleSheet.absoluteFill} />
-      <Icon name="more" size="md" color={colors.foreground} />
+      <View style={styles.scrim} />
+      <Icon name="more" size="lg" color={brandColors.agedCream.DEFAULT} />
     </Pressable>
   )
 }
@@ -38,5 +37,14 @@ const styles = StyleSheet.create({
     height: BUTTON_SIZE,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  scrim: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: BUTTON_SIZE / 2,
+    backgroundColor: `${brandColors.darkEspresso.DEFAULT}8C`,
   },
 })

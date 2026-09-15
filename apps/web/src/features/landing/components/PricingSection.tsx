@@ -6,7 +6,6 @@ import { m } from 'motion/react'
 import { useTranslations } from 'next-intl'
 import { PricingCard } from './PricingCard'
 import { SectionHeading } from './SectionHeading'
-import { SectionStamp } from './SectionStamp'
 
 const PLANS = ['free', 'explorer', 'collector'] as const
 
@@ -14,28 +13,34 @@ export function PricingSection() {
   const t = useTranslations('landing.pricing')
 
   return (
-    <section className="relative overflow-x-hidden px-6 py-24 md:py-32">
-      <div
-        aria-hidden
-        className="animate-drift pointer-events-none absolute top-10 -right-24 -z-10 size-80 rounded-full bg-terracotta/10 blur-3xl [animation-delay:-13s]"
-      />
-      <div className="relative mx-auto max-w-6xl">
-        <SectionStamp className="-top-6 right-2 md:right-8" rotate={11} />
+    <section id="plans" className="scroll-mt-[68px] px-6 py-24 md:py-32">
+      <div className="mx-auto max-w-6xl">
         <m.div
-          className="mx-auto max-w-2xl text-center"
+          className="flex flex-wrap items-end justify-between gap-6"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, margin: '0px 0px -15% 0px' }}
           transition={gentleSpring}
         >
-          <SectionHeading title={t('heading')} subtitle={t('subheading')} />
+          <SectionHeading title={t('heading')} subtitle={t('subheading')} className="max-w-xl" />
+          <span className="inline-flex items-center gap-2 rounded-full bg-popover px-5 py-[11px] font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase shadow-soft-sm">
+            <span aria-hidden className="size-[7px] rounded-full bg-deep-olive-500" />
+            {t('monthly_note')}
+          </span>
         </m.div>
 
-        <Stagger inView className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <Stagger
+          inView
+          className="mt-14 grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] items-start gap-6"
+        >
           {PLANS.map((plan) => (
             <PricingCard key={plan} plan={plan} />
           ))}
         </Stagger>
+
+        <p className="mt-8 text-center font-mono text-[10.5px] tracking-[0.08em] text-muted-foreground uppercase">
+          {t('cancel_note')}
+        </p>
       </div>
     </section>
   )

@@ -23,16 +23,19 @@ describe('TripExportOptionsScreen', () => {
     setMockSearchParams({ id: 'trip-1' })
   })
 
-  it('shows Collector badges and opens the paywall instead of the gated action on the free plan', () => {
+  it('shows locked status and opens the paywall instead of the gated action on the free plan', () => {
     mockUseUser.mockReturnValue({ data: { plan: 'free' } })
     render(<TripExportOptionsScreen />)
 
-    expect(screen.getAllByText('collector_badge')).toHaveLength(3)
-    fireEvent.press(screen.getByText('create_zine'))
+    expect(screen.getByText('badge_locked')).toBeTruthy()
+    expect(screen.getAllByText('status_locked')).toHaveLength(3)
+
+    const lockedCtas = screen.getAllByText('locked_cta')
+    expect(lockedCtas).toHaveLength(3)
+
+    fireEvent.press(lockedCtas[0])
     expect(mockReplace).not.toHaveBeenCalled()
     expect(mockPush).toHaveBeenCalledWith('/(app)/account/paywall')
-
-    fireEvent.press(screen.getByText('download_pdf'))
     expect(downloadTripExport).not.toHaveBeenCalled()
   })
 
@@ -40,8 +43,9 @@ describe('TripExportOptionsScreen', () => {
     mockUseUser.mockReturnValue({ data: { plan: 'collector' } })
     render(<TripExportOptionsScreen />)
 
-    expect(screen.queryByText('collector_badge')).toBeNull()
-    fireEvent.press(screen.getByText('download_pdf'))
+    expect(screen.getByText('badge_unlocked')).toBeTruthy()
+    expect(screen.queryByText('status_locked')).toBeNull()
+    fireEvent.press(screen.getByText('pdf_cta'))
 
     await waitFor(() =>
       expect(downloadTripExport).toHaveBeenCalledWith(
@@ -54,10 +58,10 @@ describe('TripExportOptionsScreen', () => {
     mockUseUser.mockReturnValue({ data: { plan: 'collector' } })
     render(<TripExportOptionsScreen />)
 
-    fireEvent.press(screen.getByText('create_zine'))
+    fireEvent.press(screen.getByText('zine_cta'))
     expect(mockReplace).toHaveBeenCalledWith('/(app)/trips/export-zine/trip-1')
 
-    fireEvent.press(screen.getByText('create_postcard'))
+    fireEvent.press(screen.getByText('postcard_cta'))
     expect(mockReplace).toHaveBeenCalledWith('/(app)/trips/export-postcard/trip-1')
   })
 
@@ -66,7 +70,7 @@ describe('TripExportOptionsScreen', () => {
     jest.mocked(downloadTripExport).mockRejectedValueOnce(new Error('server exploded'))
     render(<TripExportOptionsScreen />)
 
-    fireEvent.press(screen.getByText('download_pdf'))
+    fireEvent.press(screen.getByText('pdf_cta'))
     await waitFor(() => expect(screen.getByText('export_download_failed')).toBeTruthy())
   })
 })

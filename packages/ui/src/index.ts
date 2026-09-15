@@ -1,4 +1,11 @@
 export {
+  Accordion,
+  AccordionHeader,
+  AccordionItem,
+  AccordionPanel,
+  AccordionTrigger,
+} from './accordion/Accordion'
+export {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -33,6 +40,18 @@ export {
   CardTitle,
 } from './card/Card'
 export { DatePicker } from './date-picker/DatePicker'
+export {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
+} from './dialog/Dialog'
 export {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -84,6 +103,7 @@ export {
   PopoverTitle,
   PopoverTrigger,
 } from './popover/Popover'
+export { Segmented, SegmentedItem } from './segmented/Segmented'
 export { Separator } from './separator/Separator'
 export {
   Sheet,
@@ -121,6 +141,7 @@ export {
   SidebarTrigger,
 } from './sidebar/Sidebar'
 export { Skeleton } from './skeleton/Skeleton'
+export { StatTile, statTileVariants } from './stat-tile/StatTile'
 export { Switch } from './switch/Switch'
 export { Textarea } from './textarea/Textarea'
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip/Tooltip'

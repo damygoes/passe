@@ -9,12 +9,20 @@ import { useRouter } from '@/i18n/navigation'
 import { getBlurProps } from '@/lib/media/image-blur'
 import { tripRoute } from '@/lib/routes'
 
+interface MapMemoryPopupPager {
+  index: number
+  total: number
+  onPrev: () => void
+  onNext: () => void
+}
+
 interface MapMemoryPopupProps {
   point: MapPoint
   onClose: () => void
+  pager?: MapMemoryPopupPager
 }
 
-export function MapMemoryPopup({ point, onClose }: MapMemoryPopupProps) {
+export function MapMemoryPopup({ point, onClose, pager }: MapMemoryPopupProps) {
   const t = useTranslations('map')
   const router = useRouter()
 
@@ -51,6 +59,31 @@ export function MapMemoryPopup({ point, onClose }: MapMemoryPopupProps) {
         )}
         {point.note && <p className="line-clamp-3 text-sm">{point.note}</p>}
       </div>
+      {pager && (
+        <div className="flex items-center justify-between border-t px-3 py-2">
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={pager.onPrev}
+            disabled={pager.index === 0}
+            aria-label={t('prev_photo')}
+          >
+            <Icon name="chevron-left" size="sm" />
+          </Button>
+          <span className="font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase">
+            {pager.index + 1} / {pager.total}
+          </span>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={pager.onNext}
+            disabled={pager.index === pager.total - 1}
+            aria-label={t('next_photo')}
+          >
+            <Icon name="chevron-right" size="sm" />
+          </Button>
+        </div>
+      )}
       <div className="flex justify-end border-t p-3 pt-2">
         <Button variant="default" size="sm" onClick={() => router.push(tripRoute(point.tripId))}>
           {t('view_trip')}

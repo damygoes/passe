@@ -35,6 +35,18 @@ export const Stamp: Story = {
   args: { variant: 'stamp', children: 'Indonesia' },
 }
 
+export const Private: Story = {
+  args: { variant: 'private', children: 'Private' },
+}
+
+export const Shared: Story = {
+  args: { variant: 'shared', children: 'Shared' },
+}
+
+export const Neutral: Story = {
+  args: { variant: 'neutral', children: 'Golden hour' },
+}
+
 export const AllVariants: Story = {
   render: () => (
     <div className="flex flex-wrap gap-2">
@@ -44,6 +56,9 @@ export const AllVariants: Story = {
       <Badge variant="outline">Outline</Badge>
       <Badge variant="ghost">Ghost</Badge>
       <Badge variant="stamp">Stamp</Badge>
+      <Badge variant="private">Private</Badge>
+      <Badge variant="shared">Shared</Badge>
+      <Badge variant="neutral">Golden hour</Badge>
     </div>
   ),
 }

@@ -11,11 +11,11 @@ export function TextSection({ memory }: Props) {
   return (
     <div className="mx-auto max-w-prose py-4 text-center">
       {memory.note && (
-        <p className="font-heading text-2xl italic leading-relaxed text-foreground">
-          {memory.note}
+        <p className="font-display text-[26px] leading-[1.35] text-foreground italic sm:text-[28px]">
+          &ldquo;{memory.note}&rdquo;
         </p>
       )}
-      <p className="mt-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+      <p className="mt-4 font-mono text-[10.5px] tracking-[0.12em] text-muted-foreground uppercase">
         {[meta, formatTripDateFull(memory.capturedAt)].filter(Boolean).join(' · ')}
       </p>
     </div>

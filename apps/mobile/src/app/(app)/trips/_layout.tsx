@@ -2,7 +2,6 @@ import { Stack } from 'expo-router'
 import { StyleSheet } from 'react-native'
 
 import { GlassSurface } from '@/components/ui/glass-surface'
-import { NewTripHeaderButton } from '@/features/trips/components/trip/lists/NewTripHeaderButton'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
@@ -41,10 +40,7 @@ export default function TripsLayout() {
         headerTitleStyle: { color: colors.foreground },
       }}
     >
-      <Stack.Screen
-        name="index"
-        options={{ title: '', headerRight: () => <NewTripHeaderButton /> }}
-      />
+      <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen
         name="[id]"
         options={{
@@ -52,6 +48,22 @@ export default function TripsLayout() {
           // content bleeding under a transparent header (the content frame is
           // shifted below it). The screen renders TripDetailNavBar — floating
           // back/actions buttons over the hero — instead.
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="memory/[id]"
+        options={{
+          // Same reasoning as trip detail's [id]: no native header, so the
+          // full-bleed photo isn't clipped by react-native-screens.
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="public/[id]"
+        options={{
+          // No native header: same react-native-screens/iOS 26 clipping reasoning as
+          // trip detail's [id] — this screen renders its own back row instead.
           headerShown: false,
         }}
       />

@@ -62,7 +62,7 @@ export function CarouselSection({ memory, photoAlt, scrollLeftLabel, scrollRight
             <div
               key={item.id}
               data-carousel-card
-              className="relative aspect-[4/3] w-4/5 shrink-0 snap-start overflow-hidden rounded-xl sm:w-3/5"
+              className="washed relative aspect-[4/3] w-4/5 shrink-0 snap-start overflow-hidden rounded-[26px] sm:w-3/5"
             >
               <Image
                 src={item.url}

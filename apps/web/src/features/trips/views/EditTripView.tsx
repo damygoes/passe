@@ -3,6 +3,7 @@
 import { Link } from '@/i18n/navigation'
 import { tripRoute } from '@/lib/routes'
 import { useTrip } from '@passe/hooks'
+import { Icon } from '@passe/ui/icon'
 import { PageHeader, PageHeaderDescription, PageHeaderTitle } from '@passe/ui/page-header'
 import { Skeleton } from '@passe/ui/skeleton'
 import { useTranslations } from 'next-intl'
@@ -19,7 +20,11 @@ export function EditTripView({ id }: Props) {
 
   return (
     <div className="container mx-auto w-full max-w-2xl px-4 py-8 flex flex-col gap-6">
-      <Link href={tripRoute(id)} className="text-sm text-muted-foreground hover:text-foreground">
+      <Link
+        href={tripRoute(id)}
+        className="inline-flex w-fit items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+      >
+        <Icon name="chevron-left" size="xs" aria-hidden />
         {t('back')}
       </Link>
       <PageHeader>

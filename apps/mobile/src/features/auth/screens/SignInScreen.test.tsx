@@ -39,7 +39,7 @@ describe('SignInScreen', () => {
     await fillAndSubmit('user@example.com', 'password123')
 
     await waitFor(() => expect(mockSetActive).toHaveBeenCalledWith({ session: 'sess_1' }))
-    expect(mockReplace).toHaveBeenCalledWith('/(app)/trips')
+    expect(mockReplace).toHaveBeenCalledWith('/(app)/home')
   })
 
   it('moves to the OTP step when a second factor is required', async () => {

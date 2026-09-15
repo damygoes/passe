@@ -19,6 +19,10 @@ export default function AppLayout() {
       labelStyle={{ fontFamily: fonts.body, fontSize: fontSizes.xs, color: colors.mutedForeground }}
       minimizeBehavior="onScrollDown"
     >
+      <NativeTabs.Trigger name="home/index">
+        <NativeTabs.Trigger.Label>{t('home')}</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon sf="house.fill" md="home" />
+      </NativeTabs.Trigger>
       <NativeTabs.Trigger name="trips">
         <NativeTabs.Trigger.Label>{t('trips')}</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon sf="suitcase.fill" md="luggage" />
@@ -28,7 +32,7 @@ export default function AppLayout() {
         <NativeTabs.Trigger.Icon sf="globe.americas.fill" md="public" />
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="account">
-        <NativeTabs.Trigger.Label>{t('account')}</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Label>{t('you')}</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon sf="person.fill" md="person" />
       </NativeTabs.Trigger>
     </NativeTabs>

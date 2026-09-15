@@ -7,26 +7,29 @@ Components are built on **Base UI** primitives (`@base-ui/react`), styled with *
 
 ## Current Components
 
-| Component      | Export path                | File                                    |
-| -------------- | -------------------------- | --------------------------------------- |
-| `AlertDialog`  | `@passe/ui/alert-dialog`   | `src/alert-dialog/AlertDialog.tsx`      |
-| `Avatar`       | `@passe/ui/avatar`         | `src/avatar/Avatar.tsx`                 |
-| `Badge`        | `@passe/ui/badge`          | `src/badge/Badge.tsx`                   |
-| `Button`       | `@passe/ui/button`         | `src/button/Button.tsx`                 |
-| `Calendar`     | `@passe/ui/calendar`       | `src/calendar/Calendar.tsx`             |
-| `Card`         | `@passe/ui/card`           | `src/card/Card.tsx`                     |
-| `DatePicker`   | `@passe/ui/date-picker`    | `src/date-picker/DatePicker.tsx`        |
-| `DropdownMenu` | `@passe/ui/dropdown-menu`  | `src/dropdown-menu/DropdownMenu.tsx`    |
-| `Empty`        | `@passe/ui/empty`          | `src/empty/Empty.tsx`                   |
-| `Icon`         | `@passe/ui/icon`           | `src/icon/Icon.tsx`                     |
-| `Input`        | `@passe/ui/input`          | `src/input/Input.tsx`                   |
-| `Navbar`       | `@passe/ui/navbar`         | `src/navbar/Navbar.tsx`                 |
-| `PageHeader`   | `@passe/ui/page-header`    | `src/page-header/PageHeader.tsx`        |
-| `Popover`      | `@passe/ui/popover`        | `src/popover/Popover.tsx`               |
-| `Separator`    | `@passe/ui/separator`      | `src/separator/Separator.tsx`           |
-| `Skeleton`     | `@passe/ui/skeleton`       | `src/skeleton/Skeleton.tsx`             |
-| `Switch`       | `@passe/ui/switch`         | `src/switch/Switch.tsx`                 |
-| `Textarea`     | `@passe/ui/textarea`       | `src/textarea/Textarea.tsx`             |
+| Component      | Export path               | File                                 |
+| -------------- | ------------------------- | ------------------------------------ |
+| `AlertDialog`  | `@passe/ui/alert-dialog`  | `src/alert-dialog/AlertDialog.tsx`   |
+| `Avatar`       | `@passe/ui/avatar`        | `src/avatar/Avatar.tsx`              |
+| `Badge`        | `@passe/ui/badge`         | `src/badge/Badge.tsx`                |
+| `Button`       | `@passe/ui/button`        | `src/button/Button.tsx`              |
+| `Calendar`     | `@passe/ui/calendar`      | `src/calendar/Calendar.tsx`          |
+| `Card`         | `@passe/ui/card`          | `src/card/Card.tsx`                  |
+| `DatePicker`   | `@passe/ui/date-picker`   | `src/date-picker/DatePicker.tsx`     |
+| `Dialog`       | `@passe/ui/dialog`        | `src/dialog/Dialog.tsx`              |
+| `DropdownMenu` | `@passe/ui/dropdown-menu` | `src/dropdown-menu/DropdownMenu.tsx` |
+| `Empty`        | `@passe/ui/empty`         | `src/empty/Empty.tsx`                |
+| `Icon`         | `@passe/ui/icon`          | `src/icon/Icon.tsx`                  |
+| `Input`        | `@passe/ui/input`         | `src/input/Input.tsx`                |
+| `Navbar`       | `@passe/ui/navbar`        | `src/navbar/Navbar.tsx`              |
+| `PageHeader`   | `@passe/ui/page-header`   | `src/page-header/PageHeader.tsx`     |
+| `Popover`      | `@passe/ui/popover`       | `src/popover/Popover.tsx`            |
+| `Segmented`    | `@passe/ui/segmented`     | `src/segmented/Segmented.tsx`        |
+| `Separator`    | `@passe/ui/separator`     | `src/separator/Separator.tsx`        |
+| `Skeleton`     | `@passe/ui/skeleton`      | `src/skeleton/Skeleton.tsx`          |
+| `StatTile`     | `@passe/ui/stat-tile`     | `src/stat-tile/StatTile.tsx`         |
+| `Switch`       | `@passe/ui/switch`        | `src/switch/Switch.tsx`              |
+| `Textarea`     | `@passe/ui/textarea`      | `src/textarea/Textarea.tsx`          |
 
 All components are also re-exported from the barrel — `import { Button } from '@passe/ui'` works too.
 

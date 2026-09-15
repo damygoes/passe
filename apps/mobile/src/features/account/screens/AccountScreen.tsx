@@ -11,7 +11,8 @@ import { Separator } from '@/components/ui/separator'
 import { LogoutButton } from '@/features/auth/components/LogoutButton'
 import { AccountMenuRow } from '@/features/account/components/AccountMenuRow'
 import { LegalSection } from '@/features/account/components/LegalSection'
-import { PlanSection } from '@/features/account/components/PlanSection'
+import { PlanMenuRow } from '@/features/account/components/PlanMenuRow'
+import { StatsMenuRow } from '@/features/account/components/StatsMenuRow'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 import { enterUp } from '@/lib/motion'
@@ -21,6 +22,7 @@ export function AccountScreen() {
   const { user } = useUser()
   const router = useRouter()
   const t = useTranslations('account.tabs')
+  const tNav = useTranslations('nav')
   const headerHeight = useHeaderHeight()
 
   const styles = useMemo(
@@ -43,7 +45,14 @@ export function AccountScreen() {
           color: colors.foreground,
         },
         userEmail: { fontSize: fontSizes.sm, color: colors.mutedForeground },
-        menu: { gap: spacing[1] },
+        section: { gap: spacing[1] },
+        sectionLabel: {
+          fontSize: fontSizes.xs,
+          fontWeight: fontWeights.medium,
+          color: colors.mutedForeground,
+          textTransform: 'uppercase',
+          marginBottom: spacing[1],
+        },
         footer: { padding: spacing[6], paddingTop: spacing[4] },
       }),
     [colors, spacing, fontSizes, fontWeights, headerHeight],
@@ -78,11 +87,15 @@ export function AccountScreen() {
 
         <Separator />
 
-        <Animated.View entering={enterUp(80)}>
-          <PlanSection />
+        <Animated.View entering={enterUp(80)} style={styles.section}>
+          <Text style={styles.sectionLabel}>{tNav('stats')}</Text>
+          <StatsMenuRow />
         </Animated.View>
 
-        <Animated.View entering={enterUp(160)} style={styles.menu}>
+        <Separator />
+
+        <Animated.View entering={enterUp(160)} style={styles.section}>
+          <Text style={styles.sectionLabel}>{tNav('account')}</Text>
           <AccountMenuRow
             icon="globe"
             label={t('portfolio')}
@@ -93,6 +106,7 @@ export function AccountScreen() {
             label={t('profile')}
             onPress={() => router.push('/(app)/account/profile')}
           />
+          <PlanMenuRow />
           <AccountMenuRow
             icon="lock"
             label={t('security')}

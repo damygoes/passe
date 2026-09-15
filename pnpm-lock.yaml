@@ -65,6 +65,9 @@ importers:
       '@passe/logger':
         specifier: workspace:*
         version: link:../../packages/logger
+      '@passe/map':
+        specifier: workspace:*
+        version: link:../../packages/map
       '@passe/theme':
         specifier: workspace:*
         version: link:../../packages/theme
@@ -276,6 +279,9 @@ importers:
       '@passe/logger':
         specifier: workspace:*
         version: link:../../packages/logger
+      '@passe/map':
+        specifier: workspace:*
+        version: link:../../packages/map
       '@passe/theme':
         specifier: workspace:*
         version: link:../../packages/theme
@@ -581,6 +587,22 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
 
+  packages/map:
+    dependencies:
+      '@passe/theme':
+        specifier: workspace:*
+        version: link:../theme
+    devDependencies:
+      '@passe/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/geojson':
+        specifier: ^7946.0.16
+        version: 7946.0.16
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+
   packages/theme:
     devDependencies:
       '@passe/typescript-config':
@@ -605,8 +627,8 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0(@date-fns/tz@1.5.0)(@types/react@19.2.2)(date-fns@4.4.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@hugeicons/core-free-icons':
-        specifier: ^4.2.2
-        version: 4.2.2
+        specifier: ^4.3.0
+        version: 4.3.2
       '@hugeicons/react':
         specifier: ^1.1.9
         version: 1.1.9(react@19.2.3)
@@ -690,6 +712,9 @@ importers:
       '@passe/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
 
 packages:
 
@@ -2185,8 +2210,8 @@ packages:
     peerDependencies:
       react-hook-form: ^7.55.0
 
-  '@hugeicons/core-free-icons@4.2.2':
-    resolution: {integrity: sha512-fjQW3p6cwoJmwK3oCnV8Z3PC5sHihDvr2jkAHax8cxqp62GaV/D7B/Rnao+JwicW8fmLZUQ6QrzWfoyMFOEQlQ==}
+  '@hugeicons/core-free-icons@4.3.2':
+    resolution: {integrity: sha512-31uDdIq71YcVxeltjcS/tsmYFt4VjmgyNTZfG1bY6mbeFmsYL6Nwz9PdDZetGtGPZOAEVg0bHoQFOoPWDC51bg==}
 
   '@hugeicons/react-native@1.0.15':
     resolution: {integrity: sha512-YKg+k16uz7FRgq/ReaWrf0qzdRDOkEruQBE4/oVWZ2qZXq9T4mqj3P3HoZ7Uk/pi8KVlpZTi7TAokwizsQMbFA==}
@@ -12402,7 +12427,7 @@ snapshots:
       '@standard-schema/utils': 0.3.0
       react-hook-form: 7.81.0(react@19.2.3)
 
-  '@hugeicons/core-free-icons@4.2.2': {}
+  '@hugeicons/core-free-icons@4.3.2': {}
 
   '@hugeicons/react-native@1.0.15(react-native-svg@15.15.4(react-native@0.86.0(@babel/core@7.29.7)(@react-native/jest-preset@0.86.0(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.29.7)(bufferutil@4.1.0)(utf-8-validate@6.0.6))(@types/react@19.2.2)(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@6.0.6))(react@19.2.3))(react-native@0.86.0(@babel/core@7.29.7)(@react-native/jest-preset@0.86.0(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.29.7)(bufferutil@4.1.0)(utf-8-validate@6.0.6))(@types/react@19.2.2)(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@6.0.6))(react@19.2.3)':
     dependencies:

@@ -41,6 +41,13 @@ export const memories = pgTable(
     lng: real('lng'),
     city: text('city'),
     country: text('country'),
+    // Freeform street-level address (e.g. "Rue Bin Souaki, Chefchaouen").
+    // Owner-only — never rendered on public pages, unlike city/country.
+    placeName: text('place_name'),
+    tags: text('tags')
+      .array()
+      .notNull()
+      .default(sql`'{}'::text[]`),
     capturedAt: timestamp('captured_at').notNull(),
     isPublic: boolean('is_public').notNull().default(false),
     layoutVariant: layoutVariantEnum('layout_variant').notNull().default('auto'),

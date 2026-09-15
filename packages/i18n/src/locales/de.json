@@ -1,13 +1,22 @@
 {
   "common": {
     "app_name": "Passe.",
-    "app_tagline": "Die Vergangenheit, wunderschön bewahrt.",
-    "cancel": "Abbrechen"
+    "app_tagline": "Ein Ort für die Erinnerungen, die es wert sind, bewahrt zu werden.",
+    "cancel": "Abbrechen",
+    "back": "Zurück"
   },
   "auth": {
     "layout": {
       "description": "Erstelle Reisen, füge geogetaggte Erinnerungen hinzu und teile deine Welt – wunderschön.",
       "copyright": "© 2026 Passe"
+    },
+    "welcome": {
+      "title": "Passe.",
+      "tagline": "Ein Ort für die Erinnerungen, die es wert sind, bewahrt zu werden.",
+      "body": "Ein privates Tagebuch von allem, was du erlebt hast. Nur für dich – bis du dich entscheidest, es zu teilen.",
+      "cta_primary": "Starte deine erste Reise",
+      "cta_secondary": "Ich habe bereits ein Konto",
+      "caption_private": "Standardmäßig privat"
     },
     "sign_in": {
       "heading": "Willkommen zurück",
@@ -119,14 +128,19 @@
     }
   },
   "trips": {
-    "dashboard": {
-      "title": "Meine Reisen",
-      "description": "{tripsCount, plural, one {# Reise} other {# Reisen}} in {countriesCount, plural, one {# Land} other {# Ländern}}",
+    "list": {
+      "title": "Reisen",
       "new_trip": "Neue Reise",
-      "trips_error": "Deine Reisen konnten nicht geladen werden. Versuche, die Seite neu zu laden."
+      "trips_error": "Deine Reisen konnten nicht geladen werden. Versuche, die Seite neu zu laden.",
+      "filter_all": "Alle",
+      "filter_private": "Privat",
+      "filter_shared": "Geteilt",
+      "quota_label": "{count} von {limit} Reisen aufbewahrt",
+      "quota_unlimited": "Unbegrenzte Reisen",
+      "quota_cta": "Upgrade"
     },
     "new": {
-      "back": "← Zurück zu den Reisen",
+      "back": "Zurück zu den Reisen",
       "title": "Neue Reise",
       "subtitle": "Gib deiner Reise einen Namen, füge die besuchten Länder hinzu und lege die Daten fest.",
       "title_label": "Titel",
@@ -166,7 +180,7 @@
       "cover_label": "Titelbild"
     },
     "edit": {
-      "back": "← Zurück zur Reise",
+      "back": "Zurück zur Reise",
       "title": "Reise bearbeiten",
       "subtitle": "Aktualisiere die Details, Länder und Daten deiner Reise.",
       "save": "Änderungen speichern",
@@ -174,8 +188,8 @@
       "update_failed": "Deine Änderungen konnten nicht gespeichert werden. Bitte versuche es erneut."
     },
     "detail": {
-      "back": "← Zurück",
-      "back_label": "Zurück",
+      "back": "Zurück",
+      "back_label": "Zurück zu den Reisen",
       "edit": "Bearbeiten",
       "delete": "Löschen",
       "delete_title": "Diese Reise löschen?",
@@ -187,6 +201,7 @@
       "trip_error": "Reise konnte nicht geladen werden. Versuche, die Seite neu zu laden.",
       "memories_error": "Erinnerungen konnten nicht geladen werden. Versuche, die Seite neu zu laden.",
       "add_memory": "Erinnerung hinzufügen",
+      "share": "Reise teilen",
       "export_menu_trigger": "Exportieren",
       "collector_badge": "Collector",
       "coming_soon_badge": "Bald",
@@ -216,10 +231,73 @@
       "export_zine_description": "Ein Falt-Mini-Zine aus sechs Fotos",
       "export_postcard_description": "Ein Foto vorn, deine Nachricht auf der Rückseite"
     },
+    "keepsakes": {
+      "title": "Erinnerungsstücke",
+      "load_error": "Erinnerungsstücke konnten nicht geladen werden.",
+      "memories_count": "{count, plural, one {# Erinnerung} other {# Erinnerungen}}",
+      "badge_unlocked": "In deinem Tarif enthalten",
+      "badge_locked": "Collector-Funktion",
+      "status_ready": "Bereit",
+      "status_locked": "Collector",
+      "locked_cta": "Mit Collector freischalten",
+      "pdf_title": "Erinnerungsbuch",
+      "pdf_cta": "PDF exportieren",
+      "zine_title": "Zine",
+      "zine_cta": "Zine exportieren",
+      "postcard_title": "Postkarte",
+      "postcard_cta": "Postkarte exportieren",
+      "heading_prefix": "Erinnerungsstücke für",
+      "switch_trip": "Reise wechseln (aktuell {title})"
+    },
     "stats": {
       "countries": "{count, plural, one {Land} other {Länder}}",
       "cities": "{count, plural, one {Stadt} other {Städte}}",
-      "years": "{count, plural, one {Jahr} other {Jahre}}"
+      "years": "{count, plural, one {Jahr} other {Jahre}}",
+      "trips_label": "{count, plural, one {Reise} other {Reisen}}"
+    },
+    "stats_screen": {
+      "title": "Alles deins.",
+      "subhead": "{cities, plural, one {# Stadt} other {# Städte}}. {countries, plural, one {# Land} other {# Länder}}. {years, plural, one {# Jahr} other {# Jahre}}.",
+      "load_error": "Statistik konnte nicht geladen werden.",
+      "countries": "{count, plural, one {Land} other {Länder}}",
+      "countries_note": "{country} war das letzte.",
+      "cities": "{count, plural, one {Stadt} other {Städte}}",
+      "cities_note_repeat": "{count, plural, one {# mehrfach besucht.} other {# mehrfach besucht.}}",
+      "cities_note_none": "Bisher jede nur einmal.",
+      "trips_label": "{count, plural, one {Reise festgehalten} other {Reisen festgehalten}}",
+      "trips_note": "Die erste war {title}.",
+      "memories": "{count, plural, one {Erinnerung} other {Erinnerungen}}",
+      "memories_note_private": "{count, plural, one {# noch privat.} other {# noch privat.}}",
+      "memories_note_none": "Alle öffentlich.",
+      "days_away": "{count, plural, one {Tag unterwegs} other {Tage unterwegs}}",
+      "days_away_note": "Über alle festgehaltenen Reisen hinweg.",
+      "years": "{count, plural, one {Jahr} other {Jahre}}",
+      "years_note": "Seit {year}.",
+      "furthest_title": "Deine weiteste Erinnerung",
+      "somewhere": "Irgendwo weit weg",
+      "furthest_body": "{city}, {country} — {distance} km von deiner ersten verorteten Erinnerung entfernt, festgehalten am {date}.",
+      "furthest_body_empty": "Füge einer Erinnerung einen Ort hinzu, um das zu sehen.",
+      "quietest_title": "Ruhigster Monat",
+      "quietest_body_zero": "{month}. Du warst noch nie im {month} unterwegs.",
+      "quietest_body": "{month}. Dein ruhigster Monat, mit nur {count, plural, one {einer Erinnerung} other {# Erinnerungen}} über die Jahre.",
+      "quietest_body_empty": "Füge ein paar Erinnerungen hinzu, um das zu sehen."
+    },
+    "home": {
+      "greeting_morning": "Guten Morgen, {name}.",
+      "greeting_afternoon": "Guten Tag, {name}.",
+      "greeting_evening": "Guten Abend, {name}.",
+      "accent_line": "Wohin hat dich das Leben dieses Jahr geführt?",
+      "continue_heading": "Weitermachen, wo du aufgehört hast",
+      "continue_meta": "{dateRange} · {count, plural, one {# Erinnerung} other {# Erinnerungen}}",
+      "private_tag": "Privat",
+      "shared_tag": "Geteilt",
+      "noteless_memories": "{count, plural, =0 {} one {Eine Erinnerung hat noch keine Notiz.} other {{count} Erinnerungen haben noch keine Notiz.}}",
+      "by_place_heading": "Dieses Jahr, nach Ort",
+      "by_place_more": "+ {count} weitere",
+      "see_map": "Zur Karte",
+      "import_title": "Jede Erinnerung verdient ein Zuhause.",
+      "import_body": "Halte fest, wo du warst, bevor die Details verblassen.",
+      "import_cta": "Neue Erinnerung zu {title} hinzufügen"
     },
     "card": {
       "view": "Reise ansehen",
@@ -238,7 +316,36 @@
       "delete_confirm": "Löschen",
       "delete_cancel": "Abbrechen",
       "delete_failed": "Erinnerung konnte nicht gelöscht werden. Bitte versuche es erneut.",
-      "photo_count": "{count, plural, one {# Foto} other {# Fotos}}"
+      "photo_count": "{count, plural, one {# Foto} other {# Fotos}}",
+      "back": "{title}",
+      "visible_on_public_page": "Auf deiner öffentlichen Reiseseite sichtbar",
+      "public_slots_limited": "{remaining} von {limit} öffentlichen Erinnerungen im Free-Plan übrig",
+      "public_slots_unlimited": "Unbegrenzte öffentliche Erinnerungen",
+      "make_postcard": "Postkarte erstellen"
+    },
+    "memory_detail": {
+      "photo_position": "{current} / {total} Fotos",
+      "photo_position_short": "{current} / {total}",
+      "prev_photo": "Vorheriges Foto",
+      "next_photo": "Nächstes Foto",
+      "add_photographs": "Fotos hinzufügen",
+      "add_photos": "Fotos hinzufügen",
+      "add_tile_label": "Hinzufügen",
+      "this_photograph": "Dieses Foto",
+      "make_cover": "Als Titelbild festlegen",
+      "cover_photograph": "Titelbild",
+      "cover_photo_short": "Titelbild ✓",
+      "photo_options": "Fotooptionen",
+      "edit_caption": "Bildunterschrift bearbeiten",
+      "caption_placeholder": "Bildunterschrift hinzufügen…",
+      "caption_save": "Speichern",
+      "caption_cancel": "Abbrechen",
+      "delete_photo": "Foto löschen",
+      "delete_photo_title": "Dieses Foto löschen?",
+      "delete_photo_description": "Dieses Foto wird dauerhaft aus der Erinnerung entfernt.",
+      "delete_photo_confirm": "Löschen",
+      "delete_photo_cancel": "Abbrechen",
+      "empty_gallery_prompt": "Fotos hinzufügen"
     },
     "empty": {
       "no_trips_title": "Noch keine Reisen",
@@ -256,7 +363,7 @@
       "preview_alt": "Vorschau des hochgeladenen Fotos"
     },
     "new_memory": {
-      "back": "← Zurück zur Reise",
+      "back": "Zurück zur Reise",
       "title": "Neue Erinnerung",
       "subtitle": "Füge Fotos und eine Notiz zu einem Moment dieser Reise hinzu.",
       "photos_label": "Fotos",
@@ -269,7 +376,15 @@
       "city_placeholder": "Marrakesch",
       "country_label": "Land",
       "country_placeholder": "Marokko",
+      "place_name_label": "Adresse (optional)",
+      "place_name_placeholder": "Rue Bin Souaki, Chefchaouen",
+      "tags_label": "Tags (optional)",
+      "tags_placeholder": "Medina, Goldene Stunde, Film",
+      "trip_label": "Reise",
+      "privacy_title": "Diese Erinnerung privat halten",
+      "privacy_description": "Du kannst sie später veröffentlichen, eine Erinnerung nach der anderen.",
       "create": "Erinnerung hinzufügen",
+      "save_to_trip": "Zu {tripTitle} speichern",
       "creating": "Wird hinzugefügt…",
       "cancel": "Abbrechen",
       "limit_reached": "Du hast das Erinnerungslimit für diese Reise in deinem Tarif erreicht.",
@@ -286,7 +401,7 @@
       }
     },
     "edit_memory": {
-      "back": "← Zurück zur Reise",
+      "back": "Zurück zur Reise",
       "title": "Erinnerung bearbeiten",
       "subtitle": "Aktualisiere Fotos, Notiz oder Details für diesen Moment.",
       "save": "Änderungen speichern",
@@ -295,6 +410,7 @@
       "not_found": "Diese Erinnerung konnte nicht gefunden werden."
     },
     "editorial": {
+      "menu_label": "Erinnerungsoptionen",
       "layout_label": "Layout",
       "variant_auto": "Automatisch",
       "variant_hero": "Volle Breite",
@@ -302,27 +418,65 @@
       "variant_image_right": "Bild rechts",
       "variant_carousel": "Karussell",
       "variant_text": "Nur Text",
-      "flip": "Seite wechseln",
       "move_up": "Nach oben",
       "move_down": "Nach unten",
       "scroll_left": "Nach links scrollen",
       "scroll_right": "Nach rechts scrollen"
+    },
+    "public_trip": {
+      "url_suffix": "trips",
+      "description_days": "{days, plural, one {# Tag} other {# Tage}} durch {countries}.",
+      "description_generic": "Eine Reise durch {countries}.",
+      "shared_partial": "{shared} von {total} Erinnerungen werden hier geteilt — der Rest bleibt privat.",
+      "shared_all": "Jede Erinnerung dieser Reise wird hier geteilt.",
+      "photo_alt": "Erinnerungsfoto",
+      "kept_by": "Bewahrt von {name} auf Passe.",
+      "see_other_trips": "Weitere Reisen von {name} ansehen",
+      "empty_title": "Noch keine Erinnerungen geteilt",
+      "empty_description": "Der Besitzer hat für diese Reise noch keine Erinnerungen öffentlich gemacht.",
+      "error": "Die öffentliche Vorschau dieser Reise konnte nicht geladen werden."
     }
   },
   "nav": {
-    "dashboard": "Dashboard",
-    "portfolio": "Mein Portfolio",
+    "home": "Start",
+    "portfolio": "Portfolio",
     "account": "Konto",
     "billing": "Abrechnung",
     "sign_out": "Abmelden",
     "trips": "Reisen",
-    "map": "Karte"
+    "map": "Karte",
+    "stats": "Statistik",
+    "keepsakes": "Andenken",
+    "new_trip": "Neue Reise",
+    "you": "Du",
+    "view": "Ansicht",
+    "theme": "Design",
+    "appearance": "Erscheinungsbild",
+    "preferences": "Einstellungen",
+    "language": "Sprache"
+  },
+  "sidebar": {
+    "plan_card": {
+      "free_note": "{count} von {limit} Reisen aufbewahrt. Teilen ist ein Explorer-Feature.",
+      "explorer_note": "{count} von {limit} Reisen aufbewahrt. Exporte gibt es in Collector.",
+      "collector_note": "Unbegrenzte Reisen, Erinnerungen und Andenken.",
+      "cta_upgrade": "Upgrade",
+      "cta_manage": "Plan verwalten"
+    }
   },
   "map": {
-    "title": "Karte",
+    "title": "Deine Welt",
     "subtitle": "Jeder Ort, an dem du eine Erinnerung festgehalten hast.",
+    "summary": "{countries, plural, one {# Land} other {# Länder}} · {cities, plural, one {# Stadt} other {# Städte}} · {yearRange}",
+    "recent_pins": "Kürzliche Pins",
+    "filter_all_years": "Alle Jahre",
+    "legend_visited": "Besuchte Länder",
+    "legend_pins": "Stadt-Pins",
+    "legend_not_yet": "Noch nicht",
     "view_trip": "Reise ansehen",
     "close": "Schließen",
+    "prev_photo": "Vorherige Erinnerung",
+    "next_photo": "Nächste Erinnerung",
     "load_error": "Deine Karte konnte nicht geladen werden. Bitte lade die Seite neu.",
     "empty": {
       "title": "Noch keine Pins",
@@ -417,133 +571,178 @@
   },
   "landing": {
     "meta": {
-      "title": "Passe. — Die Vergangenheit, wunderschön bewahrt.",
+      "title": "Passe. — Ein Ort für die Erinnerungen, die es wert sind, bewahrt zu werden.",
       "description": "Erstelle Reisen, füge geogetaggte Erinnerungen hinzu und teile ein wunderschönes Reise-Portfolio. Standardmäßig privat."
     },
     "nav": {
+      "how": "So funktioniert's",
+      "what_you_keep": "Was du bewahrst",
+      "plans": "Pläne",
       "sign_in": "Anmelden",
-      "get_started": "Loslegen"
+      "get_started": "Starte dein Reisetagebuch"
     },
     "hero": {
-      "eyebrow": "Reiseerinnerungen bewahren",
-      "title_leading": "Die Vergangenheit,",
-      "title_accent": "wunderschön bewahrt.",
-      "subtitle": "Passe verwandelt deine Reisen in ein lebendiges Archiv — geogetaggte Fotos, Notizen und Momente, arrangiert zu einem Portfolio, das es wert ist, geteilt zu werden.",
-      "cta_primary": "Kostenlos starten",
+      "badge": "Standardmäßig privat · kein Feed, keine Follower",
+      "title": "Ein Ort für die Erinnerungen, die es wert sind, bewahrt zu werden.",
+      "subtitle": "Passe ist ein Reisetagebuch für Menschen, die wirklich unterwegs sind. Behalte jede Reise für dich — Fotos, Notizen, die kleinen Dinge, die du sonst vergisst — und teile nur, was du möchtest, nur mit wem du möchtest.",
+      "cta_primary": "Jetzt kostenlos bewahren",
       "cta_secondary": "Anmelden",
-      "note": "Kostenloser Plan inklusive. Keine Kreditkarte erforderlich."
+      "trust_free": "Für immer kostenlos",
+      "trust_export": "Jederzeit exportieren",
+      "trust_no_card": "Keine Karte nötig",
+      "memory_date": "11. März · Chefchaouen",
+      "memory_title": "Die blaue Tür",
+      "memory_quote": "Der alte Mann sagte, das Blau halte die Mücken fern."
     },
-    "stats": {
-      "privacy": {
-        "title": "Standardmäßig privat",
-        "description": "Nichts, was du hinzufügst, ist öffentlich, bis du es entscheidest."
-      },
-      "unlimited": {
-        "title": "Platz für jede Reise",
-        "description": "Organisiere so viele Reisen und Erinnerungen, wie deine Reisen brauchen."
-      },
-      "portfolio": {
-        "title": "Ein Portfolio, das sich zu teilen lohnt",
-        "description": "Verwandle deine liebsten Reisen in eine Seite, auf die du stolz bist."
-      }
+    "storeBadges": {
+      "ios_eyebrow": "Laden im",
+      "ios_name": "App Store"
     },
-    "features": {
-      "heading": "Alles, was du brauchst, um deine Reisen zu bewahren",
-      "subheading": "Gemacht für die Art, wie du dich wirklich an Reisen erinnerst.",
-      "trips": {
-        "title": "Reisen als Kapitel",
-        "description": "Organisiere deine Reisen — Daten, Länder und ein Cover, das die Szene setzt."
+    "proof": {
+      "journals": {
+        "value": "34k",
+        "label": "geführte Tagebücher"
       },
       "memories": {
-        "title": "Geogetaggte Erinnerungen",
-        "description": "Hefte Fotos und Notizen genau an die Orte, an denen sie entstanden sind. Deine Geschichte, der Reihe nach."
+        "value": "1,2 Mio.",
+        "label": "geschriebene Erinnerungen"
       },
-      "portfolio": {
-        "title": "Ein Portfolio, kein Feed",
-        "description": "Kuratiere eine wunderschöne öffentliche Seite deiner Reisen und teile sie mit einem einzigen Link."
+      "public": {
+        "value": "0",
+        "label": "Reisen öffentlich, außer du entscheidest es"
+      },
+      "exportable": {
+        "value": "100%",
+        "label": "exportierbar, immer"
+      }
+    },
+    "keep": {
+      "eyebrow": "Was du bewahrst",
+      "heading": "Eine Fotogalerie ist keine Erinnerung.",
+      "description": "Zwölftausend Fotos, keine Ahnung mehr, welcher Morgen welcher war. Passe gibt jeder Reise einen Ort, jedem Foto einen Satz — und gibt dir das alles als etwas Bewahrenswertes zurück.",
+      "private": {
+        "title": "Standardmäßig privat",
+        "description": "Jede Reise beginnt geschlossen. Nichts ist öffentlich, nichts wird Fremden vorgeschlagen, und es gibt keinen Feed, für den du dich inszenieren müsstest."
+      },
+      "map": {
+        "title": "Eine Karte, die sich füllt",
+        "description": "Städte, Länder, die Wege dazwischen. Sieh zu, wie sich die Jahre zu einer Form summieren, die nur dir gehört."
+      },
+      "keepsakes": {
+        "title": "Andenken, keine Exporte",
+        "description": "Verwandle eine Reise in ein PDF-Erinnerungsbuch, ein Zine oder ein Set Postkarten — echte Andenken, keine Dateien, die nur irgendwo liegen."
+      },
+      "share": {
+        "title": "Teile eine Tür nach der anderen",
+        "description": "Wähle, welche Reisen Teil deines öffentlichen Portfolios werden und welche Erinnerungen dazugehören. Ein Link, den du kontrollierst und jederzeit wieder schließen kannst."
       }
     },
     "how": {
-      "heading": "So funktioniert's",
-      "subheading": "Drei Schritte von der Reise zum Andenken.",
+      "eyebrow": "So funktioniert's",
+      "heading": "Drei Minuten pro Reise.",
       "step1": {
-        "title": "Reise erstellen",
-        "description": "Gib ihr einen Namen, wähle Daten und Länder und ein Cover."
+        "title": "Reise anlegen",
+        "description": "Ein Name, die Länder, die du besuchst, und zwei Daten. Marokko, 7.–16. März — mehr braucht es nicht."
       },
       "step2": {
-        "title": "Geogetaggte Erinnerungen hinzufügen",
-        "description": "Füge Fotos und Notizen hinzu — jede genau dort verankert, wo sie passiert ist."
+        "title": "Eine Erinnerung hinzufügen",
+        "description": "Füge ein paar Fotos aus deiner Bibliothek oder Kamera hinzu und markiere den Ort — per Standort oder von Hand eingetippt."
       },
       "step3": {
-        "title": "Portfolio teilen",
-        "description": "Veröffentliche ausgewählte Reisen auf deiner persönlichen Seite unter deinem eigenen Link."
+        "title": "Schreib, so viel du willst",
+        "description": "Eine Zeile reicht, um dich an einen Morgen zu erinnern — aber es ist Platz für die ganze Geschichte, wenn du sie willst."
+      },
+      "cta": "Mit einer Reise starten"
+    },
+    "testimonial": {
+      "quote": "Ich habe aufgehört, Jahre zu verlieren.",
+      "body": "Neun Reisen weiter, und die eine, die ich aufgeschrieben habe, ist die, die ich noch sehen kann. Meine Fotogalerie hat den Rest, und der Rest ist weg.",
+      "name": "Inés Marchand",
+      "stat": "47 bewahrte Städte",
+      "quote1": {
+        "text": "Die einzige App, bei der ich die Reise wirklich fertig aufgeschrieben habe. Sie fragt nach einer Zeile, also gebe ich ihr eine Zeile.",
+        "who": "Theo · 6 Reisen bewahrt"
+      },
+      "quote2": {
+        "text": "Ich habe meiner Mutter einen Link zu Japan geschickt, und sonst nichts. Genau so viel Teilen wollte ich.",
+        "who": "Mira · 21 Länder"
       }
-    },
-    "privacy": {
-      "eyebrow": "Standardmäßig privat",
-      "heading": "Deine Erinnerungen gehören zuerst dir",
-      "description": "Alles, was du zu Passe hinzufügst, ist zunächst privat. Nichts wird öffentlich, bis du es bewusst entscheidest — Reise für Reise, Erinnerung für Erinnerung.",
-      "point1": "Jede Reise und Erinnerung startet privat",
-      "point2": "Du entscheidest genau, was öffentlich wird",
-      "point3": "Mach alles jederzeit wieder privat"
-    },
-    "mobileApp": {
-      "eyebrow": "Auch mobil",
-      "heading": "Nimm dein Archiv überall mit",
-      "description": "Halte Erinnerungen unterwegs fest und halte jede Reise synchron — die Passe App für iOS und Android.",
-      "ios_eyebrow": "Download on the",
-      "ios_name": "App Store",
-      "android": "Google Play",
-      "screenshotAlt": "Die Passe App mit dem Reisearchiv einer Nutzerin",
-      "subscriptionHint": "Deine Reisen bleiben zwischen Web und Mobile synchron."
-    },
-    "archiveStat": {
-      "label": "bewahrte Erinnerungen und es werden mehr"
     },
     "pricing": {
       "heading": "Einfache Pläne für alle Reisenden",
       "subheading": "Starte kostenlos. Upgrade, wenn dein Archiv wächst.",
       "most_popular": "Am beliebtesten",
-      "per_month": "/ Monat",
+      "per_month": "Pro Monat",
+      "monthly_note": "Nur monatlich · jederzeit kündbar",
+      "cancel_note": "Mit einem Klick kündbar — dein Tagebuch bleibt im kostenlosen Plan lesbar und exportierbar.",
       "bullets": {
         "trips": "{count, plural, one {# Reise} other {# Reisen}}",
         "trips_unlimited": "Unbegrenzte Reisen",
         "memories": "{count, plural, one {# Erinnerung} other {# Erinnerungen}} pro Reise",
         "memories_unlimited": "Unbegrenzte Erinnerungen pro Reise",
-        "portfolio_yes": "Öffentliches Portfolio",
+        "portfolio_yes": "Öffentliches Portfolio und Reiseseiten",
         "portfolio_no": "Nur privates Festhalten",
-        "pdf_export_yes": "PDF-Export",
-        "pdf_export_no": "Kein PDF-Export",
+        "public_memories_limited": "{count, plural, one {# Erinnerung} other {# Erinnerungen}} für die Freigabe vorausgewählt",
+        "public_memories_unlimited": "Unbegrenzte öffentliche Erinnerungen",
+        "pdf_export_yes": "PDF-Erinnerungsbuch",
         "zine_export_yes": "Zine-Export",
         "postcard_export_yes": "Postkarten-Export"
       },
       "plans": {
         "free": {
           "name": "Free",
-          "tagline": "Für deine ersten Reisen",
+          "tagline": "Eine Reise nach der anderen, richtig bewahrt.",
           "price": "0 €",
           "cta": "Kostenlos starten"
         },
         "explorer": {
           "name": "Explorer",
-          "tagline": "Für Vielreisende",
+          "tagline": "Für alle, die mehr als einmal im Jahr aufbrechen.",
           "price": "4 €",
-          "cta": "Loslegen"
+          "cta": "Alles bewahren"
         },
         "collector": {
           "name": "Collector",
-          "tagline": "Für ein Leben voller Reisen",
+          "tagline": "Für das Tagebuch, das das Handy überlebt.",
           "price": "9 €",
-          "cta": "Loslegen"
+          "cta": "Collector wählen"
         }
       }
     },
+    "faq": {
+      "heading": "Bevor du startest",
+      "q1": {
+        "question": "Ist etwas öffentlich, ohne dass ich es entscheide?",
+        "answer": "Nein. Reisen und Erinnerungen sind standardmäßig privat. Du veröffentlichst dein Portfolio selbst — Reise für Reise, Erinnerung für Erinnerung — und kannst es jederzeit wieder privat machen."
+      },
+      "q2": {
+        "question": "Was passiert mit meinem Tagebuch, wenn ich nicht mehr zahle?",
+        "answer": "Nichts wird gelöscht. Du fällst auf den kostenlosen Plan zurück: Alles bleibt lesbar und exportierbar, du kannst nur keine neuen Reisen mehr hinzufügen, bis du wieder upgradest."
+      },
+      "q3": {
+        "question": "Bekomme ich meine Fotos wieder heraus?",
+        "answer": "Ja — Originale in voller Qualität, dazu ein PDF-Erinnerungsbuch, ein Zine oder ein Set Postkarten im Collector-Plan."
+      },
+      "q4": {
+        "question": "Funktioniert es offline, unterwegs?",
+        "answer": "Noch nicht — Schreiben und Foto-Uploads brauchen heute eine Verbindung. Offline-Unterstützung arbeiten wir bereits daran."
+      },
+      "q5": {
+        "question": "Gibt es eine Android-App?",
+        "answer": "Passe ist heute im App Store erhältlich, die Android-App folgt bald bei Google Play."
+      }
+    },
     "cta": {
-      "heading": "Starte deine Reise noch heute",
-      "subtitle": "Deine nächste Reise verdient mehr als eine Fotogalerie.",
-      "button": "Kostenlos starten"
+      "heading": "Deine nächste Reise passiert bereits.",
+      "subtitle": "Bewahre diese richtig. Kostenlos starten, jederzeit mitnehmen.",
+      "button_primary": "Starte dein Reisetagebuch",
+      "button_secondary": "Anmelden",
+      "store_line": "Heute im App Store · Google Play bald verfügbar"
     },
     "footer": {
+      "what_you_keep": "Was du bewahrst",
+      "plans": "Pläne",
+      "how_it_works": "So funktioniert's",
       "copyright": "© {year} Passe",
       "sign_in": "Anmelden",
       "sign_up": "Registrieren",
@@ -559,13 +758,19 @@
     "country_count": "{count, plural, one {# Land} other {# Länder}}",
     "city_count": "{count, plural, one {# Stadt} other {# Städte}}",
     "year_count": "{count, plural, one {# Jahr} other {# Jahre}}",
+    "stat_trips_label": "{count, plural, one {Reise} other {Reisen}}",
+    "stat_countries_label": "{count, plural, one {Land} other {Länder}}",
+    "stat_cities_label": "{count, plural, one {Stadt} other {Städte}}",
     "empty_title": "Hier gibt es noch nichts zu sehen",
     "empty_description": "{displayName} hat noch keine öffentlichen Reisen geteilt.",
-    "error": "Dein Portfolio konnte nicht geladen werden. Bitte versuche es erneut."
+    "error": "Dein Portfolio konnte nicht geladen werden. Bitte versuche es erneut.",
+    "public_badge": "Öffentlich",
+    "public_url": "passe.cc/u/{username}"
   },
   "billing": {
-    "title": "Abrechnung",
-    "subtitle": "Dein Tarif und Abo, verwaltet über Stripe.",
+    "title": "Behalte mehr davon.",
+    "subtitle": "Was du bereits festgehalten hast, wird nie entfernt — ein Upgrade hebt nur die Grenze an.",
+    "footer_caption": "Jederzeit kündbar · deine Erinnerungen bleiben deine · jährliche Abrechnung folgt",
     "current_plan": "Dein aktueller Tarif",
     "upgrade_to": "Auf {plan} upgraden",
     "switch_to": "Zu {plan} wechseln",

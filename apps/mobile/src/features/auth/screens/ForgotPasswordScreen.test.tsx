@@ -60,7 +60,7 @@ describe('ForgotPasswordScreen — reset step', () => {
     fireEvent.press(screen.getByText('reset_password'))
 
     await waitFor(() => expect(mockSetActive).toHaveBeenCalledWith({ session: 'sess_1' }))
-    expect(mockReplace).toHaveBeenCalledWith('/(app)/trips')
+    expect(mockReplace).toHaveBeenCalledWith('/(app)/home')
   })
 
   it('shows a generic error banner when the reset attempt throws', async () => {

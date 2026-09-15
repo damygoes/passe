@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import type { ImageProps } from 'expo-image'
 import type { ViewProps } from 'react-native'
 
-export type AvatarSize = 'sm' | 'default' | 'lg'
+export type AvatarSize = 'sm' | 'default' | 'lg' | 'xl'
 
 export interface AvatarProps extends ViewProps {
   size?: AvatarSize

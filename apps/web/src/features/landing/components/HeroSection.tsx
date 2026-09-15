@@ -1,177 +1,89 @@
-'use client'
-
-import { usePointerTilt } from '@/components/motion/usePointerTilt'
-import { gentleSpring, snappySpring } from '@/lib/motion'
+import { FadeIn } from '@/components/motion/FadeIn'
 import { routes } from '@/lib/routes'
-import { Badge } from '@passe/ui/badge'
 import { buttonVariants } from '@passe/ui/button'
-import { Icon } from '@passe/ui/icon'
-import { m } from 'motion/react'
-import { useTranslations } from 'next-intl'
 import Image from 'next/image'
+import { getTranslations } from 'next-intl/server'
 import { HERO_PHOTO } from '../constants'
 import { ExitLink } from './ExitLink'
-import { FlightPathDoodle } from './FlightPathDoodle'
-import { PostmarkBadge } from './PostmarkBadge'
+import { StoreBadges } from './StoreBadges'
 
-const MARQUEE_PLACES = [
-  'Kyoto',
-  'Lisboa',
-  'Marrakesh',
-  'Oaxaca',
-  'Reykjavík',
-  'Hà Nội',
-  'Valparaíso',
-  'Zanzibar',
-  'Santorini',
-  'Kathmandu',
-]
-
-export function HeroSection() {
-  const t = useTranslations('landing.hero')
-  const { rotateX, rotateY, handlePointerMove, handlePointerLeave } = usePointerTilt()
+// Two-column split, per the redesign's welcome screen: wordmark lives in
+// LandingHeader above this section, so the left column starts straight at
+// the badge/headline and a full-height washed photo fills the right column.
+// cta_secondary stays "Sign in" rather than the handoff's literal "See an
+// example" — there's no real public demo portfolio to showcase yet, and a
+// broken/staged example link would be worse than the deviation. The handoff's
+// client-side email-capture form is likewise skipped: there's no waitlist
+// backend anywhere in this codebase, so the primary CTA is a real sign-up
+// link rather than a form with a fabricated success state.
+export async function HeroSection() {
+  const t = await getTranslations('landing.hero')
 
   return (
-    <section className="relative flex min-h-[calc(100svh-4rem)] flex-col overflow-hidden">
-      {/* Ambient background */}
-      <div
-        aria-hidden
-        className="animate-drift absolute -right-32 -bottom-16 size-[36rem] rounded-full bg-deep-olive/10 blur-3xl [animation-delay:-10s]"
-      />
-      <FlightPathDoodle className="pointer-events-none absolute inset-x-0 top-[38%] hidden h-32 w-full md:block" />
+    <section className="grid min-h-[calc(100svh-4rem)] grid-cols-1 md:grid-cols-2">
+      <div className="flex flex-col justify-end px-6 py-16 md:px-[70px] md:py-[90px]">
+        <FadeIn>
+          <span className="inline-flex items-center gap-2 rounded-full bg-deep-olive-100 px-3.5 py-1.5 font-mono text-[10.5px] tracking-[0.12em] text-deep-olive-700 uppercase">
+            <span aria-hidden className="size-[7px] rounded-full bg-deep-olive-500" />
+            {t('badge')}
+          </span>
 
-      <div className="relative flex flex-1 items-center px-6 py-24">
-        <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 md:grid-cols-[1fr_1.6fr] md:gap-16">
-          <div className="flex flex-col items-center text-center md:items-start md:text-left">
-            <m.div
-              initial={{ opacity: 0, scale: 0.8, y: -8 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ ...snappySpring, delay: 0.1 }}
+          <h1 className="font-display mt-5 max-w-2xl text-6xl leading-none tracking-tight text-balance sm:text-7xl md:text-8xl">
+            {t('title')}
+          </h1>
+          <p className="mt-6 max-w-[480px] text-base leading-relaxed text-muted-foreground sm:text-lg">
+            {t('subtitle')}
+          </p>
+
+          <div className="mt-8 flex max-w-[500px] flex-wrap items-center gap-2.5">
+            <ExitLink
+              href={routes.signUp}
+              className={buttonVariants({ size: 'lg', className: 'h-[54px] px-7 text-base' })}
             >
-              <Badge variant="secondary" className="mb-6">
-                <Icon name="sparkles" size="xs" aria-hidden />
-                {t('eyebrow')}
-              </Badge>
-            </m.div>
-
-            <h1 className="font-display max-w-2xl text-6xl leading-[0.95] font-bold tracking-tight text-balance sm:text-7xl md:text-8xl">
-              <m.span
-                className="block"
-                initial={{ opacity: 0, y: 36 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ ...gentleSpring, delay: 0.2 }}
-              >
-                {t('title_leading')}
-              </m.span>
-              <m.span
-                className="text-primary block italic"
-                initial={{ opacity: 0, y: 36, scale: 0.92 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ ...snappySpring, delay: 0.45 }}
-              >
-                {t('title_accent')}
-              </m.span>
-            </h1>
-
-            <m.p
-              className="mt-6 max-w-xl text-lg text-muted-foreground"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...gentleSpring, delay: 0.55 }}
+              {t('cta_primary')}
+            </ExitLink>
+            <ExitLink
+              href={routes.signIn}
+              className={buttonVariants({
+                variant: 'outline',
+                size: 'lg',
+                className: 'h-[54px] px-7 text-base',
+              })}
             >
-              {t('subtitle')}
-            </m.p>
-
-            <m.div
-              className="mt-10 flex flex-wrap items-center justify-center gap-3 md:justify-start"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...gentleSpring, delay: 0.65 }}
-            >
-              <ExitLink
-                href={routes.signUp}
-                className={buttonVariants({
-                  size: 'lg',
-                  className: 'transition-all hover:-translate-y-0.5 hover:shadow-lg',
-                })}
-              >
-                {t('cta_primary')}
-                <m.span
-                  className="inline-flex"
-                  initial={false}
-                  whileHover={{ x: 4 }}
-                  transition={snappySpring}
-                >
-                  <Icon name="arrow-right" size="sm" aria-hidden />
-                </m.span>
-              </ExitLink>
-              <ExitLink
-                href={routes.signIn}
-                className={buttonVariants({ variant: 'outline', size: 'lg' })}
-              >
-                {t('cta_secondary')}
-              </ExitLink>
-            </m.div>
-
-            <m.p
-              className="mt-6 text-xs text-muted-foreground"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.75 }}
-            >
-              {t('note')}
-            </m.p>
+              {t('cta_secondary')}
+            </ExitLink>
           </div>
 
-          <div className="relative [perspective:1200px]">
-            <PostmarkBadge className="animate-spin-slow pointer-events-none absolute -top-6 -right-6 z-20 hidden size-16 text-dark-espresso/25 md:block" />
-
-            {/* Back card — solid depth layer, no second photo (keeps every trip photo distinct down the page) */}
-            <m.div
-              aria-hidden
-              className="absolute -right-4 -bottom-4 aspect-[4/3] w-[92%] rounded-xl bg-sandy-beige shadow-lg"
-              initial={{ opacity: 0, rotate: -10, scale: 0.92 }}
-              animate={{ opacity: 1, rotate: -6, scale: 1 }}
-              transition={{ ...gentleSpring, delay: 0.5 }}
-            />
-
-            {/* Front polaroid — cursor-tilt on pointer move */}
-            <m.div
-              className="group relative aspect-[4/3] w-full overflow-hidden rounded-xl border-4 border-aged-cream shadow-xl [transform-style:preserve-3d]"
-              style={{ rotate: 3, rotateX, rotateY }}
-              onPointerMove={handlePointerMove}
-              onPointerLeave={handlePointerLeave}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...gentleSpring, delay: 0.3 }}
-            >
-              <Image
-                src={HERO_PHOTO}
-                alt=""
-                fill
-                priority
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 62vw"
-              />
-            </m.div>
+          <div className="mt-8 flex flex-wrap gap-4.5 font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
+            <span>{t('trust_free')}</span>
+            <span>{t('trust_export')}</span>
+            <span>{t('trust_no_card')}</span>
           </div>
-        </div>
+
+          <StoreBadges className="mt-5 flex flex-wrap items-center gap-3" />
+        </FadeIn>
       </div>
 
-      {/* Place-name marquee — decorative */}
-      <div
-        aria-hidden
-        className="relative pb-10 [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]"
-      >
-        <div className="animate-marquee flex w-max gap-12 whitespace-nowrap">
-          {[...MARQUEE_PLACES, ...MARQUEE_PLACES].map((place, i) => (
-            <span
-              key={i}
-              className="font-display text-3xl text-muted-foreground/40 italic md:text-4xl"
-            >
-              {place} ·
-            </span>
-          ))}
+      <div className="relative hidden p-6 md:block md:py-10 md:pr-10 md:pl-0">
+        <div className="washed relative h-full w-full overflow-hidden rounded-[38px] shadow-soft-lg">
+          <Image
+            src={HERO_PHOTO}
+            alt=""
+            fill
+            priority
+            className="object-cover"
+            sizes="(max-width: 768px) 0vw, 50vw"
+          />
+        </div>
+
+        <div className="absolute bottom-[54px] left-0 max-w-[250px] rounded-[26px] bg-warm-white p-5 shadow-soft-md">
+          <p className="font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
+            {t('memory_date')}
+          </p>
+          <p className="font-display mt-1.5 text-[21px] leading-[1.2]">{t('memory_title')}</p>
+          <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
+            {t('memory_quote')}
+          </p>
         </div>
       </div>
     </section>

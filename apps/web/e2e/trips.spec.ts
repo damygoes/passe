@@ -8,9 +8,17 @@ import { expect, test } from './fixtures'
 // number, with a `\b` before the day so day 1 doesn't also match inside "21st"/"31st". Picking
 // days within the current month keeps this independent of today's date without needing month
 // navigation.
+// The Calendar component defaults to `fixedWeeks`, which pads the grid to a full 6 rows using
+// "outside days" from the adjacent month — react-day-picker marks those cells with
+// `data-outside` on the `<td>` wrapper. Without excluding them, a day-of-month that also occurs
+// in the padded adjacent month (e.g. both months have a 10th) resolves to two buttons with the
+// same ordinal-day accessible name and Playwright's strict mode throws.
 async function pickDate(page: Page, triggerId: string, day: number) {
   await page.locator(`#${triggerId}`).click()
-  await page.getByRole('button', { name: new RegExp(`\\b${day}(st|nd|rd|th),`) }).click()
+  await page
+    .locator('td:not([data-outside])')
+    .getByRole('button', { name: new RegExp(`\\b${day}(st|nd|rd|th),`) })
+    .click()
   // Wait for this popover to actually close before the caller opens the next one — otherwise
   // a still-closing first popover and the newly-opened second one can both briefly show the
   // same day, and getByRole matches both (strict-mode violation).
@@ -35,7 +43,9 @@ test.describe('authenticated trip flows', () => {
     await pickDate(page, 'endDate', 15)
 
     // Free-plan test user should see the gated hint, not an enabled public toggle.
-    await expect(page.getByText('Upgrade to Explorer or Collector to share trips publicly.')).toBeVisible()
+    await expect(
+      page.getByText('Upgrade to Explorer or Collector to share trips publicly.'),
+    ).toBeVisible()
 
     await page.getByRole('button', { name: 'Create trip' }).click()
     await expect(page).toHaveURL(/\/trips\/[^/]+$/)
@@ -45,12 +55,16 @@ test.describe('authenticated trip flows', () => {
     const tripId = page.url().split('/trips/')[1]!.split(/[/?]/)[0]!
 
     // --- Add a memory ---
-    await page.getByRole('link', { name: 'Add memory' }).click()
+    // "Add memory" appears both in TripDetailHeader's hero CTA and MemoriesList's section CTA —
+    // either one navigates to the same place, so .first() disambiguates without caring which.
+    await page.getByRole('link', { name: 'Add memory' }).first().click()
     await expect(page).toHaveURL(new RegExp(`/trips/${tripId}/memories/new$`))
 
     const noteText = `E2E memory ${Date.now()}`
     await page.getByLabel('Note').fill(noteText)
-    await page.getByRole('button', { name: 'Add memory' }).click()
+    // MemoryForm's submit button reads "Save to {tripTitle}" when creating a memory for an
+    // existing trip (see save_to_trip in MemoryForm.tsx) — it's never labeled "Add memory".
+    await page.getByRole('button', { name: `Save to ${tripTitle}` }).click()
 
     await expect(page).toHaveURL(new RegExp(`/trips/${tripId}$`))
     await expect(page.getByText(noteText)).toBeVisible()

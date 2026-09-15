@@ -10,6 +10,9 @@ export type BadgeVariant =
   | 'stamp'
   | 'plan-explorer'
   | 'plan-collector'
+  | 'private'
+  | 'shared'
+  | 'neutral'
 
 export type BadgeSize = 'sm' | 'md' | 'lg' | 'xl'
 

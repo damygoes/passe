@@ -24,6 +24,12 @@ export const memoryMedia = pgTable(
     // from the uploaded original. Null for legacy Cloudinary rows and media
     // created before this column existed — no backfill.
     placeholder: text('placeholder'),
+    // Per-photo caption shown under the hero in the memory detail gallery.
+    // Nullable — most media won't have one.
+    caption: text('caption'),
+    // Per-photo capture time, distinct from the memory-level capturedAt. UI
+    // falls back to the memory's capturedAt when a photo has none.
+    capturedAt: timestamp('captured_at'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
   },
   (t) => [index('memory_media_memory_id_idx').on(t.memoryId)],

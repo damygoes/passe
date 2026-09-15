@@ -1,3 +1,4 @@
+import { colors as brandColors } from '@passe/theme'
 import type { PaidPlan } from '@passe/types'
 import { useMemo } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
@@ -13,6 +14,14 @@ const badgeVariantByPlan: Record<PaidPlan, BadgeVariant> = {
   explorer: 'plan-explorer',
   collector: 'plan-collector',
 }
+
+// Collector reads as the "premium" tier by using a solid dark-espresso card
+// with cream text — fixed brand inks rather than semantic tokens, like
+// PaywallHero, so it looks intentionally dark in both light and dark mode
+// rather than inverting. Explorer sits on the sandy-beige secondary surface;
+// no per-tier tint for the header, only the card body.
+const espresso = brandColors.darkEspresso.DEFAULT
+const cream = brandColors.agedCream.DEFAULT
 
 interface PlanOptionCardProps {
   plan: PaidPlan
@@ -39,7 +48,10 @@ export function PlanOptionCard({
   currentPlanLabel,
   onSelect,
 }: PlanOptionCardProps) {
-  const { colors, spacing, fontSizes, fontWeights, borderRadius } = useTheme()
+  const { colors, fonts, spacing, fontSizes, borderRadius } = useTheme()
+  const isDark = plan === 'collector'
+  const tint = isDark ? cream : colors.foreground
+  const mutedTint = isDark ? `${cream}CC` : colors.mutedForeground
 
   const styles = useMemo(
     () =>
@@ -52,24 +64,24 @@ export function PlanOptionCard({
           shadowRadius: 10,
           elevation: 3,
         },
-        card: { borderWidth: 0.5, borderColor: colors.border, gap: spacing[4] },
-        selectedCard: { borderWidth: 2, borderColor: colors.primary },
+        card: {
+          borderWidth: 0,
+          gap: spacing[4],
+          backgroundColor: isDark ? espresso : colors.secondary,
+        },
+        selectedCard: { borderWidth: 2, borderColor: isDark ? cream : colors.primary },
         header: { alignItems: 'center' },
         titleGroup: { flex: 1, gap: spacing[2] },
-        tagline: { fontSize: fontSizes.sm, color: colors.mutedForeground },
+        tagline: { fontSize: fontSizes.sm, color: mutedTint },
         content: { gap: spacing[3], paddingTop: 0 },
         priceRow: { flexDirection: 'row', alignItems: 'baseline', gap: spacing[1] },
-        price: {
-          fontSize: fontSizes['2xl'],
-          fontWeight: fontWeights.bold,
-          color: colors.foreground,
-        },
-        perMonth: { fontSize: fontSizes.sm, color: colors.mutedForeground },
+        price: { fontFamily: fonts.display, fontSize: fontSizes['3xl'], color: tint },
+        perMonth: { fontSize: fontSizes.sm, color: mutedTint },
         bulletList: { gap: spacing[3] },
         bulletRow: { flexDirection: 'row', alignItems: 'center', gap: spacing[2] },
-        bulletText: { fontSize: fontSizes.sm, color: colors.foreground },
+        bulletText: { fontSize: fontSizes.sm, color: tint },
       }),
-    [colors, spacing, fontSizes, fontWeights, borderRadius],
+    [isDark, tint, mutedTint, colors, fonts, spacing, fontSizes, borderRadius],
   )
 
   return (
@@ -90,7 +102,7 @@ export function PlanOptionCard({
             <Text style={styles.tagline}>{tagline}</Text>
           </View>
           {isCurrent && (
-            <Badge variant="outline" size="md">
+            <Badge variant={isDark ? 'secondary' : 'outline'} size="md">
               {currentPlanLabel}
             </Badge>
           )}
@@ -103,7 +115,7 @@ export function PlanOptionCard({
           <View style={styles.bulletList}>
             {bullets.map((bullet) => (
               <View key={bullet} style={styles.bulletRow}>
-                <Icon name="check" size="sm" color={colors.primary} />
+                <Icon name="check" size="sm" color={isDark ? cream : colors.primary} />
                 <Text style={styles.bulletText}>{bullet}</Text>
               </View>
             ))}

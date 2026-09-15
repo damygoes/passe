@@ -5,15 +5,10 @@ import * as React from 'react'
 import { Link } from '@/i18n/navigation'
 import { routes } from '@/lib/routes'
 import { Logo } from '@passe/ui/logo'
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarRail,
-} from '@passe/ui/sidebar'
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@passe/ui/sidebar'
 import { NavUser } from './NavUser'
 import { SidebarNav } from './SidebarNav'
+import { SidebarPlanCard } from './SidebarPlanCard'
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   displayName: string
@@ -24,7 +19,7 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 
 export function AppSidebar({ displayName, email, avatarUrl, username, ...props }: AppSidebarProps) {
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
+    <Sidebar collapsible="none" {...props} className="py-6 px-2">
       <SidebarHeader>
         <Link
           href={routes.dashboard}
@@ -37,10 +32,10 @@ export function AppSidebar({ displayName, email, avatarUrl, username, ...props }
       <SidebarContent>
         <SidebarNav username={username} />
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="gap-3">
+        <SidebarPlanCard />
         <NavUser displayName={displayName} email={email} avatarUrl={avatarUrl} />
       </SidebarFooter>
-      <SidebarRail />
     </Sidebar>
   )
 }

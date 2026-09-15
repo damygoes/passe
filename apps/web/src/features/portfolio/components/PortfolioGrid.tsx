@@ -25,18 +25,14 @@ export function PortfolioGrid({ slug, displayName, trips }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div className="grid grid-cols-1 gap-x-[26px] gap-y-9 sm:grid-cols-2">
       {trips.map((trip, index) => (
         <div
           key={trip.id}
           className="animate-fade-in-up"
           style={{ animationDelay: `${Math.min(index * 40, 300)}ms` }}
         >
-          <PortfolioTripCard
-            trip={trip}
-            href={publicTripRoute(slug, trip.id)}
-            tilt={index % 2 === 0 ? 'left' : 'right'}
-          />
+          <PortfolioTripCard trip={trip} href={publicTripRoute(slug, trip.id)} />
         </div>
       ))}
     </div>

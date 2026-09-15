@@ -1,18 +1,19 @@
 import { useMemories } from '@passe/hooks'
-import { useLocalSearchParams } from 'expo-router'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useMemo } from 'react'
 import { StyleSheet, View } from 'react-native'
 
 import { Skeleton } from '@/components/ui/skeleton'
 import { AccountFormLayout } from '@/features/account/components/AccountFormLayout'
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
-import { AddMemoryForm } from '@/features/trips/components/memories/AddMemoryForm'
+import { MemoryForm } from '@/features/trips/components/memories/MemoryForm'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
 export function EditMemoryScreen() {
   const { id, tripId } = useLocalSearchParams<{ id: string; tripId: string }>()
   const t = useTranslations('trips.edit_memory')
+  const router = useRouter()
   const { data: memories, isLoading, isError } = useMemories(tripId)
   const { spacing } = useTheme()
 
@@ -34,7 +35,7 @@ export function EditMemoryScreen() {
       ) : isError || !memory ? (
         <ErrorBanner message={t('not_found')} />
       ) : (
-        <AddMemoryForm tripId={tripId} memory={memory} />
+        <MemoryForm tripId={tripId} memory={memory} onCancel={() => router.back()} />
       )}
     </AccountFormLayout>
   )
