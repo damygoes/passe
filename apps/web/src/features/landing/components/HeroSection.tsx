@@ -1,8 +1,8 @@
 import { FadeIn } from '@/components/motion/FadeIn'
 import { routes } from '@/lib/routes'
 import { buttonVariants } from '@passe/ui/button'
-import Image from 'next/image'
 import { getTranslations } from 'next-intl/server'
+import Image from 'next/image'
 import { HERO_PHOTO } from '../constants'
 import { ExitLink } from './ExitLink'
 import { StoreBadges } from './StoreBadges'
@@ -65,7 +65,7 @@ export async function HeroSection() {
       </div>
 
       <div className="relative hidden p-6 md:block md:py-10 md:pr-10 md:pl-0">
-        <div className="washed relative h-full w-full overflow-hidden rounded-[38px] shadow-soft-lg">
+        <div className="relative h-full w-full overflow-hidden rounded-[38px] shadow-soft-lg">
           <Image
             src={HERO_PHOTO}
             alt=""
@@ -80,7 +80,9 @@ export async function HeroSection() {
           <p className="font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
             {t('memory_date')}
           </p>
-          <p className="font-display mt-1.5 text-[21px] leading-[1.2]">{t('memory_title')}</p>
+          <p className="font-display mt-1.5 text-[21px] leading-[1.2] text-primary font-semibold">
+            {t('memory_title')}
+          </p>
           <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
             {t('memory_quote')}
           </p>
