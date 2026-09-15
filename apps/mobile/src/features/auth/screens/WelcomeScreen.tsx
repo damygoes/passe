@@ -1,18 +1,19 @@
 import { colors as brandColors } from '@passe/theme'
-import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
 import { useMemo } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import Svg, { Path } from 'react-native-svg'
 
 import { Button } from '@/components/ui/button'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
 
-// No dedicated marketing photo asset is bundled on mobile yet — reuse the
-// paywall hero image (the only bundled wide travel photo) with the same
-// warm scrim treatment used there, rather than introducing a new asset.
-const cover = require('../../../../assets/images/paywall-hero.jpg')
+// Bare "é" mark, same path data as @passe/ui's Logo (variant="mark") — no
+// PNG asset carries a transparent background at brand-mark fidelity, so
+// this draws the actual brand vector instead of compositing a raster cut.
+const MARK_E_PATH =
+  'M28.8 46.7Q37.6 46.7 42.65 51.85 47.7 57 47.7 69.1L16.4 69.1 16.2 67.2 33.1 67.2Q33.2 62.3 32.7 58.15 32.2 54 31.1 51.5 30 49 28.1 49 25.4 49 23.7 53.25 22 57.5 21.5 67.8L21.9 68.6Q21.8 69.6 21.8 70.6 21.8 71.6 21.8 72.7 21.8 79.7 23.55 83.6 25.3 87.5 27.95 89 30.6 90.5 33.3 90.5 34.7 90.5 36.65 90.1 38.6 89.7 40.9 88.25 43.2 86.8 45.4 83.8L47.1 84.4Q45.9 88.4 43.25 92.35 40.6 96.3 36.4 98.85 32.2 101.4 26.2 101.4 19.8 101.4 14.55 98.8 9.3 96.2 6.2 90.2 3.1 84.2 3.1 74.1 3.1 64.5 6.5 58.45 9.9 52.4 15.75 49.55 21.6 46.7 28.8 46.7Z'
 
 export function WelcomeScreen() {
   const t = useTranslations('auth.welcome')
@@ -26,19 +27,20 @@ export function WelcomeScreen() {
         content: { flex: 1, paddingHorizontal: spacing[6], paddingBottom: spacing[6] },
         coverWrap: {
           height: 330,
-          borderRadius: 28,
-          overflow: 'hidden',
           marginTop: spacing[2],
-          backgroundColor: colors.muted,
+          alignItems: 'center',
+          justifyContent: 'center',
         },
-        cover: { width: '100%', height: '100%', opacity: 0.92 },
-        coverWash: {
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: `${brandColors.agedCream.DEFAULT}26`,
+        markCol: {
+          alignItems: 'center',
+        },
+        accent: {
+          width: 64,
+          height: 20,
+          borderRadius: 10,
+          backgroundColor: brandColors.terracotta.DEFAULT,
+          marginBottom: -80,
+          transform: [{ translateX: 18 }, { rotate: '-35deg' }],
         },
         title: {
           fontFamily: fonts.display,
@@ -91,8 +93,16 @@ export function WelcomeScreen() {
     <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
       <View style={styles.content}>
         <View style={styles.coverWrap}>
-          <Image source={cover} style={styles.cover} contentFit="cover" />
-          <View style={styles.coverWash} pointerEvents="none" />
+          <View style={styles.markCol}>
+            <View style={styles.accent} />
+            <Svg width={140} height={300} viewBox="21.5 3.5 21 45">
+              <Path
+                transform="translate(21.33 5) scale(0.42)"
+                d={MARK_E_PATH}
+                fill={colors.foreground}
+              />
+            </Svg>
+          </View>
         </View>
         <Text style={styles.title}>{t('title')}</Text>
         <Text style={styles.tagline}>{t('tagline')}</Text>
