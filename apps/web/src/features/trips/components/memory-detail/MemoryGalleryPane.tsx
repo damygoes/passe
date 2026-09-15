@@ -53,7 +53,7 @@ export function MemoryGalleryPane({
 
   return (
     <div
-      className="washed flex min-h-[420px] flex-col gap-4.5 bg-dark-espresso-dark p-8 pb-6.5 lg:h-full"
+      className="washed flex min-h-[420px] min-w-0 flex-col gap-4.5 bg-dark-espresso-dark p-8 pb-6.5 lg:h-full"
       onKeyDown={handleKeyDown}
     >
       {media.length > 1 && (

@@ -37,7 +37,7 @@ export function MemoryDetailView({ tripId, memoryId }: Props) {
 
   if (isLoading) {
     return (
-      <div className="grid min-h-[calc(100svh-4rem)] grid-cols-1 lg:grid-cols-[1.35fr_1fr]">
+      <div className="grid min-h-[calc(100svh-4rem)] grid-cols-1 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
         <Skeleton className="h-[420px] w-full rounded-none lg:h-full" />
         <div className="p-11">
           <Skeleton className="h-4 w-32" />
@@ -139,7 +139,7 @@ function MemoryDetailContent({ tripId, memoryId, trip, memory, slots, photoAlt }
   }
 
   return (
-    <div className="grid min-h-[calc(100svh-4rem)] grid-cols-1 lg:grid-cols-[1.35fr_1fr]">
+    <div className="grid min-h-[calc(100svh-4rem)] grid-cols-1 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
       <input
         ref={inputRef}
         type="file"

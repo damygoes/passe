@@ -197,7 +197,7 @@
       "delete_cancel": "Cancel",
       "delete_confirm": "Delete",
       "delete_failed": "Failed to delete trip. Please try again.",
-      "memories_heading": "Memories",
+      "memories_heading": "{count, plural, one {Memory} other {Memories}}",
       "trip_error": "Could not load trip. Try refreshing the page.",
       "memories_error": "Could not load memories. Try refreshing the page.",
       "add_memory": "Add memory",

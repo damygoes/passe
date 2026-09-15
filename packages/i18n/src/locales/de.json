@@ -197,7 +197,7 @@
       "delete_cancel": "Abbrechen",
       "delete_confirm": "Löschen",
       "delete_failed": "Reise konnte nicht gelöscht werden. Bitte versuche es erneut.",
-      "memories_heading": "Erinnerungen",
+      "memories_heading": "{count, plural, one {Erinnerung} other {Erinnerungen}}",
       "trip_error": "Reise konnte nicht geladen werden. Versuche, die Seite neu zu laden.",
       "memories_error": "Erinnerungen konnten nicht geladen werden. Versuche, die Seite neu zu laden.",
       "add_memory": "Erinnerung hinzufügen",

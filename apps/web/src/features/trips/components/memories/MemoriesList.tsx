@@ -27,7 +27,7 @@ export function MemoriesList({ tripId }: Props) {
     <div className="mt-10">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="font-mono text-[10.5px] tracking-[0.14em] text-muted-foreground uppercase">
-          {memories.length} {t('memories_heading')}
+          {memories.length} {t('memories_heading', { count: memories.length })}
         </h2>
         <Link
           href={tripNewMemoryRoute(tripId)}

@@ -2,6 +2,7 @@
 
 import { Link } from '@/i18n/navigation'
 import { getBlurProps } from '@/lib/media/image-blur'
+import { createMediaLoader } from '@/lib/media/media-image-loader'
 import { memoryRoute } from '@/lib/routes'
 import type { Memory } from '@passe/types/memory'
 import { formatMemoryDate } from '@passe/utils'
@@ -44,6 +45,7 @@ export function MemoriesMasonryGrid({ tripId, memories }: Props) {
                   className="object-cover"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   {...getBlurProps(cover.placeholder)}
+                  {...(cover.srcset ? { loader: createMediaLoader(cover.srcset) } : {})}
                 />
               )}
             </div>

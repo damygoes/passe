@@ -24,8 +24,7 @@ export function useCreateTrip() {
   const { fetchApi } = usePasseApi()
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (data: CreateTrip) =>
-      fetchApi<Trip>('/api/trips', { method: 'POST', body: data }),
+    mutationFn: (data: CreateTrip) => fetchApi<Trip>('/api/trips', { method: 'POST', body: data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.trips() })
     },
@@ -49,15 +48,20 @@ export function useDeleteTrip() {
   const { fetchApi } = usePasseApi()
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (id: string) =>
-      fetchApi<{ id: string }>(`/api/trips/${id}`, { method: 'DELETE' }),
+    mutationFn: (id: string) => fetchApi<{ id: string }>(`/api/trips/${id}`, { method: 'DELETE' }),
     onSuccess: (_, id) => {
       queryClient.cancelQueries({ queryKey: queryKeys.trip(id) })
       queryClient.cancelQueries({ queryKey: queryKeys.memories(id) })
       queryClient.invalidateQueries({ queryKey: queryKeys.trips() })
       queryClient.invalidateQueries({ queryKey: queryKeys.allMemories() })
-      queryClient.removeQueries({ queryKey: queryKeys.trip(id) })
-      queryClient.removeQueries({ queryKey: queryKeys.memories(id) })
+      // refetchType: 'none' — any still-mounted useTrip(id)/useMemories(id) observer
+      // (e.g. the detail screen mid-navigation-away) would otherwise refetch the
+      // just-deleted resource and log a spurious 404. removeQueries() eagerly wipes
+      // the cache entry out from under a live observer, which triggers exactly that
+      // refetch; marking stale-but-not-refetching lets the observer's own unmount
+      // clean it up instead.
+      queryClient.invalidateQueries({ queryKey: queryKeys.trip(id), refetchType: 'none' })
+      queryClient.invalidateQueries({ queryKey: queryKeys.memories(id), refetchType: 'none' })
     },
   })
 }

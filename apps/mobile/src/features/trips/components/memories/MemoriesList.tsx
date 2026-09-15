@@ -53,7 +53,7 @@ export function MemoriesList({ tripId }: MemoriesListProps) {
     <View style={styles.container}>
       <View style={styles.headingRow}>
         <Text style={styles.heading}>
-          {memories.length} {t('memories_heading')}
+          {memories.length} {t('memories_heading', { count: memories.length })}
         </Text>
         <Button
           variant="ghost"

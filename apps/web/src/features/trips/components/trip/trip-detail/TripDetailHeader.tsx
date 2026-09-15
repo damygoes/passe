@@ -89,7 +89,7 @@ export function TripDetailHeader({ id }: Props) {
               </Badge>
             ))}
             <Badge variant="neutral">
-              {memories.length} {t('memories_heading')}
+              {memories.length} {t('memories_heading', { count: memories.length })}
             </Badge>
           </div>
         </div>
