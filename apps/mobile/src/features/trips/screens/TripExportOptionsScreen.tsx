@@ -16,6 +16,7 @@ import {
 } from '@/features/trips/utils/downloadTripExport'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
+import { paywallRoute } from '@/lib/paywall-route'
 
 interface KeepsakeCardProps {
   icon: IconName
@@ -140,7 +141,7 @@ export function TripExportOptionsScreen() {
   async function handleDownloadPdf() {
     if (isDownloadingPdf) return
     if (!canExport) {
-      router.push('/(app)/account/paywall')
+      router.push(paywallRoute('pdf'))
       return
     }
     setDownloadError(null)
@@ -198,7 +199,7 @@ export function TripExportOptionsScreen() {
           onPress={() =>
             canExport
               ? router.replace(`/(app)/trips/export-zine/${id}`)
-              : router.push('/(app)/account/paywall')
+              : router.push(paywallRoute('zine'))
           }
         />
 
@@ -213,7 +214,7 @@ export function TripExportOptionsScreen() {
           onPress={() =>
             canExport
               ? router.replace(`/(app)/trips/export-postcard/${id}`)
-              : router.push('/(app)/account/paywall')
+              : router.push(paywallRoute('postcard'))
           }
         />
       </ScrollView>

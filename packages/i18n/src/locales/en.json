@@ -205,7 +205,6 @@
       "export_menu_trigger": "Export",
       "collector_badge": "Collector",
       "coming_soon_badge": "Soon",
-      "create_postcard": "Create postcard",
       "download_pdf": "Download PDF",
       "create_zine": "Create zine",
       "zine_picker_title": "Choose photos for your zine",
@@ -224,6 +223,8 @@
       "postcard_cancel": "Cancel",
       "postcard_generate": "Create postcard",
       "postcard_generate_failed": "Could not generate your postcard. Please try again.",
+      "postcard_select_hint": "Choose a photo for the front of your postcard.",
+      "postcard_locked_message": "Postcards are a Collector keepsake. Upgrade to turn this memory into one you can print.",
       "export_download_failed": "Could not download your export. Please try again.",
       "export_share_unavailable": "Sharing is not available on this device.",
       "actions_label": "Trip actions",
@@ -554,6 +555,15 @@
       "load_error": "Could not load plans. Please try again.",
       "hero_title": "Your travels, remembered",
       "hero_subtitle": "Unlock more room for the moments you don't want to lose.",
+      "reason_subtitle": {
+        "trips": "Room for every trip, not just the next three.",
+        "memories": "Room for the whole trip, not just ten moments of it.",
+        "portfolio": "A public portfolio, shared exactly as much as you want.",
+        "public_memories": "Share as much of a trip as you like, not just a preview.",
+        "pdf": "A PDF memory book is a Collector keepsake. Here is what else comes with it.",
+        "zine": "Zines are a Collector keepsake. Here is what else comes with it.",
+        "postcard": "Postcards are a Collector keepsake. Here is what else comes with it."
+      },
       "select_plan_cta": "Continue with {plan}",
       "select_a_plan": "Choose a plan to continue",
       "feature_trips": "More trips to keep",
@@ -579,7 +589,9 @@
       "what_you_keep": "What you keep",
       "plans": "Plans",
       "sign_in": "Sign in",
-      "get_started": "Start your journal"
+      "get_started": "Start your journal",
+      "menu": "Menu",
+      "get_started_short": "Start"
     },
     "hero": {
       "badge": "Private by default · no feed, no followers",
@@ -671,7 +683,16 @@
     "pricing": {
       "heading": "Simple plans for every traveller",
       "subheading": "Start free. Upgrade when your archive outgrows it.",
-      "most_popular": "Most popular",
+      "recommended": "Recommended",
+      "unlocks": {
+        "trips": "Unlocks more trips",
+        "memories": "Unlocks more memories",
+        "portfolio": "Unlocks a public portfolio",
+        "public_memories": "Unlocks unlimited sharing",
+        "pdf": "Unlocks PDF memory books",
+        "zine": "Unlocks zines",
+        "postcard": "Unlocks postcards"
+      },
       "per_month": "Per month",
       "monthly_note": "Monthly only · cancel anytime",
       "cancel_note": "Cancel in one click — your journal stays readable and exportable on the free tier.",

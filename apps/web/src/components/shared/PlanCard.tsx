@@ -8,26 +8,32 @@ import { m } from 'motion/react'
 import { useTranslations } from 'next-intl'
 import type { ReactNode } from 'react'
 
-// Explorer is the plan marketed as "Most popular"/featured (see PricingCard's
-// `highlighted` and BillingView's `isMostPopular`) — its dark, elevated fill
-// must match that, not an arbitrary other tier.
-const PLAN_TONE_CLASSES: Record<PlanType, string> = {
-  free: 'bg-popover text-foreground border border-[color:var(--color-divider)] shadow-soft-sm',
-  explorer: 'bg-dark-espresso-dark text-aged-cream shadow-soft-lg',
-  collector: 'bg-popover text-foreground border border-[color:var(--color-divider)] shadow-soft-sm',
-}
+// The dark, elevated fill marks whichever plan the caller is featuring — on the
+// landing page that is always Explorer, but on /billing it follows the feature the
+// user was blocked on, so it can't be keyed off the plan itself.
+const FEATURED_TONE = 'bg-dark-espresso-dark text-aged-cream shadow-soft-lg'
+const DEFAULT_TONE =
+  'bg-popover text-foreground border border-[color:var(--color-divider)] shadow-soft-sm'
 
 export interface PlanCardProps {
   plan: PlanType
   /** Subtle ring marking the user's active plan. */
   current?: boolean
+  /** Gives this card the dark elevated fill — the caller decides which plan it lands on. */
+  featured?: boolean
   /** Rendered top-right inside the card; caller supplies a positioned <Badge> or undefined. */
   badge?: ReactNode
   /** Footer content — CTA button(s)/link, fully owned by the caller. */
   footer: ReactNode
 }
 
-export function PlanCard({ plan, current = false, badge, footer }: PlanCardProps) {
+export function PlanCard({
+  plan,
+  current = false,
+  featured = false,
+  badge,
+  footer,
+}: PlanCardProps) {
   const t = useTranslations('landing.pricing')
 
   const limits = PLAN_LIMITS[plan]
@@ -53,7 +59,7 @@ export function PlanCard({ plan, current = false, badge, footer }: PlanCardProps
       <div
         className={cn(
           'relative flex h-full flex-col rounded-[34px] p-[30px_28px]',
-          PLAN_TONE_CLASSES[plan],
+          featured ? FEATURED_TONE : DEFAULT_TONE,
           current && 'ring-2 ring-primary',
         )}
       >

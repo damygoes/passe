@@ -88,7 +88,7 @@ describe('MemoryForm — create', () => {
     mockUseMemories.mockReturnValue({ data: Array.from({ length: 10 }) })
     render(<MemoryForm tripId="trip-1" onCancel={mockOnCancel} />)
     fireEvent.press(screen.getByText('upgrade_cta'))
-    expect(mockPush).toHaveBeenCalledWith('/(app)/account/paywall')
+    expect(mockPush).toHaveBeenCalledWith('/(app)/account/paywall?reason=memories')
   })
 
   it('creates a memory with trimmed fields, parsed tags, and private by default', async () => {

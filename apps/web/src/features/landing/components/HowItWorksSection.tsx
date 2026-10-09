@@ -16,7 +16,7 @@ export function HowItWorksSection() {
 
   return (
     <section id="how" className="scroll-mt-[68px] bg-secondary/30 px-6 py-24 md:py-32">
-      <div className="mx-auto grid max-w-6xl grid-cols-[repeat(auto-fit,minmax(320px,1fr))] items-center gap-[clamp(28px,4vw,54px)]">
+      <div className="mx-auto grid max-w-6xl grid-cols-[repeat(auto-fit,minmax(min(320px,100%),1fr))] items-center gap-[clamp(28px,4vw,54px)]">
         <m.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}

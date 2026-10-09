@@ -33,6 +33,8 @@ interface PlanOptionCardProps {
   isSelected: boolean
   isCurrent: boolean
   currentPlanLabel: string
+  /** Names what this plan unlocks, when the user arrived blocked on a specific feature. */
+  unlocksLabel?: string
   onSelect: () => void
 }
 
@@ -46,6 +48,7 @@ export function PlanOptionCard({
   isSelected,
   isCurrent,
   currentPlanLabel,
+  unlocksLabel,
   onSelect,
 }: PlanOptionCardProps) {
   const { colors, fonts, spacing, fontSizes, borderRadius } = useTheme()
@@ -71,6 +74,7 @@ export function PlanOptionCard({
         },
         selectedCard: { borderWidth: 2, borderColor: isDark ? cream : colors.primary },
         header: { alignItems: 'center' },
+        unlocksBadge: { maxWidth: '45%' },
         titleGroup: { flex: 1, gap: spacing[2] },
         tagline: { fontSize: fontSizes.sm, color: mutedTint },
         content: { gap: spacing[3], paddingTop: 0 },
@@ -101,10 +105,20 @@ export function PlanOptionCard({
             </Badge>
             <Text style={styles.tagline}>{tagline}</Text>
           </View>
-          {isCurrent && (
+          {isCurrent ? (
             <Badge variant={isDark ? 'secondary' : 'outline'} size="md">
               {currentPlanLabel}
             </Badge>
+          ) : (
+            unlocksLabel && (
+              <Badge
+                variant={isDark ? 'secondary' : 'outline'}
+                size="md"
+                style={styles.unlocksBadge}
+              >
+                {unlocksLabel}
+              </Badge>
+            )
           )}
         </CardHeader>
         <CardContent style={styles.content}>

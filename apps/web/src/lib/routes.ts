@@ -1,3 +1,5 @@
+import type { GatedFeature } from '@passe/auth/plan-gates'
+
 export const routes = {
   home: '/',
   dashboard: '/dashboard',
@@ -17,6 +19,12 @@ export const routes = {
   support: '/support',
   impressum: '/impressum',
 } as const
+
+// Billing doubles as the paywall, so an upgrade CTA tags itself with the feature
+// the user was blocked on and the plan cards highlight whichever plan unlocks it.
+// `routes.billing` stays for the untagged account entries.
+export const billingRoute = (reason?: GatedFeature) =>
+  reason ? (`${routes.billing}?reason=${reason}` as const) : routes.billing
 
 export const tripRoute = (id: string) => `/trips/${id}` as const
 export const tripEditRoute = (id: string) => `/trips/${id}/edit` as const

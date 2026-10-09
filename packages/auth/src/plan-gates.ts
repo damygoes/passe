@@ -82,3 +82,55 @@ export function getTripSlots(plan: PlanType, currentTripCount: number): PlanSlot
 export function canExportPdf(plan: PlanType): boolean {
   return PLAN_LIMITS[plan].pdfExport
 }
+
+// Cheapest tier first — `upgradePlanFor` walks this to find the next plan up.
+const PLAN_ORDER = ['free', 'explorer', 'collector'] as const satisfies readonly PlanType[]
+
+type LimitKey = keyof (typeof PLAN_LIMITS)['free']
+
+/** A feature a user can be blocked on, and therefore a reason for landing on the paywall. */
+export type GatedFeature =
+  'trips' | 'memories' | 'portfolio' | 'public_memories' | 'pdf' | 'zine' | 'postcard'
+
+// Each feature points at the PLAN_LIMITS key that gates it, so the plan a paywall
+// should recommend is derived from the limits rather than restated beside them —
+// change a limit and the paywall follows. All three keepsake exports share the
+// single `pdfExport` flag.
+const FEATURE_LIMIT_KEYS = {
+  trips: 'maxTrips',
+  memories: 'maxMemoriesPerTrip',
+  portfolio: 'publicPortfolio',
+  public_memories: 'maxPublicMemoriesPerTrip',
+  pdf: 'pdfExport',
+  zine: 'pdfExport',
+  postcard: 'pdfExport',
+} as const satisfies Record<GatedFeature, LimitKey>
+
+// Booleans become 0/1 so one `>` comparison covers both the flags and the
+// numeric limits (including Infinity).
+function limitScore(plan: PlanType, key: LimitKey): number {
+  const value: number | boolean = PLAN_LIMITS[plan][key]
+  return typeof value === 'boolean' ? Number(value) : value
+}
+
+/**
+ * The cheapest plan above `currentPlan` that actually improves `feature`, or null
+ * when `currentPlan` is already the best for it. Callers treat null as "no
+ * contextual highlight" — e.g. a Collector who deep-links the paywall.
+ */
+export function upgradePlanFor(feature: GatedFeature, currentPlan: PlanType): PlanType | null {
+  const key = FEATURE_LIMIT_KEYS[feature]
+  const current = limitScore(currentPlan, key)
+  return (
+    PLAN_ORDER.slice(PLAN_ORDER.indexOf(currentPlan) + 1).find(
+      (plan) => limitScore(plan, key) > current,
+    ) ?? null
+  )
+}
+
+// The reason reaches the paywall as a query param, so it is untrusted input and
+// has to be validated before it indexes FEATURE_LIMIT_KEYS. Object.hasOwn rather
+// than `in`, which would also accept inherited keys like 'toString'.
+export function isGatedFeature(value: string | undefined): value is GatedFeature {
+  return value !== undefined && Object.hasOwn(FEATURE_LIMIT_KEYS, value)
+}

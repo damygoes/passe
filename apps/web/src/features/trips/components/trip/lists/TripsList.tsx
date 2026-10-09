@@ -2,7 +2,7 @@
 
 import { Stagger, StaggerItem } from '@/components/motion/Stagger'
 import { Link } from '@/i18n/navigation'
-import { routes, tripRoute } from '@/lib/routes'
+import { billingRoute, tripRoute } from '@/lib/routes'
 import { useAllMemories, useTrips, useUser } from '@passe/hooks'
 import { getTripSlots } from '@passe/auth/plan-gates'
 import { buttonVariants } from '@passe/ui/button'
@@ -79,7 +79,7 @@ export function TripsList({ filter }: Props) {
               />
             </div>
           </div>
-          <Link href={routes.billing} className={buttonVariants({ size: 'sm' })}>
+          <Link href={billingRoute('trips')} className={buttonVariants({ size: 'sm' })}>
             {t('quota_cta')}
           </Link>
         </div>

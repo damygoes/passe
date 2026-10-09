@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native'
-import { mockBack } from '@/test/expo-router-mock'
+import { mockBack, setMockSearchParams } from '@/test/expo-router-mock'
 import { PaywallScreen } from './PaywallScreen'
 
 const mockUseUser = jest.fn()
@@ -45,6 +45,7 @@ function fakeOffering() {
 
 beforeEach(() => {
   jest.useFakeTimers()
+  setMockSearchParams({})
   mockUseUser.mockReturnValue({ data: { plan: 'free' } })
   mockGetOfferings.mockResolvedValue(fakeOffering())
 })
@@ -129,6 +130,63 @@ describe('PaywallScreen', () => {
     fireEvent.press(screen.getByText('select_plan_cta'))
     await waitFor(() => expect(mockPurchasePackage).toHaveBeenCalled())
     expect(mockPurchasePackage.mock.calls[0][0]).toMatchObject({ identifier: 'collector_monthly' })
+  })
+
+  // Upgrade CTAs tag the paywall with the feature that blocked the user. Explorer has
+  // pdfExport: false, so pitching it to someone blocked on a keepsake sells the wrong
+  // tier — these cover that the tag actually redirects the pre-selection.
+  describe('when tagged with the feature that blocked the user', () => {
+    it('pre-selects collector for a keepsake, not the cheaper explorer', async () => {
+      setMockSearchParams({ reason: 'postcard' })
+      render(<PaywallScreen />)
+      await screen.findByText('€4.99')
+
+      expect(screen.getByText('unlocks.postcard')).toBeTruthy()
+      expect(screen.getByText('reason_subtitle.postcard')).toBeTruthy()
+
+      fireEvent.press(screen.getByText('select_plan_cta'))
+      await waitFor(() => expect(mockPurchasePackage).toHaveBeenCalled())
+      expect(mockPurchasePackage.mock.calls[0][0]).toMatchObject({
+        identifier: 'collector_monthly',
+      })
+    })
+
+    it('pre-selects explorer for a limit explorer actually raises', async () => {
+      setMockSearchParams({ reason: 'trips' })
+      render(<PaywallScreen />)
+      await screen.findByText('€4.99')
+
+      expect(screen.getByText('unlocks.trips')).toBeTruthy()
+
+      fireEvent.press(screen.getByText('select_plan_cta'))
+      await waitFor(() => expect(mockPurchasePackage).toHaveBeenCalled())
+      expect(mockPurchasePackage.mock.calls[0][0]).toMatchObject({
+        identifier: 'explorer_monthly',
+      })
+    })
+
+    it('ignores an unrecognised reason rather than trusting the param', async () => {
+      setMockSearchParams({ reason: 'toString' })
+      render(<PaywallScreen />)
+      await screen.findByText('€4.99')
+
+      expect(screen.getByText('hero_subtitle')).toBeTruthy()
+      fireEvent.press(screen.getByText('select_plan_cta'))
+      await waitFor(() => expect(mockPurchasePackage).toHaveBeenCalled())
+      expect(mockPurchasePackage.mock.calls[0][0]).toMatchObject({
+        identifier: 'explorer_monthly',
+      })
+    })
+
+    it('highlights nothing for a collector, who already has every keepsake', async () => {
+      mockUseUser.mockReturnValue({ data: { plan: 'collector' } })
+      setMockSearchParams({ reason: 'postcard' })
+      render(<PaywallScreen />)
+      await screen.findByText('€4.99')
+
+      expect(screen.queryByText('unlocks.postcard')).toBeNull()
+      expect(screen.getByText('select_a_plan')).toBeTruthy()
+    })
   })
 
   it('restores purchases and dismisses the paywall', async () => {

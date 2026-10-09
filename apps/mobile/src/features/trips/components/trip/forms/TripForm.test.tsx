@@ -117,7 +117,7 @@ describe('TripForm', () => {
     expect(screen.getByText('limit_reached')).toBeTruthy()
 
     fireEvent.press(screen.getByText('upgrade_cta'))
-    expect(mockPush).toHaveBeenCalledWith('/(app)/account/paywall')
+    expect(mockPush).toHaveBeenCalledWith('/(app)/account/paywall?reason=trips')
   })
 
   it('shows an upgrade hint that opens the paywall when publishing is gated', () => {
@@ -125,6 +125,6 @@ describe('TripForm', () => {
     render(<TripForm />)
 
     fireEvent.press(screen.getByText('public_gated_hint'))
-    expect(mockPush).toHaveBeenCalledWith('/(app)/account/paywall')
+    expect(mockPush).toHaveBeenCalledWith('/(app)/account/paywall?reason=portfolio')
   })
 })

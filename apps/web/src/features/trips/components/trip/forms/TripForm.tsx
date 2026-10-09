@@ -1,7 +1,7 @@
 'use client'
 
 import { Link, useRouter } from '@/i18n/navigation'
-import { routes, tripRoute } from '@/lib/routes'
+import { billingRoute, routes, tripRoute } from '@/lib/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { canCreateTrip, canMakePortfolioPublic } from '@passe/auth/plan-gates'
 import { useCreateTrip, useTrips, useUpdateTrip, useUser } from '@passe/hooks'
@@ -102,7 +102,7 @@ export function TripForm({ trip }: Props) {
           className="rounded-lg border border-border bg-muted px-4 py-3 text-sm text-muted-foreground"
         >
           {t('limit_reached')}{' '}
-          <Link href={routes.billing} className="font-medium text-primary hover:underline">
+          <Link href={billingRoute('trips')} className="font-medium text-primary hover:underline">
             {t('upgrade_cta')}
           </Link>
         </div>

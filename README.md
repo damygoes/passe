@@ -85,6 +85,17 @@ git tag mobile-v1.0.0 && git push origin mobile-v1.0.0   # native build + store 
 
 JS-only changes reach installed apps automatically via EAS Update when merged to `main`.
 
+`app.json` sets `runtimeVersion.policy: "appVersion"`, so an OTA update only reaches binaries
+whose `expo.version` matches it exactly. **Bumping `version` therefore cuts off every already
+installed build**: the publish still succeeds, it just reaches nobody until a binary of that
+version ships. Check what the stores are actually running (`eas build:list --platform ios`)
+before relying on OTA to deliver a fix.
+
+Both OTA jobs pass `--environment production`, so `EXPO_PUBLIC_*` values come from the EAS
+`production` environment (`eas env:list production`) rather than being restated in the
+workflow. Add any new `EXPO_PUBLIC_*` the app reads there _and_ to `eas.json`'s build
+profile — a value missing at bundle time is inlined as `undefined`, not an error.
+
 ### Local remote-cache setup (one-time)
 
 ```sh

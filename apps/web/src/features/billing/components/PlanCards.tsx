@@ -2,11 +2,13 @@
 
 import { Stagger } from '@/components/motion/Stagger'
 import { PlanCard } from '@/components/shared/PlanCard'
+import { isGatedFeature, upgradePlanFor } from '@passe/auth/plan-gates'
 import { useCreateCheckoutSession, useCreatePortalSession } from '@passe/hooks'
 import type { BillingRedirect, PaidPlan, Plan, PlanSource } from '@passe/types'
 import { Badge } from '@passe/ui/badge'
 import { Button } from '@passe/ui/button'
 import { Card, CardContent } from '@passe/ui/card'
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 
 const PLANS = ['free', 'explorer', 'collector'] as const
@@ -26,6 +28,17 @@ export function PlanCards({
   const tPricing = useTranslations('landing.pricing')
   const checkout = useCreateCheckoutSession()
   const portal = useCreatePortalSession()
+  const searchParams = useSearchParams()
+
+  // Upgrade CTAs tag themselves with the feature the user was blocked on (see
+  // billingRoute), so the card we feature is the one that actually unlocks it —
+  // Explorer has pdfExport: false, so recommending it to someone blocked on a
+  // keepsake would sell them the wrong tier. Null for an untagged visit, an
+  // unknown param, or a user already on the best plan for that feature.
+  const reasonParam = searchParams.get('reason') ?? undefined
+  const reason = isGatedFeature(reasonParam) ? reasonParam : undefined
+  const requestedPlan = reason ? upgradePlanFor(reason, currentPlan) : null
+  const featuredPlan = requestedPlan ?? 'explorer'
 
   const isPending = checkout.isPending || portal.isPending
   const hasError = checkout.isError || portal.isError
@@ -40,12 +53,16 @@ export function PlanCards({
       <Stagger className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {PLANS.map((plan) => {
           const isCurrent = plan === currentPlan
-          const isMostPopular = plan === 'explorer' && !isCurrent
+          const isFeatured = plan === featuredPlan && !isCurrent
 
+          // The current plan always wins the badge slot; a contextual "unlocks
+          // this" beats the generic recommendation when the user arrived blocked.
           const badge = isCurrent ? (
             <Badge className="absolute top-4 right-4">{t('current_plan')}</Badge>
-          ) : isMostPopular ? (
-            <Badge className="absolute top-4 right-4">{tPricing('most_popular')}</Badge>
+          ) : reason && plan === requestedPlan ? (
+            <Badge className="absolute top-4 right-4">{tPricing(`unlocks.${reason}`)}</Badge>
+          ) : !requestedPlan && isFeatured ? (
+            <Badge className="absolute top-4 right-4">{tPricing('recommended')}</Badge>
           ) : undefined
 
           const footer = isCurrent ? (
@@ -76,7 +93,14 @@ export function PlanCards({
           ) : null
 
           return (
-            <PlanCard key={plan} plan={plan} current={isCurrent} badge={badge} footer={footer} />
+            <PlanCard
+              key={plan}
+              plan={plan}
+              current={isCurrent}
+              featured={isFeatured}
+              badge={badge}
+              footer={footer}
+            />
           )
         })}
       </Stagger>

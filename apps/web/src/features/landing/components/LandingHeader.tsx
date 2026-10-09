@@ -5,20 +5,17 @@ import { routes } from '@/lib/routes'
 import { buttonVariants } from '@passe/ui/button'
 import { Logo } from '@passe/ui/logo'
 import { Navbar, NavbarBrand, NavbarUser } from '@passe/ui/navbar'
+import { cn } from '@passe/utils'
 import { getTranslations } from 'next-intl/server'
+import { ANCHOR_LINKS } from '../constants'
 import { ExitLink } from './ExitLink'
-
-const ANCHOR_LINKS = [
-  { key: 'how', href: '#how' },
-  { key: 'what_you_keep', href: '#keep' },
-  { key: 'plans', href: '#plans' },
-] as const
+import { LandingNavMenu } from './LandingNavMenu'
 
 export async function LandingHeader() {
   const t = await getTranslations('landing.nav')
 
   return (
-    <Navbar className="border-b-[color:var(--color-divider)] bg-background/88 px-6 backdrop-blur-md">
+    <Navbar className="border-b-[color:var(--color-divider)] bg-background/88 px-4 backdrop-blur-md sm:px-6">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 overflow-hidden [mask-image:radial-gradient(64rem_16rem_at_5%_0%,#c4622d,transparent)]"
@@ -36,7 +33,7 @@ export async function LandingHeader() {
         </Link>
       </NavbarBrand>
 
-      <nav className="hidden items-center gap-6 font-mono text-[13px] text-muted-foreground md:flex">
+      <nav className="hidden items-center gap-6 font-mono text-[13px] text-muted-foreground lg:flex">
         {ANCHOR_LINKS.map(({ key, href }) => (
           <a key={key} href={href} className="transition-colors hover:text-foreground">
             {t(key)}
@@ -44,22 +41,27 @@ export async function LandingHeader() {
         ))}
       </nav>
 
+      {/* Below lg everything except the logo and the primary CTA moves into LandingNavMenu —
+          the full row is 426px wide in English and 501px in German, so it cannot fit a phone. */}
       <NavbarUser className="gap-2 sm:gap-3">
-        <LocaleDropdownMenu className="h-8 px-2.5 text-xs" />
-        <ThemeDropdownMenu className="size-8" />
+        <LocaleDropdownMenu className="hidden h-8 px-2.5 text-xs lg:inline-flex" />
+        <ThemeDropdownMenu className="hidden size-8 lg:inline-flex" />
         <ExitLink
           href={routes.signIn}
-          className={buttonVariants({
-            variant: 'ghost',
-            size: 'sm',
-            className: 'hidden sm:inline-flex',
-          })}
+          // cn(), not buttonVariants' own className: cva concatenates, so `hidden` would
+          // sit alongside the base `inline-flex` and lose on stylesheet order. twMerge
+          // drops the conflicting one and keeps the lg: modifier.
+          className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'hidden lg:inline-flex')}
         >
           {t('sign_in')}
         </ExitLink>
         <ExitLink href={routes.signUp} className={buttonVariants({ size: 'sm' })}>
-          {t('get_started')}
+          {/* "Starte dein Reisetagebuch" is 183px — too wide for a phone bar, and it has no
+              sensible truncation point, so mobile gets its own shorter label. */}
+          <span className="lg:hidden">{t('get_started_short')}</span>
+          <span className="hidden lg:inline">{t('get_started')}</span>
         </ExitLink>
+        <LandingNavMenu className="lg:hidden" />
       </NavbarUser>
     </Navbar>
   )

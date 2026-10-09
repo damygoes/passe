@@ -1,8 +1,8 @@
 'use client'
 
 import { Link } from '@/i18n/navigation'
-import { routes } from '@/lib/routes'
-import { canExportPdf } from '@passe/auth/plan-gates'
+import { billingRoute } from '@/lib/routes'
+import { canExportPdf, type GatedFeature } from '@passe/auth/plan-gates'
 import { useUser } from '@passe/hooks'
 import { Badge } from '@passe/ui/badge'
 import { Button, buttonVariants } from '@passe/ui/button'
@@ -26,6 +26,8 @@ interface ExportCardProps {
   lockedLabel: string
   statusLabel: string
   canExport: boolean
+  /** Which keepsake this card is, so the locked CTA can tell the paywall what to feature. */
+  reason: GatedFeature
   /** A direct download link (PDF); mutually exclusive with `onExport`. */
   href?: string
   /** Opens the picker sheet (zine/postcard); mutually exclusive with `href`. */
@@ -40,6 +42,7 @@ function ExportCard({
   lockedLabel,
   statusLabel,
   canExport,
+  reason,
   href,
   onExport,
 }: ExportCardProps) {
@@ -67,7 +70,7 @@ function ExportCard({
         )
       ) : (
         <Link
-          href={routes.billing}
+          href={billingRoute(reason)}
           className={cn(buttonVariants({ variant: 'outline' }), 'mt-[18px] h-11 w-full')}
         >
           {lockedLabel}
@@ -112,6 +115,7 @@ export function KeepsakesCardsDataWrapper({ tripId }: Props) {
           lockedLabel={t('locked_cta')}
           statusLabel={statusLabel}
           canExport={canExport}
+          reason="pdf"
           href={`/api/trips/${tripId}/pdf`}
         />
         <ExportCard
@@ -122,6 +126,7 @@ export function KeepsakesCardsDataWrapper({ tripId }: Props) {
           lockedLabel={t('locked_cta')}
           statusLabel={statusLabel}
           canExport={canExport}
+          reason="zine"
           onExport={() => setZineSheetOpen(true)}
         />
         <ExportCard
@@ -132,6 +137,7 @@ export function KeepsakesCardsDataWrapper({ tripId }: Props) {
           lockedLabel={t('locked_cta')}
           statusLabel={statusLabel}
           canExport={canExport}
+          reason="postcard"
           onExport={() => setPostcardSheetOpen(true)}
         />
       </div>

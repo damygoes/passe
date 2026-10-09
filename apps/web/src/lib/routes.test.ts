@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  billingRoute,
   memoryEditRoute,
   publicPortfolioRoute,
   publicTripRoute,
@@ -26,6 +27,11 @@ describe('route builders', () => {
 
   it('builds a memory edit route from trip + memory ids', () => {
     expect(memoryEditRoute('t1', 'm1')).toBe('/trips/t1/memories/m1/edit')
+  })
+
+  it('tags the billing route with the blocked feature, and omits it when untagged', () => {
+    expect(billingRoute('postcard')).toBe('/billing?reason=postcard')
+    expect(billingRoute()).toBe('/billing')
   })
 
   it('builds public portfolio and trip routes from a username', () => {

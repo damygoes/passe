@@ -5,7 +5,7 @@ import { MemoryGalleryPane } from '@/features/trips/components/memory-detail/Mem
 import { MemoryInfoPane } from '@/features/trips/components/memory-detail/MemoryInfoPane'
 import { ThisPhotographCard } from '@/features/trips/components/memory-detail/ThisPhotographCard'
 import { useAddMemoryPhotos } from '@/features/trips/components/memory-detail/useAddMemoryPhotos'
-import { getPublicMemorySlots } from '@passe/auth/plan-gates'
+import { canExportPdf, getPublicMemorySlots } from '@passe/auth/plan-gates'
 import { useMemories, useTrip, useUpdateMemory, useUser } from '@passe/hooks'
 import type { CreateMemoryMedia, Memory } from '@passe/types/memory'
 import type { Trip } from '@passe/types/trip'
@@ -67,6 +67,7 @@ export function MemoryDetailView({ tripId, memoryId }: Props) {
       trip={trip}
       memory={memory}
       slots={slots}
+      canExportPostcard={canExportPdf(user?.plan ?? 'free')}
       photoAlt={t('photo_alt')}
     />
   )
@@ -78,6 +79,7 @@ interface ContentProps {
   trip: Trip | undefined
   memory: Memory
   slots: ReturnType<typeof getPublicMemorySlots> | null
+  canExportPostcard: boolean
   photoAlt: string
 }
 
@@ -85,7 +87,15 @@ interface ContentProps {
 // MemoryDetailView so every hook here (including useAddMemoryPhotos, which
 // needs a guaranteed Memory) is called unconditionally on every render —
 // the parent's loading/error guards run before this component ever mounts.
-function MemoryDetailContent({ tripId, memoryId, trip, memory, slots, photoAlt }: ContentProps) {
+function MemoryDetailContent({
+  tripId,
+  memoryId,
+  trip,
+  memory,
+  slots,
+  canExportPostcard,
+  photoAlt,
+}: ContentProps) {
   const updateMemory = useUpdateMemory()
   const [selectedIndex, setSelectedIndex] = useState(0)
 
@@ -180,6 +190,8 @@ function MemoryDetailContent({ tripId, memoryId, trip, memory, slots, photoAlt }
         {activePhoto && (
           <ThisPhotographCard
             tripId={tripId}
+            memoryId={memory.id}
+            canExportPostcard={canExportPostcard}
             media={media}
             activePhoto={activePhoto}
             selectedIndex={clampedIndex}

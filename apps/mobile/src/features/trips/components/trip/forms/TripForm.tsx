@@ -17,6 +17,7 @@ import { DateField } from '@/features/trips/components/trip/date-field/DateField
 import { createTripSchema, type TripFormValues } from '@/features/trips/schemas/trip'
 import { useTheme } from '@/hooks/useTheme'
 import { haptics } from '@/lib/haptics'
+import { paywallRoute } from '@/lib/paywall-route'
 import { useTranslations } from '@/i18n/useTranslations'
 
 interface TripFormProps {
@@ -115,7 +116,7 @@ export function TripForm({ trip }: TripFormProps) {
         <UpgradeBanner
           message={t('limit_reached')}
           ctaLabel={t('upgrade_cta')}
-          onPressUpgrade={() => router.push('/(app)/account/paywall')}
+          onPressUpgrade={() => router.push(paywallRoute('trips'))}
         />
       )}
 
@@ -220,7 +221,7 @@ export function TripForm({ trip }: TripFormProps) {
               {canPublish ? (
                 <Text style={styles.publicHint}>{t('public_hint')}</Text>
               ) : (
-                <Pressable onPress={() => router.push('/(app)/account/paywall')}>
+                <Pressable onPress={() => router.push(paywallRoute('portfolio'))}>
                   <Text style={styles.upgradeCta}>{t('public_gated_hint')}</Text>
                 </Pressable>
               )}

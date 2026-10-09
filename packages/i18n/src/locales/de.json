@@ -205,7 +205,6 @@
       "export_menu_trigger": "Exportieren",
       "collector_badge": "Collector",
       "coming_soon_badge": "Bald",
-      "create_postcard": "Postkarte erstellen",
       "download_pdf": "PDF herunterladen",
       "create_zine": "Zine erstellen",
       "zine_picker_title": "Fotos für dein Zine auswählen",
@@ -224,6 +223,8 @@
       "postcard_cancel": "Abbrechen",
       "postcard_generate": "Postkarte erstellen",
       "postcard_generate_failed": "Deine Postkarte konnte nicht erstellt werden. Bitte versuche es erneut.",
+      "postcard_select_hint": "Wähle ein Foto für die Vorderseite deiner Postkarte.",
+      "postcard_locked_message": "Postkarten sind ein Collector-Andenken. Mit einem Upgrade wird aus dieser Erinnerung eine Postkarte zum Ausdrucken.",
       "export_download_failed": "Dein Export konnte nicht heruntergeladen werden. Bitte versuche es erneut.",
       "export_share_unavailable": "Teilen ist auf diesem Gerät nicht verfügbar.",
       "actions_label": "Reise-Aktionen",
@@ -554,6 +555,15 @@
       "load_error": "Tarife konnten nicht geladen werden. Bitte versuche es erneut.",
       "hero_title": "Deine Reisen, festgehalten",
       "hero_subtitle": "Mehr Platz für die Momente, die du nicht verlieren willst.",
+      "reason_subtitle": {
+        "trips": "Platz für jede Reise, nicht nur für die nächsten drei.",
+        "memories": "Platz für die ganze Reise, nicht nur für zehn Momente davon.",
+        "portfolio": "Ein öffentliches Portfolio – genau so viel geteilt, wie du möchtest.",
+        "public_memories": "Teile so viel von einer Reise, wie du magst, nicht nur eine Vorschau.",
+        "pdf": "Ein PDF-Erinnerungsbuch ist ein Collector-Andenken. Das kommt noch dazu.",
+        "zine": "Zines sind ein Collector-Andenken. Das kommt noch dazu.",
+        "postcard": "Postkarten sind ein Collector-Andenken. Das kommt noch dazu."
+      },
       "select_plan_cta": "Weiter mit {plan}",
       "select_a_plan": "Wähle einen Tarif, um fortzufahren",
       "feature_trips": "Mehr Reisen behalten",
@@ -579,7 +589,9 @@
       "what_you_keep": "Was du bewahrst",
       "plans": "Pläne",
       "sign_in": "Anmelden",
-      "get_started": "Starte dein Reisetagebuch"
+      "get_started": "Starte dein Reisetagebuch",
+      "menu": "Menü",
+      "get_started_short": "Starten"
     },
     "hero": {
       "badge": "Standardmäßig privat · kein Feed, keine Follower",
@@ -671,7 +683,16 @@
     "pricing": {
       "heading": "Einfache Pläne für alle Reisenden",
       "subheading": "Starte kostenlos. Upgrade, wenn dein Archiv wächst.",
-      "most_popular": "Am beliebtesten",
+      "recommended": "Empfohlen",
+      "unlocks": {
+        "trips": "Schaltet mehr Reisen frei",
+        "memories": "Schaltet mehr Erinnerungen frei",
+        "portfolio": "Schaltet ein öffentliches Portfolio frei",
+        "public_memories": "Schaltet unbegrenztes Teilen frei",
+        "pdf": "Schaltet PDF-Erinnerungsbücher frei",
+        "zine": "Schaltet Zines frei",
+        "postcard": "Schaltet Postkarten frei"
+      },
       "per_month": "Pro Monat",
       "monthly_note": "Nur monatlich · jederzeit kündbar",
       "cancel_note": "Mit einem Klick kündbar — dein Tagebuch bleibt im kostenlosen Plan lesbar und exportierbar.",

@@ -1,7 +1,7 @@
 import * as Sharing from 'expo-sharing'
 import { fetch } from 'expo/fetch'
 import { haptics } from '@/lib/haptics'
-import { ShareUnavailableError, downloadTripExport } from './downloadTripExport'
+import { PlanGateError, ShareUnavailableError, downloadTripExport } from './downloadTripExport'
 
 const mockWrite = jest.fn()
 const mockDelete = jest.fn()
@@ -84,14 +84,27 @@ describe('downloadTripExport', () => {
   it('throws the server error message on a non-2xx response', async () => {
     jest.mocked(fetch).mockResolvedValue({
       ok: false,
-      status: 403,
-      statusText: 'Forbidden',
-      json: async () => ({ error: 'Upgrade to Collector to export PDFs' }),
+      status: 500,
+      statusText: 'Internal Server Error',
+      json: async () => ({ error: 'Failed to generate postcard' }),
     } as unknown as Awaited<ReturnType<typeof fetch>>)
 
-    await expect(downloadTripExport(baseOptions)).rejects.toThrow(
-      'Upgrade to Collector to export PDFs',
-    )
+    await expect(downloadTripExport(baseOptions)).rejects.toThrow('Failed to generate postcard')
+    expect(haptics.error).toHaveBeenCalled()
+    expect(Sharing.shareAsync).not.toHaveBeenCalled()
+  })
+
+  // Callers show the upgrade path for this one, so it must be distinguishable
+  // from a generic failure — and the server's message is English-only.
+  it('throws PlanGateError on a 403 so callers can offer an upgrade', async () => {
+    jest.mocked(fetch).mockResolvedValue({
+      ok: false,
+      status: 403,
+      statusText: 'Forbidden',
+      json: async () => ({ error: 'Upgrade to Collector to export a postcard' }),
+    } as unknown as Awaited<ReturnType<typeof fetch>>)
+
+    await expect(downloadTripExport(baseOptions)).rejects.toThrow(PlanGateError)
     expect(haptics.error).toHaveBeenCalled()
     expect(Sharing.shareAsync).not.toHaveBeenCalled()
   })

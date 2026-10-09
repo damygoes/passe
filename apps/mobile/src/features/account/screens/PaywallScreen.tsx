@@ -1,10 +1,10 @@
-import { PLAN_LIMITS } from '@passe/auth/plan-gates'
+import { PLAN_LIMITS, isGatedFeature, upgradePlanFor } from '@passe/auth/plan-gates'
 import { queryKeys, useUser } from '@passe/hooks'
 import { createLogger } from '@passe/logger'
 import type { PaidPlan } from '@passe/types'
 import type { AuthUser } from '@passe/types/user'
 import { useQueryClient } from '@tanstack/react-query'
-import { router } from 'expo-router'
+import { router, useLocalSearchParams } from 'expo-router'
 import { useEffect, useMemo, useState } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import type { PurchasesOffering, PurchasesPackage } from 'react-native-purchases'
@@ -40,6 +40,14 @@ export function PaywallScreen() {
   const tPricing = useTranslations('landing.pricing')
   const { data: user } = useUser()
   const queryClient = useQueryClient()
+
+  // Upgrade CTAs tag themselves with the feature that blocked the user (see
+  // paywallRoute) so this screen can pitch the plan that actually unlocks it.
+  // Untrusted param, hence isGatedFeature; null when untagged, unrecognised, or
+  // the user is already on the best plan for that feature.
+  const { reason: reasonParam } = useLocalSearchParams<{ reason?: string }>()
+  const reason = isGatedFeature(reasonParam) ? reasonParam : undefined
+  const requestedPlan = reason ? upgradePlanFor(reason, user?.plan ?? 'free') : null
 
   const [offering, setOffering] = useState<PurchasesOffering | null>(null)
   const [isLoadingOfferings, setIsLoadingOfferings] = useState(true)
@@ -138,12 +146,16 @@ export function PaywallScreen() {
   // current plan (its card is already shown as current/disabled) in favor of an upgrade.
   // Collector is the top tier, so there's no upgrade to default to — leave every card
   // unhighlighted rather than pre-selecting a downgrade to Explorer.
+  // A tagged reason wins: matched against purchasablePackages so a plan with no store
+  // product can never be pre-selected, which also narrows PlanType to PaidPlan.
   const defaultPlan = useMemo(() => {
+    const requestedEntry = purchasablePackages.find((entry) => entry.plan === requestedPlan)
+    if (requestedEntry) return requestedEntry.plan
     if (user?.plan === 'collector') return null
     const defaultEntry =
       purchasablePackages.find((entry) => entry.plan !== user?.plan) ?? purchasablePackages[0]
     return defaultEntry?.plan ?? null
-  }, [purchasablePackages, user?.plan])
+  }, [purchasablePackages, requestedPlan, user?.plan])
   const effectiveSelectedPlan = selectedPlan ?? defaultPlan
 
   const selectedPackage = purchasablePackages.find(
@@ -193,7 +205,10 @@ export function PaywallScreen() {
   return (
     <SafeAreaView style={styles.safeArea} edges={['bottom']}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <PaywallHero title={t('hero_title')} subtitle={t('hero_subtitle')} />
+        <PaywallHero
+          title={t('hero_title')}
+          subtitle={reason ? t(`reason_subtitle.${reason}`) : t('hero_subtitle')}
+        />
 
         <View style={styles.body}>
           <FeatureHighlightList features={features} />
@@ -216,6 +231,9 @@ export function PaywallScreen() {
                   isSelected={effectiveSelectedPlan === plan}
                   isCurrent={user?.plan === plan}
                   currentPlanLabel={t('current_plan_badge')}
+                  unlocksLabel={
+                    reason && plan === requestedPlan ? tPricing(`unlocks.${reason}`) : undefined
+                  }
                   onSelect={() => setSelectedPlan(plan)}
                 />
               ))}

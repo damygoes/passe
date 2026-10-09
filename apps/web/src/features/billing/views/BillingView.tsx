@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl'
 import { Suspense } from 'react'
 import { BillingDataWrapper } from '../components/BillingDataWrapper'
 import { BillingStatusBanner } from '../components/BillingStatusBanner'
+import { BillingViewSkeleton } from '../components/BillingViewSkeleton'
 
 export function BillingView() {
   const t = useTranslations('billing')
@@ -25,7 +26,11 @@ export function BillingView() {
       </Suspense>
 
       <FadeIn delay={SECTION_STEP} className="mt-9">
-        <BillingDataWrapper />
+        {/* PlanCards reads ?reason= to pick the featured plan, so it needs its own
+            Suspense boundary during prerender — same as BillingStatusBanner above. */}
+        <Suspense fallback={<BillingViewSkeleton />}>
+          <BillingDataWrapper />
+        </Suspense>
       </FadeIn>
 
       <p className="mt-6 text-center font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">

@@ -1,4 +1,4 @@
-import { getPublicMemorySlots } from '@passe/auth/plan-gates'
+import { canExportPdf, getPublicMemorySlots } from '@passe/auth/plan-gates'
 import { useMemories, useTrip, useUpdateMemory, useUser } from '@passe/hooks'
 import { colors as brandColors } from '@passe/theme'
 import type { CreateMemoryMedia, Memory } from '@passe/types/memory'
@@ -21,6 +21,7 @@ import { ThisPhotographSection } from '@/features/trips/components/memories/This
 import { useAddMemoryPhotos } from '@/features/trips/components/memories/useAddMemoryPhotos'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
+import { paywallRoute } from '@/lib/paywall-route'
 
 const PHOTO_HEIGHT = 430
 const BACK_BUTTON_SIZE = 40
@@ -92,6 +93,7 @@ export function MemoryDetailScreen() {
       trip={trip}
       memory={memory}
       slots={slots}
+      canExportPostcard={canExportPdf(user?.plan ?? 'free')}
       insetsTop={insets.top}
     />
   )
@@ -103,6 +105,7 @@ interface ContentProps {
   trip: Trip | undefined
   memory: Memory
   slots: ReturnType<typeof getPublicMemorySlots> | null
+  canExportPostcard: boolean
   insetsTop: number
 }
 
@@ -110,11 +113,19 @@ interface ContentProps {
 // MemoryDetailScreen so every hook here (including useAddMemoryPhotos,
 // which needs a guaranteed Memory) is called unconditionally on every
 // render — the parent's loading/error guards run before this mounts.
-function MemoryDetailContent({ tripId, memoryId, trip, memory, slots, insetsTop }: ContentProps) {
+function MemoryDetailContent({
+  tripId,
+  memoryId,
+  trip,
+  memory,
+  slots,
+  canExportPostcard,
+  insetsTop,
+}: ContentProps) {
   const t = useTranslations('trips.memory_card')
   const tDetail = useTranslations('trips.memory_detail')
   const router = useRouter()
-  const { colors, fonts, spacing, fontSizes, borderRadius } = useTheme()
+  const { colors, fonts, fontWeights, spacing, fontSizes, borderRadius } = useTheme()
   const updateMemory = useUpdateMemory()
   const [selectedIndex, setSelectedIndex] = useState(0)
   // Reset selection during render (not in an effect) when navigating to a
@@ -247,8 +258,16 @@ function MemoryDetailContent({ tripId, memoryId, trip, memory, slots, insetsTop 
         errorText: { fontSize: fontSizes.xs, color: colors.destructive, marginTop: spacing[2] },
         actions: { flexDirection: 'row', gap: spacing[2] + 2, marginTop: spacing[6] },
         actionButton: { flex: 1 },
+        lockedActionButton: { flex: 1, gap: spacing[2] },
+        // Matches the secondary Button's own md label, since a non-string
+        // child bypasses the recipe's label styling.
+        lockedActionLabel: {
+          fontSize: fontSizes.xl,
+          fontWeight: fontWeights.medium,
+          color: colors.secondaryForeground,
+        },
       }),
-    [colors, fonts, spacing, fontSizes, borderRadius, insetsTop],
+    [colors, fonts, fontWeights, spacing, fontSizes, borderRadius, insetsTop],
   )
 
   function selectPhoto(index: number) {
@@ -405,13 +424,33 @@ function MemoryDetailContent({ tripId, memoryId, trip, memory, slots, insetsTop 
           {uploadError && <Text style={styles.errorText}>{uploadError}</Text>}
 
           <View style={styles.actions}>
-            <Button
-              variant="secondary"
-              style={styles.actionButton}
-              onPress={() => router.push(`/(app)/trips/export-postcard/${tripId}`)}
-            >
-              {t('make_postcard')}
-            </Button>
+            {canExportPostcard ? (
+              <Button
+                variant="secondary"
+                style={styles.actionButton}
+                onPress={() =>
+                  router.push(`/(app)/trips/export-postcard/${tripId}?memoryId=${memory.id}`)
+                }
+              >
+                {t('make_postcard')}
+              </Button>
+            ) : (
+              <Button
+                variant="secondary"
+                style={styles.lockedActionButton}
+                onPress={() => router.push(paywallRoute('postcard'))}
+              >
+                <Icon name="lock" size="sm" color={colors.secondaryForeground} />
+                <Text
+                  numberOfLines={1}
+                  adjustsFontSizeToFit
+                  minimumFontScale={0.8}
+                  style={styles.lockedActionLabel}
+                >
+                  {t('make_postcard')}
+                </Text>
+              </Button>
+            )}
             <Button
               variant="secondary"
               style={styles.actionButton}

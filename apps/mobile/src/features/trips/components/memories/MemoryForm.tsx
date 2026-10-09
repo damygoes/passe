@@ -28,6 +28,7 @@ import { useTheme } from '@/hooks/useTheme'
 import { haptics } from '@/lib/haptics'
 import { useTranslations } from '@/i18n/useTranslations'
 import { compressImage } from '@/lib/image-compression'
+import { paywallRoute } from '@/lib/paywall-route'
 import { uploadFileToUrl } from '@/lib/upload-put'
 
 const log = createLogger({ context: { module: 'features/trips/MemoryForm' } })
@@ -299,7 +300,7 @@ export function MemoryForm({ tripId, memory, onCancel }: MemoryFormProps) {
         <UpgradeBanner
           message={t('limit_reached')}
           ctaLabel={t('upgrade_cta')}
-          onPressUpgrade={() => router.push('/(app)/account/paywall')}
+          onPressUpgrade={() => router.push(paywallRoute('memories'))}
         />
       )}
 

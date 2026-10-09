@@ -1,7 +1,7 @@
 'use client'
 
 import { Link } from '@/i18n/navigation'
-import { tripKeepsakesRoute } from '@/lib/routes'
+import { billingRoute } from '@/lib/routes'
 import type { MemoryMedia } from '@passe/types/memory'
 import { Button, buttonVariants } from '@passe/ui/button'
 import { Card, CardContent } from '@passe/ui/card'
@@ -14,11 +14,14 @@ import {
 import { Icon } from '@passe/ui/icon'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
+import { PostcardExportSheet } from '../trip/trip-detail/PostcardExportSheet'
 import { DeletePhotoDialog } from './DeletePhotoDialog'
 import { PhotoCaptionEditor } from './PhotoCaptionEditor'
 
 interface Props {
   tripId: string
+  memoryId: string
+  canExportPostcard: boolean
   media: MemoryMedia[]
   activePhoto: MemoryMedia
   selectedIndex: number
@@ -33,6 +36,8 @@ interface Props {
 // memory-level content per the design spec's explicit boundary.
 export function ThisPhotographCard({
   tripId,
+  memoryId,
+  canExportPostcard,
   media,
   activePhoto,
   selectedIndex,
@@ -46,6 +51,9 @@ export function ThisPhotographCard({
   const tMemoryCard = useTranslations('trips.memory_card')
   const [isEditingCaption, setIsEditingCaption] = useState(false)
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
+  const [isPostcardOpen, setIsPostcardOpen] = useState(false)
+
+  const postcardClassName = 'h-8.5 gap-1.5 rounded-full'
 
   return (
     <Card className="mt-5.5 rounded-[22px]">
@@ -87,16 +95,29 @@ export function ThisPhotographCard({
           >
             {isCover ? t('cover_photograph') : t('make_cover')}
           </Button>
-          <Link
-            href={tripKeepsakesRoute(tripId)}
-            className={buttonVariants({
-              variant: 'outline',
-              size: 'sm',
-              className: 'h-8.5 rounded-full',
-            })}
-          >
-            {tMemoryCard('make_postcard')}
-          </Link>
+          {canExportPostcard ? (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className={postcardClassName}
+              onClick={() => setIsPostcardOpen(true)}
+            >
+              {tMemoryCard('make_postcard')}
+            </Button>
+          ) : (
+            <Link
+              href={billingRoute('postcard')}
+              className={buttonVariants({
+                variant: 'outline',
+                size: 'sm',
+                className: postcardClassName,
+              })}
+            >
+              <Icon name="lock" size="sm" aria-hidden />
+              {tMemoryCard('make_postcard')}
+            </Link>
+          )}
           <DropdownMenu>
             <DropdownMenuTrigger
               render={
@@ -122,6 +143,13 @@ export function ThisPhotographCard({
           </DropdownMenu>
         </div>
       </CardContent>
+
+      <PostcardExportSheet
+        tripId={tripId}
+        initialMemoryId={memoryId}
+        open={isPostcardOpen}
+        onOpenChange={setIsPostcardOpen}
+      />
 
       <DeletePhotoDialog
         open={isDeleteOpen}

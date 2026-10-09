@@ -22,6 +22,17 @@ export class ShareUnavailableError extends Error {
   }
 }
 
+// The export routes answer 403 when the user's plan doesn't include the
+// keepsake. Callers need to tell that apart from a genuine failure so they can
+// show the upgrade path instead of "please try again" — and the server's own
+// message is English-only, so it is never surfaced as UI copy.
+export class PlanGateError extends Error {
+  constructor() {
+    super('This export requires a higher plan')
+    this.name = 'PlanGateError'
+  }
+}
+
 function extractFilename(contentDisposition: string | null, fallback: string): string {
   const match = contentDisposition ? /filename="([^"]+)"/.exec(contentDisposition) : null
   return match?.[1] ?? fallback
@@ -50,6 +61,8 @@ export async function downloadTripExport({
       },
       body: body !== undefined ? JSON.stringify(body) : undefined,
     })
+
+    if (res.status === 403) throw new PlanGateError()
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({ error: res.statusText }))

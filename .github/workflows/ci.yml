@@ -197,10 +197,13 @@ jobs:
         working-directory: apps/mobile
         env:
           COMMIT_MESSAGE: ${{ github.event.head_commit.message || 'Manual OTA update' }}
-          # eas update bundles locally, so EXPO_PUBLIC_* must be in the process env.
-          # Values must stay in sync with eas.json's production build profile.
-          EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_live_Y2xlcmsucGFzc2UuY2Mk
-          EXPO_PUBLIC_API_URL: https://passe.cc
-          EXPO_PUBLIC_MAPTILER_KEY: lvMcOthm8AmoVykoj6rm
-          EXPO_PUBLIC_SENTRY_DSN: https://e9aa535fb26e708d4b3509f717d08c52@o4510782202445824.ingest.de.sentry.io/4511744193265744
-        run: eas update --channel production --message "$COMMIT_MESSAGE" --non-interactive
+        # eas update bundles locally, so every EXPO_PUBLIC_* the app reads must be set at
+        # bundle time. `--environment production` resolves them from the EAS production
+        # environment (`eas env:list production`) instead of restating them here. They
+        # used to be hardcoded, and that copy had drifted: it pointed at the apex host
+        # (which 307s to www for /api/* — the Authorization header is dropped across a
+        # host change, so authed requests 401) and omitted the RevenueCat keys entirely,
+        # which would have inlined `undefined` and silently disabled purchases.
+        run: |
+          eas update --channel production --environment production \
+            --message "$COMMIT_MESSAGE" --non-interactive

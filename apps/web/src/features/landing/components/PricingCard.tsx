@@ -11,12 +11,15 @@ import { ExitLink } from './ExitLink'
 
 export function PricingCard({ plan }: { plan: PlanType }) {
   const t = useTranslations('landing.pricing')
+  // The landing page has no blocked-feature context to react to, so Explorer is
+  // always the featured plan here. /billing's PlanCards is the one that varies.
   const highlighted = plan === 'explorer'
 
   return (
     <PlanCard
       plan={plan}
-      badge={highlighted && <Badge className="absolute top-4 right-4">{t('most_popular')}</Badge>}
+      featured={highlighted}
+      badge={highlighted && <Badge className="absolute top-4 right-4">{t('recommended')}</Badge>}
       footer={
         <ExitLink
           href={routes.signUp}

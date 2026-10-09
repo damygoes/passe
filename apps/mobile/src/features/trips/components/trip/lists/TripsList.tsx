@@ -11,6 +11,7 @@ import { NoTripsEmpty } from '@/features/trips/components/trip/empty/NoTripsEmpt
 import { ErrorBanner } from '@/features/account/components/ErrorBanner'
 import { useTheme } from '@/hooks/useTheme'
 import { useTranslations } from '@/i18n/useTranslations'
+import { paywallRoute } from '@/lib/paywall-route'
 import { TripRow } from './TripRow'
 import { TripsListSkeleton } from './TripsListSkeleton'
 
@@ -142,7 +143,7 @@ export function TripsList({ filter }: Props) {
               />
             </View>
           </View>
-          <Button size="sm" onPress={() => router.push('/(app)/account/paywall')}>
+          <Button size="sm" onPress={() => router.push(paywallRoute('trips'))}>
             {t('quota_cta')}
           </Button>
         </View>

@@ -35,7 +35,7 @@ describe('TripExportOptionsScreen', () => {
 
     fireEvent.press(lockedCtas[0])
     expect(mockReplace).not.toHaveBeenCalled()
-    expect(mockPush).toHaveBeenCalledWith('/(app)/account/paywall')
+    expect(mockPush).toHaveBeenCalledWith('/(app)/account/paywall?reason=pdf')
     expect(downloadTripExport).not.toHaveBeenCalled()
   })
 

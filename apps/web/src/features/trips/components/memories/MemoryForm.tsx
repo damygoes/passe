@@ -23,7 +23,7 @@ import { useState } from 'react'
 import { Controller, useForm, type Resolver } from 'react-hook-form'
 import { z } from 'zod'
 import { Link, useRouter } from '@/i18n/navigation'
-import { routes, tripRoute } from '@/lib/routes'
+import { billingRoute, tripRoute } from '@/lib/routes'
 import { MemoryPhotosField, type MemoryPhoto } from './MemoryPhotosField'
 
 const MemoryFormFieldsSchema = CreateMemorySchema.pick({
@@ -220,7 +220,10 @@ export function MemoryForm({ tripId, memory }: Props) {
             className="rounded-lg border border-border bg-muted px-4 py-3 text-sm text-muted-foreground"
           >
             {t('limit_reached')}{' '}
-            <Link href={routes.billing} className="font-medium text-primary hover:underline">
+            <Link
+              href={billingRoute('memories')}
+              className="font-medium text-primary hover:underline"
+            >
               {t('upgrade_cta')}
             </Link>
           </div>

@@ -6,6 +6,8 @@ import {
   canExportPdf,
   getPublicMemorySlots,
   getTripSlots,
+  isGatedFeature,
+  upgradePlanFor,
   PLAN_LIMITS,
 } from '../plan-gates'
 
@@ -171,5 +173,59 @@ describe('PLAN_LIMITS', () => {
     expect(PLAN_LIMITS.collector.maxMemoriesPerTrip).toBe(Infinity)
     expect(PLAN_LIMITS.collector.publicPortfolio).toBe(true)
     expect(PLAN_LIMITS.collector.pdfExport).toBe(true)
+  })
+})
+
+describe('upgradePlanFor', () => {
+  it('sends free users to explorer for the limits explorer actually raises', () => {
+    expect(upgradePlanFor('trips', 'free')).toBe('explorer')
+    expect(upgradePlanFor('memories', 'free')).toBe('explorer')
+    expect(upgradePlanFor('portfolio', 'free')).toBe('explorer')
+    expect(upgradePlanFor('public_memories', 'free')).toBe('explorer')
+  })
+
+  // The regression this whole mechanism exists for: explorer has pdfExport: false,
+  // so recommending it to someone blocked on a keepsake sells them the wrong tier.
+  it('sends keepsake exports to collector, never explorer', () => {
+    for (const feature of ['pdf', 'zine', 'postcard'] as const) {
+      expect(upgradePlanFor(feature, 'free')).toBe('collector')
+      expect(upgradePlanFor(feature, 'explorer')).toBe('collector')
+    }
+  })
+
+  it('sends explorer users to collector for the limits collector raises further', () => {
+    expect(upgradePlanFor('trips', 'explorer')).toBe('collector')
+    expect(upgradePlanFor('memories', 'explorer')).toBe('collector')
+  })
+
+  it('returns null when the current plan is already the best for the feature', () => {
+    expect(upgradePlanFor('portfolio', 'explorer')).toBeNull()
+    expect(upgradePlanFor('public_memories', 'explorer')).toBeNull()
+    for (const feature of ['trips', 'memories', 'portfolio', 'postcard'] as const) {
+      expect(upgradePlanFor(feature, 'collector')).toBeNull()
+    }
+  })
+})
+
+describe('isGatedFeature', () => {
+  it('accepts every known feature', () => {
+    for (const feature of [
+      'trips',
+      'memories',
+      'portfolio',
+      'public_memories',
+      'pdf',
+      'zine',
+      'postcard',
+    ]) {
+      expect(isGatedFeature(feature)).toBe(true)
+    }
+  })
+
+  it('rejects anything else, since the value arrives as a query param', () => {
+    expect(isGatedFeature('collector')).toBe(false)
+    expect(isGatedFeature('')).toBe(false)
+    expect(isGatedFeature(undefined)).toBe(false)
+    expect(isGatedFeature('toString')).toBe(false)
   })
 })
