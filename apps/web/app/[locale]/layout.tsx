@@ -12,6 +12,10 @@ interface Props {
   params: Promise<{ locale: string }>
 }
 
+// Unknown locales 404 before rendering. Without this, paths the proxy matcher skips
+// (e.g. bot probes like /index.html) reach [locale] pages and auth() throws.
+export const dynamicParams = false
+
 export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }))
 }
